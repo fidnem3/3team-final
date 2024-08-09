@@ -1,14 +1,15 @@
 package com.javalab.board.controller;
 
+import com.javalab.board.service.CompanyService;
 import com.javalab.board.vo.CompanyVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -18,7 +19,8 @@ import java.util.List;
 @Log4j2
 public class LoginController {
 
-
+    @Autowired
+    private CompanyService companyService;
 
 
     // 로그인 화면
@@ -48,6 +50,14 @@ public class LoginController {
         return "member/companyJoin";
     }
 
+    // 기업회원 처리
+    @PostMapping("/companyJoin")
+    public String registerCompany(@ModelAttribute("CompanyVo") CompanyVo companyVo,
+                                  RedirectAttributes redirectAttributes) {
+        companyService.registerCompany(companyVo);
+        redirectAttributes.addFlashAttribute("message", "기업 회원가입이 성공적으로 완료되었습니다.");
+        return "redirect:/member/login";
+    }
 
 
 
