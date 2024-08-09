@@ -24,6 +24,7 @@ public class LoginController {
 
 
     // 로그인 화면
+
     @GetMapping(value = "/login")
     public String login(Model model,
                         @RequestParam(value = "error", required = false) String error,
