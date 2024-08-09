@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입 유형 선택 | Your Company Name</title>
+    <link rel="stylesheet" th:href="@{/css/classification.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+<body>
+<div class="background">
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+</div>
+
+<div class="container">
+    <header>
+        <h1>회원가입</h1>
+        <p class="subtitle">당신에게 맞는 회원 유형을 선택해주세요</p>
+    </header>
+    <main class="signup-options">
+        <div class="option-box individual">
+            <div class="content">
+                <div class="icon-wrapper">
+                    <i class="ri-user-smile-line"></i>
+                </div>
+                <h2>개인 회원</h2>
+                <p>개인 사용자를 위한 맞춤형 서비스<br>빠르고 간편한 이용이 가능합니다</p>
+                <a th:href="@{/member/join}" class="signup-button">
+                    <span>개인 회원가입</span>
+                    <i class="ri-arrow-right-line"></i>
+                </a>
+            </div>
+        </div>
+        <div class="option-box company">
+            <div class="content">
+                <div class="icon-wrapper">
+                    <i class="ri-building-2-line"></i>
+                </div>
+                <h2>기업 회원</h2>
+                <p>기업 및 단체를 위한 특화 서비스<br>다양한 비즈니스 기능을 제공합니다</p>
+                <a th:href="@{/member/companyJoin}" class="signup-button">
+                    <span>기업 회원가입</span>
+                    <i class="ri-arrow-right-line"></i>
+                </a>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p>이미 계정이 있으신가요? <a th:href="@{member/login}" class="login-link">로그인 <i class="ri-login-box-line"></i></a></p>
+    </footer>
+</div>
+</body>
+</html>

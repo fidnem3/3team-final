@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 매퍼XML : Employees 에 대한 모든 쿼리문 보관 -->
+<mapper namespace="com.javalab.board.repository.CompanyMapper">
+
+    <insert id="insertCompany" parameterType="com.javalab.board.vo.CompanyVo">
+        INSERT INTO company (
+        comp_id,
+        password,
+        email,
+        company_name,
+        business_number,
+        homepage,
+        logo_name,
+        logo_path,
+        address,
+        status
+        ) VALUES (
+        #{compId},
+        #{password},
+        #{email},
+        #{companyName},
+        #{businessNumber},
+        #{homepage, jdbcType=VARCHAR},
+        #{logoName, jdbcType=VARCHAR},
+        #{logoPath, jdbcType=VARCHAR},
+        #{address, jdbcType=VARCHAR},
+        #{status}
+        )
+    </insert>
+</mapper>
