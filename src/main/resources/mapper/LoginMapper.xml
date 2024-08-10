@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.javalab.board.repository.LoginMapper">
+
+	<resultMap id="MemberRoleResultMap" type="com.javalab.board.vo.MemberVo">
+		<id property="memberId" column="member_id"/>
+		<result property="password" column="password"/>
+		<result property="name" column="name"/>
+		<result property="email" column="email"/>
+		<result property="point" column="point"/>
+		<result property="del" column="del"/>
+		<result property="social" column="social"/>
+		<collection property="roles" ofType="java.lang.String">
+			<result column="role_name"/>
+		</collection>
+	</resultMap>
+
+	<select id="login" resultMap="MemberRoleResultMap">
+		SELECT m.member_id, m.password, m.name, m.email, m.point, m.del, m.social, r.role_name
+		FROM member m
+		LEFT JOIN member_role mr ON m.member_id = mr.member_id
+		LEFT JOIN role r ON mr.role_id = r.role_id
+		WHERE m.member_id = #{memberId}
+	</select>
+
+	<insert id="save">
+		INSERT INTO member (member_id, password, name, email, point, del, social)
+		VALUES (#{memberId}, #{password}, #{name}, #{email}, #{point}, #{del}, #{social})
+	</insert>
+
+	<insert id="saveRole">
+		INSERT INTO member_role (member_id, role_id)
+		VALUES (#{memberId}, (SELECT role_id FROM role WHERE role_name = #{roleName}))
+	</insert>
+
+</mapper>

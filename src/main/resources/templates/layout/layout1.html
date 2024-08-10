@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Layout page</title>
+
+    <style>
+        .layout-container {
+             border: 2px solid green;
+             padding: 10px;
+         }
+         .content-border {
+             border: 2px solid red;
+             padding: 10px;
+         }
+    </style>
+
+</head>
+<body>
+    <div class="layout-container">
+        <div>
+            <h3>타임리프 레이아웃 헤더</h3>
+        </div>
+
+        <!-- content 프레그먼트 : 페이지 내용 삽입 부분으로 페이지마다 다른 내용을 삽입할 수 있도록
+            공간을 확보하는 부분 -->
+        <div layout:fragment="content" class="content-border">
+            <p>각 페이지마다 고유한 내용은 여기에...</p>
+        </div>
+
+        <div>
+            <h3>타임리프 레이아웃 푸터</h3>
+        </div>
+
+        <!-- 각 페이지의 자바스크립트 코드를 삽입할 수 있는 부분 -->
+        <th:block layout:fragment="script" >
+
+        </th:block>
+    </div>
+</body>
+</html>

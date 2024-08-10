@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>게시물 상세보기</title>
+    <!-- 부트스트랩 CSS 추가 -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .button-container {
+            display: flex;
+            gap: 10px; /* 버튼 사이의 간격을 설정합니다 */
+        }
+        button, input[type="submit"] {
+            cursor: pointer; /* 손 모양 커서를 지정합니다 */
+        }
+    </style>
+    <script>
+        function navigateTo(url) {
+            window.location.href = url;
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+    <div class="mt-5">
+        <h3>게시물 상세보기</h3>
+        <table class="table table-striped">
+            <tbody>
+            <tr>
+                <th scope="row">게시물 번호</th>
+                <td th:text="${boardVo.bno}"></td>
+            </tr>
+            <tr>
+                <th scope="row">제목</th>
+                <td th:text="${boardVo.title}"></td>
+            </tr>
+            <tr>
+                <th scope="row">내용</th>
+                <td th:text="${boardVo.content}"></td>
+            </tr>
+            <tr>
+                <th scope="row">작성자</th>
+                <td th:text="${boardVo.memberId}"></td>
+            </tr>
+            <tr>
+                <th scope="row">조회수</th>
+                <td th:text="${boardVo.hitNo}"></td>
+            </tr>
+            <tr>
+                <th scope="row">작성일자</th>
+                <td th:text="${#dates.format(boardVo.regDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <br>
+        <div class="button-container">
+            <button type="button" class="btn btn-primary" th:onclick="|navigateTo('@{/board/list.do}')|">목록</button>
+            <button type="button"  class="btn btn-success" th:onclick="|navigateTo('@{/board/update.do/{bno}(bno=${boardVo.bno})}')|">수정</button>
+            <form th:action="@{/board/delete.do/{bno}(bno=${boardVo.bno})}" method="post" style="display: inline;">
+                <input type="hidden" name="_method" value="delete"/>
+                <input type="submit" class="btn btn-warning" value="삭제" onclick="return confirm('정말 삭제하시겠습니까?');">
+            </form>
+            <button type="button" class="btn btn-info" th:onclick="|navigateTo('@{/reply.do(bno=${boardVo.bno})}')|">답글작성</button>
+        </div>
+    </div>
+</div>
+<!-- 부트스트랩 JS 및 jQuery 추가 -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

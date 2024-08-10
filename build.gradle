@@ -1,0 +1,79 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.2.2'
+	id 'io.spring.dependency-management' version '1.1.4'
+}
+
+group = 'com.javalab'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	// Test Case 에서 롬복 사용
+	testCompileOnly 'org.projectlombok:lombok'
+	testAnnotationProcessor 'org.projectlombok:lombok'
+
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+	// Oracle JDBC 드라이버
+	runtimeOnly 'com.oracle.database.jdbc:ojdbc8:21.9.0.0'
+
+	//runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+
+	// thymeleaf template layout 관련 의존성
+	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.2.1'
+
+
+	testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.3'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	// Dto To Entity 변환
+	implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.0.0'
+
+	// validation
+	implementation group: 'org.hibernate', name: 'hibernate-validator', version: '6.2.1.Final'
+
+
+	// SQL 로그 의존성
+	implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
+
+	// Thumbnail
+	implementation 'net.coobird:thumbnailator:0.4.16'
+
+	// 스프링 시큐리티
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	// 타임리프에서 시큐리티 사용
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6:3.1.1.RELEASE'
+
+	// 소셜 로그인
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
+
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}

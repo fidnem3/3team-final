@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout.html}">
+
+<head>
+    <title layout:fragment="title">게시물 내용</title>
+</head>
+
+<div layout:fragment="content">
+
+    <div class="container">
+        <h3 layout:fragment="body-title">게시물 내용</h3>
+        <div class="mt-5">
+            <table class="table table-striped">
+                <tbody>
+                <tr>
+                    <th scope="row">게시물 번호</th>
+                    <td th:text="${boardVo.bno}"></td>
+                </tr>
+                <tr>
+                    <th scope="row">제목</th>
+                    <td th:text="${boardVo.title}"></td>
+                </tr>
+                <tr>
+                    <th scope="row">내용</th>
+                    <td th:text="${boardVo.content}"></td>
+                </tr>
+                <tr>
+                    <th scope="row">작성자</th>
+                    <td th:text="${boardVo.memberId}"></td>
+                </tr>
+                <tr>
+                    <th scope="row">조회수</th>
+                    <td th:text="${boardVo.hitNo}"></td>
+                </tr>
+                <tr>
+                    <th scope="row">작성일자</th>
+                    <td th:text="${#dates.format(boardVo.regDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                </tr>
+                </tbody>
+            </table>
+            <br>
+            <div class="button-container">
+                <button id="listButton" type="button" class="btn btn-primary">목록</button>
+                <button id="updateButton" type="button" class="btn btn-success">수정</button>
+                <form id="deleteForm" th:action="@{/board/delete.do/{bno}(bno=${boardVo.bno})}" method="post" style="display: inline;">
+                    <input type="hidden" name="_method" value="delete"/>
+                    <input type="submit" class="btn btn-warning" value="삭제" onclick="return confirm('정말 삭제하시겠습니까?');">
+                </form>
+                <button id="replyButton" type="button" class="btn btn-info">답글작성</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script layout:fragment="script" th:inline="javascript">
+    $(document).ready(function() {
+        var boardVo = /*[[ ${boardVo ?: 'null'} ]]*/ null;  // 엘비스 연산자
+        console.log("boardVo 번호:", boardVo); // 자바스크립트 최상위 레벨에서 출력
+
+        var bno = boardVo ? boardVo.bno : null; // boardVo의 속성값 출력
+        console.log("게시물 번호:", bno); // 자바스크립트 최상위 레벨에서 출력
+
+        var listUrl = /*[[@{/board/list.do}]]*/ 'placeholder';
+        var updateUrl = /*[[@{/board/update.do/{bno}(bno=${boardVo.bno})}]]*/ 'placeholder';
+        var replyUrl = /*[[@{/reply.do(bno=${boardVo.bno})}]]*/ 'placeholder';
+
+        // 경로 출력 확인
+        console.log("listUrl:", listUrl);
+        console.log("updateUrl:", updateUrl);
+        console.log("replyUrl:", replyUrl);
+
+        $("#listButton").click(function() {
+            window.location.href = listUrl;
+        });
+
+        $("#updateButton").click(function() {
+            window.location.href = updateUrl;
+        });
+
+        $("#replyButton").click(function() {
+            window.location.href = replyUrl;
+        });
+    });
+</script>
+</html>

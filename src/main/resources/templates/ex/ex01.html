@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout1.html}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <!-- layout="..." : 레이아웃을 적용할 때 사용하는 속성, 이페이지는 레이아웃을 사용하여 렌더링됨을 알림 -->
+    <!-- layout:decorate="~{layout/layout1.html}" : layout/layout1.html 레이아웃을 사용하여 렌더링
+        ~{레이아웃경로} : 레이아웃이 있는 파일의 상대 경로로 컨텍스트 루트로부터의 경로이다. -->
+
+    <!-- 레이아웃에 삽입될 내용 -->
+    <div layout:fragment="content">
+        <h2>ex01.html</h2>
+        <p>1. 게시물 번호: <span th:text="${boardVo.bno}"></span></p>
+        <p>2. 제목: <span th:text="${boardVo.title}"></span></p>
+        <p>3. 내용: <span th:text="${boardVo.content}"></span></p>
+        <p>4. 작성자: <span th:text="${boardVo.memberId}"></span></p>
+        <p>5. 작성일자: <span th:text="${#dates.format(boardVo.regDate, 'yyyy-MM-dd HH:mm:ss')}"></span></p>
+    </div>
+
+    <!-- 각 페이지의 자바스크립트 코드를 삽입할 수 있는 부분 -->
+    <script layout:fragment="script" th:inline="javascript">
+        /*
+         1. 엘비스 연산자 사용법 : ${피연산자 ?: 대체값} 피연산자가 null이면 대체값을 사용
+                            널이 아니면 피연산자를 그대로 사용.
+         2. 맨 뒤의 null : 초기값으로 이 페이지를 서버 구동없이 열게 되면 boardVo가 없어서 null로 초기화.
+         3. /별표 별표/ : 주석 부분으로 웹 브라우저는 이 안의 내용을 무시한다. 그래서 초기값 null이 사용됨.
+         4. 타임리프 페이지는 Html을 사용하기 때문에 퍼블리셔와 개발자가 이 페이지를 공유하면서 작업을 한다.
+            이때 서버 구동없이 이 페이지를 열어도 오류가 없게 하기 위해서 초기값(null)을 설정해둔다.
+            (물론 서버 구동시에도 오류가 없게 하기 위함이다.)
+         5. [[..]] : 타임리프에서 자바스크립트 변수를 사용할 때 사용하는 표현식
+        */
+        let boardVo = /*[[ ${boardVo ?: 'null'} ]]*/ null;  // boardVo값이 있으면 사용하고 없으면 'null'
+        console.log("boardVo:", boardVo); // 자바스크립트 최상위 레벨에서 출력
+    </script>
+</body>
+</html>

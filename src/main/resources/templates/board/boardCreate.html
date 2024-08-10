@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout.html}">
+
+<head>
+    <title layout:fragment="title">게시물 목록</title>
+</head>
+
+<div layout:fragment="content">
+    <div class="container">
+        <h3 layout:fragment="body-title">게시물 등록</h3>
+        <div class="mt-5">
+            <form th:action="@{/board/create.do}" th:object="${boardDto}" method="post">
+                <div class="form-group">
+                    <label for="title">제목</label>
+                    <input type="text" id="title" th:field="*{title}" class="form-control" />
+                    <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="text-danger">Title Error</div>
+                </div>
+                <div class="form-group">
+                    <label for="content">내용</label>
+                    <textarea id="content" th:field="*{content}" class="form-control"></textarea>
+                    <div th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="text-danger">Content Error</div>
+                </div>
+                <div class="form-group">
+                    <label for="memberId">작성자</label>
+                    <input type="text" id="memberId" th:field="*{memberId}" class="form-control" />
+                    <div th:if="${#fields.hasErrors('memberId')}" th:errors="*{memberId}" class="text-danger">Member ID Error</div>
+                </div>
+                <div class="form-group">
+                    <label for="regDate">작성일자</label>
+                    <input type="date" id="regDate" th:field="*{regDate}" class="form-control" />
+                    <div th:if="${#fields.hasErrors('regDate')}" th:errors="*{regDate}" class="text-danger">Registration Date Error</div>
+                </div>
+                <button type="submit" class="btn btn-primary">등록</button>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- 부트스트랩 JS 및 jQuery 추가 -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
