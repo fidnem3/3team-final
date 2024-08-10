@@ -1,101 +1,309 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/basic.html}">
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
 
 <head>
-    <title>회원가입</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>개인 회원가입</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
     <style>
-        .input-group-text {
-            width: 130px;
+        :root {
+            --primary: #4CAF50; /* 진한 초록색 */
+            --secondary: #81C784; /* 연한 초록색 */
+            --background: #f5f5f5;
+            --surface: #ffffff;
+            --text: #333333;
+            --text-secondary: rgba(0, 0, 0, 0.6);
+            --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: var(--surface);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: var(--box-shadow);
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .signup-form {
+            display: grid;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            color: var(--text-secondary);
+        }
+
+        .form-group input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+        }
+
         .fieldError {
             color: #bd2130;
-            display: block; /* 이 부분을 추가하여 block 요소로 만듭니다. */
-            margin-top: 5px; /* 필요한 경우 상단 여백을 추가하여 오류 메시지와 입력란 사이에 간격을 줄 수 있습니다. */
+            display: block;
+            margin-top: 5px;
+        }
+
+        .signup-button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .signup-button:hover {
+            background-color: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .login-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .login-link:hover {
+            color: var(--secondary);
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
         }
     </style>
 </head>
 
-<div layout:fragment="content">
-    <div class="row mt-3">
-        <div class="col">
-            <div class="card">
-                <div class="card-header">
-                    JOIN
-                </div>
-                <div class="card-body">
-                    <form id="registerForm" action="/member/join" method="post"
-                          th:object="${memberFormDto}">
+<body>
+<div class="container">
+    <header class="header">
+        <h1>개인 회원가입</h1>
+        <p class="subtitle">귀하의 정보를 입력해 주세요</p>
+    </header>
+    <main>
+        <form th:action="@{/member/join}" method="post" th:object="${JobSeekerVo}" class="signup-form" onsubmit="return validateForm()">
+            <!-- CSRF Token -->
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <div class="form-group">
+                <label for="jobSeekerId">아이디</label>
+                <input type="text" id="jobSeekerId" th:field="*{jobSeekerId}" placeholder="아이디는 영문 및 숫자 포함 5자리 이상 입력해주세요" >
+                <p th:if="${#fields.hasErrors('jobSeekerId')}" th:errors="*{jobSeekerId}" class="fieldError"></p>
+            </div>
 
-                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <div class="form-group">
+                <label for="password">비밀번호</label>
+                <input type="password" id="password" th:field="*{password}" placeholder="비밀번호는 대소문자 및 특수문자 포함 5자리 이상 입력해주세요" >
+                <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="fieldError"></p>
+            </div>
 
-                        <div class="input-group mb-3">
-                            <span class="input-group-text">이름</span>
-                            <input type="text" th:field="*{name}" class="form-control"
-                                   placeholder="이름을 입력해주세요" required>
-                            <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="fieldError">잘못된 이름</p>
-                            <div th:if="${#fields.hasErrors('name')}"
-                                 th:text="${#fields.errors('name')[0]}"
-                                 class="fieldError"></div>
-                        </div>
+            <div class="form-group">
+                <label for="confirmPassword">비밀번호 확인</label>
+                <input type="password" id="confirmPassword" th:field="*{confirmPassword}" placeholder="비밀번호 확인을 위해 다시 입력해주세요" >
+                <p th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}" class="fieldError"></p>
+            </div>
 
-                        <div class="input-group mb-3">
-                            <span class="input-group-text">이메일</span>
-                            <input type="email" th:field="*{email}" class="form-control"
-                                   placeholder="이메일을 입력해주세요" >
-                            <div th:if="${#fields.hasErrors('email')}"
-                                 th:text="${#fields.errors('email')[0]}"
-                                 class="fieldError">
-                            </div>
-                            <!-- 이메일 중복 오류 메시지 -->
-                            <p th:if="${errorMessage}" th:text="${errorMessage}" class="fieldError"></p>
-                        </div>
+            <div class="form-group">
+                <label for="name">이름</label>
+                <input type="text" id="name" th:field="*{name}" placeholder="이름은 한글 또는 영문 두 글자 이상 입력해주세요" >
+                <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="fieldError"></p>
+            </div>
 
-                        <div class="input-group mb-3">
-                            <span class="input-group-text">비밀번호</span>
-                            <input type="text" th:field="*{password}" class="form-control"
-                                   placeholder="비밀번호 입력" >
-                            <div th:if="${#fields.hasErrors('password')}"
-                                 th:text="${#fields.errors('password')[0]}"
-                                 class="fieldError">
-                            </div>
-                        </div>
+            <div class="form-group">
+                <label for="birth">생년월일</label>
+                <input type="date" id="birth" th:field="*{birth}" placeholder="생년월일을 입력해주세요" >
+                <p th:if="${#fields.hasErrors('birth')}" th:errors="*{birth}" class="fieldError"></p>
+            </div>
 
-                        <div class="input-group mb-3">
-                            <span class="input-group-text">주소</span>
-                            <input type="text" th:field="*{address}" class="form-control"
-                                   placeholder="주소 입력" >
-                            <div th:if="${#fields.hasErrors('address')}"
-                                 th:text="${#fields.errors('address')[0]}"
-                                 class="fieldError">
-                            </div>
-                        </div>
+            <div class="form-group">
+                <label for="tel">전화번호</label>
+                <input type="tel" id="tel" th:field="*{tel}" placeholder="전화번호는 '-'를 제외하고 입력해주세요" >
+                <p th:if="${#fields.hasErrors('tel')}" th:errors="*{tel}" class="fieldError"></p>
+            </div>
 
-                        <div class="my-4">
-                            <div class="float-end">
-                                <button type="submit" class="btn btn-primary submitBtn">Submit</button>
-                                <button type="reset" class="btn btn-secondary">Reset</button>
-                            </div>
-                        </div>
-                    </form>
-                </div><!--end card body-->
+            <div class="form-group">
+                <label for="email">이메일</label>
+                <input type="email" id="email" th:field="*{email}" placeholder="이메일을 입력해주세요" >
+                <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="fieldError"></p>
+            </div>
 
-            </div><!--end card-->
-        </div><!-- end col-->
-    </div><!-- end row-->
+            <div class="form-group">
+                <label for="address">주소</label>
+                <input type="text" id="address" th:field="*{address}" placeholder="주소를 입력해주세요" >
+                <p th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="fieldError"></p>
+            </div>
 
-
+            <button type="submit" class="signup-button">
+                <span>회원가입</span>
+                <i class="ri-arrow-right-line"></i>
+            </button>
+        </form>
+    </main>
+    <footer>
+        <p>이미 계정이 있으신가요? <a th:href="@{/member/login}" class="login-link">로그인 <i class="ri-login-box-line"></i></a></p>
+    </footer>
 </div>
 
-<script layout:fragment="script" th:inline="javascript">
+<!--<script th:inline="javascript">-->
+<!--    function validateForm() {-->
+<!--        var id = document.getElementById('jobSeekerId').value;-->
+<!--        var password = document.getElementById('password').value;-->
+<!--        var confirmPassword = document.getElementById('confirmPassword').value;-->
+<!--        var name = document.getElementById('name').value;-->
+<!--        var tel = document.getElementById('tel').value;-->
+<!--        var email = document.getElementById('email').value;-->
 
-    const error = [[${error}]]
+<!--        var idError = document.getElementById('jobSeekerIdError');-->
+<!--        var passwordError = document.getElementById('passwordError');-->
+<!--        var confirmPasswordError = document.getElementById('confirmPasswordError');-->
+<!--        var nameError = document.getElementById('nameError');-->
+<!--        var telError = document.getElementById('telError');-->
+<!--        var emailError = document.getElementById('emailError');-->
 
-    if(error && error === 'mid'){
-        alert("동일한 MID를 가진 계정이 존재합니다.")
-    }
+<!--        var isValid = true;-->
+
+<!--        // 아이디 검증 (영문 및 숫자 포함, 5자리 이상)-->
+<!--        var idPattern = /^[a-zA-Z0-9]{5,}$/;-->
+<!--        if (!idPattern.test(id)) {-->
+<!--            idError.textContent = "아이디는 영문 및 숫자를 포함하여 5자 이상이어야 합니다.";-->
+<!--            isValid = false;-->
+<!--        } else {-->
+<!--            idError.textContent = "";-->
+<!--        }-->
+
+<!--        // 비밀번호 검증-->
+<!--        var passwordPattern = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{5,}$/;-->
+<!--        if (!passwordPattern.test(password)) {-->
+<!--            passwordError.textContent = "비밀번호는 대소문자, 숫자 및 특수문자를 포함하여 5자 이상이어야 합니다.";-->
+<!--            isValid = false;-->
+<!--        } else {-->
+<!--            passwordError.textContent = "";-->
+<!--        }-->
+
+<!--        // 비밀번호 확인-->
+<!--        if (password !== confirmPassword) {-->
+<!--            confirmPasswordError.textContent = "비밀번호가 일치하지 않습니다.";-->
+<!--            isValid = false;-->
+<!--        } else {-->
+<!--            confirmPasswordError.textContent = "";-->
+<!--        }-->
+
+<!--        // 이름 검증-->
+<!--        var namePattern = /^[가-힣A-Za-z]{2,}$/;-->
+<!--        if (!namePattern.test(name)) {-->
+<!--            nameError.textContent = "이름은 한글 또는 영문으로 두 글자 이상이어야 합니다.";-->
+<!--            isValid = false;-->
+<!--        } else {-->
+<!--            nameError.textContent = "";-->
+<!--        }-->
+
+<!--        // 전화번호 검증 (숫자만 허용)-->
+<!--        var telPattern = /^\d{10,11}$/;-->
+<!--        if (!telPattern.test(tel)) {-->
+<!--            telError.textContent = "전화번호는 '-'를 제외한 10자리 또는 11자리 숫자만 입력해야 합니다.";-->
+<!--            isValid = false;-->
+<!--        } else {-->
+<!--            telError.textContent = "";-->
+<!--        }-->
+
+<!--        // 이메일 검증-->
+<!--        var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;-->
+<!--        if (!emailPattern.test(email)) {-->
+<!--            emailError.textContent = "올바른 이메일 형식을 입력해 주세요.";-->
+<!--            isValid = false;-->
+<!--        } else {-->
+<!--            emailError.textContent = "";-->
+<!--        }-->
+
+<!--        // 폼 유효성 검사 실패 시 제출 방지-->
+<!--        return isValid;-->
+<!--    }-->
+<!--</script>-->
 
 
-</script>
+
+</body>
+</html>

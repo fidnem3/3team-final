@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.javalab.board.repository.JobSeekerMapper">
+
+
+    <!-- 개인 회원 정보 삽입 -->
+    <insert id="insertJobSeeker" parameterType="com.javalab.board.vo.JobSeekerVo">
+        INSERT INTO jobSeeker (
+        jobSeeker_id,
+        password,
+        name,
+        birth,
+        tel,
+        email,
+        address,
+        file_name,
+        file_path
+        ) VALUES (
+        #{jobSeekerId, jdbcType=VARCHAR},
+        #{password, jdbcType=VARCHAR},
+        #{name, jdbcType=VARCHAR},
+        #{birth, jdbcType=DATE},
+        #{tel, jdbcType=VARCHAR},
+        #{email, jdbcType=VARCHAR},
+        #{address, jdbcType=VARCHAR},
+        #{fileName, jdbcType=VARCHAR},
+        #{filePath, jdbcType=VARCHAR}
+        )
+    </insert>
+    <!-- 개인 회원 정보 조회 -->
+    <select id="selectJobSeekerById" parameterType="String" resultType="com.javalab.board.vo.JobSeekerVo">
+        SELECT
+        jobSeeker_id AS jobSeekerId,
+        password,
+        name,
+        birth,
+        tel,
+        email,
+        address
+        FROM job_seeker
+        WHERE job_seeker_id = #{jobSeekerId}
+    </select>
+
+    <!-- 개인 회원 정보 갱신 -->
+    <update id="updateJobSeeker" parameterType="com.javalab.board.vo.JobSeekerVo">
+        UPDATE job_seeker
+        SET
+        password = #{password},
+        name = #{name},
+        birth = #{birth, jdbcType=DATE},
+        tel = #{tel},
+        email = #{email},
+        address = #{address}
+        WHERE job_seeker_id = #{jobSeekerId}
+    </update>
+
+    <!-- 개인 회원 정보 삭제 -->
+    <delete id="deleteJobSeeker" parameterType="String">
+        DELETE FROM job_seeker
+        WHERE jobSeeker_id = #{jobSeekerId}
+    </delete>
+
+</mapper>

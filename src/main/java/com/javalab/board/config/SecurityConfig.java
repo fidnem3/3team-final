@@ -74,7 +74,7 @@ public class SecurityConfig {
 						.deleteCookies("JSESSIONID")
 				)
 				.authorizeHttpRequests(authorize -> authorize
-						.requestMatchers("/css/**", "/js/**", "/images/**", "/fonts/**", "/ckeditor2/**", "/vendor/**", "/assets/**").permitAll()
+						.requestMatchers("/css/**", "/js/**", "/img/**", "/fonts/**", "/scss/**", "/lib/**", "/assets/**").permitAll()
 						.requestMatchers("/", "/home", "/about", "/contact").permitAll()  // 필요에 따라 추가
 						.requestMatchers("/view/**").permitAll()
 						.requestMatchers("/member/**").permitAll()
