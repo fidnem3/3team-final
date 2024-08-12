@@ -5,35 +5,111 @@
 
 <mapper namespace="com.javalab.board.repository.LoginMapper">
 
-	<resultMap id="MemberRoleResultMap" type="com.javalab.board.vo.MemberVo">
-		<id property="memberId" column="member_id"/>
-		<result property="password" column="password"/>
-		<result property="name" column="name"/>
-		<result property="email" column="email"/>
-		<result property="point" column="point"/>
-		<result property="del" column="del"/>
-		<result property="social" column="social"/>
-		<collection property="roles" ofType="java.lang.String">
-			<result column="role_name"/>
-		</collection>
-	</resultMap>
-
-	<select id="login" resultMap="MemberRoleResultMap">
-		SELECT m.member_id, m.password, m.name, m.email, m.point, m.del, m.social, r.role_name
-		FROM member m
-		LEFT JOIN member_role mr ON m.member_id = mr.member_id
-		LEFT JOIN role r ON mr.role_id = r.role_id
-		WHERE m.member_id = #{memberId}
+	<!-- 개인회원 로그인 정보 조회 -->
+	<select id="loginJobSeeker" parameterType="String" resultType="com.javalab.board.vo.JobSeekerVo">
+		SELECT
+		jobSeeker_id AS jobSeekerId,
+		password,
+		name,
+		birth,
+		tel,
+		email,
+		address
+		FROM job_seeker
+		WHERE job_seeker_id = #{jobSeekerId}
 	</select>
 
-	<insert id="save">
-		INSERT INTO member (member_id, password, name, email, point, del, social)
-		VALUES (#{memberId}, #{password}, #{name}, #{email}, #{point}, #{del}, #{social})
+	<!-- 기업회원 로그인 정보 조회 -->
+	<select id="loginCompany" parameterType="String" resultType="com.javalab.board.vo.CompanyVo">
+		SELECT
+		comp_id AS compId,
+		password,
+		email,
+		company_name AS companyName,
+		business_number AS businessNumber,
+		homepage,
+		logo_name AS logoName,
+		logo_path AS logoPath,
+		address,
+		status
+		FROM company
+		WHERE comp_id = #{compId}
+	</select>
+
+	<!-- 개인회원 저장 -->
+	<insert id="saveJobSeeker">
+		INSERT INTO job_seeker (
+		job_seeker_id,
+		password,
+		name,
+		birth,
+		tel,
+		email,
+		address,
+		file_name,
+		file_path
+		) VALUES (
+		#{jobSeekerId},
+		#{password},
+		#{name},
+		#{birth, jdbcType=DATE},
+		#{tel},
+		#{email},
+		#{address},
+		#{fileName},
+		#{filePath}
+		)
 	</insert>
 
-	<insert id="saveRole">
-		INSERT INTO member_role (member_id, role_id)
-		VALUES (#{memberId}, (SELECT role_id FROM role WHERE role_name = #{roleName}))
+	<!-- 기업회원 저장 -->
+	<insert id="saveCompany">
+		INSERT INTO company (
+		comp_id,
+		password,
+		email,
+		company_name,
+		business_number,
+		homepage,
+		logo_name,
+		logo_path,
+		address,
+		status
+		) VALUES (
+		#{compId},
+		#{password},
+		#{email},
+		#{companyName},
+		#{businessNumber},
+		#{homepage},
+		#{logoName},
+		#{logoPath},
+		#{address},
+		#{status}
+		)
 	</insert>
+
+	<!-- 사용자 권한 저장 -->
+	<insert id="saveRole">
+		INSERT INTO user_roles (user_id, user_type, role_id)
+		VALUES (#{userId}, (CASE
+		WHEN (SELECT comp_id FROM company WHERE comp_id = #{userId}) IS NOT NULL THEN 'company'
+		WHEN (SELECT job_seeker_id FROM job_seeker WHERE job_seeker_id = #{userId}) IS NOT NULL THEN 'jobSeeker'
+		ELSE 'unknown'
+		END), (SELECT role_id FROM role WHERE role_name = #{roleName}))
+	</insert>
+
+	<!-- 사용자 권한 삭제 -->
+	<delete id="deleteRole">
+		DELETE FROM user_roles
+		WHERE user_id = #{userId} AND role_id = (SELECT role_id FROM role WHERE role_name = #{roleName})
+	</delete>
+
+	<!-- 사용자 권한 조회 -->
+	<select id="getRolesByUserId" parameterType="String" resultType="java.lang.String">
+		SELECT r.role_name
+		FROM user_roles ur
+		JOIN role r ON ur.role_id = r.role_id
+		WHERE ur.user_id = #{userId}
+	</select>
 
 </mapper>

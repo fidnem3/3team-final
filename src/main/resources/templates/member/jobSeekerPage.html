@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>구직자 페이지</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<header>
+    <h1>구직자 페이지</h1>
+    <nav>
+        <a href="/member/logout">로그아웃</a>
+        <a href="/jobSeeker/profile">내 프로필</a>
+        <a href="/jobSeeker/jobs">구인 목록</a>
+    </nav>
+</header>
+<main>
+    <section>
+        <h2>환영합니다, <span th:text="${jobSeeker.name}"></span>님!</h2>
+        <p>구직자 페이지에 오신 것을 환영합니다. 여기에서 구직 정보를 관리할 수 있습니다.</p>
+    </section>
+    <section>
+        <h2>내 정보</h2>
+        <p>이메일: <span th:text="${jobSeeker.email}"></span></p>
+        <p>전화번호: <span th:text="${jobSeeker.tel}"></span></p>
+        <a href="/jobSeeker/editProfile">프로필 수정</a>
+    </section>
+</main>
+<footer>
+    <p>&copy; 2024 Job Portal</p>
+</footer>
+</body>
+</html>

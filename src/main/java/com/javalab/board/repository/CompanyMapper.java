@@ -1,6 +1,7 @@
 package com.javalab.board.repository;
 
 import com.javalab.board.vo.CompanyVo;
+import com.javalab.board.vo.UserRolesVo;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
@@ -12,11 +13,17 @@ public interface CompanyMapper {
     void insertCompany(CompanyVo companyVo);
 
     /**
+     * 기업 회원의 권한 정보를 데이터베이스에 삽입합니다.
+     * - @param userRolesVo 기업 회원의 권한 정보를 포함하는 객체
+     */
+    void insertCompanyRole(UserRolesVo userRolesVo);
+
+    /**
      * 주어진 ID에 해당하는 기업 회원 정보를 조회합니다.
      * - @param id 조회할 기업 회원의 ID
      * - @return 조회된 기업 회원 정보 객체
      */
-    CompanyVo selectCompanyById(Long id);
+    CompanyVo selectCompanyById(String id);
 
     /**
      * 기업 회원 정보를 데이터베이스에서 갱신합니다.
@@ -28,5 +35,5 @@ public interface CompanyMapper {
      * 주어진 ID에 해당하는 기업 회원 정보를 데이터베이스에서 삭제합니다.
      * - @param id 삭제할 기업 회원의 ID
      */
-    void deleteCompany(Long id);
+    void deleteCompany(String id);
 }

@@ -5,11 +5,10 @@
 
 <mapper namespace="com.javalab.board.repository.JobSeekerMapper">
 
-
     <!-- 개인 회원 정보 삽입 -->
     <insert id="insertJobSeeker" parameterType="com.javalab.board.vo.JobSeekerVo">
-        INSERT INTO jobSeeker (
-        jobSeeker_id,
+        INSERT INTO job_seeker (
+        job_seeker_id,
         password,
         name,
         birth,
@@ -30,10 +29,24 @@
         #{filePath, jdbcType=VARCHAR}
         )
     </insert>
+
+    <!-- 권한 삽입 -->
+    <insert id="insertJobSeekerRole" parameterType="com.javalab.board.vo.UserRolesVo">
+        INSERT INTO UserRoles (
+        user_id,
+        user_type,
+        role_id
+        ) VALUES (
+        #{userId},
+        #{userType},
+        #{roleId}
+        )
+    </insert>
+
     <!-- 개인 회원 정보 조회 -->
     <select id="selectJobSeekerById" parameterType="String" resultType="com.javalab.board.vo.JobSeekerVo">
         SELECT
-        jobSeeker_id AS jobSeekerId,
+        job_seeker_id AS jobSeekerId,
         password,
         name,
         birth,
@@ -42,6 +55,16 @@
         address
         FROM job_seeker
         WHERE job_seeker_id = #{jobSeekerId}
+    </select>
+
+    <!-- 권한 조회 -->
+    <select id="selectJobSeekerRole" parameterType="String" resultType="com.javalab.board.vo.UserRolesVo">
+        SELECT
+        user_id AS userId,
+        user_type AS userType,
+        role_id AS roleId
+        FROM UserRoles
+        WHERE user_id = #{userId} AND user_type = 'jobSeeker'
     </select>
 
     <!-- 개인 회원 정보 갱신 -->
@@ -57,10 +80,24 @@
         WHERE job_seeker_id = #{jobSeekerId}
     </update>
 
+    <!-- 권한 업데이트 -->
+    <update id="updateJobSeekerRole" parameterType="com.javalab.board.vo.UserRolesVo">
+        UPDATE UserRoles
+        SET
+        role_id = #{roleId}
+        WHERE user_id = #{userId} AND user_type = 'jobSeeker'
+    </update>
+
     <!-- 개인 회원 정보 삭제 -->
     <delete id="deleteJobSeeker" parameterType="String">
         DELETE FROM job_seeker
-        WHERE jobSeeker_id = #{jobSeekerId}
+        WHERE job_seeker_id = #{jobSeekerId}
+    </delete>
+
+    <!-- 권한 삭제 -->
+    <delete id="deleteJobSeekerRole" parameterType="com.javalab.board.vo.UserRolesVo">
+        DELETE FROM UserRoles
+        WHERE user_id = #{userId} AND user_type = 'jobSeeker'
     </delete>
 
 </mapper>
