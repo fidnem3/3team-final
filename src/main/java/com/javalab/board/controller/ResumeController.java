@@ -20,14 +20,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ResumeController {
     private final ResumeService resumeService;
 
+//   저장 폼
     @GetMapping("/save")    public String save() {
         return "/resume/save";
 
     }
-
+//  저장 폼 전송
     @PostMapping("/save")
     public String save(@ModelAttribute ResumeDto resumeDto){
         System.out.println("resumeDto = " + resumeDto);
+        resumeService.save(resumeDto);
         return "index";
     }
+
+
+
+
+
+
 }
