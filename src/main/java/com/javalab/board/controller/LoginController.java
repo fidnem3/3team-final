@@ -8,7 +8,6 @@ import com.javalab.board.vo.UserRolesVo;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -83,10 +82,9 @@ public class LoginController {
     }
 
 
-    // 개인회원 처리
     @PostMapping("/join")
-    public String registerJobSeeker(@Valid @ModelAttribute("JobSeekerVo") JobSeekerVo jobSeekerVo,
-                                    @Valid @ModelAttribute("UserRolesVo") UserRolesVo userRolesVo, // 추가
+    public String registerJobSeeker(@Valid @ModelAttribute("jobSeekerVo") JobSeekerVo jobSeekerVo,
+                                    @Valid @ModelAttribute("userRolesVo") UserRolesVo userRolesVo,
                                     BindingResult bindingResult,
                                     RedirectAttributes redirectAttributes) {
         // 비밀번호와 비밀번호 확인이 일치하는지 확인
