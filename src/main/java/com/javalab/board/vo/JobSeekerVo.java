@@ -49,4 +49,7 @@ public class JobSeekerVo {
 
     @NotBlank(message = "주소는 필수 입력 값입니다.")
     private String address;
+
+    //권한 USER
+    private String role;
 }

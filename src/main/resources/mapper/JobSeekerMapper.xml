@@ -30,18 +30,22 @@
         #{filePath, jdbcType=VARCHAR}
         )
     </insert>
-    <!-- 개인 회원 정보 조회 -->
+    <!--    &lt;!&ndash; 개인 회원 정보 조회 &ndash;&gt;-->
+    <!--    <select id="selectJobSeekerById" parameterType="String" resultType="com.javalab.board.vo.JobSeekerVo">-->
+    <!--        SELECT-->
+    <!--        jobSeeker_id AS jobSeekerId,-->
+    <!--        password,-->
+    <!--        name,-->
+    <!--        birth,-->
+    <!--        tel,-->
+    <!--        email,-->
+    <!--        address-->
+    <!--        FROM jobSeeker-->
+    <!--        WHERE jobSeeker_id = #{jobSeekerId}-->
+    <!--    </select>-->
+
     <select id="selectJobSeekerById" parameterType="String" resultType="com.javalab.board.vo.JobSeekerVo">
-        SELECT
-        jobSeeker_id AS jobSeekerId,
-        password,
-        name,
-        birth,
-        tel,
-        email,
-        address
-        FROM job_seeker
-        WHERE job_seeker_id = #{jobSeekerId}
+        SELECT * FROM jobSeeker WHERE jobSeeker_id = #{jobSeekerId}
     </select>
 
     <!-- 개인 회원 정보 갱신 -->

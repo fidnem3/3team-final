@@ -44,4 +44,7 @@ public class CompanyVo {
     private String address;
 
     private String status;
+
+    //권한 COMPANY
+    private String role;
 }
