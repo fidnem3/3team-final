@@ -19,6 +19,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatchers;
 
 @Configuration
 @EnableWebSecurity
@@ -63,7 +64,7 @@ public class SecurityConfig {
 		http
 				.formLogin(formLogin -> formLogin
 						.loginPage("/member/login")	// 로그인 페이지(MembmerController 에서 정의한 경로)
-//						.loginProcessingUrl("/member/login") // 로그인 처리 URL, form 태그의 action 경로와 일치해야 함. 그래야 시큐리티가 인식하고 로그인 처리를 시작한다.
+						.loginProcessingUrl("/member/login") // 로그인 처리 URL, form 태그의 action 경로와 일치해야 함. 그래야 시큐리티가 인식하고 로그인 처리를 시작한다.
 						.successHandler(authSucessHandler)
 						.failureHandler(authFailureHandler)
 				)
@@ -78,6 +79,7 @@ public class SecurityConfig {
 						.requestMatchers("/", "/home", "/about", "/contact").permitAll()  // 필요에 따라 추가
 						.requestMatchers("/view/**").permitAll()
 						.requestMatchers("/member/**").permitAll()
+						.requestMatchers("/**").permitAll()
 						//.requestMatchers("/member/modify").hasRole("USER")
 						//.requestMatchers("/member/modify").permitAll()
 						//.requestMatchers("/board/**").permitAll()
