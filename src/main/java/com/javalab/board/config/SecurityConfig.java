@@ -1,11 +1,12 @@
 package com.javalab.board.config;
 
 import com.javalab.board.handler.AuthFailureHandler;
-import com.javalab.board.handler.AuthSuccessHandler;
+import com.javalab.board.handler.AuthSucessHandler;
 import com.javalab.board.security.CustomOAuth2UserService;
 import com.javalab.board.security.handler.CustomAccessDeniedHandler;
 import com.javalab.board.security.handler.CustomSocialLoginSuccessHandler;
-import com.javalab.board.service.CustomUserDetailsService;
+import com.javalab.board.service.JobSeekerService;
+import com.javalab.board.service.CompanyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -26,22 +27,23 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Slf4j
 public class SecurityConfig {
 
-	private final CustomUserDetailsService customUserDetailsService;
-	private final AuthSuccessHandler authSucessHandler;	// 로그인 성공 후처리를 담당하는 클래스
-	private final AuthFailureHandler authFailureHandler;	// 로그인 실패 후처리를 담당하는 클래스
+	private final JobSeekerService jobSeekerService;  // 구직자 정보를 처리하는 서비스
+	private final CompanyService companyService;  // 기업 정보를 처리하는 서비스
+	private final AuthSucessHandler authSucessHandler;  // 로그인 성공 후처리를 담당하는 클래스
+	private final AuthFailureHandler authFailureHandler;  // 로그인 실패 후처리를 담당하는 클래스
 
 	@Bean
-	public PasswordEncoder passwordEncoder() {	// 비밀번호 암호화를 위한 빈
+	public PasswordEncoder passwordEncoder() {  // 비밀번호 암호화를 위한 빈
 		return new BCryptPasswordEncoder();
 	}
 
 	@Bean
-	public AccessDeniedHandler accessDeniedHandler() {	// 권한이 없는 페이지에 접근시 처리를 담당하는 빈
+	public AccessDeniedHandler accessDeniedHandler() {  // 권한이 없는 페이지에 접근 시 처리를 담당하는 빈
 		return new CustomAccessDeniedHandler();
 	}
 
 	@Bean
-	public AuthenticationSuccessHandler authenticationSuccessHandler() {	// 소셜 로그인 성공 후처리를 담당하는 빈
+	public AuthenticationSuccessHandler authenticationSuccessHandler() {  // 소셜 로그인 성공 후처리를 담당하는 빈
 		return new CustomSocialLoginSuccessHandler(passwordEncoder());
 	}
 
@@ -49,21 +51,28 @@ public class SecurityConfig {
 	 * [securityFilterChain 메소드]
 	 * - HttpSecurity 빈 등록
 	 * - HttpSecurity 객체를 이용하여 보안 설정
-	 * - @param http : HttpSecurity 객체
-	 * - @param customOAuth2UserService : CustomOAuth2UserService 객체
-	 * - @return SecurityFilterChain : SecurityFilterChain 객체
-	 * - @throws Exception : 예외처리
+	 * @param http : HttpSecurity 객체
+	 * @param customOAuth2UserService : CustomOAuth2UserService 객체
+	 * @return SecurityFilterChain : SecurityFilterChain 객체
+	 * @throws Exception : 예외처리
 	 */
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http, CustomOAuth2UserService customOAuth2UserService) throws Exception {
 
 		AuthenticationManagerBuilder auth = http.getSharedObject(AuthenticationManagerBuilder.class);
-		auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
+		// JobSeekerService와 CompanyService를 사용하여 사용자 인증 처리
+		auth.userDetailsService(username -> {
+			if (username.startsWith("jobSeeker")) {
+				return jobSeekerService.loadUserByUsername(username);
+			} else {
+				return companyService.loadUserByUsername(username);
+			}
+		}).passwordEncoder(passwordEncoder());
 
 		http
 				.formLogin(formLogin -> formLogin
-						.loginPage("/member/login")	// 로그인 페이지(MembmerController 에서 정의한 경로)
-//						.loginProcessingUrl("/member/login") // 로그인 처리 URL, form 태그의 action 경로와 일치해야 함. 그래야 시큐리티가 인식하고 로그인 처리를 시작한다.
+						.loginPage("/member/login")  // 로그인 페이지(MembmerController 에서 정의한 경로)
+						.loginProcessingUrl("/member/action") // 로그인 처리 URL, form 태그의 action 경로와 일치해야 함. 그래야 시큐리티가 인식하고 로그인 처리를 시작한다.
 						.successHandler(authSucessHandler)
 						.failureHandler(authFailureHandler)
 				)
@@ -78,26 +87,20 @@ public class SecurityConfig {
 						.requestMatchers("/", "/home", "/about", "/contact").permitAll()  // 필요에 따라 추가
 						.requestMatchers("/view/**").permitAll()
 						.requestMatchers("/member/**").permitAll()
-						//.requestMatchers("/member/modify").hasRole("USER")
-						//.requestMatchers("/member/modify").permitAll()
-						//.requestMatchers("/board/**").permitAll()
-						//.requestMatchers("/item/view/**", "/item/list/**", "/item/read/**").permitAll()
-						//.requestMatchers("/item/register/**", "/item/modify/**", "/item/remove/**").hasRole("ADMIN")
-						//.requestMatchers("/cart/**", "cartItem/**").hasAnyRole("USER", "ADMIN")
-						//.requestMatchers("/order/**", "/orders/**", "orderDetails").hasAnyRole("USER", "ADMIN")
-						//.requestMatchers("/admin/**").hasRole("ADMIN")
-						//.requestMatchers("/api/track/**").hasAnyRole("USER", "ADMIN")
-						.anyRequest().authenticated()
+						.requestMatchers("/board/**").permitAll()
+						.requestMatchers("/member/adminPage").hasRole("ADMIN")  // 관리자 페이지 접근 권한
+						.requestMatchers("/member/companyPage").hasRole("COMPANY")  // 기업 전용 페이지 접근 권한
+						.requestMatchers("/member/jobSeekerPage").hasRole("USER")  // 구직자 전용 페이지 접근 권한
+						.anyRequest().authenticated() // 모든 요청에 대해 인증 필요
 				)
 				.sessionManagement(sessionManagement -> sessionManagement
-						.maximumSessions(1)
+						.maximumSessions(1) // 한 번에 하나의 세션만 허용
 						.maxSessionsPreventsLogin(false)
 						.expiredUrl("/login?error=true&exception=Have been attempted to login from a new place. or session expired")
 				)
 				.exceptionHandling(exceptionHandling -> exceptionHandling
 						.accessDeniedHandler(accessDeniedHandler())
 				)
-				//.csrf(AbstractHttpConfigurer::disable)
 				.oauth2Login(oauth2 -> oauth2
 						.loginPage("/member/login")
 						.successHandler(authenticationSuccessHandler())
@@ -106,10 +109,8 @@ public class SecurityConfig {
 						)
 				);
 
-		http.authenticationManager(auth.build());	// 인증 매니저 설정
+		http.authenticationManager(auth.build());  // 인증 매니저 설정
 
-		return http.build();	// 설정한 HttpSecurity 객체 반환
+		return http.build();  // 설정한 HttpSecurity 객체 반환
 	}
-
-
 }

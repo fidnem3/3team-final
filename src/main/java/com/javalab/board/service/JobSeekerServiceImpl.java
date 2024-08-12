@@ -1,11 +1,22 @@
 package com.javalab.board.service;
 
 import com.javalab.board.repository.JobSeekerMapper;
+import com.javalab.board.repository.UserRolesMapper;
 import com.javalab.board.vo.JobSeekerVo;
+import com.javalab.board.vo.UserRolesVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class JobSeekerServiceImpl implements JobSeekerService {
@@ -13,40 +24,54 @@ public class JobSeekerServiceImpl implements JobSeekerService {
     @Autowired
     private JobSeekerMapper jobSeekerMapper;
 
-    /**
-     * 새로운 개인 회원을 등록합니다.
-     * - @param jobSeekerVo 등록할 개인 회원 정보 객체
-     */
+    @Autowired
+    private UserRolesMapper userRolesMapper;
+
     @Override
-    public void registerJobSeeker(JobSeekerVo jobSeekerVo) {
+    @Transactional
+    public void registerJobSeeker(JobSeekerVo jobSeekerVo, UserRolesVo userRolesVo) {
+        // 개인 회원 정보를 등록합니다.
         jobSeekerMapper.insertJobSeeker(jobSeekerVo);
+
+        // UserRoles 테이블에 권한 정보를 추가합니다.
+        userRolesMapper.insertUserRole(userRolesVo);
     }
 
-    /**
-     * 주어진 ID에 해당하는 개인 회원의 상세 정보를 조회합니다.
-     * - @param jobSeekerId 조회할 개인 회원의 ID
-     * - @return 조회된 개인 회원 정보 객체를 포함하는 Optional 객체
-     */
     @Override
     public Optional<JobSeekerVo> getJobSeekerDetails(String jobSeekerId) {
         return Optional.ofNullable(jobSeekerMapper.selectJobSeekerById(jobSeekerId));
     }
 
-    /**
-     * 개인 회원 정보를 갱신합니다.
-     * - @param jobSeekerVo 갱신할 개인 회원 정보 객체
-     */
     @Override
+    @Transactional
     public void updateJobSeeker(JobSeekerVo jobSeekerVo) {
         jobSeekerMapper.updateJobSeeker(jobSeekerVo);
     }
 
-    /**
-     * 주어진 ID에 해당하는 개인 회원 정보를 삭제합니다.
-     * - @param jobSeekerId 삭제할 개인 회원의 ID
-     */
     @Override
+    @Transactional
     public void deleteJobSeeker(String jobSeekerId) {
         jobSeekerMapper.deleteJobSeeker(jobSeekerId);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        // 개인 회원 정보 조회 로직
+        JobSeekerVo jobSeeker = jobSeekerMapper.selectJobSeekerById(username);
+        if (jobSeeker == null) {
+            throw new UsernameNotFoundException("Job Seeker not found with username: " + username);
+        }
+
+        // 권한 정보를 조회
+        List<GrantedAuthority> authorities = userRolesMapper.selectUserRole(username, "jobSeeker")
+                .stream()
+                .map(role -> new SimpleGrantedAuthority(role.getRoleId()))
+                .collect(Collectors.toList());
+
+        return new User(
+                jobSeeker.getJobSeekerId(),
+                jobSeeker.getPassword(),
+                authorities
+        );
     }
 }
