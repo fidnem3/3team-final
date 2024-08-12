@@ -97,7 +97,7 @@ public class SecurityConfig {
 				.exceptionHandling(exceptionHandling -> exceptionHandling
 						.accessDeniedHandler(accessDeniedHandler())
 				)
-				//.csrf(AbstractHttpConfigurer::disable)
+//				.csrf(AbstractHttpConfigurer::disable)
 				.oauth2Login(oauth2 -> oauth2
 						.loginPage("/member/login")
 						.successHandler(authenticationSuccessHandler())
