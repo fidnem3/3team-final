@@ -8,8 +8,6 @@ import org.apache.ibatis.annotations.Param;
 public interface LoginMapper {
 
 	MemberVo login(@Param("memberId") String memberId);
-
 	void save(MemberVo member);
-
 	void saveRole(@Param("memberId") String memberId, @Param("roleName") String roleName);
 }
