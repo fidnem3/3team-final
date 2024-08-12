@@ -16,8 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ResumeController {
     private final ResumeService resumeService;
 
-    @GetMapping("/save")
-    public String save() {
+    @GetMapping("/save")    public String save() {
         return "save";
 
 

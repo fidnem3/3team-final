@@ -157,3 +157,37 @@ footer {
         font-size: 2rem;
     }
 }
+.form-group select {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: var(--transition);
+    background-color: var(--surface);
+    color: var(--text);
+}
+
+.form-group select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+}
+
+.fieldError {
+    color: #d32f2f; /* Use a stronger red color for errors */
+    background-color: #fdecea; /* Light red background to highlight the error message */
+    padding: 8px; /* Add padding for better readability */
+    border-radius: 4px; /* Rounded corners for a softer look */
+    margin-top: 5px;
+    font-size: 0.85rem; /* Slightly smaller font size */
+}
+
+.has-error input {
+    border-color: #d32f2f; /* Red border color for error fields */
+    background-color: #fdecea; /* Light red background to indicate an error */
+}
+
+.has-error input:focus {
+    border-color: #d32f2f; /* Keep the border color red on focus */
+    box-shadow: 0 0 0 2px rgba(211, 47, 47, 0.2); /* Red shadow to indicate the error field */
+}

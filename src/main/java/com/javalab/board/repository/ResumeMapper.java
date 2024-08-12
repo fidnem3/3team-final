@@ -1,7 +1,2 @@
-package com.javalab.board.repository;
-
-import org.apache.ibatis.annotations.Mapper;
-
-@Mapper
-public class ResumeMapper {
+package com.javalab.board.repository;public interface ResumeMapper {
 }

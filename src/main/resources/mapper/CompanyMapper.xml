@@ -31,4 +31,10 @@
         #{status}
         )
     </insert>
+
+    <!-- 회사 ID로 회사 정보를 조회하는 쿼리 -->
+    <select id="selectCompanyById" parameterType="String" resultType="com.javalab.board.vo.CompanyVo">
+        SELECT * FROM company WHERE comp_id = #{compId}
+    </select>
+
 </mapper>
