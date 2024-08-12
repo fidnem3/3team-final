@@ -47,6 +47,15 @@ public class SecurityConfig {
 		return new CustomSocialLoginSuccessHandler(passwordEncoder());
 	}
 
+	/**
+	 * [securityFilterChain 메소드]
+	 * - HttpSecurity 빈 등록
+	 * - HttpSecurity 객체를 이용하여 보안 설정
+	 * @param http : HttpSecurity 객체
+	 * @param customOAuth2UserService : CustomOAuth2UserService 객체
+	 * @return SecurityFilterChain : SecurityFilterChain 객체
+	 * @throws Exception : 예외처리
+	 */
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http, CustomOAuth2UserService customOAuth2UserService) throws Exception {
 

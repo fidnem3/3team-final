@@ -3,6 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
+<!-- 매퍼XML : Employees 에 대한 모든 쿼리문 보관 -->
 <mapper namespace="com.javalab.board.repository.CompanyMapper">
 
     <insert id="insertCompany" parameterType="com.javalab.board.vo.CompanyVo">
@@ -30,6 +31,12 @@
         #{status}
         )
     </insert>
+
+    <!-- 회사 ID로 회사 정보를 조회하는 쿼리 -->
+    <select id="selectCompanyById" parameterType="String" resultType="com.javalab.board.vo.CompanyVo">
+        SELECT * FROM company WHERE comp_id = #{compId}
+    </select>
+
 
     <!-- 권한 삽입 -->
     <insert id="insertCompanyRole" parameterType="com.javalab.board.vo.UserRolesVo">

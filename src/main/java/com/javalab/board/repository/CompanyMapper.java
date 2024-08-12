@@ -32,8 +32,8 @@ public interface CompanyMapper {
     void updateCompany(CompanyVo companyVo);
 
     /**
-     * 주어진 ID에 해당하는 기업 회원 정보를 데이터베이스에서 삭제합니다.
-     * - @param id 삭제할 기업 회원의 ID
+     * 주어진 회사 ID에 해당하는 기업 회원 정보를 데이터베이스에서 삭제합니다.
+     * - @param compId 삭제할 기업 회원의 회사 ID
      */
     void deleteCompany(String id);
 }

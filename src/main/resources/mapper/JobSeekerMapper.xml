@@ -5,10 +5,11 @@
 
 <mapper namespace="com.javalab.board.repository.JobSeekerMapper">
 
+
     <!-- 개인 회원 정보 삽입 -->
     <insert id="insertJobSeeker" parameterType="com.javalab.board.vo.JobSeekerVo">
-        INSERT INTO job_seeker (
-        job_seeker_id,
+        INSERT INTO jobSeeker (
+        jobSeeker_id,
         password,
         name,
         birth,
@@ -53,8 +54,8 @@
         tel,
         email,
         address
-        FROM job_seeker
-        WHERE job_seeker_id = #{jobSeekerId}
+        FROM jobSeeker
+        WHERE jobSeeker_id = #{jobSeekerId}
     </select>
 
     <!-- 권한 조회 -->
@@ -69,7 +70,7 @@
 
     <!-- 개인 회원 정보 갱신 -->
     <update id="updateJobSeeker" parameterType="com.javalab.board.vo.JobSeekerVo">
-        UPDATE job_seeker
+        UPDATE jobSeeker
         SET
         password = #{password},
         name = #{name},
@@ -77,7 +78,7 @@
         tel = #{tel},
         email = #{email},
         address = #{address}
-        WHERE job_seeker_id = #{jobSeekerId}
+        WHERE jobSeeker_id = #{jobSeekerId}
     </update>
 
     <!-- 권한 업데이트 -->
@@ -90,14 +91,8 @@
 
     <!-- 개인 회원 정보 삭제 -->
     <delete id="deleteJobSeeker" parameterType="String">
-        DELETE FROM job_seeker
-        WHERE job_seeker_id = #{jobSeekerId}
-    </delete>
-
-    <!-- 권한 삭제 -->
-    <delete id="deleteJobSeekerRole" parameterType="com.javalab.board.vo.UserRolesVo">
-        DELETE FROM UserRoles
-        WHERE user_id = #{userId} AND user_type = 'jobSeeker'
+        DELETE FROM jobSeeker
+        WHERE jobSeeker_id = #{jobSeekerId}
     </delete>
 
 </mapper>

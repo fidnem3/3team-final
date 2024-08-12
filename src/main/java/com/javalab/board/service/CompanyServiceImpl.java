@@ -3,7 +3,6 @@ package com.javalab.board.service;
 import com.javalab.board.repository.CompanyMapper;
 import com.javalab.board.repository.UserRolesMapper;
 import com.javalab.board.vo.CompanyVo;
-import com.javalab.board.vo.UserRolesVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -36,11 +35,20 @@ public class CompanyServiceImpl implements CompanyService {
         userRolesMapper.insertUserRole(userRolesVo);
     }
 
+    /**
+     * 주어진 ID에 해당하는 기업 회원의 상세 정보를 조회합니다.
+     * - @param id 조회할 기업 회원의 ID
+     * - @return 조회된 기업 회원 정보 객체를 포함하는 Optional 객체
+     */
     @Override
     public Optional<CompanyVo> getCompanyDetails(String id) {
         return Optional.ofNullable(companyMapper.selectCompanyById(id));
     }
 
+    /**
+     * 기업 회원 정보를 갱신합니다.
+     * - @param companyVo 갱신할 기업 회원 정보 객체
+     */
     @Override
     @Transactional
     public void updateCompany(CompanyVo companyVo) {
