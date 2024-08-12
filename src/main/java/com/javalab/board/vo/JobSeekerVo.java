@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.stereotype.Component;
 
 
 import java.util.Date;
@@ -16,6 +17,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Component
 public class JobSeekerVo {
     @NotBlank(message = "아이디는 필수 입력 값입니다.")
     @Pattern(regexp = "^[a-zA-Z0-9]{5,}$", message = "아이디는 영문 및 숫자를 포함하여 5자 이상이어야 합니다.")
