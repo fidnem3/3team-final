@@ -5,6 +5,7 @@ import com.javalab.board.handler.AuthSucessHandler;
 import com.javalab.board.security.CustomOAuth2UserService;
 import com.javalab.board.security.handler.CustomAccessDeniedHandler;
 import com.javalab.board.security.handler.CustomSocialLoginSuccessHandler;
+import com.javalab.board.service.CustomUserDetailsService;
 import com.javalab.board.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +27,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Slf4j
 public class SecurityConfig {
 
-	private final MemberService memberService;	// 사용자 정보를 가져오는 인터페이스로 실질적인 로그인 처리를 담당하는 클래스
+	private final CustomUserDetailsService customUserDetailsService;
 	private final AuthSucessHandler authSucessHandler;	// 로그인 성공 후처리를 담당하는 클래스
 	private final AuthFailureHandler authFailureHandler;	// 로그인 실패 후처리를 담당하는 클래스
 
@@ -49,21 +50,21 @@ public class SecurityConfig {
 	 * [securityFilterChain 메소드]
 	 * - HttpSecurity 빈 등록
 	 * - HttpSecurity 객체를 이용하여 보안 설정
-	 * @param http : HttpSecurity 객체
-	 * @param customOAuth2UserService : CustomOAuth2UserService 객체
-	 * @return SecurityFilterChain : SecurityFilterChain 객체
-	 * @throws Exception : 예외처리
+	 * - @param http : HttpSecurity 객체
+	 * - @param customOAuth2UserService : CustomOAuth2UserService 객체
+	 * - @return SecurityFilterChain : SecurityFilterChain 객체
+	 * - @throws Exception : 예외처리
 	 */
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http, CustomOAuth2UserService customOAuth2UserService) throws Exception {
 
 		AuthenticationManagerBuilder auth = http.getSharedObject(AuthenticationManagerBuilder.class);
-		auth.userDetailsService(memberService).passwordEncoder(passwordEncoder());
+		auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
 
 		http
 				.formLogin(formLogin -> formLogin
 						.loginPage("/member/login")	// 로그인 페이지(MembmerController 에서 정의한 경로)
-						.loginProcessingUrl("/member/action") // 로그인 처리 URL, form 태그의 action 경로와 일치해야 함. 그래야 시큐리티가 인식하고 로그인 처리를 시작한다.
+						.loginProcessingUrl("/member/login") // 로그인 처리 URL, form 태그의 action 경로와 일치해야 함. 그래야 시큐리티가 인식하고 로그인 처리를 시작한다.
 						.successHandler(authSucessHandler)
 						.failureHandler(authFailureHandler)
 				)
@@ -74,7 +75,7 @@ public class SecurityConfig {
 						.deleteCookies("JSESSIONID")
 				)
 				.authorizeHttpRequests(authorize -> authorize
-						.requestMatchers("/css/**", "/js/**", "/images/**", "/fonts/**", "/ckeditor2/**", "/vendor/**", "/assets/**").permitAll()
+						.requestMatchers("/css/**", "/js/**", "/img/**", "/fonts/**", "/scss/**", "/lib/**", "/assets/**").permitAll()
 						.requestMatchers("/", "/home", "/about", "/contact").permitAll()  // 필요에 따라 추가
 						.requestMatchers("/view/**").permitAll()
 						.requestMatchers("/member/**").permitAll()

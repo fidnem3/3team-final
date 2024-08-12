@@ -18,24 +18,23 @@
         </button>
     </header>
     <div class="form-container sign-up-container">
-        <form action="#">
+        <form th:action="@{/member/login}" method="post">
             <h1>Enterprise</h1>
             <div th:replace="~{common/fragments :: social-links}"></div>
             <span>or use your email for registration</span>
-            <input type="text" placeholder="Name"/>
-            <input type="email" placeholder="Email"/>
-            <input type="password" placeholder="Password"/>
+            <input type="text" name="username" placeholder="ID"/> <!-- 회사 ID -->
+            <input type="password" name="password" placeholder="Password"/> <!-- 비밀번호 -->
             <div th:replace="~{common/fragments :: links-container}"></div>
             <div th:replace="~{common/fragments :: primary-button('Sign In')}"></div>
         </form>
     </div>
     <div class="form-container sign-in-container">
-        <form action="#">
+        <form th:action="@{/member/login}" method="post">
             <h1>Individual</h1>
             <div th:replace="~{common/fragments :: social-links}"></div>
             <span>or use your account</span>
-            <input type="email" placeholder="Email"/>
-            <input type="password" placeholder="Password"/>
+            <input type="text" name="username" placeholder="ID"/>
+            <input type="password" name="password" placeholder="Password"/>
             <div th:replace="~{common/fragments :: links-container}"></div>
             <div th:replace="~{common/fragments :: primary-button('Sign In')}"></div>
         </form>
