@@ -37,15 +37,14 @@ public class LoginController {
     // 로그인 화면
     @GetMapping(value = "/login")
     public String login(Model model,
-                        @RequestParam(value = "error", required = false) String error) {
-        log.info("MemberController login 메소드");
+                        @RequestParam(value = "error", required = false) String error,
+                        @RequestParam(value = "exception", required = false) String exception){
+        log.info("MemberController loginMember 메소드");
 
-        if (error != null) {
-            model.addAttribute("error", true); // 오류가 있을 경우 true로 설정
-            model.addAttribute("errorMessage", "아이디 및 비밀번호를 확인하세요."); // 고정된 오류 메시지 설정
-        }
+        model.addAttribute("error", error);
+        model.addAttribute("exception", exception);
 
-        return "member/login"; // "member/login" 템플릿을 반환
+        return "member/login";
     }
 
     // 회원가입 페이지
