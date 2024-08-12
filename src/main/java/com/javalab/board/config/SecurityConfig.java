@@ -1,12 +1,11 @@
 package com.javalab.board.config;
 
 import com.javalab.board.handler.AuthFailureHandler;
-import com.javalab.board.handler.AuthSucessHandler;
+import com.javalab.board.handler.AuthSuccessHandler;
 import com.javalab.board.security.CustomOAuth2UserService;
 import com.javalab.board.security.handler.CustomAccessDeniedHandler;
 import com.javalab.board.security.handler.CustomSocialLoginSuccessHandler;
 import com.javalab.board.service.CustomUserDetailsService;
-import com.javalab.board.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -28,7 +27,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfig {
 
 	private final CustomUserDetailsService customUserDetailsService;
-	private final AuthSucessHandler authSucessHandler;	// 로그인 성공 후처리를 담당하는 클래스
+	private final AuthSuccessHandler authSucessHandler;	// 로그인 성공 후처리를 담당하는 클래스
 	private final AuthFailureHandler authFailureHandler;	// 로그인 실패 후처리를 담당하는 클래스
 
 	@Bean
@@ -64,7 +63,7 @@ public class SecurityConfig {
 		http
 				.formLogin(formLogin -> formLogin
 						.loginPage("/member/login")	// 로그인 페이지(MembmerController 에서 정의한 경로)
-						.loginProcessingUrl("/member/login") // 로그인 처리 URL, form 태그의 action 경로와 일치해야 함. 그래야 시큐리티가 인식하고 로그인 처리를 시작한다.
+//						.loginProcessingUrl("/member/login") // 로그인 처리 URL, form 태그의 action 경로와 일치해야 함. 그래야 시큐리티가 인식하고 로그인 처리를 시작한다.
 						.successHandler(authSucessHandler)
 						.failureHandler(authFailureHandler)
 				)

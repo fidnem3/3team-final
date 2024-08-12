@@ -17,7 +17,7 @@ import java.io.IOException;
  */
 @RequiredArgsConstructor
 @Component
-public class AuthSucessHandler extends SimpleUrlAuthenticationSuccessHandler {
+public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 	
 	private final LoginMapper loginMapper;
 	

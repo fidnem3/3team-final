@@ -18,7 +18,7 @@
         </button>
     </header>
     <div class="form-container sign-up-container">
-        <form th:action="@{/member/login}" method="post">
+        <form th:action="@{/member/login}" method="post" onsubmit="return validateEnterpriseLogin()">
             <h1>Enterprise</h1>
             <div th:replace="~{common/fragments :: social-links}"></div>
             <span>or use your email for registration</span>
@@ -29,7 +29,7 @@
         </form>
     </div>
     <div class="form-container sign-in-container">
-        <form th:action="@{/member/login}" method="post">
+        <form th:action="@{/member/login}" method="post" onsubmit="return validateIndividualLogin()">
             <h1>Individual</h1>
             <div th:replace="~{common/fragments :: social-links}"></div>
             <span>or use your account</span>
@@ -55,5 +55,24 @@
     </div>
 </div>
 <script th:src="@{/js/login.js}"></script>
+<script>
+    function validateEnterpriseLogin() {
+        const enterpriseId = document.getElementById('enterpriseId').value;
+        if (!enterpriseId.startsWith('<jobSeeker></jobSeeker>')) {
+            alert('기업 회원 ID로 로그인해야 합니다. 개인 회원 로그인 창을 사용하세요.');
+            return false;
+        }
+        return true;
+    }
+
+    function validateIndividualLogin() {
+        const individualId = document.getElementById('individualId').value;
+        if (individualId.startsWith('comp')) {
+            alert('개인 회원 ID로 로그인해야 합니다. 기업 회원 로그인 창을 사용하세요.');
+            return false;
+        }
+        return true;
+    }
+</script>
 </body>
 </html>
