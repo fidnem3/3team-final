@@ -1,6 +1,8 @@
 async function get1(bno) {
     const result = await axios.get(`/replies/list/${bno}`)
+
     //console.log(result)
+
     return result;
 }
 
@@ -15,6 +17,7 @@ async function get1(bno) {
 
 // getList 버전 #2
 async function getList({bno, page, size, goLast}){
+
     const result = await axios.get(`/replies/list/${bno}`, {params: {page, size}})
 
     if(goLast){
@@ -22,7 +25,9 @@ async function getList({bno, page, size, goLast}){
         const lastPage = parseInt(Math.ceil(total/size))
         alert('다시 getList 호출 : bno/lastPage/size : ' + bno + " " + lastPage)
         return getList({bno:bno, page:lastPage, size:size})
+
     }
+
     return result.data
 }
 
@@ -40,6 +45,7 @@ async function getReply(rno) {
 
 // 댓글 수정
 async function modifyReply(replyObj) {
+
     const response = await axios.put(`/replies/${replyObj.rno}`, replyObj)
     return response.data
 }

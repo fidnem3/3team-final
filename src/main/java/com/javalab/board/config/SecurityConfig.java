@@ -28,7 +28,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfig {
 
 	private final CustomUserDetailsService customUserDetailsService;
-//	private final MemberService memberService;	// 사용자 정보를 가져오는 인터페이스로 실질적인 로그인 처리를 담당하는 클래스
 	private final AuthSucessHandler authSucessHandler;	// 로그인 성공 후처리를 담당하는 클래스
 	private final AuthFailureHandler authFailureHandler;	// 로그인 실패 후처리를 담당하는 클래스
 
