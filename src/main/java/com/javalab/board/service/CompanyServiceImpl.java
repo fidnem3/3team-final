@@ -3,6 +3,7 @@ package com.javalab.board.service;
 import com.javalab.board.repository.CompanyMapper;
 import com.javalab.board.repository.UserRolesMapper;
 import com.javalab.board.vo.CompanyVo;
+import com.javalab.board.vo.UserRolesVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

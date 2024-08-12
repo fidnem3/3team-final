@@ -1,7 +1,7 @@
 package com.javalab.board.config;
 
 import com.javalab.board.handler.AuthFailureHandler;
-import com.javalab.board.handler.AuthSucessHandler;
+import com.javalab.board.handler.AuthSuccessHandler;
 import com.javalab.board.security.CustomOAuth2UserService;
 import com.javalab.board.security.handler.CustomAccessDeniedHandler;
 import com.javalab.board.security.handler.CustomSocialLoginSuccessHandler;
@@ -29,7 +29,7 @@ public class SecurityConfig {
 
 	private final JobSeekerService jobSeekerService;  // 구직자 정보를 처리하는 서비스
 	private final CompanyService companyService;  // 기업 정보를 처리하는 서비스
-	private final AuthSucessHandler authSucessHandler;  // 로그인 성공 후처리를 담당하는 클래스
+	private final AuthSuccessHandler authSucessHandler;  // 로그인 성공 후처리를 담당하는 클래스
 	private final AuthFailureHandler authFailureHandler;  // 로그인 실패 후처리를 담당하는 클래스
 
 	@Bean
