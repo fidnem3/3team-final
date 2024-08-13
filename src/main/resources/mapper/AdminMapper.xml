@@ -3,8 +3,8 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.example.mapper.AdminMapper">
-    <select id="findById" parameterType="String" resultType="com.javalab.board.vo.Admin">
+<mapper namespace="com.javalab.board.repository.AdminMapper">
+    <select id="findById" parameterType="String" resultType="com.javalab.board.vo.AdminVo">
         SELECT * FROM admin WHERE admin_id = #{adminId}
     </select>
 

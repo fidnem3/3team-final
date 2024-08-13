@@ -1,25 +1,15 @@
 package com.javalab.board.service;
 
 import com.javalab.board.dto.CreateJobPostRequestDto;
-import com.javalab.board.repository.CompanyMapper;
 import com.javalab.board.repository.JobPostMapper;
-import com.javalab.board.repository.UserRolesMapper;
-import com.javalab.board.vo.CompanyVo;
-import com.javalab.board.vo.JobPostVo;
-import com.javalab.board.vo.UserRolesVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
+import org.springframework.web.multipart.MultipartFile;
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class JobPostServiceImpl implements JobPostService {
@@ -28,31 +18,40 @@ public class JobPostServiceImpl implements JobPostService {
     private JobPostMapper jobPostMapper;
 
     @Override
-    public Long createJobPost(CreateJobPostRequestDto jobPostDto) {
-        // Insert the job post into the database
-        jobPostMapper.insertJobPost(jobPostDto);
-
-        // Return the generated ID
-        return jobPostDto.getJobPostId(); // jobPostDto 객체에서 ID를 반환합니다
+    public void createJobPost(CreateJobPostRequestDto createJobPostRequestDto, MultipartFile file) {
+        String logoPath = uploadFile(file);
+        createJobPostRequestDto.setLogoPath(logoPath);
+        jobPostMapper.insertJobPost(createJobPostRequestDto);
+        // Redirect to payment page logic here
     }
 
     @Override
-    public List<JobPostVo> listJobPost() {
-        return jobPostMapper.getAllApprovedJobPosts();
-    }
-
-    @Override
-    public JobPostVo getJobPostById(Long jobPostId) {
-        return jobPostMapper.getJobPostById(jobPostId);
-    }
-
- /*   @Override
     public void updateJobPostStatus(Long jobPostId, String status) {
-        jobPostMapper.updateJobPostStatus(Map.of("jobPostId", jobPostId, "status", status));
-    }*/
+        Map<String, Object> params = new HashMap<>();
+        params.put("jobPostId", jobPostId);
+        params.put("status", status);
+        jobPostMapper.updateJobPostStatus(params);
+    }
 
     @Override
-    public List<JobPostVo> getAllApprovedJobPosts() {
-        return jobPostMapper.getAllApprovedJobPosts();
+    public CreateJobPostRequestDto getJobPostById(Long jobPostId) {
+        return jobPostMapper.selectJobPostById(jobPostId);
+    }
+
+    @Override
+    public List<CreateJobPostRequestDto> getAllJobPosts() {
+        return jobPostMapper.selectAllJobPosts();
+    }
+
+    private String uploadFile(MultipartFile file) {
+        // Logic to upload file to server and return file path
+        try {
+            String fileName = file.getOriginalFilename();
+            String filePath = "path/to/upload/" + fileName;
+            file.transferTo(new File(filePath));
+            return filePath;
+        } catch (IOException e) {
+            throw new RuntimeException("File upload failed", e);
+        }
     }
 }

@@ -14,5 +14,24 @@ public class HomeController {
         return "index"; // src/main/resources/templates/index.html 타임리프 페이지
     }
 
+    @GetMapping("/contact")
+    public String contact() {
+        return "contact"; // templates/contact.html을 렌더링
+    }
+
+    @GetMapping("/index")
+    public String index() {
+        return "index"; // templates/index.html을 렌더링
+    }
+
+    @GetMapping("/about")
+    public String about() {
+        return "about"; // templates/about.html을 렌더링
+    }
+
+    @GetMapping("/jobPost/jobPostList")
+    public String jobPostList() {
+        return "/jobPost/jobPostList"; // templates/jobPost/jobPostList.html을 렌더링
+    }
 
 }

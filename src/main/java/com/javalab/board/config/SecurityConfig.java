@@ -84,7 +84,7 @@ public class SecurityConfig {
 				)
 				.authorizeHttpRequests(authorize -> authorize
 						.requestMatchers("/css/**", "/js/**", "/img/**", "/fonts/**", "/scss/**", "/lib/**", "/assets/**").permitAll()
-						.requestMatchers("/", "/home", "/about", "/contact").permitAll()  // 필요에 따라 추가
+						.requestMatchers("/", "/home", "/about", "/contact", "/index", "/jobPost/jobPostList", "/jobPost/jobPostDetail").permitAll()  // 필요에 따라 추가
 						.requestMatchers("/view/**").permitAll()
 						.requestMatchers("/member/**").permitAll()
 						.requestMatchers("/board/**").permitAll()

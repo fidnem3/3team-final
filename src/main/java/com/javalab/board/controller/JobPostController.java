@@ -2,11 +2,11 @@ package com.javalab.board.controller;
 
 import com.javalab.board.dto.CreateJobPostRequestDto;
 import com.javalab.board.service.JobPostService;
-import com.javalab.board.vo.JobPostVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -17,26 +17,28 @@ public class JobPostController {
     @Autowired
     private JobPostService jobPostService;
 
-    // 채용 공고 작성 폼
-    @GetMapping("/create.do")
-    public String createJobPostForm() {
+    @GetMapping("/create")
+    public String showCreateJobPostForm() {
         return "createJobPost";
     }
 
-    // 채용 공고 작성 처리
-    @PostMapping("/create.do")
-    public String createJobPost(@ModelAttribute CreateJobPostRequestDto createJobPostRequestDto) {
-        // 채용 공고 생성
-        Long jobPostId = jobPostService.createJobPost(createJobPostRequestDto);
-        // 결제 페이지로 리다이렉트
-        return "redirect:/payment/create?jobPostId=" + jobPostId;
+    @PostMapping("/create")
+    public String createJobPost(@ModelAttribute CreateJobPostRequestDto createJobPostRequestDto, @RequestParam("file") MultipartFile file) {
+        jobPostService.createJobPost(createJobPostRequestDto, file);
+        // Redirect to payment page
+        return "redirect:/payment";
     }
 
-    // 채용 공고 목록 조회
-    @GetMapping("/list.do")
-    public String listJobPost(Model model) {
-        // 채용 공고 목록 조회
-        List<JobPostVo> jobPosts = jobPostService.listJobPost();
+    @GetMapping("/{id}")
+    public String getJobPost(@PathVariable("id") Long jobPostId, Model model) {
+        CreateJobPostRequestDto jobPost = jobPostService.getJobPostById(jobPostId);
+        model.addAttribute("jobPost", jobPost);
+        return "jobPostDetail";
+    }
+
+    @GetMapping("/list")
+    public String listAllJobPosts(Model model) {
+        List<CreateJobPostRequestDto> jobPosts = jobPostService.getAllJobPosts();
         model.addAttribute("jobPosts", jobPosts);
         return "jobPostList";
     }

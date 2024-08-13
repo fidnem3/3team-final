@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.example.mapper.JobPostMapper">
-    <insert id="insertJobPost" parameterType="com.javalab.board.vo.JobPost">
+    <insert id="insertJobPost" parameterType="com.javalab.board.dto.CreateJobPostRequestDto">
         INSERT INTO jobPost (jobPost_id, comp_id, title, content, position, salary, experience, education, address, end_date, homepage, created, hit_no, status, logo_path, payment_id)
         VALUES (#{jobPostId}, #{compId}, #{title}, #{content}, #{position}, #{salary}, #{experience}, #{education}, #{address}, #{endDate}, #{homepage}, #{created}, #{hitNo}, #{status}, #{logoPath}, #{paymentId})
     </insert>
@@ -15,12 +15,12 @@
         WHERE jobPost_id = #{jobPostId}
     </update>
 
-    <select id="findById" parameterType="Long" resultType="com.javalab.board.vo.JobPost">
+    <select id="selectJobPostById" parameterType="Long" resultType="com.javalab.board.dto.CreateJobPostRequestDto">
         SELECT * FROM jobPost WHERE jobPost_id = #{jobPostId}
     </select>
 
-    <select id="findAllApproved" resultType="com.javalab.board.vo.JobPost">
-        SELECT * FROM jobPost WHERE status = 'Approved'
+    <select id="selectAllJobPosts" resultType="com.javalab.board.dto.CreateJobPostRequestDto">
+        SELECT * FROM jobPost
     </select>
 
     <!-- 기타 쿼리 -->
