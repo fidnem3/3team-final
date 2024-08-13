@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+        body {
+            padding-top: 50px;
+        }
+        .payment-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .btn-primary {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="payment-container">
+        <h1 class="mb-4">Payment</h1>
+        <form id="paymentForm" action="/jobPost/payment/complete" method="post">
+            <div class="form-group">
+                <label for="amount">Amount:</label>
+                <input type="text" class="form-control" id="amount" name="amount" value="${amount}" readonly />
+            </div>
+            <div class="form-group">
+                <label for="paymentMethod">Payment Method:</label>
+                <select class="form-control" id="paymentMethod" name="paymentMethod" required>
+                    <option value="" disabled selected>Select payment method</option>
+                    <option value="credit_card">Credit Card</option>
+                    <option value="paypal">PayPal</option>
+                    <!-- Add other payment methods if needed -->
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="cardNumber">Card Number:</label>
+                <input type="text" class="form-control" id="cardNumber" name="cardNumber" placeholder="Enter your card number" />
+            </div>
+            <div class="form-group">
+                <label for="cardExpiry">Expiry Date:</label>
+                <input type="text" class="form-control" id="cardExpiry" name="cardExpiry" placeholder="MM/YY" />
+            </div>
+            <div class="form-group">
+                <label for="cardCvc">CVC:</label>
+                <input type="text" class="form-control" id="cardCvc" name="cardCvc" placeholder="Enter your card's CVC" />
+            </div>
+            <button type="submit" class="btn btn-primary">Complete Payment</button>
+        </form>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>

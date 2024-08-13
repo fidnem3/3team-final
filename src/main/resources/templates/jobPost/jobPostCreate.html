@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <title>JobEntry - Job Portal Website Template</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicon -->
+    <link th:href="@{/img/favicon.ico}" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Inter:wght@700;800&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link th:href="@{/lib/animate/animate.min.css}" rel="stylesheet">
+    <link th:href="@{/lib/owlcarousel/assets/owl.carousel.min.css}" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <script src="https://cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
+</head>
+
+<body>
+<div class="container-xxl bg-white p-0">
+    <!-- Spinner Start -->
+    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    <!-- Spinner End -->
+
+
+    <!-- Navbar Start -->
+    <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
+        <a th:href="@{/index}" class="navbar-brand d-flex align-items-center text-center py-0 px-4 px-lg-5">
+            <h1 class="m-0 text-primary">Deltopia</h1>
+        </a>
+        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto p-4 p-lg-0">
+                <a th:href="@{/index}" class="nav-item nav-link">Home</a>
+                <a th:href="@{/about}" class="nav-item nav-link active">About</a>
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Jobs</a>
+                    <div class="dropdown-menu rounded-0 m-0">
+                        <a th:href="@{/jobPost/jobPostList}" class="dropdown-item">Job List</a>
+                        <a th:href="@{/jobPost/jobPostDetail}" class="dropdown-item">Job Detail</a>
+                    </div>
+                </div>
+                <a th:href="@{/contact}" class="nav-item nav-link">Contact</a>
+            </div>
+            <a href="" class="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block">Sign In<i class="fa fa-arrow-right ms-3"></i></a>
+        </div>
+    </nav>
+    <!-- Navbar End -->
+
+
+    <!-- Header End -->
+    <div class="container-xxl py-5 bg-dark page-header mb-5">
+        <div class="container my-5 pt-5 pb-4">
+            <h1 class="display-3 text-white mb-3 animated slideInDown">Job Create</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb text-uppercase">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">Pages</a></li>
+                    <li class="breadcrumb-item text-white active" aria-current="page">Job Create</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <!-- Header End -->
+
+    <div class="container">
+        <h1>Create Job Post</h1>
+        <form id="jobPostForm" th:action="@{/jobPost/jobPostCreate}" th:object="${createJobPostRequestDto}" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="title">Title:</label>
+                <input type="text" id="title" th:field="*{title}" required="required"/>
+            </div>
+            <div class="form-group">
+                <textarea id="editor1" th:field="*{content}" required="required"></textarea>
+                <script>
+                    CKEDITOR.replace('editor1');
+                </script>
+            </div>
+            <div class="form-group">
+                <label for="position">Position:</label>
+                <input type="text" id="position" th:field="*{position}" required="required"/>
+            </div>
+            <div class="form-group">
+                <label for="salary">Salary:</label>
+                <input type="text" id="salary" th:field="*{salary}" required="required"/>
+            </div>
+            <div class="form-group">
+                <label for="experience">Experience:</label>
+                <input type="text" id="experience" th:field="*{experience}" required="required"/>
+            </div>
+            <div class="form-group">
+                <label for="education">Education:</label>
+                <input type="text" id="education" th:field="*{education}" required="required"/>
+            </div>
+            <div class="form-group">
+                <label>End Date:</label>
+                <input type="date" th:field="*{endDate}" id="endDate" required="required"/>
+                <p>Total Days: <span id="totalDays">0</span> days</p>
+                <p>Total Cost: <span id="totalCost">0</span> 원</p>
+            </div>
+            <div class="form-group">
+                <label for="homepage">Homepage:</label>
+                <input type="url" id="homepage" th:field="*{homepage}"/>
+            </div>
+            <div class="form-group">
+                <label for="logoPath">Logo Image:</label>
+                <div class="file-upload">
+                    <input type="file" id="logoPath" th:field="*{logoPath}"/>
+                    <label for="logoPath">Choose File</label>
+                </div>
+            </div>
+            <button type="button" class="btn btn-primary" onClick="submitForm()">Create</button>
+        </form>
+    </div>
+
+
+    <!-- Footer Start -->
+    <!-- Footer code remains the same -->
+    <!-- Footer End -->
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+</div>
+
+<!-- JavaScript Libraries -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/lib/wow/wow.min.js}"></script>
+<script th:src="@{/lib/easing/easing.min.js}"></script>
+<script th:src="@{/lib/waypoints/waypoints.min.js}"></script>
+<script th:src="@{/lib/owlcarousel/owl.carousel.min.js}"></script>
+
+<!-- Template Javascript -->
+<script th:src="@{/js/main.js}"></script>
+<script>
+    CKEDITOR.replace('editor1');
+
+    const COST_PER_DAY = 300;
+
+    function calculateDays() {
+        const endDateInput = document.getElementById('endDate');
+        const totalDaysSpan = document.getElementById('totalDays');
+        const totalCostSpan = document.getElementById('totalCost');
+        const endDate = new Date(endDateInput.value);
+
+        if (endDateInput.value) {
+            const today = new Date();
+            const timeDiff = endDate - today;
+            const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+            const days = daysDiff >= 0 ? daysDiff : 0;
+            totalDaysSpan.textContent = days;
+            totalCostSpan.textContent = days * COST_PER_DAY;
+        } else {
+            totalDaysSpan.textContent = 0;
+            totalCostSpan.textContent = 0;
+        }
+    }
+
+    document.getElementById('endDate').addEventListener('change', calculateDays);
+
+    function submitForm() {
+    const form = document.getElementById('jobPostForm');
+    if (!form) {
+        alert('Form element not found.');
+        return;
+    }
+
+    // Ensure totalDays and totalCost elements exist
+    const totalDaysElement = document.getElementById('totalDays');
+    const totalCostElement = document.getElementById('totalCost');
+
+    if (!totalDaysElement || !totalCostElement) {
+        alert('Total days or total cost element not found.');
+        return;
+    }
+
+    // Calculate the total cost to pay
+    const totalCost = totalCostElement.textContent.trim();
+
+    // Create FormData object from the form
+    const formData = new FormData(form);
+    formData.append('totalCost', totalCost);
+
+    // Submit the form via AJAX
+    fetch(form.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'Accept': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => {
+        if (response.redirected) {
+            // Open payment popup with the total cost parameter
+            const popupUrl = `/jobPost/payment?amount=${totalCost}`; // URL for payment popup
+            const popupOptions = "width=600,height=400,left=200,top=100";
+            window.open(popupUrl, "PaymentPopup", popupOptions);
+        } else {
+            console.error('Failed to redirect:', response);
+        }
+    })
+    .catch(error => {
+        console.error('Error submitting form:', error);
+    });
+}
+
+</script>
+
+
+</body>
+
+</html>

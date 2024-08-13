@@ -3,15 +3,15 @@ package com.javalab.board.config;
 import com.javalab.board.handler.AuthFailureHandler;
 import com.javalab.board.handler.AuthSuccessHandler;
 import com.javalab.board.security.CustomOAuth2UserService;
+import com.javalab.board.security.dto.CustomUserDetails;
 import com.javalab.board.security.handler.CustomAccessDeniedHandler;
 import com.javalab.board.security.handler.CustomSocialLoginSuccessHandler;
-import com.javalab.board.service.JobSeekerService;
-import com.javalab.board.service.CompanyService;
+import com.javalab.board.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,8 +20,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 @Configuration
 @EnableWebSecurity
@@ -29,10 +27,14 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 @Slf4j
 public class SecurityConfig {
 
-	private final JobSeekerService jobSeekerService;
-	private final CompanyService companyService;
-	private final AuthSuccessHandler authSuccessHandler;
-	private final AuthFailureHandler authFailureHandler;
+	@Autowired
+	private  CustomUserDetailsService userDetailsService;
+
+	@Autowired
+	private  AuthFailureHandler authFailureHandler;
+
+	@Autowired
+	private AuthSuccessHandler authSuccessHandler;
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -52,27 +54,26 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http, CustomOAuth2UserService customOAuth2UserService) throws Exception {
 
-		AuthenticationManagerBuilder auth = http.getSharedObject(AuthenticationManagerBuilder.class);
-
-		auth.userDetailsService(username -> {
-			UserDetails userDetails = jobSeekerService.loadUserByUsername(username);
-			if (userDetails != null) {
-				return userDetails;
-			}
-			userDetails = companyService.loadUserByUsername(username);
-			if (userDetails != null) {
-				return userDetails;
-			}
-			throw new UsernameNotFoundException("User not found with username: " + username);
-		}).passwordEncoder(passwordEncoder());
+		http.userDetailsService(userDetailsService);
 
 		http
 				.formLogin(formLogin -> formLogin
 						.loginPage("/member/login")
-						.loginProcessingUrl("/member/login")
-						.successHandler(authSuccessHandler)
+						.loginProcessingUrl("/member/action")
+						.successHandler((request, response, authentication) -> {
+							CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+							String userType = userDetails.getUserType();
+							if ("company".equals(userType)) {
+								response.sendRedirect("/member/companyPage");
+							} else if ("jobSeeker".equals(userType)) {
+								response.sendRedirect("/member/jobSeekerPage");
+							} else {
+								response.sendRedirect("/");
+							}
+						})
 						.failureHandler(authFailureHandler)
 				)
+
 				.logout(logout -> logout
 						.logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
 						.logoutSuccessUrl("/member/login")

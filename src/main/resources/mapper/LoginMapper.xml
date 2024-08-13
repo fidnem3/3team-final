@@ -16,7 +16,7 @@
 		email,
 		address
 		FROM job_seeker
-		WHERE job_seeker_id = #{jobSeekerId}
+		WHERE jobSeeker_id = #{jobSeekerId}
 	</select>
 
 	<!-- 기업회원 로그인 정보 조회 -->
@@ -39,7 +39,7 @@
 	<!-- 개인회원 저장 -->
 	<insert id="saveJobSeeker">
 		INSERT INTO job_seeker (
-		job_seeker_id,
+		jobSeeker_id,
 		password,
 		name,
 		birth,
@@ -93,7 +93,7 @@
 		INSERT INTO user_roles (user_id, user_type, role_id)
 		VALUES (#{userId}, (CASE
 		WHEN (SELECT comp_id FROM company WHERE comp_id = #{userId}) IS NOT NULL THEN 'company'
-		WHEN (SELECT job_seeker_id FROM job_seeker WHERE job_seeker_id = #{userId}) IS NOT NULL THEN 'jobSeeker'
+		WHEN (SELECT jobSeeker_id FROM jobSeeker WHERE jobSeeker_id = #{userId}) IS NOT NULL THEN 'jobSeeker'
 		ELSE 'unknown'
 		END), (SELECT role_id FROM role WHERE role_name = #{roleName}))
 	</insert>
