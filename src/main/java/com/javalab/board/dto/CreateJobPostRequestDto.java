@@ -19,6 +19,7 @@ import java.util.Date;
 public class CreateJobPostRequestDto {
 
     private Long jobPostId;
+    private String compId;
     private String title;
     private String content;
     private String position;
@@ -28,4 +29,8 @@ public class CreateJobPostRequestDto {
     private String address;
     private Date endDate;
     private String homepage;
+    private Date created;
+    private Integer hitNo;
+    private String status;
+    private String logoPath; // Path to the image
 }

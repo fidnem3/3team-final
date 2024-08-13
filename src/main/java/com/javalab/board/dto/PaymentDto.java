@@ -1,13 +1,15 @@
 package com.javalab.board.dto;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
-@Data
+@Getter
+@Setter
+@ToString
 public class PaymentDto {
         private Long paymentId;
         private String compId;
@@ -16,8 +18,9 @@ public class PaymentDto {
         private String paymentStatus;
         private Date paymentDate;
         private Date postDuration;
-        private Double dailyRate;
-        private Double totalAmount;
+        private BigDecimal dailyRate;
+        private BigDecimal totalAmount;
         private Date dueDate;
-}
 
+        // Getters and Setters
+}
