@@ -72,13 +72,13 @@ public class JobSeekerServiceImpl implements JobSeekerService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // 개인 회원 정보 조회 로직
         JobSeekerVo jobSeeker = jobSeekerMapper.selectJobSeekerById(username);
         if (jobSeeker == null) {
-            throw new UsernameNotFoundException("Job Seeker not found with username: " + username);
+            // 구직자가 아닌 경우 null을 반환하여 CompanyService에서 처리할 수 있도록 함
+            return null;
         }
 
-        // 권한 정보를 조회
+
         List<GrantedAuthority> authorities = userRolesMapper.selectUserRole(username, "jobSeeker")
                 .stream()
                 .map(role -> new SimpleGrantedAuthority(role.getRoleId()))

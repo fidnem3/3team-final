@@ -10,41 +10,14 @@
     <h1>관리자 페이지</h1>
     <nav>
         <a href="/member/logout">로그아웃</a>
-        <a href="/admin/users">사용자 관리</a>
-        <a href="/admin/roles">권한 관리</a>
-        <a href="/admin/reports">보고서 보기</a>
+        <a href="/admin/manageUsers">사용자 관리</a>
+        <a href="/admin/viewReports">보고서 보기</a>
     </nav>
 </header>
 <main>
     <section>
         <h2>환영합니다, 관리자님!</h2>
-        <p>관리자 페이지에 오신 것을 환영합니다. 시스템 전체를 관리할 수 있습니다.</p>
-    </section>
-    <section>
-        <h2>사용자 관리</h2>
-        <a href="/admin/addUser">새 사용자 추가</a>
-        <ul>
-            <li th:each="user : ${users}">
-                <a th:href="@{/admin/user/{userId}(userId=${user.userId})}" th:text="${user.name}"></a>
-            </li>
-        </ul>
-    </section>
-    <section>
-        <h2>권한 관리</h2>
-        <a href="/admin/addRole">새 권한 추가</a>
-        <ul>
-            <li th:each="role : ${roles}">
-                <p th:text="${role.name}"></p>
-            </li>
-        </ul>
-    </section>
-    <section>
-        <h2>보고서 보기</h2>
-        <ul>
-            <li th:each="report : ${reports}">
-                <a th:href="@{/admin/report/{reportId}(reportId=${report.reportId})}" th:text="${report.title}"></a>
-            </li>
-        </ul>
+        <p>여기에서 시스템을 관리할 수 있습니다.</p>
     </section>
 </main>
 <footer>

@@ -1,15 +1,14 @@
 package com.javalab.board.service;
 
-import com.javalab.board.repository.AdminMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.javalab.board.vo.AdminVo;
 
-@Service
-public class AdminService {
-    @Autowired
-    private AdminMapper adminMapper;
+import java.util.Optional;
 
-    public void getAdminById(String adminId) {
-        adminMapper.findById(adminId);
-    }
+public interface AdminService {
+
+    // 관리자 ID로 관리자 정보를 조회
+    Optional<AdminVo> getAdminDetails(String adminId);
+
+    // 관리자 ID와 비밀번호로 인증
+    Optional<AdminVo> authenticateAdmin(String adminId, String password);
 }

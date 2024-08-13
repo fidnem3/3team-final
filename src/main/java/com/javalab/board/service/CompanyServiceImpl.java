@@ -80,13 +80,12 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // 회사 정보 조회 로직
         CompanyVo company = companyMapper.selectCompanyById(username);
         if (company == null) {
-            throw new UsernameNotFoundException("Company not found with username: " + username);
+            // 기업이 아닌 경우 null을 반환
+            return null;
         }
 
-        // 권한 정보를 조회
         List<GrantedAuthority> authorities = userRolesMapper.selectUserRole(username, "company")
                 .stream()
                 .map(role -> new SimpleGrantedAuthority(role.getRoleId()))

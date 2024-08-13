@@ -17,6 +17,7 @@
             <i class="fas fa-home"></i> <!-- Home 아이콘 -->
         </button>
     </header>
+
     <div class="form-container sign-up-container">
         <form th:action="@{/member/login}" method="post" onsubmit="return validateEnterpriseLogin()">
             <h1>Enterprise</h1>
@@ -28,6 +29,7 @@
             <div th:replace="~{common/fragments :: primary-button('Sign In')}"></div>
         </form>
     </div>
+
     <div class="form-container sign-in-container">
         <form th:action="@{/member/login}" method="post" onsubmit="return validateIndividualLogin()">
             <h1>Individual</h1>
@@ -39,6 +41,20 @@
             <div th:replace="~{common/fragments :: primary-button('Sign In')}"></div>
         </form>
     </div>
+
+    <!-- 관리자 로그인 폼 추가 -->
+    <div class="form-container admin-container">
+        <form th:action="@{/member/login}" method="post" onsubmit="return validateAdminLogin()">
+            <h1>Admin</h1>
+            <div th:replace="~{common/fragments :: social-links}"></div>
+            <span>or use your admin account</span>
+            <input type="text" name="adminId" placeholder="Admin ID"/> <!-- 관리자 ID -->
+            <input type="password" name="password" placeholder="Password"/> <!-- 비밀번호 -->
+            <div th:replace="~{common/fragments :: links-container}"></div>
+            <div th:replace="~{common/fragments :: primary-button('Sign In')}"></div>
+        </form>
+    </div>
+
     <div class="overlay-container">
         <div class="overlay">
             <div class="overlay-panel overlay-left">
@@ -69,6 +85,15 @@
         const individualId = document.getElementById('individualId').value;
         if (individualId.startsWith('comp')) {
             alert('개인 회원 ID로 로그인해야 합니다. 기업 회원 로그인 창을 사용하세요.');
+            return false;
+        }
+        return true;
+    }
+
+    function validateAdminLogin() {
+        const adminId = document.getElementById('adminId').value;
+        if (!adminId) {
+            alert('관리자 ID를 입력해야 합니다.');
             return false;
         }
         return true;
