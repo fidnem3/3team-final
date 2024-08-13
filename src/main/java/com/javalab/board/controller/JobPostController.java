@@ -17,12 +17,14 @@ public class JobPostController {
     @Autowired
     private JobPostService jobPostService;
 
-    @GetMapping("/create")
-    public String showCreateJobPostForm() {
-        return "createJobPost";
+    @GetMapping("/jobPostCreate")
+    public String createJobPost(Model model) {
+        model.addAttribute("createJobPostRequestDto", new CreateJobPostRequestDto());
+        return "jobPost/jobPostCreate"; // Thymeleaf 템플릿의 경로
     }
 
-    @PostMapping("/create")
+
+    @PostMapping("/jobPostCreate")
     public String createJobPost(@ModelAttribute CreateJobPostRequestDto createJobPostRequestDto, @RequestParam("file") MultipartFile file) {
         jobPostService.createJobPost(createJobPostRequestDto, file);
         // Redirect to payment page
