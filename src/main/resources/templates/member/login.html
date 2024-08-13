@@ -44,6 +44,20 @@
             <div th:replace="~{common/fragments :: primary-button('Sign In')}"></div>
         </form>
     </div>
+
+    <!-- 관리자 로그인 폼 추가 -->
+    <div class="form-container admin-container">
+        <form th:action="@{/member/login}" method="post" onsubmit="return validateAdminLogin()">
+            <h1>Admin</h1>
+            <div th:replace="~{common/fragments :: social-links}"></div>
+            <span>or use your admin account</span>
+            <input type="text" name="adminId" placeholder="Admin ID"/> <!-- 관리자 ID -->
+            <input type="password" name="password" placeholder="Password"/> <!-- 비밀번호 -->
+            <div th:replace="~{common/fragments :: links-container}"></div>
+            <div th:replace="~{common/fragments :: primary-button('Sign In')}"></div>
+        </form>
+    </div>
+
     <div class="overlay-container">
         <div class="overlay">
             <div class="overlay-panel overlay-left">
@@ -60,6 +74,7 @@
     </div>
 </div>
 <script th:src="@{/js/login.js}"></script>
+
 <script th:inline="javascript">
     document.addEventListener('DOMContentLoaded', function() {
         var errorMessage = [[${errorMessage}]];
@@ -74,6 +89,17 @@
             });
         }
     });
+</script>
+
+<script>
+    function validateAdminLogin() {
+        const adminId = document.getElementById('adminId').value;
+        if (!adminId) {
+            alert('관리자 ID를 입력해야 합니다.');
+            return false;
+        }
+        return true;
+    }
 </script>
 </body>
 </html>

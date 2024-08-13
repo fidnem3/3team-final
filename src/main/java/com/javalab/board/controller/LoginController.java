@@ -1,7 +1,9 @@
 package com.javalab.board.controller;
 
+import com.javalab.board.service.AdminService; // AdminService 추가
 import com.javalab.board.service.CompanyService;
 import com.javalab.board.service.JobSeekerService;
+import com.javalab.board.vo.AdminVo; // AdminVo 추가
 import com.javalab.board.vo.CompanyVo;
 import com.javalab.board.vo.JobSeekerVo;
 import com.javalab.board.vo.UserRolesVo;
@@ -10,6 +12,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +28,7 @@ public class LoginController {
 
     private final CompanyService companyService;
     private final JobSeekerService jobSeekerService;
+    private final AdminService adminService; // AdminService 추가
     private final PasswordEncoder passwordEncoder;
 
     // 로그인 화면
@@ -43,7 +47,49 @@ public class LoginController {
         return "member/login";
     }
 
+    // 로그인 처리
+    @PostMapping("/login")
+    public String login(@RequestParam String adminId, @RequestParam String password, RedirectAttributes redirectAttributes) {
+        AdminVo admin = adminService.authenticateAdmin(adminId, password)
+                .orElse(null);
 
+        if (admin != null) {
+            // 로그인 성공 시 관리자 페이지로 리다이렉트
+            return "redirect:/member/adminPage";
+        } else {
+            // 로그인 실패 시 오류 메시지 추가
+            redirectAttributes.addFlashAttribute("error", "아이디 또는 비밀번호가 잘못되었습니다.");
+            return "redirect:/member/login"; // 로그인 페이지로 리다이렉트
+        }
+    }
+
+    // 구직자 페이지
+    @GetMapping("/jobSeekerPage")
+    public String jobSeekerPage(Model model, Authentication authentication) {
+        String username = authentication.getName();
+        JobSeekerVo jobSeeker = jobSeekerService.getJobSeekerDetails(username)
+                .orElseThrow(() -> new IllegalArgumentException("User not found with username: " + username));
+        model.addAttribute("jobSeeker", jobSeeker);
+        return "member/jobSeekerPage"; // Thymeleaf 템플릿 파일 이름
+    }
+
+    // 기업 페이지
+    @GetMapping("/companyPage")
+    public String companyPage(Model model, Authentication authentication) {
+        String username = authentication.getName();
+        CompanyVo company = companyService.getCompanyDetails(username)
+                .orElseThrow(() -> new IllegalArgumentException("Company not found with username: " + username));
+        model.addAttribute("company", company);
+        return "member/companyPage"; // Thymeleaf 템플릿 파일 이름
+    }
+
+    // 관리자 페이지
+    @GetMapping("/adminPage")
+    public String adminPage(Model model, Authentication authentication) {
+        // 관리자의 정보를 모델에 추가 (필요한 경우)
+        // 예: model.addAttribute("admin", adminService.getAdminDetails(authentication.getName()));
+        return "member/adminPage"; // Thymeleaf 템플릿 파일 이름
+    }
 
     // 회원가입 페이지
     @GetMapping("/classification")
@@ -80,6 +126,7 @@ public class LoginController {
         userRolesVo.setRoleId("ROLE_COMPANY"); // 또는 적절한 기본 역할 ID
 
         try {
+            // 기업 회원가입 처리
             companyService.registerCompany(companyVo, userRolesVo);
             redirectAttributes.addFlashAttribute("alertMessage", "기업 회원가입이 성공적으로 완료되었습니다.");
             redirectAttributes.addFlashAttribute("alertType", "success");
