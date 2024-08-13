@@ -2,56 +2,63 @@ package com.javalab.board.service;
 
 import com.javalab.board.dto.CreateJobPostRequestDto;
 import com.javalab.board.repository.JobPostMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.javalab.board.vo.JobPostVo;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
+
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class JobPostServiceImpl implements JobPostService {
 
-    @Autowired
-    private JobPostMapper jobPostMapper;
+    private final JobPostMapper jobPostMapper;
 
     @Override
-    public void createJobPost(CreateJobPostRequestDto createJobPostRequestDto, MultipartFile file) {
-        String logoPath = uploadFile(file);
-        createJobPostRequestDto.setLogoPath(logoPath);
-        jobPostMapper.insertJobPost(createJobPostRequestDto);
-        // Redirect to payment page logic here
+    public void createJobPost(CreateJobPostRequestDto createJobPostRequestDto) {
+        JobPostVo jobPost = new JobPostVo();
+        jobPost.setTitle(createJobPostRequestDto.getTitle());
+        jobPost.setContent(createJobPostRequestDto.getContent());
+        jobPost.setPosition(createJobPostRequestDto.getPosition());
+        jobPost.setSalary(createJobPostRequestDto.getSalary());
+        jobPost.setExperience(createJobPostRequestDto.getExperience());
+        jobPost.setEducation(createJobPostRequestDto.getEducation());
+        jobPost.setHomepage(createJobPostRequestDto.getHomepage());
+        jobPost.setLogoPath(createJobPostRequestDto.getLogoPath());
+        jobPost.setEndDate(createJobPostRequestDto.getEndDate());
+
+        jobPostMapper.save(jobPost);
     }
 
     @Override
     public void updateJobPostStatus(Long jobPostId, String status) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("jobPostId", jobPostId);
-        params.put("status", status);
-        jobPostMapper.updateJobPostStatus(params);
+        jobPostMapper.updateStatus(jobPostId, status);
     }
 
     @Override
     public CreateJobPostRequestDto getJobPostById(Long jobPostId) {
-        return jobPostMapper.selectJobPostById(jobPostId);
+        JobPostVo jobPostVo = jobPostMapper.findById(jobPostId);
+        return convertToDto(jobPostVo);
     }
 
     @Override
     public List<CreateJobPostRequestDto> getAllJobPosts() {
-        return jobPostMapper.selectAllJobPosts();
+        List<JobPostVo> jobPostVos = jobPostMapper.findAll();
+        return jobPostVos.stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
-    private String uploadFile(MultipartFile file) {
-        // Logic to upload file to server and return file path
-        try {
-            String fileName = file.getOriginalFilename();
-            String filePath = "path/to/upload/" + fileName;
-            file.transferTo(new File(filePath));
-            return filePath;
-        } catch (IOException e) {
-            throw new RuntimeException("File upload failed", e);
-        }
+    private CreateJobPostRequestDto convertToDto(JobPostVo jobPostVo) {
+        CreateJobPostRequestDto dto = new CreateJobPostRequestDto();
+        dto.setTitle(jobPostVo.getTitle());
+        dto.setContent(jobPostVo.getContent());
+        dto.setPosition(jobPostVo.getPosition());
+        dto.setSalary(jobPostVo.getSalary());
+        dto.setExperience(jobPostVo.getExperience());
+        dto.setEducation(jobPostVo.getEducation());
+        dto.setHomepage(jobPostVo.getHomepage());
+        dto.setLogoPath(jobPostVo.getLogoPath());
+        dto.setEndDate(jobPostVo.getEndDate());
+        return dto;
     }
 }

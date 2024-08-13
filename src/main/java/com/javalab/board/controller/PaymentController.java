@@ -1,49 +1,52 @@
 package com.javalab.board.controller;
 
-import com.javalab.board.dto.PaymentDto;
-import com.javalab.board.service.PaymentService;
+import com.javalab.board.dto.CreateJobPostRequestDto;
+import com.javalab.board.service.JobPostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.ui.Model;
 
-@Controller
+import java.util.Date;
+
 @RequestMapping("/payment")
+@Controller
 public class PaymentController {
 
     @Autowired
-    private PaymentService paymentService;
-
-    @GetMapping("/create/{jobPostId}")
-    public String showCreatePaymentForm(@PathVariable("jobPostId") Long jobPostId, Model model) {
-        // 채용공고 ID를 통해 공고 정보를 가져와야 함
-        model.addAttribute("jobPostId", jobPostId);
-        PaymentDto paymentDto = new PaymentDto();
-        paymentDto.setJobPostId(jobPostId);
-        model.addAttribute("paymentDto", paymentDto);
-        return "createPayment";
-    }
-
-    @PostMapping("/create")
-    public String createPayment(@ModelAttribute PaymentDto paymentDto, RedirectAttributes redirectAttributes) {
-        paymentService.createPayment(paymentDto);
-        redirectAttributes.addFlashAttribute("message", "결제가 생성되었습니다. 결제를 완료해 주세요.");
-        return "redirect:/payment/confirm";
-    }
-
-    @GetMapping("/confirm")
-    public String confirmPayment(Model model) {
-        // 결제 확인 페이지 로직
-        // 예를 들어, 사용자가 결제를 완료할 수 있는 페이지로 리디렉션
-        return "confirmPayment";
-    }
+    private JobPostService jobPostService;
 
     @PostMapping("/complete")
-    public String completePayment(@RequestParam("paymentId") Long paymentId, RedirectAttributes redirectAttributes) {
-        PaymentDto paymentDto = paymentService.getPaymentById(paymentId);
-        paymentService.updatePayment(paymentDto);
-        redirectAttributes.addFlashAttribute("message", "결제가 완료되었습니다.");
-        return "redirect:/jobPost/list";
+    @ResponseBody
+    public String paymentComplete(@RequestParam("amount") Integer amount,
+                                  @RequestParam("title") String title,
+                                  @RequestParam("content") String content,
+                                  @RequestParam("position") String position,
+                                  @RequestParam("salary") String salary,
+                                  @RequestParam("experience") String experience,
+                                  @RequestParam("education") String education,
+                                  @RequestParam("homepage") String homepage,
+                                  @RequestParam("logoPath") String logoPath,
+                                  @RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) {
+
+        // 공고 등록 정보 생성
+        CreateJobPostRequestDto createJobPostRequestDto = new CreateJobPostRequestDto();
+        createJobPostRequestDto.setTitle(title);
+        createJobPostRequestDto.setContent(content);
+        createJobPostRequestDto.setPosition(position);
+        createJobPostRequestDto.setSalary(salary);
+        createJobPostRequestDto.setExperience(experience);
+        createJobPostRequestDto.setEducation(education);
+        createJobPostRequestDto.setHomepage(homepage);
+        createJobPostRequestDto.setLogoPath(logoPath);
+        createJobPostRequestDto.setEndDate(endDate);
+
+        // DB에 공고 등록
+        jobPostService.createJobPost(createJobPostRequestDto);
+
+        // Payment 페이지로 리다이렉트
+        return "/jobPost/jobPostList"; // 리다이렉트할 URL 반환
     }
 }
