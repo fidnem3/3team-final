@@ -11,6 +11,7 @@
     <link th:href="@{/css/login.css}" rel="stylesheet">
 </head>
 <body>
+
 <div class="container" id="container">
     <header class="header">
         <button class="home-button" onclick="location.href='/'">
@@ -97,6 +98,15 @@
             return false;
         }
         return true;
+    }
+</script>
+
+<script th:inline="javascript">
+    /* 메시지 값 읽기 */
+    let message = [[${message != null}]] ? [[${message}]] : '';
+
+    if (message) {
+        alert(message);  // 메시지가 있을 경우 팝업창 띄우기
     }
 </script>
 </body>
