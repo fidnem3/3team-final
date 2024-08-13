@@ -15,6 +15,12 @@ public class JobPostServiceImpl implements JobPostService {
 
     private final JobPostMapper jobPostMapper;
 
+
+    @Override
+    public void saveTemporaryJobPost(CreateJobPostRequestDto createJobPostCreateRequestDto) {
+        // Logic to save job post temporarily (e.g., in session or temporary storage)
+    }
+
     @Override
     public void createJobPost(CreateJobPostRequestDto createJobPostRequestDto) {
         JobPostVo jobPost = new JobPostVo();
@@ -29,6 +35,13 @@ public class JobPostServiceImpl implements JobPostService {
         jobPost.setEndDate(createJobPostRequestDto.getEndDate());
 
         jobPostMapper.save(jobPost);
+    }
+
+    @Override
+    public void saveJobPost(Long jobPostId) {
+        // Logic to save job post permanently in DB
+        // JobPost jobPost = fetchTemporaryJobPost(jobPostId);
+        // jobPostRepository.save(jobPost);
     }
 
     @Override

@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -27,22 +28,10 @@ public class JobPostController {
         return "jobPost/jobPostCreate"; // Thymeleaf 템플릿의 경로
     }
 
-
     @PostMapping("/jobPostCreate")
-    @ResponseBody
-    public Map<String, Object> createJobPost(@ModelAttribute CreateJobPostRequestDto createJobPostRequestDto, @RequestParam("file") MultipartFile file) {
-        jobPostService.createJobPost(createJobPostRequestDto);
-
-        // Calculate the cost
-        long jobPostDurationInDays = calculateJobPostDuration(createJobPostRequestDto.getEndDate());
-        int cost = (int) (jobPostDurationInDays * 300);  // Cost calculation logic
-
-        // Prepare the response
-        Map<String, Object> response = new HashMap<>();
-        response.put("redirectUrl", "/payment/complete"); // URL for payment page
-        response.put("cost", cost);
-
-        return response;
+    public String createJobPost(@ModelAttribute CreateJobPostRequestDto createJobPostRequestDto) {
+        jobPostService.saveJobPost(createJobPostRequestDto.getJobPostId());
+        return "redirect:/jobPost/jobPostList";
     }
 
 
@@ -68,17 +57,14 @@ public class JobPostController {
     }
 
     @GetMapping("/payment")
-    public ModelAndView paymentPage(@RequestParam("amount") String amount) {
-        ModelAndView mav = new ModelAndView("payment");
-        mav.addObject("amount", amount);
-        return mav;
+    public String showPaymentPage(Model model) {
+        return "payment"; // payment.html 템플릿을 반환
     }
 
     @PostMapping("/payment/complete")
-    public String completePayment(@RequestParam("amount") String amount) {
-        // Handle payment completion logic
-        // Typically, you would check if the payment was successful
-        // and then proceed to save the job post
-        return "redirect:/jobPost/list";
+    public RedirectView completePayment(@RequestParam("jobPostId") Long jobPostId) {
+        // Finalize payment and save job post
+        jobPostService.saveJobPost(jobPostId);
+        return new RedirectView("/jobPost/jobPostlist");
     }
 }
