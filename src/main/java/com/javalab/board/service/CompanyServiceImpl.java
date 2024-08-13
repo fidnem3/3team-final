@@ -32,6 +32,22 @@ public class CompanyServiceImpl implements CompanyService {
         // 기업 회원 정보를 등록합니다.
         companyMapper.insertCompany(companyVo);
 
+        // UserRolesVo 객체가 null인 경우 새로 생성
+        if (userRolesVo == null) {
+            userRolesVo = new UserRolesVo();
+        }
+
+        // 필수 필드 설정
+        if (userRolesVo.getUserId() == null || userRolesVo.getUserId().isEmpty()) {
+            userRolesVo.setUserId(companyVo.getCompId());
+        }
+        if (userRolesVo.getUserType() == null || userRolesVo.getUserType().isEmpty()) {
+            userRolesVo.setUserType("company");
+        }
+        if (userRolesVo.getRoleId() == null || userRolesVo.getRoleId().isEmpty()) {
+            userRolesVo.setRoleId("ROLE_COMPANY"); // 또는 적절한 기본 역할 ID
+        }
+
         // UserRoles 테이블에 권한 정보를 추가합니다.
         userRolesMapper.insertUserRole(userRolesVo);
     }
