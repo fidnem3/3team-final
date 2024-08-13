@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.javalab.board.repository.AdminMapper">
+    <select id="findById" parameterType="String" resultType="com.javalab.board.vo.AdminVo">
+        SELECT * FROM admin WHERE admin_id = #{adminId}
+    </select>
+
+    <!-- 기타 쿼리 -->
+</mapper>
