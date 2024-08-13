@@ -8,11 +8,11 @@
 	<!-- 권한 정보를 삽입하는 SQL 쿼리 -->
 	<insert id="insertUserRole" parameterType="com.javalab.board.vo.UserRolesVo">
 		INSERT INTO UserRoles (user_id, user_type, role_id)
-		VALUES (#{userId}, #{userType}, #{roleId})
+		VALUES (#{userId, jdbcType=VARCHAR}, #{userType, jdbcType=VARCHAR}, #{roleId, jdbcType=VARCHAR})
 	</insert>
 
 	<!-- 특정 사용자 ID와 유형에 대한 권한 정보를 조회하는 SQL 쿼리 -->
-	<select id="selectUserRole" resultType="com.javalab.board.vo.UserRolesVo">
+	<select id="selectUserRole" resultType="UserRolesVo">
 		SELECT * FROM UserRoles
 		WHERE user_id = #{userId} AND user_type = #{userType}
 	</select>

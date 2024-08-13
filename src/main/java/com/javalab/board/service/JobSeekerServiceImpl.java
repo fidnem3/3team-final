@@ -33,6 +33,22 @@ public class JobSeekerServiceImpl implements JobSeekerService {
         // 개인 회원 정보를 등록합니다.
         jobSeekerMapper.insertJobSeeker(jobSeekerVo);
 
+        // UserRolesVo 객체가 null이거나 필수 필드가 비어있는지 확인
+        if (userRolesVo == null) {
+            userRolesVo = new UserRolesVo();
+        }
+
+        // 필수 필드 설정
+        if (userRolesVo.getUserId() == null || userRolesVo.getUserId().isEmpty()) {
+            userRolesVo.setUserId(jobSeekerVo.getJobSeekerId());
+        }
+        if (userRolesVo.getUserType() == null || userRolesVo.getUserType().isEmpty()) {
+            userRolesVo.setUserType("jobSeeker");
+        }
+        if (userRolesVo.getRoleId() == null || userRolesVo.getRoleId().isEmpty()) {
+            userRolesVo.setRoleId("ROLE_USER"); // 또는 적절한 기본 역할 ID
+        }
+
         // UserRoles 테이블에 권한 정보를 추가합니다.
         userRolesMapper.insertUserRole(userRolesVo);
     }

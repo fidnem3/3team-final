@@ -55,21 +55,33 @@ public class LoginController {
 
     // 기업회원 처리
     @PostMapping("/companyJoin")
-    public String registerCompany(@Valid @ModelAttribute("CompanyVo") CompanyVo companyVo,
-                                  @Valid @ModelAttribute("UserRolesVo") UserRolesVo userRolesVo,
+    public String registerCompany(@Valid @ModelAttribute("companyVo") CompanyVo companyVo,
                                   BindingResult bindingResult,
                                   RedirectAttributes redirectAttributes) {
+        // 유효성 검사 오류가 있는 경우, 다시 회원가입 페이지로 이동
         if (bindingResult.hasErrors()) {
-            // 유효성 검사 오류가 있는 경우, 다시 회원가입 페이지로 이동
             return "member/companyJoin";
         }
 
-        // 비밀번호 암호화
+        // 비밀번호를 암호화합니다.
         companyVo.setPassword(passwordEncoder.encode(companyVo.getPassword()));
 
-        companyService.registerCompany(companyVo, userRolesVo);
-        redirectAttributes.addFlashAttribute("message", "기업 회원가입이 성공적으로 완료되었습니다.");
-        return "redirect:/member/login";
+        // UserRolesVo 객체 생성 및 설정
+        UserRolesVo userRolesVo = new UserRolesVo();
+        userRolesVo.setUserId(companyVo.getCompId());
+        userRolesVo.setUserType("company");
+        userRolesVo.setRoleId("ROLE_COMPANY"); // 또는 적절한 기본 역할 ID
+
+        try {
+            // 기업 회원가입 처리
+            companyService.registerCompany(companyVo, userRolesVo);
+            redirectAttributes.addFlashAttribute("message", "기업 회원가입이 성공적으로 완료되었습니다.");
+            return "redirect:/member/login";
+        } catch (Exception e) {
+            // 예외 처리
+            bindingResult.reject("registerError", "회원가입 처리 중 오류가 발생했습니다: " + e.getMessage());
+            return "member/companyJoin";
+        }
     }
 
 
@@ -84,9 +96,10 @@ public class LoginController {
 
     @PostMapping("/join")
     public String registerJobSeeker(@Valid @ModelAttribute("jobSeekerVo") JobSeekerVo jobSeekerVo,
-                                    @Valid @ModelAttribute("userRolesVo") UserRolesVo userRolesVo,
                                     BindingResult bindingResult,
+                                    Model model,
                                     RedirectAttributes redirectAttributes) {
+
         // 비밀번호와 비밀번호 확인이 일치하는지 확인
         if (!jobSeekerVo.getPassword().equals(jobSeekerVo.getConfirmPassword())) {
             bindingResult.rejectValue("confirmPassword", "error.confirmPassword", "비밀번호가 일치하지 않습니다.");
@@ -100,10 +113,22 @@ public class LoginController {
         // 비밀번호를 암호화합니다.
         jobSeekerVo.setPassword(passwordEncoder.encode(jobSeekerVo.getPassword()));
 
-        // 개인 회원가입 처리
-        jobSeekerService.registerJobSeeker(jobSeekerVo, userRolesVo);
-        redirectAttributes.addFlashAttribute("message", "개인 회원가입이 성공적으로 완료되었습니다.");
-        return "redirect:/member/login";
+        // UserRolesVo 객체 생성 및 설정
+        UserRolesVo userRolesVo = new UserRolesVo();
+        userRolesVo.setUserId(jobSeekerVo.getJobSeekerId());
+        userRolesVo.setUserType("jobSeeker");
+        userRolesVo.setRoleId("ROLE_USER");
+
+        try {
+            // 개인 회원가입 처리
+            jobSeekerService.registerJobSeeker(jobSeekerVo, userRolesVo);
+            redirectAttributes.addFlashAttribute("message", "개인 회원가입이 성공적으로 완료되었습니다.");
+            return "redirect:/member/login";
+        } catch (Exception e) {
+            // 예외 처리
+            bindingResult.reject("registerError", "회원가입 처리 중 오류가 발생했습니다: " + e.getMessage());
+            return "member/join";
+        }
     }
 
 }
