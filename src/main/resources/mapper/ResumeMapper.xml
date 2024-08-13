@@ -4,10 +4,49 @@
 
 <mapper namespace="com.javalab.board.repository.ResumeMapper">
 
-    <insert id="save" parameterType="com.javalab.board.dto.ResumeDto">
+    <insert id="createResume" parameterType="com.javalab.board.dto.ResumeDto">
+        <selectKey keyProperty="resumeId" resultType="int" order="BEFORE">
+        SELECT RESUME_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
 
-        INSERT INTO resume (resume_id, jobSeeker_id, title, content)
-        VALUES (RESUME_SEQ.NEXTVAL, #{jobSeekerId}, #{title}, #{content})
+        INSERT INTO resume (resume_id, jobSeeker_id, title, content ,education , experience , link )
+        VALUES (RESUME_SEQ.NEXTVAL, 'koko3', #{title}, #{content} ,#{education} , #{experience} ,#{link} )
 
     </insert>
+
+
+    <!-- 게시물 목록 조회 쿼리 메소드 -->
+<!--    <select id="findAll" resultType="com.javalab.board.dto.ResumeDto">-->
+<!--        SELECT r.resume_id, r.title, r.content, r.education, r.experience, r.link,-->
+<!--        j.job_seeker_id, j.name, j.email, j.tel-->
+<!--        FROM resume r-->
+<!--        JOIN job_seeker j ON r.job_seeker_id = j.job_seeker_id-->
+<!--    </select>-->
+
+    <select id="findAll" resultMap="ResumeWithJobSeekerMap">
+        SELECT r.resume_id, r.title, r.content, r.education, r.experience, r.link,
+        j.jobseeker_id, j.name, j.email, j.tel, j.birth, j.address
+        FROM resume r
+        JOIN jobseeker j ON r.jobseeker_id = j.jobseeker_id
+    </select>
+
+    <resultMap id="ResumeWithJobSeekerMap" type="com.javalab.board.dto.ResumeDto">
+        <id property="resumeId" column="resume_id"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="education" column="education"/>
+        <result property="experience" column="experience"/>
+        <result property="link" column="link"/>
+
+        <!-- JobSeekerVo 객체의 필드 매핑 -->
+        <association property="jobSeekerVo" javaType="com.javalab.board.vo.JobSeekerVo">
+            <id property="jobSeekerId" column="jobseeker_id"/>
+            <result property="name" column="name"/>
+            <result property="email" column="email"/>
+            <result property="tel" column="tel"/>
+            <result property="birth" column="birth"/>
+            <result property="address" column="address"/>
+        </association>
+    </resultMap>
+
 </mapper>

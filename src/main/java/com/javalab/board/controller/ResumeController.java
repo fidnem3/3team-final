@@ -3,8 +3,10 @@ package com.javalab.board.controller;
 
 import com.javalab.board.dto.BoardDto;
 import com.javalab.board.dto.ResumeDto;
+import com.javalab.board.dto.ResumeSkillDto;
 import com.javalab.board.service.JobSeekerService;
 import com.javalab.board.service.ResumeService;
+import com.javalab.board.vo.BoardVo;
 import com.javalab.board.vo.JobSeekerVo;
 import jakarta.servlet.http.HttpSession;
 import lombok.Getter;
@@ -12,12 +14,20 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -51,11 +61,22 @@ public class ResumeController {
 
 
     //  저장 폼 전송
+
     @PostMapping("/save")
-    public String save(@ModelAttribute ResumeDto resumeDto) {
+    public String save(@ModelAttribute("resumeDto") ResumeDto resumeDto ) {
         System.out.println("resumeDto = " + resumeDto);
-        resumeService.save(resumeDto);
+        resumeService.resumeCreate(resumeDto);
         return "index";
+    }
+
+
+    //이력서 목록 보기
+    @GetMapping("/list")
+    public String findAll(Model model) {
+        List<ResumeDto> resumeDtoList = resumeService.findAll();
+        model.addAttribute("resumeList", resumeDtoList);
+        return "/resume/list";
+
     }
 
 }
