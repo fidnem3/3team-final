@@ -5,7 +5,7 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 /**
- * @Configuration : 이 클래스가 스프링 앱의 환경설정 정보를 담고 있는
+ * - @Configuration : 이 클래스가 스프링 앱의 환경설정 정보를 담고 있는
  *  클래스임을 알린다. 그리고 앱 구동시 @Bean으로 설정되어 있는 메소드의
  *  반환값인 ModelMapper 객체가 스프링 빈으로 생성되어 스프링 컨테이너에
  *  올라간다.

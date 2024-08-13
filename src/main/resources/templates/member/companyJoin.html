@@ -24,7 +24,7 @@
             <!-- 회사ID -->
             <div class="form-group" th:classappend="${#fields.hasErrors('compId')}? 'has-error'">
                 <label for="compId">회사 ID</label>
-                <input type="text" id="compId" th:field="*{compId}" placeholder="회사 ID를 입력해주세요">
+                <input type="text" id="compId" th:field="*{compId}" placeholder="기업 ID를 입력해주세요">
                 <div th:if="${#fields.hasErrors('compId')}" th:errors="*{compId}" class="fieldError">Invalid ID</div>
             </div>
 
@@ -38,14 +38,14 @@
             <!-- 사업자 등록번호 -->
             <div class="form-group" th:classappend="${#fields.hasErrors('businessNumber')}? 'has-error'">
                 <label for="businessNumber">사업자 등록번호</label>
-                <input type="text" id="businessNumber" th:field="*{businessNumber}" placeholder="사업자 등록번호를 입력해주세요">
+                <input type="text" id="businessNumber" th:field="*{businessNumber}" placeholder="사업자 등록번호를 입력해주세요 ex)000-00-00000">
                 <div th:if="${#fields.hasErrors('businessNumber')}" th:errors="*{businessNumber}" class="fieldError">Invalid Business Number</div>
             </div>
 
             <!-- 이메일 -->
             <div class="form-group" th:classappend="${#fields.hasErrors('email')}? 'has-error'">
                 <label for="email">이메일</label>
-                <input type="email" id="email" th:field="*{email}" placeholder="이메일을 입력해주세요">
+                <input type="email" id="email" th:field="*{email}" placeholder="이메일을 입력해주세요 ex)..@naver.com">
                 <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="fieldError">Invalid Email</div>
             </div>
 
@@ -66,7 +66,7 @@
             <!-- 홈페이지 -->
             <div class="form-group" th:classappend="${#fields.hasErrors('homepage')}? 'has-error'">
                 <label for="homepage">홈페이지</label>
-                <input type="url" id="homepage" th:field="*{homepage}" placeholder="홈페이지 URL을 입력해주세요">
+                <input type="url" id="homepage" th:field="*{homepage}" placeholder="홈페이지 URL을 입력해주세요 ex) http://..">
                 <div th:if="${#fields.hasErrors('homepage')}" th:errors="*{homepage}" class="fieldError">Invalid URL</div>
             </div>
 
