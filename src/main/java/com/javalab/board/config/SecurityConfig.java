@@ -84,14 +84,14 @@ public class SecurityConfig {
 				)
 				.authorizeHttpRequests(authorize -> authorize
 						.requestMatchers("/css/**", "/js/**", "/img/**", "/fonts/**", "/scss/**", "/lib/**", "/assets/**").permitAll()
-						.requestMatchers("/", "/home", "/about", "/contact").permitAll()  // 필요에 따라 추가
+						.requestMatchers("/", "/home", "/about", "/contact", "/index").permitAll()  // 필요에 따라 추가
 						.requestMatchers("/view/**").permitAll()
 						.requestMatchers("/member/**").permitAll()
 						.requestMatchers("/board/**").permitAll()
 						.requestMatchers("/member/adminPage").hasRole("ADMIN")  // 관리자 페이지 접근 권한
 						.requestMatchers("/member/companyPage").hasRole("COMPANY")  // 기업 전용 페이지 접근 권한
 						.requestMatchers("/member/jobSeekerPage").hasRole("USER")  // 구직자 전용 페이지 접근 권한
-						.anyRequest().authenticated() // 모든 요청에 대해 인증 필요
+						//.anyRequest().authenticated() // 모든 요청에 대해 인증 필요
 				)
 				.sessionManagement(sessionManagement -> sessionManagement
 						.maximumSessions(1) // 한 번에 하나의 세션만 허용
