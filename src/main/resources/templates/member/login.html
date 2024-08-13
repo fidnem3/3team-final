@@ -13,6 +13,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
+
 <div class="container" id="container">
     <header class="header">
         <button class="home-button" onclick="location.href='/'">
@@ -105,6 +106,15 @@
             });
         }
     });
+</script>
+
+<script th:inline="javascript">
+    /* 메시지 값 읽기 */
+    let message = [[${message != null}]] ? [[${message}]] : '';
+
+    if (message) {
+        alert(message);  // 메시지가 있을 경우 팝업창 띄우기
+    }
 </script>
 </body>
 </html>

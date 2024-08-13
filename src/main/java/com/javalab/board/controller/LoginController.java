@@ -119,7 +119,7 @@ public class LoginController {
         // 비밀번호를 암호화합니다.
         companyVo.setPassword(passwordEncoder.encode(companyVo.getPassword()));
 
-        // UserRolesVo 객체 생성 및 설정
+        // UserRolesVo 객체 생성 및 설정합니다.
         UserRolesVo userRolesVo = new UserRolesVo();
         userRolesVo.setUserId(companyVo.getCompId());
         userRolesVo.setUserType("company");
