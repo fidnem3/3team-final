@@ -15,6 +15,9 @@
         <p class="subtitle">귀사의 정보를 입력해 주세요</p>
     </header>
     <main>
+            <!-- Object 타입 줄때 Get.addAttributeName 이랑 같아야함
+                 Posting 에서도 ModelAttribute 줄때 같아야함 대소문자 구분 잘하셈!!!!!!!!!!!!!!!
+                   기본적으로 그냥 앞에 대문자 써서 하는게 편할듯?-->
         <form th:action="@{/member/companyJoin}" th:object="${CompanyVo}" method="post" class="signup-form">
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
 

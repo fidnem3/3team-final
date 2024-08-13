@@ -47,7 +47,7 @@
     <!-- 개인 회원 정보 조회 -->
     <select id="selectJobSeekerById" parameterType="String" resultType="com.javalab.board.vo.JobSeekerVo">
         SELECT
-        job_seeker_id AS jobSeekerId,
+        jobSeeker_id AS jobSeekerId,
         password,
         name,
         birth,
