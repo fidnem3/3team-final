@@ -10,6 +10,7 @@
     <title>Login Page</title>
     <link th:href="@{/css/login.css}" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 <div class="container" id="container">
@@ -90,16 +91,20 @@
         }
     });
 </script>
-
 <script>
-    function validateAdminLogin() {
-        const adminId = document.getElementById('adminId').value;
-        if (!adminId) {
-            alert('관리자 ID를 입력해야 합니다.');
-            return false;
+    document.addEventListener('DOMContentLoaded', function() {
+        const alertMessage = /*[[${alertMessage}]]*/ '';
+        const alertType = /*[[${alertType}]]*/ '';
+
+        if (alertMessage && alertType) {
+            Swal.fire({
+                title: alertType === 'success' ? '성공!' : '오류!',
+                text: alertMessage,
+                icon: alertType === 'success' ? 'success' : 'error',
+                confirmButtonText: '확인'
+            });
         }
-        return true;
-    }
+    });
 </script>
 </body>
 </html>

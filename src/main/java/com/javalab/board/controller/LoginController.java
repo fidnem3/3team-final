@@ -127,7 +127,6 @@ public class LoginController {
 
         try {
             // 기업 회원가입 처리
-            companyService.registerCompany(companyVo, userRolesVo);
             redirectAttributes.addFlashAttribute("alertMessage", "기업 회원가입이 성공적으로 완료되었습니다.");
             redirectAttributes.addFlashAttribute("alertType", "success");
             log.info("회원가입 성공: {}", companyVo.getCompId());

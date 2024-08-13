@@ -1,6 +1,7 @@
 package com.javalab.board.config;
 
 import com.javalab.board.handler.AuthFailureHandler;
+import com.javalab.board.handler.AuthSuccessHandler;
 import com.javalab.board.security.CustomOAuth2UserService;
 import com.javalab.board.security.dto.CustomUserDetails;
 import com.javalab.board.security.handler.CustomAccessDeniedHandler;
@@ -31,6 +32,9 @@ public class SecurityConfig {
 
 	@Autowired
 	private  AuthFailureHandler authFailureHandler;
+
+	@Autowired
+	private AuthSuccessHandler authSuccessHandler;
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -69,6 +73,7 @@ public class SecurityConfig {
 						})
 						.failureHandler(authFailureHandler)
 				)
+
 				.logout(logout -> logout
 						.logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
 						.logoutSuccessUrl("/member/login")
