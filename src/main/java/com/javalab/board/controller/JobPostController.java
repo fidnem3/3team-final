@@ -6,6 +6,7 @@ import com.javalab.board.vo.JobPostVo;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -71,6 +72,12 @@ public class JobPostController {
         return "jobPost/jobPostList";
     }
 
+    @GetMapping("/myJobPostList")
+    public String getMyJobPosts(Model model) {
+        List<JobPostVo> jobPosts = jobPostService.getJobPostsByCompany();
+        model.addAttribute("jobPosts", jobPosts);
+        return "jobPost/myJobPostList"; // Thymeleaf 템플릿 이름
+    }
 
     @GetMapping("/payment/{jobPostId}")
     public String showPaymentPage(@PathVariable("jobPostId") Long jobPostId, Model model) {
