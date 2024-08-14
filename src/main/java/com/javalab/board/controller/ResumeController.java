@@ -3,6 +3,7 @@ package com.javalab.board.controller;
 
 import com.javalab.board.dto.BoardDto;
 import com.javalab.board.dto.ResumeDto;
+import com.javalab.board.dto.ResumeFileDto;
 import com.javalab.board.dto.ResumeSkillDto;
 import com.javalab.board.service.JobSeekerService;
 import com.javalab.board.service.ResumeService;
@@ -62,7 +63,7 @@ public class ResumeController {
     //  저장 폼 전송
 
     @PostMapping("/save")
-    public String save(@ModelAttribute("resumeDto") ResumeDto resumeDto) {
+    public String save(@ModelAttribute("resumeDto") ResumeDto resumeDto) throws IOException {
         System.out.println("resumeDto = " + resumeDto);
         resumeService.resumeCreate(resumeDto);
         return "index";
@@ -89,7 +90,11 @@ public class ResumeController {
         ResumeDto resumeDto = resumeService.findById(resumeId);
 
         model.addAttribute("resume", resumeDto);
-
+        System.out.println("resumeDto =" + resumeDto);
+        if (resumeDto.getFileAttached() == 1 ) {
+            ResumeFileDto resumeFileDto = resumeService.findFile(resumeId);
+            model.addAttribute("resumeFile" , resumeFileDto);
+        }
         return "resume/detail";
     }
 

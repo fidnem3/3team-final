@@ -1,6 +1,7 @@
 package com.javalab.board.repository;
 
 import com.javalab.board.dto.ResumeDto;
+import com.javalab.board.dto.ResumeFileDto;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
 @Mapper
 public interface ResumeMapper {
 
-    public int createResume(ResumeDto resumeDto);
+    public ResumeDto resumeCreate(ResumeDto resumeDto);
 
     public List<ResumeDto> findAll();
 
@@ -21,6 +22,9 @@ public interface ResumeMapper {
 
     public void deleteResume(int resumeId);
 
+    void saveFile(ResumeFileDto resumeFileDto);
+
+    public ResumeFileDto findFile(int resumeId);
 }
 
 
