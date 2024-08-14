@@ -51,6 +51,7 @@
                     <div class="dropdown-menu rounded-0 m-0">
                         <a th:href="@{/jobPost/jobPostList}" class="dropdown-item">Job List</a>
                         <a th:href="@{/jobPost/jobPostDetail}" class="dropdown-item">Job Detail</a>
+                        <a th:href="@{/jobPost/myJobPostList}" class="dropdown-item" sec:authorize="hasRole('ROLE_COMPANY')">My JobPost</a>
                     </div>
                 </div>
                 <a th:href="@{/contact}" class="nav-item nav-link">Contact</a>
@@ -77,6 +78,19 @@
                     <div class="dropdown-menu rounded-0 m-0">
                         <a th:href="@{/user/dashboard}" class="dropdown-item">Dashboard</a>
                         <a th:href="@{/user/settings}" class="dropdown-item">Settings</a>
+                        <a th:href="@{/logout}" class="dropdown-item">Logout</a>
+                    </div>
+                </div>
+            </div>
+            <!-- 관리자 메뉴: ADMIN 역할을 가진 사용자에게만 보임 -->
+            <div sec:authorize="hasRole('ADMIN')">
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                        <i class="fa fa-user-shield"></i> Admin Menu
+                    </a>
+                    <div class="dropdown-menu rounded-0 m-0">
+                        <a th:href="@{/admin/dashboard}" class="dropdown-item">Admin Dashboard</a>
+                        <a th:href="@{/admin/settings}" class="dropdown-item">Admin Settings</a>
                         <a th:href="@{/logout}" class="dropdown-item">Logout</a>
                     </div>
                 </div>
@@ -248,6 +262,9 @@
         } else if (path == '/contact') {
             pageTitle.textContent = 'Contact';
             pageName.textContent = 'Contact';
+        } else if (path == '/jobPost/myJobPostList') {
+            pageTitle.textContent = '나의 채용공고';
+            pageName.textContent = 'MY POST';
         } else if (path === '/anotherPage') {
             pageTitle.textContent = 'Another Page';
             pageName.textContent = 'Another Page';
