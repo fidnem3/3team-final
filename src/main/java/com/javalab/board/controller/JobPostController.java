@@ -83,15 +83,24 @@ public class JobPostController {
     }
 
     @PostMapping("/completePayment")
-    public String completePayment(@RequestParam Long jobPostId, @RequestParam String paymentStatus) {
+    public String completePayment(
+            @RequestParam Long jobPostId,
+            @RequestParam String paymentStatus,
+            @RequestParam String imp_uid,
+            @RequestParam String merchant_uid
+    ) {
+        // 로그에 결제 정보를 출력
+        log.info("Received payment notification: jobPostId={}, paymentStatus={}, imp_uid={}, merchant_uid={}", jobPostId, paymentStatus, imp_uid, merchant_uid);
+
         // 결제 상태 업데이트
         jobPostService.updatePaymentStatus(jobPostId, paymentStatus);
 
-        // 로그에 결제 상태 출력
+        // 결제 상태 로그 출력
         log.info("Payment status updated to: {}", paymentStatus);
 
-        return "index";
+        return "redirect:/jobPost/jobPostList";
     }
+
 
     @GetMapping("/payment/{jobPostId}")
     public String showPaymentPage(@PathVariable("jobPostId") Long jobPostId, Model model) {

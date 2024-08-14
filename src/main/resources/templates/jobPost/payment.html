@@ -26,39 +26,54 @@
     <div class="payment-container">
         <h1 class="mb-4">Payment</h1>
         <form id="paymentForm" th:action="@{/jobPost/completePayment}" method="post">
-            <input type="hidden" name="jobPostId" th:value="${jobPostId}" />
+            <input type="hidden" id="jobPostId" name="jobPostId" th:value="${jobPostId}" />
             <input type="hidden" name="paymentStatus" value="After Payment" />
+            <input type="hidden" id="amount" name="amount" th:value="${amount}" />
+            <input type="hidden" id="imp_uid" name="imp_uid" />
+            <input type="hidden" id="merchant_uid" name="merchant_uid" />
             <div class="form-group">
                 <label for="amount">Amount:</label>
-                <input type="text" class="form-control" id="amount" name="amount" th:value="${amount}" readonly />
+                <input type="text" class="form-control" id="amountDisplay" th:value="${amount}" readonly />
             </div>
-            <div class="form-group">
-                <label for="paymentMethod">Payment Method:</label>
-                <select class="form-control" id="paymentMethod" name="paymentMethod" required>
-                    <option value="" disabled selected>Select payment method</option>
-                    <option value="credit_card">Credit Card</option>
-                    <option value="paypal">PayPal</option>
-                    <!-- Add other payment methods if needed -->
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="cardNumber">Card Number:</label>
-                <input type="text" class="form-control" id="cardNumber" name="cardNumber" placeholder="Enter your card number" />
-            </div>
-            <div class="form-group">
-                <label for="cardExpiry">Expiry Date:</label>
-                <input type="text" class="form-control" id="cardExpiry" name="cardExpiry" placeholder="MM/YY" />
-            </div>
-            <div class="form-group">
-                <label for="cardCvc">CVC:</label>
-                <input type="text" class="form-control" id="cardCvc" name="cardCvc" placeholder="Enter your card's CVC" />
-            </div>
-            <button type="submit" class="btn btn-primary">Complete Payment</button>
+            <button type="button" class="btn btn-primary" onclick="startPayment()">결제하기</button>
         </form>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+<script>
+    function startPayment() {
+        const IMP = window.IMP;
+        IMP.init("imp67607271"); // IAMPORT 가맹점 번호
+
+        const jobPostId = document.getElementById('jobPostId').value;
+        const amount = document.getElementById('amount').value;
+
+        const paymentData = {
+            pg: "html5_inicis", // 사용할 PG사
+            pay_method: "card",
+            merchant_uid: 'ORD-' + new Date().getTime(), // 주문 고유번호
+            name: "Job Post Payment", // 결제 상품명
+            amount: amount,
+            buyer_email: "", // 구매자 이메일
+            buyer_name: "", // 구매자 이름
+            buyer_tel: "", // 구매자 전화번호
+            m_redirect_url: window.location.origin + "/jobPost/completePayment" // 결제 완료 후 리디렉션될 URL
+        };
+
+        IMP.request_pay(paymentData, function (rsp) {
+            if (rsp.success) {
+                // 결제 성공 시, 폼의 hidden 필드를 업데이트하고 폼을 제출하여 서버에 결제 결과 전송
+                document.getElementById('imp_uid').value = rsp.imp_uid;
+                document.getElementById('merchant_uid').value = rsp.merchant_uid;
+                document.getElementById('paymentForm').submit();
+            } else {
+                // 결제 실패 시
+                console.error('Payment failed:', rsp.error_msg);
+                alert('Payment failed: ' + rsp.error_msg);
+            }
+        });
+    }
+</script>
 </body>
 </html>
