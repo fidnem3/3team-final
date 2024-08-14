@@ -14,6 +14,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.Duration;
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -79,11 +82,36 @@ public class JobPostController {
         return "jobPost/myJobPostList"; // Thymeleaf 템플릿 이름
     }
 
+    @PostMapping("/completePayment")
+    public String completePayment(@RequestParam Long jobPostId, @RequestParam String paymentStatus) {
+        // 결제 상태 업데이트
+        jobPostService.updatePaymentStatus(jobPostId, paymentStatus);
+
+        // 로그에 결제 상태 출력
+        log.info("Payment status updated to: {}", paymentStatus);
+
+        return "index";
+    }
+
     @GetMapping("/payment/{jobPostId}")
     public String showPaymentPage(@PathVariable("jobPostId") Long jobPostId, Model model) {
         JobPostVo jobPostVo = jobPostService.getJobPostById(jobPostId);
-        model.addAttribute("jobPostVo", jobPostVo);
-        return "jobPost/payment";
+        if (jobPostVo != null) {
+            // Ensure you handle the conversion from Date to LocalDate properly
+            LocalDate createdDate = jobPostVo.getCreated().toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+            LocalDate endDate = jobPostVo.getEndDate().toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+
+            // Calculate the duration in days
+            long durationDays = Duration.between(createdDate.atStartOfDay(), endDate.atStartOfDay()).toDays();
+            // Calculate the total amount
+            long amount = durationDays * 500;
+
+            model.addAttribute("amount", amount);
+            model.addAttribute("jobPost", jobPostVo);
+            return "/jobPost/payment"; // Return the name of the Thymeleaf template
+        } else {
+            return "error"; // Handle the case where the JobPost is not found
+        }
     }
 }
 
