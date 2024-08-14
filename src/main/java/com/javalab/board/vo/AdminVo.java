@@ -20,6 +20,7 @@ public class AdminVo {
     private String email;
     private String password;
     private String name;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birth;
     private String tel;
 }

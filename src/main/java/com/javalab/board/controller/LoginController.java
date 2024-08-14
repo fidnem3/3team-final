@@ -63,6 +63,7 @@ public class LoginController {
         }
     }
 
+
     // 구직자 페이지
     @GetMapping("/jobSeekerPage")
     public String jobSeekerPage(Model model, Authentication authentication) {
@@ -70,7 +71,7 @@ public class LoginController {
         JobSeekerVo jobSeeker = jobSeekerService.getJobSeekerDetails(username)
                 .orElseThrow(() -> new IllegalArgumentException("User not found with username: " + username));
         model.addAttribute("jobSeeker", jobSeeker);
-        return "member/jobSeekerPage"; // Thymeleaf 템플릿 파일 이름
+        return "index"; // Thymeleaf 템플릿 파일 이름
     }
 
     // 기업 페이지
@@ -80,7 +81,7 @@ public class LoginController {
         CompanyVo company = companyService.getCompanyDetails(username)
                 .orElseThrow(() -> new IllegalArgumentException("Company not found with username: " + username));
         model.addAttribute("company", company);
-        return "member/companyPage"; // Thymeleaf 템플릿 파일 이름
+        return "index"; // Thymeleaf 템플릿 파일 이름
     }
 
     // 관리자 페이지
@@ -95,6 +96,42 @@ public class LoginController {
     @GetMapping("/classification")
     public String classificationPage() {
         return "member/classification";
+    }
+
+    // 관리자 회원가입 페이지
+    @GetMapping("/adminJoin")
+    public String adminJoinPage(Model model) {
+        model.addAttribute("AdminVo", new AdminVo());
+        model.addAttribute("UserRolesVo", new UserRolesVo());
+        return "member/adminJoin";
+    }
+
+    // 관리자 회원가입 처리
+    @PostMapping("/adminJoin")
+    public String registerAdmin(@Valid @ModelAttribute("AdminVo") AdminVo adminVo,
+                                BindingResult bindingResult,
+                                RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            return "member/adminJoin";
+        }
+
+        // 비밀번호를 암호화합니다.
+        adminVo.setPassword(passwordEncoder.encode(adminVo.getPassword()));
+
+        UserRolesVo userRolesVo = new UserRolesVo();
+        userRolesVo.setUserId(adminVo.getAdminId());
+        userRolesVo.setUserType("admin");
+        userRolesVo.setRoleId("ROLE_ADMIN"); // 또는 적절한 기본 역할 ID
+
+        try {
+            // 관리자 회원가입 처리
+            adminService.registerAdmin(adminVo, userRolesVo);
+            redirectAttributes.addFlashAttribute("message", "관리자 회원가입이 성공적으로 완료되었습니다.");
+            return "redirect:/member/login";
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "회원가입 처리 중 오류가 발생했습니다: " + e.getMessage());
+            return "redirect:/member/adminJoin";
+        }
     }
 
 
@@ -191,13 +228,14 @@ public class LoginController {
 
 
 //    // 카카오 소셜 로그인 사용자 비밀번호 변경 화면
+    // 카카오 소셜 로그인 사용자 비밀번호 변경 화면
 //    @GetMapping("/modify")
 //    public String modifyGET() {
 //        log.info("modify get...");
 //        return "member/modify";
 //    }
-//
-//    // 카카오 소셜 로그인 사용자 비밀번호+social 변경
+
+    // 카카오 소셜 로그인 사용자 비밀번호+social 변경
 //    @PostMapping("/modify")
 //    public String modifyPOST(@AuthenticationPrincipal MemberVo memberVo,
 //                             @RequestParam("newPassword") String newPassword,

@@ -10,10 +10,10 @@
     <title>Login Page</title>
     <link th:href="@{/css/login.css}" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
-
+<button class="adminJoin" onclick="location.href='/member/adminJoin'">
+</button>
 <div class="container" id="container">
     <header class="header">
         <button class="home-button" onclick="location.href='/'">
@@ -87,21 +87,6 @@
                 title: '오류!',
                 text: errorMessage,
                 icon: 'error',
-                confirmButtonText: '확인'
-            });
-        }
-    });
-</script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const alertMessage = /*[[${alertMessage}]]*/ '';
-        const alertType = /*[[${alertType}]]*/ '';
-
-        if (alertMessage && alertType) {
-            Swal.fire({
-                title: alertType === 'success' ? '성공!' : '오류!',
-                text: alertMessage,
-                icon: alertType === 'success' ? 'success' : 'error',
                 confirmButtonText: '확인'
             });
         }
