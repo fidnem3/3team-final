@@ -126,7 +126,7 @@
                                             <a class="btn btn-light btn-square me-3" th:href="@{/jobPost/payment/{jobPostId}(jobPostId=${jobPost.jobPostId})}"
                                                th:if="${jobPost.paymentStatus == 'Before Payment'}">Pay</a>
                                         </div>
-                                        <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i><span th:text="${jobPost.endDate}">Date Line</span></small>
+                                        <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i><span th:text="${jobPost.paymentStatus}">Status</span></small>
                                     </div>
                                 </div>
                             </div>
