@@ -141,8 +141,10 @@
             <td>
                 <a th:href="@{/resumes/{id}(id=${resume.resumeId})}" class="btn btn-info">보기</a>
                 <a th:href="@{/resumes/{id}/edit(id=${resume.resumeId})}" class="btn btn-warning">수정</a>
-                <form th:action="@{/resumes/{id}/delete(id=${resume.resumeId})}" method="post" style="display:inline;">
-                    <button type="submit" class="btn btn-danger" onclick="return confirm('정말 삭제하시겠습니까?')">삭제</button>
+<!--                <form th:action="@{/resumes/delete/{resumeId}(resumeId=${resume.resumeId})}" method="post" style="display:inline;">-->
+<!--                    <button type="submit" class="btn btn-danger" onclick="return confirm('정말 삭제하시겠습니까?')">삭제</button>-->
+                <form th:action="@{/resume/delete/{resumeId}(resumeId=${resume.resumeId})}" method="post" onsubmit="return confirm('정말 삭제하시겠습니까?');">
+                    <button type="submit" class="btn btn-danger">삭제</button>
                 </form>
             </td>
         </tr>

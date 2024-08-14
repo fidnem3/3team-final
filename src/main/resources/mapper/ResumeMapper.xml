@@ -77,6 +77,13 @@
         where resume_id = #{resumeId}
     </update>
 
+    <delete id="deleteResume">
+        delete
+        from resume
+        where resume_id=#{resumeId}
+    </delete>
+
+
 
 
 </mapper>

@@ -18,6 +18,9 @@ public interface ResumeMapper {
     public ResumeDto findById(int resumeId);
 
     public void updateResume(ResumeDto resumeDto);
+
+    public void deleteResume(int resumeId);
+
 }
 
 

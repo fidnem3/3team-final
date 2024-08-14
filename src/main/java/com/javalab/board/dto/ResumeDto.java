@@ -22,7 +22,8 @@ public class ResumeDto {
         private String filePath; // 파일주소
         private List<String> skills;
         private JobSeekerVo jobSeekerVo;
-        private MultipartFile photo;
+        private MultipartFile boardFile;
+        private int fileAttached;
 
         // 추가: 기술들을 쉼표로 구분된 문자열로 변환하는 메서드
         public String getSkillsAsString() {

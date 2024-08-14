@@ -54,6 +54,10 @@ public class ResumeService {
         resumeMapper.updateResume(resumeDto);
     }
 
+    public void deleteResume(int resumeId) {
+        resumeMapper.deleteResume(resumeId);
+    }
+
 }
 
 
