@@ -24,7 +24,7 @@ public interface ResumeMapper {
 
     void saveFile(ResumeFileDto resumeFileDto);
 
-    public ResumeFileDto findFile(int resumeId);
+        public ResumeFileDto findFile(int resumeId);
 }
 
 
