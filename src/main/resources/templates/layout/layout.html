@@ -3,6 +3,7 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/html">
 <head>
+
     <meta charset="UTF-8">
     <title>Navigation Layout</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -12,6 +13,7 @@
     <!-- Favicon -->
     <link th:href="@{/img/favicon.ico}" rel="icon">
 
+    <script src="https://cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -31,6 +33,7 @@
 
     <!-- Template Stylesheet -->
     <link th:href="@{/css/style.css}" rel="stylesheet">
+
 </head>
 <body>
 <header>
@@ -214,7 +217,6 @@
 <script th:src="@{/lib/easing/easing.min.js}"></script>
 <script th:src="@{/lib/waypoints/waypoints.min.js}"></script>
 <script th:src="@{/lib/owlcarousel/owl.carousel.min.js}"></script>
-
 <!-- Template Javascript -->
 <script th:src="@{/js/main.js}"></script>
 
