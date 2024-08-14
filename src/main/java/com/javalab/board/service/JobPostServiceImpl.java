@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class JobPostServiceImpl implements JobPostService {
 
@@ -47,7 +49,11 @@ public class JobPostServiceImpl implements JobPostService {
 
     @Override
     public List<JobPostVo> getAllJobPosts() {
-        return jobPostMapper.getAllJobPosts();
+        List<JobPostVo> allJobPosts = jobPostMapper.getAllJobPosts();
+        // 결제 상태가 'after_payment'인 공고만 필터링
+        return allJobPosts.stream()
+                .filter(jobPost -> "After Payment".equals(jobPost.getPaymentStatus()))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -59,5 +65,13 @@ public class JobPostServiceImpl implements JobPostService {
     private String getCurrentCompanyId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication.getName(); // 기업회원 ID가 보통 Username으로 설정됨
+    }
+
+    @Override
+    public void updatePaymentStatus(Long jobPostId, String paymentStatus) {
+        JobPostVo jobPostVo = new JobPostVo();
+        jobPostVo.setJobPostId(jobPostId);
+        jobPostVo.setPaymentStatus(paymentStatus);
+        jobPostMapper.updatePaymentStatus(jobPostVo);
     }
 }

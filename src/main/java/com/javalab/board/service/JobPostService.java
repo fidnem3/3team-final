@@ -10,4 +10,5 @@ public interface JobPostService {
     JobPostVo getJobPostById(Long jobPostId);
     List<JobPostVo> getAllJobPosts();
     List<JobPostVo> getJobPostsByCompany();
+    void updatePaymentStatus(Long jobPostId, String paymentStatus);
 }

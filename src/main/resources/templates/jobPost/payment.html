@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,10 +25,12 @@
 <div class="container">
     <div class="payment-container">
         <h1 class="mb-4">Payment</h1>
-        <form id="paymentForm" action="/jobPost/payment/complete" method="post">
+        <form id="paymentForm" th:action="@{/jobPost/completePayment}" method="post">
+            <input type="hidden" name="jobPostId" th:value="${jobPostId}" />
+            <input type="hidden" name="paymentStatus" value="After Payment" />
             <div class="form-group">
                 <label for="amount">Amount:</label>
-                <input type="text" class="form-control" id="amount" name="amount" value="${amount}" readonly />
+                <input type="text" class="form-control" id="amount" name="amount" th:value="${amount}" readonly />
             </div>
             <div class="form-group">
                 <label for="paymentMethod">Payment Method:</label>
