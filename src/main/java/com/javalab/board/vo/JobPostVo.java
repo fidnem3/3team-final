@@ -35,5 +35,6 @@ public class JobPostVo implements Serializable {
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date endDate ;
 	private Date created;
+	private String paymentStatus; // 'Before Payment', 'After Payment'
 
 }

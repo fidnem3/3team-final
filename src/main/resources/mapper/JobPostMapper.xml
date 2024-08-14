@@ -31,6 +31,11 @@
         WHERE comp_id = #{compId}
     </select>
 
+    <update id="updatePaymentStatus">
+        UPDATE jobPost
+        SET payment_status = #{paymentStatus}
+        WHERE jobPost_id = #{jobPostId}
+    </update>
 
 
 </mapper>
