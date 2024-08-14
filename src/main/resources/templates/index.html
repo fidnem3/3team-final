@@ -59,7 +59,7 @@
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Jobs</a>
                     <div class="dropdown-menu rounded-0 m-0">
                         <a th:href="@{/jobPost/jobPostList}" class="dropdown-item">Job List</a>
-                        <a th:href="@{/jobPost/jobPostDetail}" class="dropdown-item">Job Detail</a>
+                        <a th:href="@{/jobPost/myJobPostList}" class="dropdown-item" sec:authorize="hasRole('ROLE_COMPANY')">My JobPost</a>
                     </div>
                 </div>
                 <a th:href="@{/contact}" class="nav-item nav-link">Contact</a>

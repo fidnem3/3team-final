@@ -9,4 +9,5 @@ public interface JobPostService {
     Long saveJobPost(JobPostVo jobPostVoo);
     JobPostVo getJobPostById(Long jobPostId);
     List<JobPostVo> getAllJobPosts();
+    List<JobPostVo> getJobPostsByCompany();
 }

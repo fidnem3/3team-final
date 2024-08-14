@@ -26,4 +26,11 @@
         SELECT * FROM jobPost
     </select>
 
+    <select id="selectJobPostsByCompany" parameterType="String" resultType="com.javalab.board.vo.JobPostVo">
+        SELECT * FROM jobPost
+        WHERE comp_id = #{compId}
+    </select>
+
+
+
 </mapper>

@@ -49,4 +49,15 @@ public class JobPostServiceImpl implements JobPostService {
     public List<JobPostVo> getAllJobPosts() {
         return jobPostMapper.getAllJobPosts();
     }
+
+    @Override
+    public List<JobPostVo> getJobPostsByCompany() {
+        String currentCompanyId = getCurrentCompanyId();
+        return jobPostMapper.selectJobPostsByCompany(currentCompanyId);
+    }
+
+    private String getCurrentCompanyId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication.getName(); // 기업회원 ID가 보통 Username으로 설정됨
+    }
 }
