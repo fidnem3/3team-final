@@ -4,6 +4,7 @@ import com.javalab.board.dto.ResumeDto;
 import com.javalab.board.dto.ResumeSkillDto;
 import com.javalab.board.repository.ResumeMapper;
 import com.javalab.board.repository.ResumeSkillMapper;
+import com.javalab.board.vo.BoardVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
@@ -18,11 +19,6 @@ public class ResumeService {
     private final ResumeMapper resumeMapper;
 
     private final ResumeSkillMapper resumeSkillMapper;
-
-//    public ResumeService(ResumeMapper resumeMapper, ResumeSkillMapper resumeSkillMapper) {
-//        this.resumeMapper = resumeMapper;
-//        this.resumeSkillMapper = resumeSkillMapper;
-//    }
 
 
     @Transactional
@@ -44,12 +40,25 @@ public class ResumeService {
         return resumeMapper.findAll();
 
     }
+
+//    public void updateHits(int resumeId) {
+//        resumeMapper.updateHits(resumeId);
+//    }
+
+    public ResumeDto findById(int resumeId) {
+        return resumeMapper.findById(resumeId);
+    }
+
+
+    public void updateResume(ResumeDto resumeDto) {
+        resumeMapper.updateResume(resumeDto);
+    }
+
 }
 
 
 
-
-        //스킬들 각각 DB에 저장
+//스킬들 각각 DB에 저장
 //    @Transactional
 //    public void save(ResumeDto resumeDto) {
 //        // 1. 이력서를 저장합니다.
