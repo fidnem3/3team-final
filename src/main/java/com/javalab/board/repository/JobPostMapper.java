@@ -15,4 +15,6 @@ public interface JobPostMapper {
     List<JobPostVo> getAllJobPosts();
 
     List<JobPostVo> selectJobPostsByCompany(String compId);
+
+    void updatePaymentStatus(JobPostVo jobPostVo);
 }
