@@ -2,6 +2,7 @@ package com.javalab.board.controller;
 
 import com.javalab.board.dto.CreateJobPostRequestDto;
 import com.javalab.board.service.JobPostService;
+import com.javalab.board.vo.BoardVo;
 import com.javalab.board.vo.JobPostVo;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +18,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @Slf4j
@@ -70,6 +74,10 @@ public class JobPostController {
     @GetMapping("/jobPostList")
     public String listJobPosts(Model model) {
         List<JobPostVo> jobPosts = jobPostService.getAllJobPosts();
+
+        // 날짜 포맷팅 설정
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
         log.info("JobPosts: {}", jobPosts); // 로그에 공고 목록 출력
         model.addAttribute("jobPosts", jobPosts);
         return "jobPost/jobPostList";
@@ -117,10 +125,36 @@ public class JobPostController {
 
             model.addAttribute("amount", amount);
             model.addAttribute("jobPost", jobPostVo);
-            return "/jobPost/payment"; // Return the name of the Thymeleaf template
+            return "jobPost/payment"; // Return the name of the Thymeleaf template
         } else {
             return "error"; // Handle the case where the JobPost is not found
         }
     }
+
+    @GetMapping("/detail/{jobPostId}")
+    public String detail(@PathVariable("jobPostId") Long jobPostId, Model model) {
+        JobPostVo jobPostVo = jobPostService.findJobPostById(jobPostId);
+
+        if (jobPostVo != null) {
+            // 날짜 포맷팅
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            String formattedEndDate = jobPostVo.getEndDate() != null
+                    ? jobPostVo.getEndDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().format(formatter)
+                    : "";
+            String formattedCreated = jobPostVo.getCreated() != null
+                    ? jobPostVo.getCreated().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().format(formatter)
+                    : "";
+
+            model.addAttribute("jobPost", jobPostVo); // 모델에 추가
+            model.addAttribute("formattedEndDate", formattedEndDate);
+            model.addAttribute("formattedCreated", formattedCreated);
+            return "jobPost/jobPostDetail"; // 공고 상세 페이지로 이동
+        } else {
+            // 공고를 찾을 수 없는 경우, 목록 페이지로 리다이렉트
+            return "redirect:/jobPost/jobPostList";
+        }
+    }
+
+
 }
 

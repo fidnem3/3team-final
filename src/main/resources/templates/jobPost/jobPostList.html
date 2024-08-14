@@ -58,14 +58,15 @@
                                 <div class="d-flex mb-3">
                                     <a class="btn btn-light btn-square me-3" href="#"><i
                                             class="far fa-heart text-primary"></i></a>
-                                    <a class="btn btn-primary" href="#">Apply Now</a>
+                                    <a class="btn btn-primary" th:href="@{/jobPost/detail/{jobPostId}(jobPostId=${jobPost.jobPostId})}">보기</a>
+
                                 </div>
                                 <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i><span
-                                        th:text="${jobPost.endDate}">Date Line</span></small>
+                                        th:text="${#dates.format(jobPost.endDate, 'yyyy-MM-dd')}"></span> 마감</small>
                             </div>
                         </div>
                     </div>
-                    <a class="btn btn-primary py-3 px-5" href="#">더 보기</a>
+                    <a class="btn btn-primary py-3 px-5">더 보기</a>
                 </div>
             </div>
 

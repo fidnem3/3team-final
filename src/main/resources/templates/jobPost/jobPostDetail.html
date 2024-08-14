@@ -20,38 +20,22 @@
                     <img class="flex-shrink-0 img-fluid border rounded" src="../static/img/com-logo-2.jpg" alt=""
                          style="width: 80px; height: 80px;">
                     <div class="text-start ps-4">
-                        <h3 class="mb-3">백엔드 개발자</h3>
-                        <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>New York, USA</span>
+                        <h3 class="mb-3"><span th:text="${jobPost.title}"></span></h3>
+                        <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i><span th:text="${jobPost.address}"></span></span>
                         <span class="text-truncate me-3"><i
                                 class="far fa-clock text-primary me-2"></i>Full Time</span>
-                        <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i>$123 - $456</span>
+                        <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i><span th:text="${jobPost.salary}"></span></span>
                     </div>
                 </div>
 
                 <div class="mb-5">
-                    <h4 class="mb-3">내용</h4>
-                    <p>내용 설명</p>
                     <h4 class="mb-3">조건</h4>
-                    <p>필요한 조건</p>
                     <ul class="list-unstyled">
-                        <li><i class="fa fa-angle-right text-primary me-2"></i>컴퓨터 공학 학사 학위 이상</li>
-                        <li><i class="fa fa-angle-right text-primary me-2"></i>경력 2년 이상</li>
+                        <li><i class="fa fa-angle-right text-primary me-2"></i><span th:text="${jobPost.education}"></span></li>
+                        <li><i class="fa fa-angle-right text-primary me-2"></i><span th:text="${jobPost.experience}"></span></li>
                     </ul>
-                    <h4 class="mb-3">Qualifications</h4>
-                    <p>Magna et elitr diam sed lorem. Diam diam stet erat no est est. Accusam sed lorem stet
-                        voluptua sit sit at stet consetetur, takimata at diam kasd gubergren elitr dolor</p>
-                    <ul class="list-unstyled">
-                        <li><i class="fa fa-angle-right text-primary me-2"></i>Dolor justo tempor duo ipsum accusam
-                        </li>
-                        <li><i class="fa fa-angle-right text-primary me-2"></i>Elitr stet dolor vero clita labore
-                            gubergren
-                        </li>
-                        <li><i class="fa fa-angle-right text-primary me-2"></i>Rebum vero dolores dolores elitr</li>
-                        <li><i class="fa fa-angle-right text-primary me-2"></i>Est voluptua et sanctus at sanctus
-                            erat
-                        </li>
-                        <li><i class="fa fa-angle-right text-primary me-2"></i>Diam diam stet erat no est est</li>
-                    </ul>
+                    <h4 class="mb-3">내용</h4>
+                    <span th:utext="${jobPost.content}"></span><br><br>
                 </div>
 
                 <div class="">
@@ -84,12 +68,12 @@
             <div class="col-lg-4">
                 <div class="bg-light rounded p-5 mb-4 wow slideInUp" data-wow-delay="0.1s">
                     <h4 class="mb-4">Job Summery</h4>
-                    <p><i class="fa fa-angle-right text-primary me-2"></i>Published On: 01 Jan, 2045</p>
-                    <p><i class="fa fa-angle-right text-primary me-2"></i>Vacancy: 123 Position</p>
-                    <p><i class="fa fa-angle-right text-primary me-2"></i>Job Nature: Full Time</p>
-                    <p><i class="fa fa-angle-right text-primary me-2"></i>Salary: $123 - $456</p>
-                    <p><i class="fa fa-angle-right text-primary me-2"></i>Location: New York, USA</p>
-                    <p class="m-0"><i class="fa fa-angle-right text-primary me-2"></i>Date Line: 01 Jan, 2045</p>
+                    <p><i class="fa fa-angle-right text-primary me-2"></i><b>작성일 :</b> <span th:text="${formattedCreated}"></span></p>
+                    <p><i class="fa fa-angle-right text-primary me-2"></i><b>직급 :</b> <span th:text="${jobPost.position}"></span></p>
+                    <p><i class="fa fa-angle-right text-primary me-2"></i><b>고용형태 :</b> Full Time</p>
+                    <p><i class="fa fa-angle-right text-primary me-2"></i><b>급여 :</b> <span th:text="${jobPost.salary}"></span></p>
+                    <p><i class="fa fa-angle-right text-primary me-2"></i><b>지역 :</b> <span th:text="${jobPost.address}"></span></p>
+                    <p class="m-0"><i class="fa fa-angle-right text-primary me-2"></i><b>마감일자 :</b> <span th:text="${formattedEndDate}"></span></p>
                 </div>
                 <div class="bg-light rounded p-5 wow slideInUp" data-wow-delay="0.1s">
                     <h4 class="mb-4">Company Detail</h4>

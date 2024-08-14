@@ -6,11 +6,11 @@ import com.javalab.board.vo.JobPostVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -73,5 +73,10 @@ public class JobPostServiceImpl implements JobPostService {
         jobPostVo.setJobPostId(jobPostId);
         jobPostVo.setPaymentStatus(paymentStatus);
         jobPostMapper.updatePaymentStatus(jobPostVo);
+    }
+
+    @Override
+    public JobPostVo findJobPostById(Long jobPostId) {
+        return jobPostMapper.findJobPostById(jobPostId);
     }
 }
