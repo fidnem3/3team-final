@@ -70,7 +70,7 @@ public class LoginController {
         JobSeekerVo jobSeeker = jobSeekerService.getJobSeekerDetails(username)
                 .orElseThrow(() -> new IllegalArgumentException("User not found with username: " + username));
         model.addAttribute("jobSeeker", jobSeeker);
-        return "member/jobSeekerPage"; // Thymeleaf 템플릿 파일 이름
+        return "index"; // Thymeleaf 템플릿 파일 이름
     }
 
     // 기업 페이지
@@ -80,7 +80,7 @@ public class LoginController {
         CompanyVo company = companyService.getCompanyDetails(username)
                 .orElseThrow(() -> new IllegalArgumentException("Company not found with username: " + username));
         model.addAttribute("company", company);
-        return "member/companyPage"; // Thymeleaf 템플릿 파일 이름
+        return "index"; // Thymeleaf 템플릿 파일 이름
     }
 
     // 관리자 페이지
