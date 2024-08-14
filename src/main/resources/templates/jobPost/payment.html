@@ -25,25 +25,26 @@
 <div class="container">
     <div class="payment-container">
         <h1 class="mb-4">Payment</h1>
-        <form id="paymentForm">
-            <input type="hidden" id="jobPostId" th:value="${jobPostId}" />
-            <input type="hidden" id="amount" th:value="${amount}" />
+        <form id="paymentForm" th:action="@{/jobPost/completePayment}" method="post">
+            <input type="hidden" id="jobPostId" name="jobPostId" th:value="${jobPostId}" />
+            <input type="hidden" name="paymentStatus" value="After Payment" />
+            <input type="hidden" id="amount" name="amount" th:value="${amount}" />
+            <input type="hidden" id="imp_uid" name="imp_uid" />
+            <input type="hidden" id="merchant_uid" name="merchant_uid" />
             <div class="form-group">
                 <label for="amount">Amount:</label>
                 <input type="text" class="form-control" id="amountDisplay" th:value="${amount}" readonly />
             </div>
-            <button type="button" class="btn btn-primary" onclick="startPayment()">Complete Payment</button>
+            <button type="button" class="btn btn-primary" onclick="startPayment()">결제하기</button>
         </form>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 <script>
     function startPayment() {
         const IMP = window.IMP;
-        IMP.init("imp67607271"); // Iamport 가맹점 번호
+        IMP.init("imp67607271"); // IAMPORT 가맹점 번호
 
         const jobPostId = document.getElementById('jobPostId').value;
         const amount = document.getElementById('amount').value;
@@ -56,25 +57,19 @@
             amount: amount,
             buyer_email: "", // 구매자 이메일
             buyer_name: "", // 구매자 이름
-            buyer_tel: "" // 구매자 전화번호
+            buyer_tel: "", // 구매자 전화번호
+            m_redirect_url: window.location.origin + "/jobPost/completePayment" // 결제 완료 후 리디렉션될 URL
         };
 
         IMP.request_pay(paymentData, function (rsp) {
             if (rsp.success) {
-                // 결제 성공 시, 서버에 결제 결과 전송
-                $.post("/jobPost/completePayment", {
-                    jobPostId: jobPostId,
-                    paymentStatus: "After Payment",
-                    imp_uid: rsp.imp_uid, // 결제 고유번호
-                    merchant_uid: rsp.merchant_uid // 주문 고유번호
-                }).done(function (data) {
-                    alert('Payment successful!');
-                    window.location.href = '/jobPost/jobPostList'; // 결제 후 리디렉션
-                }).fail(function () {
-                    alert('Payment failed.');
-                });
+                // 결제 성공 시, 폼의 hidden 필드를 업데이트하고 폼을 제출하여 서버에 결제 결과 전송
+                document.getElementById('imp_uid').value = rsp.imp_uid;
+                document.getElementById('merchant_uid').value = rsp.merchant_uid;
+                document.getElementById('paymentForm').submit();
             } else {
                 // 결제 실패 시
+                console.error('Payment failed:', rsp.error_msg);
                 alert('Payment failed: ' + rsp.error_msg);
             }
         });
