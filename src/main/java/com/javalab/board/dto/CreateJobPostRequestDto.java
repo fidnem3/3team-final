@@ -18,8 +18,6 @@ import java.util.Date;
 @Builder // 빌더패턴적용
 public class CreateJobPostRequestDto {
 
-    private Long jobPostId;
-    private String compId;
     private String title;
     private String content;
     private String position;
@@ -27,9 +25,10 @@ public class CreateJobPostRequestDto {
     private String experience;
     private String education;
     private String address;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date endDate;
     private String homepage;
-    private Date created;
     private Integer hitNo;
     private String status;
     private String logoPath; // Path to the image
