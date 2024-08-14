@@ -59,13 +59,14 @@ public class JobPostController {
         log.info("JobPost created with ID: {}", jobPostId);
 
         // 게시물 목록 페이지로 리다이렉트
-        return "redirect:/jobPost/jobPostlist";
+        return "redirect:/jobPost/jobPostList";
     }
 
 
-    @GetMapping("/list")
-    public String list(Model model) {
+    @GetMapping("/jobPostList")
+    public String listJobPosts(Model model) {
         List<JobPostVo> jobPosts = jobPostService.getAllJobPosts();
+        log.info("JobPosts: {}", jobPosts); // 로그에 공고 목록 출력
         model.addAttribute("jobPosts", jobPosts);
         return "jobPost/jobPostList";
     }
