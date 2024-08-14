@@ -1,19 +1,16 @@
 package com.javalab.board.repository;
 
+import com.javalab.board.dto.CreateJobPostRequestDto;
 import com.javalab.board.vo.JobPostVo;
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-@Mapper
 public interface JobPostMapper {
+    // 반환 타입을 Long으로 설정
+    Long insertJobPost(JobPostVo jobPostVo);
 
-    void save(JobPostVo jobPost);
+    JobPostVo getJobPostById(@Param("jobPostId") Long jobPostId);
 
-    void updateStatus(@Param("jobPostId") Long jobPostId, @Param("status") String status);
-
-    JobPostVo findById(Long jobPostId);
-
-    List<JobPostVo> findAll();
+    List<JobPostVo> getAllJobPosts();
 }

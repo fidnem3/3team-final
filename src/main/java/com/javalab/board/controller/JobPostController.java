@@ -2,19 +2,21 @@ package com.javalab.board.controller;
 
 import com.javalab.board.dto.CreateJobPostRequestDto;
 import com.javalab.board.service.JobPostService;
+import com.javalab.board.vo.JobPostVo;
+import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
-
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
+@Slf4j
 @RequestMapping("/jobPost")
 public class JobPostController {
 
@@ -24,61 +26,56 @@ public class JobPostController {
     @GetMapping("/jobPostCreate")
     public String createJobPost(Model model) {
         model.addAttribute("createJobPostRequestDto", new CreateJobPostRequestDto());
-        return "jobPost/jobPostCreate"; // Thymeleaf 템플릿의 경로
+        return "jobPost/jobPostCreate";
     }
-
 
     @PostMapping("/jobPostCreate")
-    @ResponseBody
-    public Map<String, Object> createJobPost(@ModelAttribute CreateJobPostRequestDto createJobPostRequestDto, @RequestParam("file") MultipartFile file) {
-        jobPostService.createJobPost(createJobPostRequestDto);
+    public String create(@ModelAttribute("createJobPostRequestDto") @Valid CreateJobPostRequestDto createJobPostRequestDto,
+                         BindingResult bindingResult) {
+        log.info("CreateJobPostRequestDto: {}", createJobPostRequestDto);
 
-        // Calculate the cost
-        long jobPostDurationInDays = calculateJobPostDuration(createJobPostRequestDto.getEndDate());
-        int cost = (int) (jobPostDurationInDays * 300);  // Cost calculation logic
+        // 사용자 인증 정보 얻기
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String compId = ((UserDetails) authentication.getPrincipal()).getUsername();
 
-        // Prepare the response
-        Map<String, Object> response = new HashMap<>();
-        response.put("redirectUrl", "/payment/complete"); // URL for payment page
-        response.put("cost", cost);
+        // DTO를 VO로 변환
+        JobPostVo jobPostVo = JobPostVo.builder()
+                .compId(compId)  // 현재 사용자 ID 설정
+                .title(createJobPostRequestDto.getTitle())
+                .content(createJobPostRequestDto.getContent())
+                .position(createJobPostRequestDto.getPosition())
+                .salary(createJobPostRequestDto.getSalary())
+                .experience(createJobPostRequestDto.getExperience())
+                .education(createJobPostRequestDto.getEducation())
+                .address(createJobPostRequestDto.getAddress())
+                .endDate(createJobPostRequestDto.getEndDate())
+                .homepage(createJobPostRequestDto.getHomepage())
+                .status("Before payment") // 기본 상태를 'Pending'으로 설정
+                .build();
 
-        return response;
+        // JobPost 저장
+        Long jobPostId = jobPostService.saveJobPost(jobPostVo);
+
+        log.info("JobPost created with ID: {}", jobPostId);
+
+        // 게시물 목록 페이지로 리다이렉트
+        return "redirect:/jobPost/jobPostlist";
     }
 
-
-    // Method to calculate duration (example)
-    private long calculateJobPostDuration(Date endDate) {
-        // Implement the logic to calculate the duration based on your needs
-        long duration = (endDate.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24);
-        return duration;
-    }
-
-    @GetMapping("/{id}")
-    public String getJobPost(@PathVariable("id") Long jobPostId, Model model) {
-        CreateJobPostRequestDto jobPost = jobPostService.getJobPostById(jobPostId);
-        model.addAttribute("jobPost", jobPost);
-        return "jobPostDetail";
-    }
 
     @GetMapping("/list")
-    public String listAllJobPosts(Model model) {
-        List<CreateJobPostRequestDto> jobPosts = jobPostService.getAllJobPosts();
+    public String list(Model model) {
+        List<JobPostVo> jobPosts = jobPostService.getAllJobPosts();
         model.addAttribute("jobPosts", jobPosts);
-        return "jobPostList";
+        return "jobPost/jobPostList";
     }
 
-    @GetMapping("/payment")
-    public ModelAndView paymentPage(@RequestParam("amount") String amount) {
-        ModelAndView mav = new ModelAndView("payment");
-        mav.addObject("amount", amount);
-        return mav;
-    }
 
-    @PostMapping("/payment/complete")
-    public String completePayment(@RequestParam("amount") String amount) {
-        // Handle payment completion logic
-        // Typically, you would check if the payment was successful
-        // and then proceed to save the job post
-        return "redirect:/jobPost/list";
+    @GetMapping("/payment/{jobPostId}")
+    public String showPaymentPage(@PathVariable("jobPostId") Long jobPostId, Model model) {
+        JobPostVo jobPostVo = jobPostService.getJobPostById(jobPostId);
+        model.addAttribute("jobPostVo", jobPostVo);
+        return "jobPost/payment";
     }
 }
+
