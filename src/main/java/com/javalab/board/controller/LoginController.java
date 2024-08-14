@@ -190,58 +190,14 @@ public class LoginController {
 
 
 
-
-
-
-
-    // 회원 가입 화면
-//    @GetMapping(value = "/join")
-//    public String memberForm(Model model){
-//        model.addAttribute("memberFormDto", new MemberFormDto());
-//        return "member/join";
-//    }
-
-    // 회원 가입 처리
-//    @PostMapping(value = "/join")
-//    public String newMember(@Valid MemberFormDto memberFormDto,
-//                            BindingResult bindingResult,
-//                            Model model){
-//
-//        if(bindingResult.hasErrors()){
-//            log.info("회원가입 데이터 검증 오류 있음");
-//            return "member/join";
-//        }
-//
-//        try {
-//            MemberVo member = MemberVo.builder()
-//                    .memberId(memberFormDto.getEmail()) // 이메일을 memberId로 사용
-//                    .password(passwordEncoder.encode(memberFormDto.getPassword()))
-//                    .name(memberFormDto.getName())
-//                    .email(memberFormDto.getEmail())
-//                    .roles(List.of("ROLE_USER"))
-//                    .build();
-//
-//            log.info("회원가입 데이터 member : " + member);
-//            memberService.saveMember(member);
-//        } catch (IllegalStateException e){
-//            model.addAttribute("errorMessage", e.getMessage());
-//            log.info("MemberController 회원가입시 중복 오류 : " + e.getMessage());
-//            return "member/join";
-//        }
-//
-//        return "redirect:/member/login"; //회원 가입 후 로그인
-//    }
-
-
-
-    // 카카오 소셜 로그인 사용자 비밀번호 변경 화면
+//    // 카카오 소셜 로그인 사용자 비밀번호 변경 화면
 //    @GetMapping("/modify")
 //    public String modifyGET() {
 //        log.info("modify get...");
 //        return "member/modify";
 //    }
-
-    // 카카오 소셜 로그인 사용자 비밀번호+social 변경
+//
+//    // 카카오 소셜 로그인 사용자 비밀번호+social 변경
 //    @PostMapping("/modify")
 //    public String modifyPOST(@AuthenticationPrincipal MemberVo memberVo,
 //                             @RequestParam("newPassword") String newPassword,
