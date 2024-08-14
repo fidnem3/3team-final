@@ -29,9 +29,4 @@ public class HomeController {
         return "about"; // templates/about.html을 렌더링
     }
 
-    @GetMapping("/jobPost/jobPostList")
-    public String jobPostList() {
-        return "/jobPost/jobPostList"; // templates/jobPost/jobPostList.html을 렌더링
-    }
-
 }
