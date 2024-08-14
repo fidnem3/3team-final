@@ -63,6 +63,7 @@ public class LoginController {
         }
     }
 
+
     // 구직자 페이지
     @GetMapping("/jobSeekerPage")
     public String jobSeekerPage(Model model, Authentication authentication) {
@@ -95,6 +96,42 @@ public class LoginController {
     @GetMapping("/classification")
     public String classificationPage() {
         return "member/classification";
+    }
+
+    // 관리자 회원가입 페이지
+    @GetMapping("/adminJoin")
+    public String adminJoinPage(Model model) {
+        model.addAttribute("AdminVo", new AdminVo());
+        model.addAttribute("UserRolesVo", new UserRolesVo());
+        return "member/adminJoin";
+    }
+
+    // 관리자 회원가입 처리
+    @PostMapping("/adminJoin")
+    public String registerAdmin(@Valid @ModelAttribute("AdminVo") AdminVo adminVo,
+                                BindingResult bindingResult,
+                                RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            return "member/adminJoin";
+        }
+
+        // 비밀번호를 암호화합니다.
+        adminVo.setPassword(passwordEncoder.encode(adminVo.getPassword()));
+
+        UserRolesVo userRolesVo = new UserRolesVo();
+        userRolesVo.setUserId(adminVo.getAdminId());
+        userRolesVo.setUserType("admin");
+        userRolesVo.setRoleId("ROLE_ADMIN"); // 또는 적절한 기본 역할 ID
+
+        try {
+            // 관리자 회원가입 처리
+            adminService.registerAdmin(adminVo, userRolesVo);
+            redirectAttributes.addFlashAttribute("message", "관리자 회원가입이 성공적으로 완료되었습니다.");
+            return "redirect:/member/login";
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "회원가입 처리 중 오류가 발생했습니다: " + e.getMessage());
+            return "redirect:/member/adminJoin";
+        }
     }
 
 
@@ -186,54 +223,6 @@ public class LoginController {
     }
 
 }
-
-
-
-
-
-
-
-
-    // 회원 가입 화면
-//    @GetMapping(value = "/join")
-//    public String memberForm(Model model){
-//        model.addAttribute("memberFormDto", new MemberFormDto());
-//        return "member/join";
-//    }
-
-    // 회원 가입 처리
-//    @PostMapping(value = "/join")
-//    public String newMember(@Valid MemberFormDto memberFormDto,
-//                            BindingResult bindingResult,
-//                            Model model){
-//
-//        if(bindingResult.hasErrors()){
-//            log.info("회원가입 데이터 검증 오류 있음");
-//            return "member/join";
-//        }
-//
-//        try {
-//            MemberVo member = MemberVo.builder()
-//                    .memberId(memberFormDto.getEmail()) // 이메일을 memberId로 사용
-//                    .password(passwordEncoder.encode(memberFormDto.getPassword()))
-//                    .name(memberFormDto.getName())
-//                    .email(memberFormDto.getEmail())
-//                    .roles(List.of("ROLE_USER"))
-//                    .build();
-//
-//            log.info("회원가입 데이터 member : " + member);
-//            memberService.saveMember(member);
-//        } catch (IllegalStateException e){
-//            model.addAttribute("errorMessage", e.getMessage());
-//            log.info("MemberController 회원가입시 중복 오류 : " + e.getMessage());
-//            return "member/join";
-//        }
-//
-//        return "redirect:/member/login"; //회원 가입 후 로그인
-//    }
-
-
-
     // 카카오 소셜 로그인 사용자 비밀번호 변경 화면
 //    @GetMapping("/modify")
 //    public String modifyGET() {

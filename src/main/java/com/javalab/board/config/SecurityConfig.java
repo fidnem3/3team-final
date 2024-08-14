@@ -64,9 +64,9 @@ public class SecurityConfig {
 							CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 							String userType = userDetails.getUserType();
 							if ("company".equals(userType)) {
-								response.sendRedirect("/member/companyPage");
+								response.sendRedirect("/index");
 							} else if ("jobSeeker".equals(userType)) {
-								response.sendRedirect("/member/jobSeekerPage");
+								response.sendRedirect("/index");
 							} else {
 								response.sendRedirect("/");
 							}
@@ -75,8 +75,8 @@ public class SecurityConfig {
 				)
 
 				.logout(logout -> logout
-						.logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
-						.logoutSuccessUrl("/member/login")
+						.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+						.logoutSuccessUrl("/index")
 						.invalidateHttpSession(true)
 						.deleteCookies("JSESSIONID")
 				)
@@ -84,7 +84,7 @@ public class SecurityConfig {
 						.requestMatchers("/css/**", "/js/**", "/img/**", "/fonts/**", "/scss/**", "/lib/**", "/assets/**").permitAll()
 						.requestMatchers("/", "/home", "/about", "/contact", "/index", "/jobPost/jobPostList", "/jobPost/jobPostDetail").permitAll()
 						.requestMatchers("/view/**").permitAll()
-						.requestMatchers("/member/**").permitAll()
+						.requestMatchers("/member/**", "/member/adminJoin").permitAll()
 						.requestMatchers("/board/**").permitAll()
 						.requestMatchers("/member/adminPage").hasRole("ADMIN")
 						.requestMatchers("/member/companyPage").hasRole("COMPANY")
