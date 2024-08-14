@@ -53,7 +53,7 @@ public class JobPostController {
         return duration;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/jobPost/{id}")
     public String getJobPost(@PathVariable("id") Long jobPostId, Model model) {
         CreateJobPostRequestDto jobPost = jobPostService.getJobPostById(jobPostId);
         model.addAttribute("jobPost", jobPost);
