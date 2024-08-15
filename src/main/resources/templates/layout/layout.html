@@ -50,7 +50,8 @@
                     <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">Jobs</a>
                     <div class="dropdown-menu rounded-0 m-0">
                         <a th:href="@{/jobPost/jobPostList}" class="dropdown-item">Job List</a>
-                        <a th:href="@{/jobPost/myJobPostList}" class="dropdown-item" sec:authorize="hasRole('ROLE_COMPANY')">My JobPost</a>
+                        <a th:href="@{/jobPost/myJobPostList}" class="dropdown-item" sec:authorize="hasRole('ROLE_COMPANY')">나의 공고</a>
+                        <a th:href="@{/jobSeeker/scrap/list}" class="dropdown-item" sec:authorize="hasRole('ROLE_USER')">나의 스크랩</a>
                     </div>
                 </div>
                 <a th:href="@{/contact}" class="nav-item nav-link">Contact</a>

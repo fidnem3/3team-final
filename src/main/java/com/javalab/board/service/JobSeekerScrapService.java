@@ -1,6 +1,8 @@
 package com.javalab.board.service;
 
+import com.javalab.board.repository.JobPostMapper;
 import com.javalab.board.repository.JobSeekerScrapMapper;
+import com.javalab.board.vo.JobPostVo;
 import com.javalab.board.vo.JobSeekerScrapVo;
 import com.javalab.board.vo.JobSeekerVo;
 import com.javalab.board.vo.UserRolesVo;
@@ -17,6 +19,8 @@ public class JobSeekerScrapService {
 
     @Autowired
     private JobSeekerScrapMapper scrapMapper;
+    @Autowired
+    private JobPostMapper jobPostMapper;
 
     public boolean checkIfScrapped(String jobSeekerId, Long jobPostId) {
         return scrapMapper.existsByJobSeekerIdAndJobPostId(jobSeekerId, jobPostId);
@@ -42,9 +46,17 @@ public class JobSeekerScrapService {
     }
 
 
-    public List<JobSeekerScrapVo> getScrapList(String jobSeekerId) { return
-            scrapMapper.getScrapList(jobSeekerId); }
+    public List<JobSeekerScrapVo> getScrapList(String jobSeekerId) {
+        List<JobSeekerScrapVo> scrapList = scrapMapper.getScrapListByJobSeekerId(jobSeekerId);
 
+        for (JobSeekerScrapVo scrap : scrapList) {
+            JobPostVo jobPost = jobPostMapper.getJobPostDetailsById(scrap.getJobPostId());
+            scrap.setTitle(jobPost.getTitle());
+            scrap.setSalary(jobPost.getSalary());
+            scrap.setAddress(jobPost.getAddress());
+            scrap.setEndDate(jobPost.getEndDate());
+        }
 
-
+        return scrapList;
+    }
 }

@@ -13,6 +13,8 @@ public interface JobPostMapper {
     JobPostVo getJobPostById(@Param("jobPostId") Long jobPostId);
 
     List<JobPostVo> getAllJobPosts();
+    JobPostVo getJobPostDetailsById(Long jobPostId);
+
 
     List<JobPostVo> selectJobPostsByCompany(String compId);
 

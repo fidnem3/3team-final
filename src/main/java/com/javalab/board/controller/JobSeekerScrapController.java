@@ -64,18 +64,13 @@ public class JobSeekerScrapController {
     }
 
     @GetMapping("/scrap/list")
-    public String listJobSeekerScrap(HttpSession session, Model model) {
-        String jobSeekerId = (String) session.getAttribute("jobSeekerId");
+    public String listJobSeekerScrap(Authentication authentication, Model model) {
+        String jobSeekerId = ((UserDetails) authentication.getPrincipal()).getUsername();
 
-        // 세션에서 로그인 정보 확인
-        if (jobSeekerId == null) {
-            return "redirect:/login"; // 로그인 페이지로 리디렉션
-        }
-
-        log.info("여기는 listJobSeekerScrap 메소드");
         List<JobSeekerScrapVo> jobSeekerScrapList = jobSeekerScrapService.getScrapList(jobSeekerId);
-        model.addAttribute("scrapList", jobSeekerScrapList); // 속성 이름을 "scrapList"로 수정
-        return "scrap/scrapList"; // html 이름
+        model.addAttribute("scrapList", jobSeekerScrapList);
+
+        return "scrap/jobSeekerScrapList"; // HTML 파일 이름
     }
 
 }
