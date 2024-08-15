@@ -51,4 +51,12 @@
         WHERE s.jobSeeker_id = #{jobSeekerId}
     </select>
 
+    <!-- jobPostId로 공고 정보 가져오기 -->
+    <select id="getJobPostDetailsById" resultType="com.javalab.board.vo.JobPostVo">
+        SELECT title, salary, address, end_date
+        FROM jobPost
+        WHERE jobPost_id = #{jobPostId}
+    </select>
+
+
 </mapper>

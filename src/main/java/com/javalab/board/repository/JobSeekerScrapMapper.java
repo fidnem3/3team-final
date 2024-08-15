@@ -17,6 +17,7 @@ public interface JobSeekerScrapMapper {
     @Select("SELECT CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END FROM jobSeekerScrap WHERE jobSeeker_id = #{jobSeekerId} AND jobPost_id = #{jobPostId}")
     boolean existsByJobSeekerIdAndJobPostId(@Param("jobSeekerId") String jobSeekerId, @Param("jobPostId") Long jobPostId);
 
+    List<JobSeekerScrapVo> getScrapListByJobSeekerId(String jobSeekerId);
 
     void insertScrap(JobSeekerScrapVo scrap);
 
