@@ -19,4 +19,7 @@ public interface JobPostMapper {
     void updatePaymentStatus(JobPostVo jobPostVo);
 
     JobPostVo findJobPostById(Long jobPostId);
+
+    List<JobPostVo> getScrapList(String jobSeekerId);
+
 }
