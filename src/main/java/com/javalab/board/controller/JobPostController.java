@@ -2,8 +2,12 @@ package com.javalab.board.controller;
 
 import com.javalab.board.dto.CreateJobPostRequestDto;
 import com.javalab.board.service.JobPostService;
+import com.javalab.board.service.JobSeekerScrapService;
 import com.javalab.board.vo.BoardVo;
 import com.javalab.board.vo.JobPostVo;
+import com.javalab.board.vo.JobSeekerScrapVo;
+import com.javalab.board.vo.JobSeekerVo;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +24,11 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @Slf4j
@@ -30,6 +37,8 @@ public class JobPostController {
 
     @Autowired
     private JobPostService jobPostService;
+    @Autowired
+    private JobSeekerScrapService jobSeekerScrapService;
 
     @GetMapping("/jobPostCreate")
     public String createJobPost(Model model) {
@@ -70,18 +79,30 @@ public class JobPostController {
         return "redirect:/jobPost/jobPostList";
     }
 
-
     @GetMapping("/jobPostList")
-    public String listJobPosts(Model model) {
+    public String listJobPosts(Model model, Authentication authentication) {
         List<JobPostVo> jobPosts = jobPostService.getAllJobPosts();
 
-        // 날짜 포맷팅 설정
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String jobSeekerId = authentication != null && authentication.getPrincipal() instanceof UserDetails
+                ? ((UserDetails) authentication.getPrincipal()).getUsername()
+                : null;
 
-        log.info("JobPosts: {}", jobPosts); // 로그에 공고 목록 출력
+        Map<Long, Boolean> scrapStatusMap = new HashMap<>();
+        if (jobSeekerId != null) {
+            List<JobSeekerScrapVo> scrapList = jobSeekerScrapService.getScrapList(jobSeekerId);
+            scrapStatusMap = scrapList.stream()
+                    .collect(Collectors.toMap(JobSeekerScrapVo::getJobPostId, scrap -> true));
+        }
+
+        log.info("JobPosts: {}", jobPosts);
+        log.info("ScrapStatusMap: {}", scrapStatusMap); // 추가된 로그
+
         model.addAttribute("jobPosts", jobPosts);
+        model.addAttribute("scrapStatusMap", scrapStatusMap);
         return "jobPost/jobPostList";
     }
+
+
 
     @GetMapping("/myJobPostList")
     public String getMyJobPosts(Model model) {

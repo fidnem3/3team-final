@@ -272,6 +272,51 @@
             pageName.textContent = 'Another Page';
         }
     });
+
+    function getCSRFToken() {
+    return document.querySelector('meta[name="_csrf"]').getAttribute('content');
+}
+
+function getCSRFHeader() {
+    return document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+}
+
+function toggleScrap(event) {
+    event.preventDefault();
+
+    const button = event.currentTarget;
+    const jobPostId = button.getAttribute('data-jobpostid');
+    const isScrapped = button.classList.contains('scrap-active');
+
+    fetch('/jobSeeker/scrap/toggle', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json',
+            [getCSRFHeader()]: getCSRFToken()
+        },
+        body: JSON.stringify({ jobPostId: jobPostId, isScrapped: isScrapped }) // isScrapped 추가
+    })
+    .then(response => {
+        if (response.redirected) {
+            window.location.href = response.url;
+            return;
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data) {
+            if (data.isScrapped) {
+                button.classList.add('scrap-active');
+                alert('스크랩 완료');
+            } else {
+                button.classList.remove('scrap-active');
+                alert('스크랩 취소');
+            }
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
 </script>
 </body>
 </html>
