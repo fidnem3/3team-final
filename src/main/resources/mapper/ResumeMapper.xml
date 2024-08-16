@@ -4,7 +4,7 @@
 
 <mapper namespace="com.javalab.board.repository.ResumeMapper">
 
-    <insert id="resumeCreate" parameterType="com.javalab.board.dto.ResumeDto">
+    <insert id="createResume" parameterType="com.javalab.board.dto.ResumeDto">
         <selectKey keyProperty="resumeId" resultType="int" order="BEFORE">
         SELECT RESUME_SEQ.NEXTVAL FROM DUAL
         </selectKey>
@@ -82,17 +82,6 @@
         from resume
         where resume_id=#{resumeId}
     </delete>
-
-    <insert id="saveFile" parameterType="com.javalab.board.dto.ResumeFileDto">
-            insert into resume_file_table(originalFileName, storedFileName, resume_id)
-            values (#{originalFileName}, #{storedFileName}, #{resumeId})
-    </insert>
-
-    <select id="findFile" parameterType="int" resultType="com.javalab.board.dto.ResumeFileDto">
-        select *
-        from resume_file_table
-        where resume_id = #{resumeId}
-    </select>
 
 
 
