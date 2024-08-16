@@ -60,13 +60,20 @@ public class JobSeekerServiceImpl implements JobSeekerService {
 
     @Override
     @Transactional
-    public void updateJobSeeker(JobSeekerVo jobSeekerVo) {
+    public JobSeekerVo updateJobSeeker(JobSeekerVo jobSeekerVo) {
         jobSeekerMapper.updateJobSeeker(jobSeekerVo);
+        return jobSeekerMapper.selectJobSeekerById(jobSeekerVo.getJobSeekerId());
     }
 
     @Override
     @Transactional
     public void deleteJobSeeker(String jobSeekerId) {
+        // 1. 먼저 UserRoles 테이블에서 관련 레코드 삭제
+        // 여기서 "jobSeeker"는 사용자 유형을, "ROLE_USER"는 기본 역할 ID를 나타냅니다.
+        // 실제 사용하는 역할 ID에 맞게 수정해야 합니다.
+        userRolesMapper.deleteUserRole(jobSeekerId, "jobSeeker", "ROLE_USER");
+
+        // 2. 그 다음 jobSeeker 테이블에서 레코드 삭제
         jobSeekerMapper.deleteJobSeeker(jobSeekerId);
     }
 

@@ -57,6 +57,15 @@
                         <a th:href="@{/jobPost/myJobPostList}" class="dropdown-item" sec:authorize="hasRole('ROLE_COMPANY')">My JobPost</a>
                     </div>
                 </div>
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">Resume</a>
+                    <div class="dropdown-menu rounded-0 m-0">
+                        <a th:href="@{/resume/resumeList}" class="dropdown-item">Resume List</a>
+                        <a th:href="@{/resume/resumeDetail}" class="dropdown-item">Resume Detail</a>
+                        <a th:href="@{/resume/myResumeList}" class="dropdown-item" sec:authorize="hasRole('ROLE_USER')">My Resume</a>
+                    </div>
+                </div>
+
                 <a th:href="@{/contact}" class="nav-item nav-link">Contact</a>
             </div>
             <div sec:authorize="hasRole('COMPANY')">
@@ -79,9 +88,11 @@
                         <i class="fa fa-user"></i> User Menu
                     </a>
                     <div class="dropdown-menu rounded-0 m-0">
-                        <a th:href="@{/user/dashboard}" class="dropdown-item">Dashboard</a>
+                        <!-- Dashboard 링크 수정 -->
+                        <a th:href="@{/jobSeeker/detail}" class="dropdown-item">My page</a>
                         <a th:href="@{/user/settings}" class="dropdown-item">Settings</a>
                         <a th:href="@{/logout}" class="dropdown-item">Logout</a>
+
                     </div>
                 </div>
             </div>
@@ -92,7 +103,7 @@
                         <i class="fa fa-user-shield"></i> Admin Menu
                     </a>
                     <div class="dropdown-menu rounded-0 m-0">
-                        <a th:href="@{/admin/dashboard}" class="dropdown-item">Admin Dashboard</a>
+                        <a th:href="@{/member/adminPage}" class="dropdown-item">Admin Dashboard</a>
                         <a th:href="@{/admin/settings}" class="dropdown-item">Admin Settings</a>
                         <a th:href="@{/logout}" class="dropdown-item">Logout</a>
                     </div>
@@ -223,16 +234,16 @@
 
 <!-- index.html 에서 id=pageHeader 해당부분 안보이게 하기(header)-->
 <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var path = window.location.pathname;
-            var pageHeader = document.getElementById("pageHeader");
+    document.addEventListener("DOMContentLoaded", function() {
+        var path = window.location.pathname;
+        var pageHeader = document.getElementById("pageHeader");
 
-            if (path === '/' || path === '/index') {
-                if (pageHeader) {
-                    pageHeader.style.display = 'none';
-                }
+        if (path === '/' || path === '/index') {
+            if (pageHeader) {
+                pageHeader.style.display = 'none';
             }
-        });
+        }
+    });
 </script>
 <!-- index.html 에서 home 안보이게 하기 -->
 <script>
