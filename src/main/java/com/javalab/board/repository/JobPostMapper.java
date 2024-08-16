@@ -25,7 +25,6 @@ public interface JobPostMapper {
 
     List<JobPostVo> getScrapList(String jobSeekerId);
 
-    @Update("UPDATE jobPost SET title = #{title}, content = #{content}, position = #{position}, salary = #{salary}, experience = #{experience}, education = #{education}, address = #{address}, end_date = #{endDate}, homepage = #{homepage} WHERE jobPost_id = #{jobPostId}")
     void updateJobPost(JobPostVo jobPostVo);
 
     void deleteJobPost(Long jobPostId);
