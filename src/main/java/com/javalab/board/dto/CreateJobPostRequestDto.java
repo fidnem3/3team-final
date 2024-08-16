@@ -18,6 +18,7 @@ import java.util.Date;
 @Builder // 빌더패턴적용
 public class CreateJobPostRequestDto {
 
+    private Long jobPostId;
     private String title;
     private String content;
     private String position;

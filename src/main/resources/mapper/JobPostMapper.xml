@@ -10,9 +10,9 @@
             SELECT JOBPOST_SEQ.NEXTVAL FROM DUAL
         </selectKey>
         INSERT INTO JOBPOST (
-        jobPost_id, title, content, education, address, salary, end_date, hit_no, created, comp_id
+        jobPost_id, title, content, education, experience, position, address, salary, end_date, hit_no, created, comp_id
         ) VALUES (
-        #{jobPostId}, #{title}, #{content}, #{education}, #{address, jdbcType=VARCHAR}, #{salary, jdbcType=VARCHAR}, #{endDate}, 0, SYSDATE, #{compId}
+        #{jobPostId}, #{title}, #{content}, #{education}, #{experience}, #{position}, #{address, jdbcType=VARCHAR}, #{salary, jdbcType=VARCHAR}, #{endDate}, 0, SYSDATE, #{compId}
         )
     </insert>
 
@@ -36,6 +36,54 @@
         SET payment_status = #{paymentStatus}
         WHERE jobPost_id = #{jobPostId}
     </update>
+
+    <select id="findJobPostById" parameterType="long" resultType="com.javalab.board.vo.JobPostVo">
+        SELECT * FROM jobPost
+        WHERE jobPost_id = #{jobPostId}
+    </select>
+
+    <select id="getScrapList" parameterType="string"
+            resultType="com.javalab.board.vo.JobPostVo">
+        SELECT j.jobPost_id, j.title, j.created, k.jobSeeker_id
+        FROM jobSeekerScrap s
+        JOIN jobPost j ON s.jobPost_id = j.jobPost_id
+        JOIN jobSeeker k ON s.jobSeeker_id = k.jobSeeker_id
+        WHERE s.jobSeeker_id = #{jobSeekerId}
+
+    </select>
+
+    <!-- jobPostId로 공고 정보 가져오기 -->
+    <select id="getJobPostDetailsById" resultType="com.javalab.board.vo.JobPostVo">
+        SELECT title, salary, address, end_date
+        FROM jobPost
+        WHERE jobPost_id = #{jobPostId}
+    </select>
+
+    <update id="updateJobPost" parameterType="com.javalab.board.vo.JobPostVo">
+        UPDATE jobPost
+        SET title = #{title, jdbcType=VARCHAR},
+        content = #{content, jdbcType=VARCHAR},
+        position = #{position, jdbcType=VARCHAR},
+        salary = #{salary, jdbcType=VARCHAR},
+        experience = #{experience, jdbcType=VARCHAR},
+        education = #{education, jdbcType=VARCHAR},
+        address = #{address, jdbcType=VARCHAR},
+        end_date = #{endDate, jdbcType=DATE},
+        homepage = #{homepage, jdbcType=VARCHAR}
+        WHERE jobPost_id = #{jobPostId, jdbcType=BIGINT}
+    </update>
+
+
+
+    <delete id="deleteJobPost">
+        DELETE FROM jobPost
+        WHERE jobPost_id = #{jobPostId}
+    </delete>
+
+    <delete id="deleteScrapsByJobPostId">
+        DELETE FROM jobSeekerScrap
+        WHERE jobPost_id = #{jobPostId}
+    </delete>
 
 
 </mapper>
