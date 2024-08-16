@@ -2,8 +2,12 @@ package com.javalab.board.controller;
 
 import com.javalab.board.dto.CreateJobPostRequestDto;
 import com.javalab.board.service.JobPostService;
+import com.javalab.board.service.JobSeekerScrapService;
 import com.javalab.board.vo.BoardVo;
 import com.javalab.board.vo.JobPostVo;
+import com.javalab.board.vo.JobSeekerScrapVo;
+import com.javalab.board.vo.JobSeekerVo;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +24,11 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @Slf4j
@@ -30,6 +37,8 @@ public class JobPostController {
 
     @Autowired
     private JobPostService jobPostService;
+    @Autowired
+    private JobSeekerScrapService jobSeekerScrapService;
 
     @GetMapping("/jobPostCreate")
     public String createJobPost(Model model) {
@@ -70,18 +79,30 @@ public class JobPostController {
         return "redirect:/jobPost/jobPostList";
     }
 
-
     @GetMapping("/jobPostList")
-    public String listJobPosts(Model model) {
+    public String listJobPosts(Model model, Authentication authentication) {
         List<JobPostVo> jobPosts = jobPostService.getAllJobPosts();
 
-        // 날짜 포맷팅 설정
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String jobSeekerId = authentication != null && authentication.getPrincipal() instanceof UserDetails
+                ? ((UserDetails) authentication.getPrincipal()).getUsername()
+                : null;
 
-        log.info("JobPosts: {}", jobPosts); // 로그에 공고 목록 출력
+        Map<Long, Boolean> scrapStatusMap = new HashMap<>();
+        if (jobSeekerId != null) {
+            List<JobSeekerScrapVo> scrapList = jobSeekerScrapService.getScrapList(jobSeekerId);
+            scrapStatusMap = scrapList.stream()
+                    .collect(Collectors.toMap(JobSeekerScrapVo::getJobPostId, scrap -> true));
+        }
+
+        log.info("JobPosts: {}", jobPosts);
+        log.info("ScrapStatusMap: {}", scrapStatusMap); // 추가된 로그
+
         model.addAttribute("jobPosts", jobPosts);
+        model.addAttribute("scrapStatusMap", scrapStatusMap);
         return "jobPost/jobPostList";
     }
+
+
 
     @GetMapping("/myJobPostList")
     public String getMyJobPosts(Model model) {
@@ -153,6 +174,57 @@ public class JobPostController {
             // 공고를 찾을 수 없는 경우, 목록 페이지로 리다이렉트
             return "redirect:/jobPost/jobPostList";
         }
+    }
+
+    @GetMapping("/edit/{jobPostId}")
+    public String editJobPost(@PathVariable("jobPostId") Long jobPostId, Model model) {
+        JobPostVo jobPostVo = jobPostService.getJobPostById(jobPostId);
+        if (jobPostVo != null) {
+            model.addAttribute("createJobPostRequestDto", jobPostVo); // 모델에 추가
+            return "jobPost/jobPostEdit";
+        } else {
+            return "redirect:/jobPost/jobPostList";
+        }
+    }
+
+
+    @PostMapping("/edit")
+    public String updateJobPost(@ModelAttribute("createJobPostRequestDto") @Valid CreateJobPostRequestDto createJobPostRequestDto,
+                                BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            log.error("BindingResult has errors: {}", bindingResult.getAllErrors());
+            return "index";
+        }
+
+        // Get the current company ID
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String compId = ((UserDetails) authentication.getPrincipal()).getUsername();
+
+        // Create JobPostVo from DTO
+        JobPostVo jobPostVo = JobPostVo.builder()
+                .compId(compId)
+                .title(createJobPostRequestDto.getTitle())
+                .content(createJobPostRequestDto.getContent())
+                .position(createJobPostRequestDto.getPosition())
+                .salary(createJobPostRequestDto.getSalary())
+                .experience(createJobPostRequestDto.getExperience())
+                .education(createJobPostRequestDto.getEducation())
+                .address(createJobPostRequestDto.getAddress())
+                .endDate(createJobPostRequestDto.getEndDate())
+                .homepage(createJobPostRequestDto.getHomepage())
+                .build();
+
+        jobPostService.updateJobPost(jobPostVo);
+
+        return "redirect:/jobPost/myJobPostList";
+    }
+
+
+
+    @PostMapping("/delete/{jobPostId}")
+    public String deleteJobPost(@PathVariable("jobPostId") Long jobPostId) {
+        jobPostService.deleteJobPost(jobPostId);
+        return "redirect:/jobPost/myJobPostList";
     }
 
 

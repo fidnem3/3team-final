@@ -52,7 +52,8 @@
                     <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">Jobs</a>
                     <div class="dropdown-menu rounded-0 m-0">
                         <a th:href="@{/jobPost/jobPostList}" class="dropdown-item">Job List</a>
-                        <a th:href="@{/jobPost/myJobPostList}" class="dropdown-item" sec:authorize="hasRole('ROLE_COMPANY')">My JobPost</a>
+                        <a th:href="@{/jobPost/myJobPostList}" class="dropdown-item" sec:authorize="hasRole('ROLE_COMPANY')">나의 공고</a>
+                        <a th:href="@{/jobSeeker/scrap/list}" class="dropdown-item" sec:authorize="hasRole('ROLE_USER')">나의 스크랩</a>
                     </div>
                 </div>
                 <a th:href="@{/contact}" class="nav-item nav-link">Contact</a>
@@ -275,6 +276,53 @@
             pageName.textContent = 'Another Page';
         }
     });
+
+    function getCSRFToken() {
+    return document.querySelector('meta[name="_csrf"]').getAttribute('content');
+}
+
+function getCSRFHeader() {
+    return document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+}
+
+function toggleScrap(event) {
+    event.preventDefault();
+
+    const button = event.currentTarget;
+    const jobPostId = button.getAttribute('data-jobpostid');
+    const isScrapped = button.classList.contains('scrap-active');
+
+    fetch('/jobSeeker/scrap/toggle', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json',
+            [getCSRFHeader()]: getCSRFToken()
+        },
+        body: JSON.stringify({ jobPostId: jobPostId, isScrapped: isScrapped }) // isScrapped 추가
+    })
+    .then(response => {
+        if (response.redirected) {
+            window.location.href = response.url;
+            return;
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data) {
+            if (data.isScrapped) {
+                button.classList.add('scrap-active');
+                alert('스크랩 완료');
+            } else {
+                button.classList.remove('scrap-active');
+                alert('스크랩 취소');
+            }
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+    CKEDITOR.replace('editor1');
 </script>
 <script>
     $(document).ready(function () {
