@@ -61,17 +61,18 @@
 
     <update id="updateJobPost" parameterType="com.javalab.board.vo.JobPostVo">
         UPDATE jobPost
-        SET title = #{title},
-        content = #{content},
-        position = #{position},
-        salary = #{salary},
-        experience = #{experience},
-        education = #{education},
-        address = #{address},
+        SET title = #{title, jdbcType=VARCHAR},
+        content = #{content, jdbcType=VARCHAR},
+        position = #{position, jdbcType=VARCHAR},
+        salary = #{salary, jdbcType=VARCHAR},
+        experience = #{experience, jdbcType=VARCHAR},
+        education = #{education, jdbcType=VARCHAR},
+        address = #{address, jdbcType=VARCHAR},
         end_date = #{endDate, jdbcType=DATE},
-        homepage = #{homepage}
+        homepage = #{homepage, jdbcType=VARCHAR}
         WHERE jobPost_id = #{jobPostId, jdbcType=BIGINT}
     </update>
+
 
 
     <delete id="deleteJobPost">
