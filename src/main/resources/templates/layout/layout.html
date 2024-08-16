@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" x    mlns="http://www.w3.org/1999/html">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="UTF-8">
     <title>Navigation Layout</title>
@@ -274,6 +274,29 @@
             pageTitle.textContent = 'Another Page';
             pageName.textContent = 'Another Page';
         }
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('.dev-toggle-filter').click(function () {
+            $(this).toggleClass('open');
+            $(this).next('.filter-box').toggle();
+        });
+
+        $('.dev-button-item').click(function () {
+            $(this).toggleClass('active').siblings().removeClass('active');
+        });
+
+        $('.search-reset').click(function () {
+            $(this).closest('.filter-box').find('.dev-button-item').removeClass('active');
+            $(this).closest('.filter-box').find('.dev-button-all').addClass('active');
+        });
+
+        $('#resetCondition').click(function () {
+            $('.filter-box').find('.dev-button-item').removeClass('active');
+            $('.filter-box').find('.dev-button-all').addClass('active');
+            $('#searchForm')[0].reset();
+        });
     });
 </script>
 </body>
