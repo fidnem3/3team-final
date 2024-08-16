@@ -212,6 +212,7 @@ public class JobPostController {
                 .address(createJobPostRequestDto.getAddress())
                 .endDate(createJobPostRequestDto.getEndDate())
                 .homepage(createJobPostRequestDto.getHomepage())
+                .jobPostId(createJobPostRequestDto.getJobPostId())  // Ensure jobPostId is set
                 .build();
 
         jobPostService.updateJobPost(jobPostVo);
