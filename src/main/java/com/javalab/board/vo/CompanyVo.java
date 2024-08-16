@@ -4,7 +4,6 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-
 import lombok.*;
 
 @Getter
@@ -46,6 +45,7 @@ public class CompanyVo {
 
     private String status;
 
-    //권한 COMPANY
-    private String role;
+    // 권한 관련 필드 추가
+    private String userType; // 사용자 유형 (예: 'company')
+    private String roleId;   // 권한 ID
 }

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.mapper.PaymentMapper">
+    <!-- 결제 정보 추가 -->
+    <insert id="insertPayment" parameterType="com.javalab.board.dto.PaymentDto">
+        INSERT INTO payment (
+        payment_id, comp_id, account_num, jobPost_id, payment_status,
+        payment_date, post_duration, daily_rate, total_amount, due_date
+        ) VALUES (
+        #{paymentId}, #{compId}, #{accountNum}, #{jobPostId}, #{paymentStatus},
+        #{paymentDate}, #{postDuration}, #{dailyRate}, #{totalAmount}, #{dueDate}
+        )
+    </insert>
+
+    <!-- 결제 정보 업데이트 -->
+    <update id="updatePayment" parameterType="com.javalab.board.dto.PaymentDto">
+        UPDATE payment
+        SET
+        account_num = #{accountNum},
+        jobPost_id = #{jobPostId},
+        payment_status = #{paymentStatus},
+        payment_date = #{paymentDate},
+        post_duration = #{postDuration},
+        daily_rate = #{dailyRate},
+        total_amount = #{totalAmount},
+        due_date = #{dueDate}
+        WHERE payment_id = #{paymentId}
+    </update>
+
+    <!-- 결제 정보 조회 -->
+    <select id="selectPaymentById" parameterType="Long" resultType="com.javalab.board.dto.PaymentDto">
+        SELECT * FROM payment WHERE payment_id = #{paymentId}
+    </select>
+
+    <!-- 모든 결제 정보 조회 -->
+    <select id="selectAllPayments" resultType="com.javalab.board.dto.PaymentDto">
+        SELECT * FROM payment
+    </select>
+
+</mapper>

@@ -21,9 +21,9 @@ public class OAuth2Config {
      * [customOAuth2UserService 메소드]
      * - OAuth2UserService 빈 등록
      * - OAuth2UserService 인터페이스를 구현한 CustomOAuth2UserService 빈 등록
-     * @param LoginMapper : LoginMapper 객체
-     * @param passwordEncoder : PasswordEncoder 객체
-     * @return OAuth2UserService<OAuth2UserRequest, OAuth2User> : OAuth2UserService 객체
+     * - @param LoginMapper : LoginMapper 객체
+     * - @param passwordEncoder : PasswordEncoder 객체
+     * - @return OAuth2UserService<OAuth2UserRequest, OAuth2User> : OAuth2UserService 객체
      */
     @Bean
     public OAuth2UserService<OAuth2UserRequest, OAuth2User> customOAuth2UserService(LoginMapper loginMapper, PasswordEncoder passwordEncoder) {

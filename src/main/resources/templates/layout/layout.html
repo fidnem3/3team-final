@@ -1,85 +1,356 @@
 <!DOCTYPE html>
-<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:th="http://www.thymeleaf.org">
-
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
-    <!--<title>Simple Sidebar - Start Bootstrap Template</title>-->
-    <!-- 각 페이지의 제목이 들어오는 공간(브라우저 탭에 나오는 제목) -->
-    <title layout:fragment="title">Default Title</title>
-    <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" th:href="@{/assets/favicon.ico}" />
-    <!-- Core theme CSS (includes Bootstrap)-->
-    <link th:href="@{/css/styles.css}" rel="stylesheet" />
+    <meta charset="UTF-8">
+    <title>Navigation Layout</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
 
+    <!-- Favicon -->
+    <link th:href="@{/img/favicon.ico}" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Inter:wght@700;800&display=swap"
+          rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link th:href="@{/lib/animate/animate.min.css}" rel="stylesheet">
+    <link th:href="@{/lib/owlcarousel/assets/owl.carousel.min.css}" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+
+    <script src="https://cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
 </head>
 <body>
-<div class="d-flex" id="wrapper">
-    <!-- Sidebar-->
-    <div class="border-end bg-white" id="sidebar-wrapper">
-        <div class="sidebar-heading border-bottom bg-light">Start Bootstrap</div>
-        <div class="list-group list-group-flush">
-            <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Dashboard</a>
-            <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Shortcuts</a>
-            <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Overview</a>
-            <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Events</a>
-            <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Profile</a>
-            <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Status</a>
-        </div>
-    </div>
-    <!-- Page content wrapper-->
-    <div id="page-content-wrapper">
-        <!-- Top navigation-->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-            <div class="container-fluid">
-                <button class="btn btn-primary" id="sidebarToggle">Toggle Menu</button>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
-                        <li class="nav-item active"><a class="nav-link" href="#!">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#!">Link</a></li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="#!">Action</a>
-                                <a class="dropdown-item" href="#!">Another action</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#!">Something else here</a>
-                            </div>
-                        </li>
-                    </ul>
+<header>
+    <!-- 상단바 -->
+    <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
+        <a th:href="@{/index}" class="navbar-brand d-flex align-items-center text-center py-0 px-4 px-lg-5">
+            <h1 class="m-0 text-primary">Deltopia</h1>
+        </a>
+        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto p-4 p-lg-0">
+                <a id="homeLink" th:href="@{/index}" class="nav-item nav-link">Home</a>
+                <a th:href="@{/about}" class="nav-item nav-link">About</a>
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">Jobs</a>
+                    <div class="dropdown-menu rounded-0 m-0">
+                        <a th:href="@{/jobPost/jobPostList}" class="dropdown-item">Job List</a>
+                        <a th:href="@{/jobPost/myJobPostList}" class="dropdown-item" sec:authorize="hasRole('ROLE_COMPANY')">나의 공고</a>
+                        <a th:href="@{/jobSeeker/scrap/list}" class="dropdown-item" sec:authorize="hasRole('ROLE_USER')">나의 스크랩</a>
+                    </div>
+                </div>
+                <a th:href="@{/contact}" class="nav-item nav-link">Contact</a>
+            </div>
+            <div sec:authorize="hasRole('COMPANY')">
+                <!-- 기업 회원 메뉴 -->
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                        <i class="fa fa-building"></i> Company Menu
+                    </a>
+                    <div class="dropdown-menu rounded-0 m-0">
+                        <a th:href="@{/company/dashboard}" class="dropdown-item">Dashboard</a>
+                        <a th:href="@{/company/settings}" class="dropdown-item">Settings</a>
+                        <a th:href="@{/logout}" class="dropdown-item">Logout</a>
+                    </div>
                 </div>
             </div>
-        </nav>
-        <!-- 각 컨텐트 페이지의 고유 내용이 위치하는 공간이고 공간의 이름 "content" -->
-        <div class="container-fluid" layout:fragment="content">
-            <!-- 각 컨텐트 페이지의 고유 제목이 위치하는 공간이고 공간의 이름 "body-title" -->
-            <h3 layout:fragment="body-title">각 페이지 제목이 들어오는 공간</h3>
-            <p>The starting state of the menu will appear collapsed on smaller screens, and will appear non-collapsed on larger screens. When toggled using the button below, the menu will change.</p>
-            <p>
-                Make sure to keep all page content within the
-                <code>#page-content-wrapper</code>
-                . The top navbar is optional, and just for demonstration. Just create an element with the
-                <code>#sidebarToggle</code>
-                ID which will toggle the menu when clicked.
-            </p>
+            <div sec:authorize="hasRole('USER')">
+                <!-- 구직자 메뉴 -->
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                        <i class="fa fa-user"></i> User Menu
+                    </a>
+                    <div class="dropdown-menu rounded-0 m-0">
+                        <a th:href="@{/user/dashboard}" class="dropdown-item">Dashboard</a>
+                        <a th:href="@{/user/settings}" class="dropdown-item">Settings</a>
+                        <a th:href="@{/logout}" class="dropdown-item">Logout</a>
+                    </div>
+                </div>
+            </div>
+            <!-- 관리자 메뉴: ADMIN 역할을 가진 사용자에게만 보임 -->
+            <div sec:authorize="hasRole('ADMIN')">
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                        <i class="fa fa-user-shield"></i> Admin Menu
+                    </a>
+                    <div class="dropdown-menu rounded-0 m-0">
+                        <a th:href="@{/admin/dashboard}" class="dropdown-item">Admin Dashboard</a>
+                        <a th:href="@{/admin/settings}" class="dropdown-item">Admin Settings</a>
+                        <a th:href="@{/logout}" class="dropdown-item">Logout</a>
+                    </div>
+                </div>
+            </div>
+            <a sec:authorize="!isAuthenticated()"
+               th:href="@{/member/login}" class="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block">
+                Sign In<i class="fa fa-arrow-right ms-3"></i>
+            </a>
+        </div>
+    </nav>
+    <!-- 상단 끝 -->
+
+    <!-- 헤더 -->
+    <div id="pageHeader" class="container-xxl py-5 bg-dark page-header mb-5">
+        <div class="container my-5 pt-5 pb-4">
+            <h1 id="pageTitle" class="display-3 text-white mb-3 animated slideInDown">Default Title</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb text-uppercase">
+                    <li class="breadcrumb-item"><a th:href="@{/index}">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">Pages</a></li>
+                    <li id="pageName" class="breadcrumb-item text-white active" aria-current="page">Default Page</li>
+                </ol>
+            </nav>
         </div>
     </div>
-</div>
-
-<!-- 부트스트랩 JS 및 jQuery 추가 -->
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 
-<script th:src="@{/js/scripts.js}"></script>
+    <div class="container-xxl bg-white p-0">
+        <!-- Spinner Start -->
+        <div id="spinner"
+             class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only" th:text="#{loading}">Loading...</span>
+            </div>
+        </div>
+    </div>
+    <!-- Spinner End -->
+</header>
+<!-- 콘텐츠가 삽입될 위치 -->
+<main layout:fragment="content">
+    <!-- 기본 콘텐츠 -->
+</main>
 
-<!-- 각 페이지의 자바스크립트가 들어오는 공간이고 이름은 "script" -->
-<th:block layout:fragment="script"></th:block>
+<footer>
+    <!-- Footer Start -->
+    <div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container py-5">
+            <div class="row g-5">
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-white mb-4">Company</h5>
+                    <a class="btn btn-link text-white-50" href="">About Us</a>
+                    <a class="btn btn-link text-white-50" href="">Contact Us</a>
+                    <a class="btn btn-link text-white-50" href="">Our Services</a>
+                    <a class="btn btn-link text-white-50" href="">Privacy Policy</a>
+                    <a class="btn btn-link text-white-50" href="">Terms & Condition</a>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-white mb-4">Quick Links</h5>
+                    <a class="btn btn-link text-white-50" href="">About Us</a>
+                    <a class="btn btn-link text-white-50" href="">Contact Us</a>
+                    <a class="btn btn-link text-white-50" href="">Our Services</a>
+                    <a class="btn btn-link text-white-50" href="">Privacy Policy</a>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-white mb-4">Contact</h5>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>123로, 도봉구, 서울시, 대한민국</p>
+                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>02 1111 1111 </p>
+                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@example.com</p>
+                    <div class="d-flex pt-2">
+                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
+                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
+                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-white mb-4">문의사항</h5>
+                    <p>관리자에게 이메일을 보냅니다.</p>
+                    <div class="position-relative mx-auto" style="max-width: 400px;">
+                        <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text"
+                               placeholder="Your email">
+                        <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">
+                            작성하기
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="copyright">
+                <div class="row">
+                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                        &copy; <a class="border-bottom" href="#">Deltopia</a>, All Right Reserved.
 
+                        <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                        Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a>
+                    </div>
+                    <div class="col-md-6 text-center text-md-end">
+                        <div class="footer-menu">
+                            <a href="">Home</a>
+                            <a href="">Cookies</a>
+                            <a href="">Help</a>
+                            <a href="">FQAs</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+</footer>
+
+
+<!-- JavaScript Libraries -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/lib/wow/wow.min.js}"></script>
+<script th:src="@{/lib/easing/easing.min.js}"></script>
+<script th:src="@{/lib/waypoints/waypoints.min.js}"></script>
+<script th:src="@{/lib/owlcarousel/owl.carousel.min.js}"></script>
+
+<!-- Template Javascript -->
+<script th:src="@{/js/main.js}"></script>
+
+
+<!-- index.html 에서 id=pageHeader 해당부분 안보이게 하기(header)-->
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var path = window.location.pathname;
+            var pageHeader = document.getElementById("pageHeader");
+
+            if (path === '/' || path === '/index') {
+                if (pageHeader) {
+                    pageHeader.style.display = 'none';
+                }
+            }
+        });
+</script>
+<!-- index.html 에서 home 안보이게 하기 -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // 현재 페이지의 경로를 확인
+        if (window.location.pathname === '/index' || window.location.pathname === '/') {
+            // 'homeLink' ID를 가진 요소를 찾고 숨기기
+            var homeLink = document.getElementById("homeLink");
+            if (homeLink) {
+                homeLink.style.display = 'none';
+            }
+        }
+    });
+</script>
+
+<!-- 페이지 마다 text 다르게 하는 script-->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var path = window.location.pathname;
+        console.log("Current path:", path); // 현재 경로 출력
+        var pageTitle = document.getElementById("pageTitle");
+        var pageName = document.getElementById("pageName");
+
+        if (path === '/jobPost/jobPostList') {
+            pageTitle.textContent = 'Job List';
+            pageName.textContent = 'Job List';
+        } else if (path == '/about') {
+            pageTitle.textContent = 'About';
+             pageName.textContent = 'About';
+        } else if (path == '/contact') {
+            pageTitle.textContent = 'Contact';
+            pageName.textContent = 'Contact';
+        } else if (path == '/jobPost/jobPostCreate') {
+            pageTitle.textContent = '공고 등록하기';
+            pageName.textContent = 'CreateJobPost';
+        } else if (path == '/jobPost/myJobPostList') {
+            pageTitle.textContent = '나의 채용공고';
+            pageName.textContent = 'MY POST';
+        } else if (path === '/anotherPage') {
+            pageTitle.textContent = 'Another Page';
+            pageName.textContent = 'Another Page';
+        }
+    });
+
+    function getCSRFToken() {
+    return document.querySelector('meta[name="_csrf"]').getAttribute('content');
+}
+
+function getCSRFHeader() {
+    return document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+}
+
+function toggleScrap(event) {
+    event.preventDefault();
+
+    const button = event.currentTarget;
+    const jobPostId = button.getAttribute('data-jobpostid');
+    const isScrapped = button.classList.contains('scrap-active');
+
+    fetch('/jobSeeker/scrap/toggle', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json',
+            [getCSRFHeader()]: getCSRFToken()
+        },
+        body: JSON.stringify({ jobPostId: jobPostId, isScrapped: isScrapped }) // isScrapped 추가
+    })
+    .then(response => {
+        if (response.redirected) {
+            window.location.href = response.url;
+            return;
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data) {
+            const icon = button.querySelector('i');
+            if (data.isScrapped) {
+                button.classList.add('scrap-active');
+                icon.classList.remove('far');
+                icon.classList.add('fas');
+                alert('스크랩 완료');
+            } else {
+                button.classList.remove('scrap-active');
+                icon.classList.remove('fas');
+                icon.classList.add('far');
+                alert('스크랩 취소');
+            }
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+    CKEDITOR.replace('editor1');
+</script>
+<script>
+    $(document).ready(function () {
+        $('.dev-toggle-filter').click(function () {
+            $(this).toggleClass('open');
+            $(this).next('.filter-box').toggle();
+        });
+
+        $('.dev-button-item').click(function () {
+            $(this).toggleClass('active').siblings().removeClass('active');
+        });
+
+        $('.search-reset').click(function () {
+            $(this).closest('.filter-box').find('.dev-button-item').removeClass('active');
+            $(this).closest('.filter-box').find('.dev-button-all').addClass('active');
+        });
+
+        $('#resetCondition').click(function () {
+            $('.filter-box').find('.dev-button-item').removeClass('active');
+            $('.filter-box').find('.dev-button-all').addClass('active');
+            $('#searchForm')[0].reset();
+        });
+    });
+</script>
 </body>
 </html>

@@ -2,7 +2,8 @@ package com.javalab.board.security;
 
 import com.javalab.board.dto.SocialMemberDto;
 import com.javalab.board.repository.LoginMapper;
-import com.javalab.board.vo.MemberVo;
+import com.javalab.board.vo.JobSeekerVo;
+import com.javalab.board.vo.CompanyVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -23,7 +24,6 @@ import java.util.stream.Collectors;
  * - OAuth2UserService 인터페이스를 구현한 CustomOAuth2UserService 빈 등록
  */
 @Log4j2
-//@Service // OAuth2Config에서 빈으로 등록되므로 주석처리함.
 @RequiredArgsConstructor
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
@@ -46,7 +46,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         ClientRegistration clientRegistration = userRequest.getClientRegistration();
         String clientName = clientRegistration.getClientName();
 
-        log.info("clientName {} ",  clientName);
+        log.info("clientName {} ", clientName);
 
         OAuth2User oAuth2User = super.loadUser(userRequest); // DB에 저장된 사용자 정보 조회
 
@@ -58,6 +58,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             case "kakao":
                 email = getKakaoEmail(paramMap);
                 break;
+            // 다른 클라이언트 이름 추가 가능
         }
 
         log.info("===============================");
@@ -67,52 +68,73 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         return generateDTO(email, paramMap);
     }
 
-    private OAuth2User  generateDTO(String email, Map<String, Object> params) {
+    private OAuth2User generateDTO(String email, Map<String, Object> params) {
+        // DB에서 JobSeeker와 Company를 각각 조회
+        JobSeekerVo jobSeeker = loginMapper.loginJobSeeker(email);
+        CompanyVo company = loginMapper.loginCompany(email);
 
-        MemberVo result = loginMapper.login(email); // DB에 저장된 사용자 정보 조회
-
-        if (result == null) {   // DB에 저장된 사용자 정보가 없으면
+        if (jobSeeker == null && company == null) {   // DB에 저장된 사용자 정보가 없으면
             // 새로운 사용자 생성
+            String password = passwordEncoder.encode("1111"); // 기본 비밀번호 설정
 
-            // 사용자 권한 설정(하드코딩)
-            List<String> roles = Arrays.asList("ROLE_USER");
+            List<String> roles = Collections.singletonList("ROLE_USER");
 
-            MemberVo member = new MemberVo(
-                    email,
-                    passwordEncoder.encode("1111"), // 비밀번호 설정(하드코딩)
-                    null,
-                    email,
-                    0,
-                    roles,
-                    false,
-                    true,
-                    params
-            );
+            if (params.get("user_type").equals("jobSeeker")) {
+                // JobSeeker 생성
+                JobSeekerVo newJobSeeker = new JobSeekerVo();
+                newJobSeeker.setJobSeekerId(email);
+                newJobSeeker.setPassword(password);
+                newJobSeeker.setConfirmPassword(password);
+                newJobSeeker.setName(params.get("name").toString());
+                newJobSeeker.setEmail(email);
+                newJobSeeker.setAddress(params.get("address").toString());
+                loginMapper.saveJobSeeker(newJobSeeker);
+            } else if (params.get("user_type").equals("company")) {
+                // Company 생성
+                CompanyVo newCompany = new CompanyVo();
+                newCompany.setCompId(email);
+                newCompany.setPassword(password);
+                newCompany.setCompanyName(params.get("companyName").toString());
+                newCompany.setEmail(email);
+                newCompany.setAddress(params.get("address").toString());
+                loginMapper.saveCompany(newCompany);
+            }
 
-            // 사용자 저장
-            loginMapper.save(member);
-
-            // 권한 저장
-            loginMapper.saveRole(member.getMemberId(), "ROLE_USER");
+            // 사용자 권한 저장
+            loginMapper.saveRole(email, "ROLE_USER");
 
             return new SocialMemberDto(
-                    member.getMemberId(),
-                    member.getPassword(),
+                    email,
+                    password,
                     roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()),
                     params
             );
         } else {
-            List<SimpleGrantedAuthority> authorities = result.getRoles().stream()
-                    .map(SimpleGrantedAuthority::new)
-                    .collect(Collectors.toList());
+            // 기존 사용자 정보를 로드
+            List<SimpleGrantedAuthority> authorities;
+            if (jobSeeker != null) {
+                authorities = loginMapper.getRolesByUserId(jobSeeker.getJobSeekerId()).stream()
+                        .map(SimpleGrantedAuthority::new)
+                        .collect(Collectors.toList());
 
-            return new SocialMemberDto(
-                    result.getMemberId(),
-                    result.getPassword(),
-                    authorities,
-                    params
-            );
+                return new SocialMemberDto(
+                        jobSeeker.getJobSeekerId(),
+                        jobSeeker.getPassword(),
+                        authorities,
+                        params
+                );
+            } else {
+                authorities = loginMapper.getRolesByUserId(company.getCompId()).stream()
+                        .map(SimpleGrantedAuthority::new)
+                        .collect(Collectors.toList());
 
+                return new SocialMemberDto(
+                        company.getCompId(),
+                        company.getPassword(),
+                        authorities,
+                        params
+                );
+            }
         }
     }
 
