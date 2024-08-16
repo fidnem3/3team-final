@@ -33,4 +33,6 @@ public interface JobPostMapper {
     void deleteScrapsByJobPostId(@Param("jobPostId") Long jobPostId);
 
     void incrementHitCount(Long jobPostId);
+
+    List<JobPostVo> selectTop5PopularJobPosts();
 }
