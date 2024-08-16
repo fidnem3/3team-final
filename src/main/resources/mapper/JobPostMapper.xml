@@ -80,5 +80,10 @@
         WHERE jobPost_id = #{jobPostId}
     </delete>
 
+    <delete id="deleteScrapsByJobPostId">
+        DELETE FROM jobSeekerScrap
+        WHERE jobPost_id = #{jobPostId}
+    </delete>
+
 
 </mapper>
