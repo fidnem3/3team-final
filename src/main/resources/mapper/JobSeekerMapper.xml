@@ -72,11 +72,10 @@
     <update id="updateJobSeeker" parameterType="com.javalab.board.vo.JobSeekerVo">
         UPDATE jobSeeker
         SET
-        password = #{password},
+        email = #{email},
         name = #{name},
         birth = #{birth, jdbcType=DATE},
         tel = #{tel},
-        email = #{email},
         address = #{address}
         WHERE jobSeeker_id = #{jobSeekerId}
     </update>
@@ -90,9 +89,8 @@
     </update>
 
     <!-- 개인 회원 정보 삭제 -->
-    <delete id="deleteJobSeeker" parameterType="String">
-        DELETE FROM jobSeeker
-        WHERE jobSeeker_id = #{jobSeekerId}
+    <delete id="deleteJobSeeker" parameterType="string">
+        DELETE FROM jobSeeker WHERE jobSeeker_id = #{jobSeekerId}
     </delete>
 
 </mapper>
