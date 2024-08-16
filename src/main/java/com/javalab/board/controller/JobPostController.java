@@ -107,6 +107,7 @@ public class JobPostController {
     @GetMapping("/myJobPostList")
     public String getMyJobPosts(Model model) {
         List<JobPostVo> jobPosts = jobPostService.getJobPostsByCompany();
+
         model.addAttribute("jobPosts", jobPosts);
         return "jobPost/myJobPostList"; // Thymeleaf 템플릿 이름
     }
@@ -155,6 +156,9 @@ public class JobPostController {
     @GetMapping("/detail/{jobPostId}")
     public String detail(@PathVariable("jobPostId") Long jobPostId, Model model) {
         JobPostVo jobPostVo = jobPostService.findJobPostById(jobPostId);
+        // 조회수 증가
+        jobPostService.incrementHitCount(jobPostId);
+
 
         if (jobPostVo != null) {
             // 날짜 포맷팅
