@@ -16,4 +16,5 @@ public interface JobPostService {
     public List<JobPostVo> getScrapList(String jobSeekerId);
     void updateJobPost(JobPostVo jobPostVo);
     void deleteJobPost(Long jobPostId);
+    void incrementHitCount(Long jobPostId);
 }
