@@ -24,11 +24,13 @@
 
     <select id="getAllJobPosts" resultType="com.javalab.board.vo.JobPostVo">
         SELECT * FROM jobPost
+        ORDER BY created DESC
     </select>
 
     <select id="selectJobPostsByCompany" parameterType="String" resultType="com.javalab.board.vo.JobPostVo">
         SELECT * FROM jobPost
         WHERE comp_id = #{compId}
+        ORDER BY created DESC
     </select>
 
     <update id="updatePaymentStatus">
@@ -84,6 +86,13 @@
         DELETE FROM jobSeekerScrap
         WHERE jobPost_id = #{jobPostId}
     </delete>
+
+    <update id="incrementHitCount" parameterType="long">
+        UPDATE jobPost
+        SET hit_no = hit_no + 1
+        WHERE jobPost_id = #{jobPostId}
+    </update>
+
 
 
 </mapper>

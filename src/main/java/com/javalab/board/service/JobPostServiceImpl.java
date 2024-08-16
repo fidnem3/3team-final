@@ -109,5 +109,9 @@ public class JobPostServiceImpl implements JobPostService {
         jobPostMapper.deleteJobPost(jobPostId); // 공고 Mapper 메서드 호출
 
 }
+    @Override
+    public void incrementHitCount(Long jobPostId) {
+        jobPostMapper.incrementHitCount(jobPostId);
+    }
 
 }

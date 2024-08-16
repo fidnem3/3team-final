@@ -31,4 +31,6 @@ public interface JobPostMapper {
     void deleteJobPost(@Param("jobPostId") Long jobPostId);
 
     void deleteScrapsByJobPostId(@Param("jobPostId") Long jobPostId);
+
+    void incrementHitCount(Long jobPostId);
 }
