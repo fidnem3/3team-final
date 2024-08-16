@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+
+<head>
+    <meta charset="utf-8">
+    <title>JobEntry - Job Portal Website Template</title>
+</head>
+
+<body>
+<div layout:fragment="content" class="container-xxl bg-white p-0">
+
+    <div class="container">
+        <h1>Create Job Post</h1>
+        <form id="jobPostForm" th:action="@{/jobPost/jobPostCreate}" th:object="${createJobPostRequestDto}" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="title">Title:</label>
+                <input type="text" id="title" th:field="*{title}" required="required"/>
+            </div>
+            <div class="form-group">
+                <textarea id="editor1" th:field="*{content}" required="required"></textarea>
+                <script>
+                    CKEDITOR.replace('editor1');
+                </script>
+            </div>
+            <div class="form-group">
+                <label for="position">Position:</label>
+                <input type="text" id="position" th:field="*{position}" required="required"/>
+            </div>
+            <div class="form-group">
+                <label for="salary">Salary:</label>
+                <input type="text" id="salary" th:field="*{salary}" required="required"/>
+            </div>
+            <div class="form-group">
+                <label for="address">지역:</label>
+                <input type="text" id="address" th:field="*{address}" required="required"/>
+            </div>
+            <div class="form-group">
+                <label for="experience">Experience:</label>
+                <input type="text" id="experience" th:field="*{experience}" required="required"/>
+            </div>
+            <div class="form-group">
+                <label for="education">Education:</label>
+                <input type="text" id="education" th:field="*{education}" required="required"/>
+            </div>
+            <div class="form-group">
+                <label for="endDate">End Date:</label>
+                <input type="date" id="endDate" th:field="*{endDate}" required="required"/>
+            </div>
+            <div class="form-group">
+                <label for="homepage">Homepage:</label>
+                <input type="url" id="homepage" th:field="*{homepage}"/>
+            </div>
+            <div class="form-group">
+                <label for="logoPath">Logo Image:</label>
+                <div class="file-upload">
+                    <input type="file" id="logoPath" th:field="*{logoPath}"/>
+                    <label for="logoPath">Choose File</label>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Create</button>
+        </form>
+    </div>
+</div>
+
+<script>
+
+</script>
+</body>
+</html>

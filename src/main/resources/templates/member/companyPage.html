@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>기업 페이지</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<header>
+    <h1>기업 페이지</h1>
+    <nav>
+        <a href="/member/logout">로그아웃</a>
+        <a href="/company/profile">기업 프로필</a>
+        <a href="/company/jobs">구인 공고 관리</a>
+    </nav>
+</header>
+<main>
+    <section>
+        <h2>환영합니다, <span th:text="${company.companyName}"></span>님!</h2>
+        <p>기업 페이지에 오신 것을 환영합니다. 여기에서 기업 정보를 관리하고, 구인 공고를 게시할 수 있습니다.</p>
+    </section>
+    <section>
+        <h2>기업 정보</h2>
+        <p>기업명: <span th:text="${company.companyName}"></span></p>
+        <p>이메일: <span th:text="${company.email}"></span></p>
+        <a href="/company/editProfile">기업 프로필 수정</a>
+    </section>
+    <section>
+        <h2>구인 공고 관리</h2>
+        <a href="/company/createJob">새 구인 공고 작성</a>
+        <ul>
+            <li th:each="job : ${companyJobs}">
+                <a th:href="@{/company/job/{jobId}(jobId=${job.jobId})}" th:text="${job.title}"></a>
+            </li>
+        </ul>
+    </section>
+</main>
+<footer>
+    <p>&copy; 2024 Job Portal</p>
+</footer>
+</body>
+</html>

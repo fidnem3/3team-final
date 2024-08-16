@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.javalab.board.repository.AdminMapper">
+
+    <!-- Insert a new Admin -->
+    <insert id="insertAdmin" parameterType="com.javalab.board.vo.AdminVo">
+        INSERT INTO admin (admin_id, email, password, name, birth, tel)
+        VALUES (#{adminId}, #{email}, #{password}, #{name}, #{birth}, #{tel})
+    </insert>
+
+    <!-- Select an Admin by ID -->
+    <select id="getAdminById" parameterType="String" resultType="com.javalab.board.vo.AdminVo">
+        SELECT * FROM admin WHERE admin_id = #{adminId}
+    </select>
+
+    <!-- Select an Admin by email -->
+    <select id="getAdminByEmail" parameterType="String" resultType="com.javalab.board.vo.AdminVo">
+        SELECT * FROM admin WHERE email = #{email}
+    </select>
+
+    <!-- Select an Admin by ID and password for login -->
+    <select id="getAdminByIdAndPassword" parameterType="map" resultType="com.javalab.board.vo.AdminVo">
+        SELECT * FROM admin WHERE admin_id = #{adminId} AND password = #{password}
+    </select>
+
+    <!-- Update Admin details -->
+    <update id="updateAdmin" parameterType="com.javalab.board.vo.AdminVo">
+        UPDATE admin
+        SET email = #{email}, password = #{password}, name = #{name}, birth = #{birth}, tel = #{tel}
+        WHERE admin_id = #{adminId}
+    </update>
+
+    <!-- Delete an Admin by ID -->
+    <delete id="deleteAdmin" parameterType="String">
+        DELETE FROM admin WHERE admin_id = #{adminId}
+    </delete>
+
+</mapper>

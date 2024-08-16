@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.javalab.board.repository.UserRolesMapper">
+
+	<!-- 권한 정보를 삽입하는 SQL 쿼리 -->
+	<insert id="insertUserRole" parameterType="com.javalab.board.vo.UserRolesVo">
+		INSERT INTO UserRoles (user_id, user_type, role_id)
+		VALUES (#{userId, jdbcType=VARCHAR}, #{userType, jdbcType=VARCHAR}, #{roleId, jdbcType=VARCHAR})
+	</insert>
+
+	<!-- 특정 사용자 ID와 유형에 대한 권한 정보를 조회하는 SQL 쿼리 -->
+	<select id="selectUserRole" resultType="UserRolesVo">
+		SELECT * FROM UserRoles
+		WHERE user_id = #{userId} AND user_type = #{userType}
+	</select>
+
+	<!-- 권한 정보를 삭제하는 SQL 쿼리 -->
+	<delete id="deleteUserRole">
+		DELETE FROM UserRoles
+		WHERE user_id = #{userId} AND user_type = #{userType} AND role_id = #{roleId}
+	</delete>
+
+</mapper>

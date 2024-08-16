@@ -37,4 +37,42 @@
         SELECT * FROM company WHERE comp_id = #{compId}
     </select>
 
+
+    <!-- 권한 삽입 -->
+    <insert id="insertCompanyRole" parameterType="com.javalab.board.vo.UserRolesVo">
+        INSERT INTO UserRoles (
+        user_id,
+        user_type,
+        role_id
+        ) VALUES (
+        #{userId},
+        #{userType},
+        #{roleId}
+        )
+    </insert>
+
+    <!-- 권한 조회 -->
+    <select id="selectCompanyRole" parameterType="String" resultType="com.javalab.board.vo.UserRolesVo">
+        SELECT
+        user_id AS userId,
+        user_type AS userType,
+        role_id AS roleId
+        FROM UserRoles
+        WHERE user_id = #{userId} AND user_type = 'company'
+    </select>
+
+    <!-- 권한 업데이트 -->
+    <update id="updateCompanyRole" parameterType="com.javalab.board.vo.UserRolesVo">
+        UPDATE UserRoles
+        SET
+        role_id = #{roleId}
+        WHERE user_id = #{userId} AND user_type = 'company'
+    </update>
+
+    <!-- 권한 삭제 -->
+    <delete id="deleteCompanyRole" parameterType="com.javalab.board.vo.UserRolesVo">
+        DELETE FROM UserRoles
+        WHERE user_id = #{userId} AND user_type = 'company'
+    </delete>
+
 </mapper>

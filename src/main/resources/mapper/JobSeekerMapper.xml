@@ -30,27 +30,47 @@
         #{filePath, jdbcType=VARCHAR}
         )
     </insert>
-    <!--    &lt;!&ndash; 개인 회원 정보 조회 &ndash;&gt;-->
-    <!--    <select id="selectJobSeekerById" parameterType="String" resultType="com.javalab.board.vo.JobSeekerVo">-->
-    <!--        SELECT-->
-    <!--        jobSeeker_id AS jobSeekerId,-->
-    <!--        password,-->
-    <!--        name,-->
-    <!--        birth,-->
-    <!--        tel,-->
-    <!--        email,-->
-    <!--        address-->
-    <!--        FROM jobSeeker-->
-    <!--        WHERE jobSeeker_id = #{jobSeekerId}-->
-    <!--    </select>-->
 
+    <!-- 권한 삽입 -->
+    <insert id="insertJobSeekerRole" parameterType="com.javalab.board.vo.UserRolesVo">
+        INSERT INTO UserRoles (
+        user_id,
+        user_type,
+        role_id
+        ) VALUES (
+        #{userId},
+        #{userType},
+        #{roleId}
+        )
+    </insert>
+
+    <!-- 개인 회원 정보 조회 -->
     <select id="selectJobSeekerById" parameterType="String" resultType="com.javalab.board.vo.JobSeekerVo">
-        SELECT * FROM jobSeeker WHERE jobSeeker_id = #{jobSeekerId}
+        SELECT
+        jobSeeker_id AS jobSeekerId,
+        password,
+        name,
+        birth,
+        tel,
+        email,
+        address
+        FROM jobSeeker
+        WHERE jobSeeker_id = #{jobSeekerId}
+    </select>
+
+    <!-- 권한 조회 -->
+    <select id="selectJobSeekerRole" parameterType="String" resultType="com.javalab.board.vo.UserRolesVo">
+        SELECT
+        user_id AS userId,
+        user_type AS userType,
+        role_id AS roleId
+        FROM UserRoles
+        WHERE user_id = #{userId} AND user_type = 'jobSeeker'
     </select>
 
     <!-- 개인 회원 정보 갱신 -->
     <update id="updateJobSeeker" parameterType="com.javalab.board.vo.JobSeekerVo">
-        UPDATE job_seeker
+        UPDATE jobSeeker
         SET
         password = #{password},
         name = #{name},
@@ -58,12 +78,20 @@
         tel = #{tel},
         email = #{email},
         address = #{address}
-        WHERE job_seeker_id = #{jobSeekerId}
+        WHERE jobSeeker_id = #{jobSeekerId}
+    </update>
+
+    <!-- 권한 업데이트 -->
+    <update id="updateJobSeekerRole" parameterType="com.javalab.board.vo.UserRolesVo">
+        UPDATE UserRoles
+        SET
+        role_id = #{roleId}
+        WHERE user_id = #{userId} AND user_type = 'jobSeeker'
     </update>
 
     <!-- 개인 회원 정보 삭제 -->
     <delete id="deleteJobSeeker" parameterType="String">
-        DELETE FROM job_seeker
+        DELETE FROM jobSeeker
         WHERE jobSeeker_id = #{jobSeekerId}
     </delete>
 

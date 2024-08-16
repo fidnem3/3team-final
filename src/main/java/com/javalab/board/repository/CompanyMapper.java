@@ -19,7 +19,7 @@ public interface CompanyMapper {
      * - @param id 조회할 기업 회원의 ID
      * - @return 조회된 기업 회원 정보 객체
      */
-    CompanyVo selectCompanyById(@Param("compId") String compId);
+     CompanyVo selectCompanyById(String compId);
 
     /**
      * 기업 회원 정보를 데이터베이스에서 갱신합니다.
@@ -31,5 +31,5 @@ public interface CompanyMapper {
      * 주어진 회사 ID에 해당하는 기업 회원 정보를 데이터베이스에서 삭제합니다.
      * - @param compId 삭제할 기업 회원의 회사 ID
      */
-    void deleteCompany(@Param("compId") String compId);
+    void deleteCompany(String compId);
 }
