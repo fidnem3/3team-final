@@ -13,14 +13,20 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
-        .scrap-active i {
-            color: red; /* 스크랩 활성화 시 하트 색상 */
-        }
+ .scrap-button i.far {
+     color: green;
+ }
+
+ /* 스크랩된 상태 (빨간색으로 채워진 하트) */
+ .scrap-active i.fas {
+     color: red;
+ }
+
     </style>
 
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
-<meta name="_csrf" th:content="${_csrf.token}"/>
-<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 <body>
 <div layout:fragment="content" class="container-xxl py-5">
     <div class="container">
@@ -36,9 +42,12 @@
                                  style="width: 80px; height: 80px;">
                             <div class="text-start ps-4">
                                 <h5 class="mb-3" th:text="${jobPost.title}">Job Title</h5>
-                                <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i><span th:text="${jobPost.address}">Location</span></span>
+                                <span class="text-truncate me-3"><i
+                                        class="fa fa-map-marker-alt text-primary me-2"></i><span
+                                        th:text="${jobPost.address}">Location</span></span>
                                 <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>Full Time</span>
-                                <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i><span th:text="${jobPost.salary}">Salary</span></span>
+                                <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i><span
+                                        th:text="${jobPost.salary}">Salary</span></span>
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
@@ -49,9 +58,10 @@
                                    th:href="@{#}"
                                    th:data-jobpostid="${jobPost.jobPostId}"
                                    onclick="toggleScrap(event)">
-                                    <i class="far fa-heart text-primary"></i>
+                                    <i th:classappend="${scrapStatusMap[jobPost.jobPostId] != null and scrapStatusMap[jobPost.jobPostId] ? 'fas fa-heart' : 'far fa-heart'}"></i>
                                 </a>
-                                <a class="btn btn-primary" th:href="@{/jobPost/detail/{jobPostId}(jobPostId=${jobPost.jobPostId})}">보기</a>
+                                <a class="btn btn-primary"
+                                   th:href="@{/jobPost/detail/{jobPostId}(jobPostId=${jobPost.jobPostId})}">보기</a>
                             </div>
                             <small class="text-truncate">
                                 <i class="far fa-calendar-alt text-primary me-2"></i>
@@ -62,7 +72,8 @@
                 </div>
             </div>
         </div>
-        <a class="btn btn-primary py-3 px-5" th:href="@{/jobPost/jobPostCreate}" sec:authorize="hasRole('ROLE_COMPANY')">공고 등록하기</a>
+        <a class="btn btn-primary py-3 px-5" th:href="@{/jobPost/jobPostCreate}"
+           sec:authorize="hasRole('ROLE_COMPANY')">공고 등록하기</a>
     </div>
 </div>
 </body>

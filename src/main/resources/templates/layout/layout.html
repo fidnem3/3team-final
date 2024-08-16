@@ -310,11 +310,16 @@ function toggleScrap(event) {
     })
     .then(data => {
         if (data) {
+            const icon = button.querySelector('i');
             if (data.isScrapped) {
                 button.classList.add('scrap-active');
+                icon.classList.remove('far');
+                icon.classList.add('fas');
                 alert('스크랩 완료');
             } else {
                 button.classList.remove('scrap-active');
+                icon.classList.remove('fas');
+                icon.classList.add('far');
                 alert('스크랩 취소');
             }
         }
