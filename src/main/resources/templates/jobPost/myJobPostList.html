@@ -123,14 +123,18 @@
                                     </div>
                                     <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
                                         <div class="d-flex mb-3">
-                                            <a class="btn btn-light btn-square me-3" th:href="@{/jobPost/payment/{jobPostId}(jobPostId=${jobPost.jobPostId})}"
+                                            <a class="btn btn-primary btn-square me-3" th:href="@{/jobPost/payment/{jobPostId}(jobPostId=${jobPost.jobPostId})}"
                                                th:if="${jobPost.paymentStatus == 'Before Payment'}">Pay</a>
+                                            <a th:href="@{/jobPost/edit/{jobPostId}(jobPostId=${jobPost.jobPostId})}">Edit</a>
+                                            <form th:action="@{/jobPost/delete/{jobPostId}(jobPostId=${jobPost.jobPostId})}" method="post" style="display:inline;">
+                                                <button type="submit" onclick="return confirm('정말로 삭제하시겠습니까?');">Delete</button>
+                                            </form>
                                         </div>
                                         <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i><span th:text="${jobPost.paymentStatus}">Status</span></small>
                                     </div>
                                 </div>
                             </div>
-                            <a class="btn btn-primary py-3 px-5" href="#">더 보기</a>
+<!--                           <a class="btn btn-primary py-3 px-5" href="#">더 보기</a>-->
                         </div>
                     </div>
 

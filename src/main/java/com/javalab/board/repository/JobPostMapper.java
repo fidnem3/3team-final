@@ -2,19 +2,20 @@ package com.javalab.board.repository;
 
 import com.javalab.board.dto.CreateJobPostRequestDto;
 import com.javalab.board.vo.JobPostVo;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
 public interface JobPostMapper {
-    // 반환 타입을 Long으로 설정
     Long insertJobPost(JobPostVo jobPostVo);
 
     JobPostVo getJobPostById(@Param("jobPostId") Long jobPostId);
 
     List<JobPostVo> getAllJobPosts();
-    JobPostVo getJobPostDetailsById(Long jobPostId);
 
+    JobPostVo getJobPostDetailsById(Long jobPostId);
 
     List<JobPostVo> selectJobPostsByCompany(String compId);
 
@@ -24,4 +25,8 @@ public interface JobPostMapper {
 
     List<JobPostVo> getScrapList(String jobSeekerId);
 
+    @Update("UPDATE jobPost SET title = #{title}, content = #{content}, position = #{position}, salary = #{salary}, experience = #{experience}, education = #{education}, address = #{address}, end_date = #{endDate}, homepage = #{homepage} WHERE jobPost_id = #{jobPostId}")
+    void updateJobPost(JobPostVo jobPostVo);
+
+    void deleteJobPost(Long jobPostId);
 }

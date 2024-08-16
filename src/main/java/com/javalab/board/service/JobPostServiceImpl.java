@@ -84,4 +84,15 @@ public class JobPostServiceImpl implements JobPostService {
     public List<JobPostVo> getScrapList(String jobSeekerId) {
         return jobPostMapper.getScrapList(jobSeekerId);
     }
+
+    @Override
+    @Transactional
+    public void updateJobPost(JobPostVo jobPostVo) {
+        jobPostMapper.updateJobPost(jobPostVo);
+    }
+
+    @Override
+    public void deleteJobPost(Long jobPostId) {
+        jobPostMapper.deleteJobPost(jobPostId);
+    }
 }

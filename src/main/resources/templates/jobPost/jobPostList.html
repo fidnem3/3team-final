@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/layout}">
 
@@ -44,6 +45,7 @@
                         <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
                             <div class="d-flex mb-3">
                                 <a class="btn btn-light btn-square me-3 scrap-button"
+                                   sec:authorize="hasRole('ROLE_USER')"
                                    th:classappend="${scrapStatusMap[jobPost.jobPostId] != null and scrapStatusMap[jobPost.jobPostId] ? 'scrap-active' : ''}"
                                    th:href="@{#}"
                                    th:data-jobpostid="${jobPost.jobPostId}"
@@ -62,7 +64,7 @@
             </div>
         </div>
 
-        <a class="btn btn-primary py-3 px-5" th:href="@{/jobPost/jobPostCreate}">공고 등록하기</a>
+        <a class="btn btn-primary py-3 px-5" th:href="@{/jobPost/jobPostCreate}" sec:authorize="hasRole('ROLE_COMPANY')">공고 등록하기</a>
     </div>
 </div>
 

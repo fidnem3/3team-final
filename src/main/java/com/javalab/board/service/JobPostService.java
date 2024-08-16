@@ -14,4 +14,6 @@ public interface JobPostService {
     void updatePaymentStatus(Long jobPostId, String paymentStatus);
     JobPostVo findJobPostById(Long jobPostId);
     public List<JobPostVo> getScrapList(String jobSeekerId);
+    void updateJobPost(JobPostVo jobPostVo);
+    void deleteJobPost(Long jobPostId);
 }
