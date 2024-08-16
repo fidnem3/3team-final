@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/html">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="UTF-8">
     <title>Navigation Layout</title>
@@ -31,6 +31,8 @@
 
     <!-- Template Stylesheet -->
     <link th:href="@{/css/style.css}" rel="stylesheet">
+
+    <script src="https://cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
 </head>
 <body>
 <header>
@@ -245,6 +247,7 @@
         }
     });
 </script>
+
 <!-- 페이지 마다 text 다르게 하는 script-->
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -320,6 +323,29 @@ function toggleScrap(event) {
 }
 
     CKEDITOR.replace('editor1');
+</script>
+<script>
+    $(document).ready(function () {
+        $('.dev-toggle-filter').click(function () {
+            $(this).toggleClass('open');
+            $(this).next('.filter-box').toggle();
+        });
+
+        $('.dev-button-item').click(function () {
+            $(this).toggleClass('active').siblings().removeClass('active');
+        });
+
+        $('.search-reset').click(function () {
+            $(this).closest('.filter-box').find('.dev-button-item').removeClass('active');
+            $(this).closest('.filter-box').find('.dev-button-all').addClass('active');
+        });
+
+        $('#resetCondition').click(function () {
+            $('.filter-box').find('.dev-button-item').removeClass('active');
+            $('.filter-box').find('.dev-button-all').addClass('active');
+            $('#searchForm')[0].reset();
+        });
+    });
 </script>
 </body>
 </html>

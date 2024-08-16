@@ -17,11 +17,10 @@
             color: red; /* 스크랩 활성화 시 하트 색상 */
         }
     </style>
-    <meta name="_csrf" th:content="${_csrf.token}"/>
-    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 
 </head>
-
+<meta name="_csrf" th:content="${_csrf.token}"/>
+<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 <body>
 <div layout:fragment="content" class="container-xxl py-5">
     <div class="container">
@@ -63,11 +62,8 @@
                 </div>
             </div>
         </div>
-
         <a class="btn btn-primary py-3 px-5" th:href="@{/jobPost/jobPostCreate}" sec:authorize="hasRole('ROLE_COMPANY')">공고 등록하기</a>
     </div>
 </div>
-
-
 </body>
 </html>
