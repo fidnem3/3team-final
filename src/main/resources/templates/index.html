@@ -1,12 +1,25 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/layout}">
 
 <head>
     <meta charset="utf-8">
     <title>JobEntry - Job Portal Website Template</title>
+    <style>
+        .scrap-button i.far {
+            color: green;
+        }
 
+        /* 스크랩된 상태 (빨간색으로 채워진 하트) */
+        .scrap-active i.fas {
+            color: red;
+        }
+
+    </style>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 
 <body>
@@ -85,493 +98,44 @@
     </div>
     <!-- Search End -->
 
-
-    <!-- Category Start
-    <div class="container-xxl py-5">
-        <div class="container">
-            <h1 class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">인기 공고 top8</h1>
-            <div class="row g-4">
-                <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <a class="cat-item rounded p-4" href="">
-                        <i class="fa fa-3x fa-mail-bulk text-primary mb-4"></i>
-                        <h6 class="mb-3">Marketing</h6>
-                        <p class="mb-0">123 Vacancy</p>
-                    </a>
-                </div>
-                <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.3s">
-                    <a class="cat-item rounded p-4" href="">
-                        <i class="fa fa-3x fa-headset text-primary mb-4"></i>
-                        <h6 class="mb-3">Customer Service</h6>
-                        <p class="mb-0">123 Vacancy</p>
-                    </a>
-                </div>
-                <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.5s">
-                    <a class="cat-item rounded p-4" href="">
-                        <i class="fa fa-3x fa-user-tie text-primary mb-4"></i>
-                        <h6 class="mb-3">Human Resource</h6>
-                        <p class="mb-0">123 Vacancy</p>
-                    </a>
-                </div>
-                <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.7s">
-                    <a class="cat-item rounded p-4" href="">
-                        <i class="fa fa-3x fa-tasks text-primary mb-4"></i>
-                        <h6 class="mb-3">Project Management</h6>
-                        <p class="mb-0">123 Vacancy</p>
-                    </a>
-                </div>
-                <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <a class="cat-item rounded p-4" href="">
-                        <i class="fa fa-3x fa-chart-line text-primary mb-4"></i>
-                        <h6 class="mb-3">Business Development</h6>
-                        <p class="mb-0">123 Vacancy</p>
-                    </a>
-                </div>
-                <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.3s">
-                    <a class="cat-item rounded p-4" href="">
-                        <i class="fa fa-3x fa-hands-helping text-primary mb-4"></i>
-                        <h6 class="mb-3">Sales & Communication</h6>
-                        <p class="mb-0">123 Vacancy</p>
-                    </a>
-                </div>
-                <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.5s">
-                    <a class="cat-item rounded p-4" href="">
-                        <i class="fa fa-3x fa-book-reader text-primary mb-4"></i>
-                        <h6 class="mb-3">Teaching & Education</h6>
-                        <p class="mb-0">123 Vacancy</p>
-                    </a>
-                </div>
-                <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.7s">
-                    <a class="cat-item rounded p-4" href="">
-                        <i class="fa fa-3x fa-drafting-compass text-primary mb-4"></i>
-                        <h6 class="mb-3">Design & Creative</h6>
-                        <p class="mb-0">123 Vacancy</p>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-     Category End -->
-
-
     <!-- Jobs Start -->
     <div class="container-xxl py-5">
         <div class="container">
-            <h1 class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">인기 공고 top5</h1>
-            <div class="tab-class text-center wow fadeInUp" data-wow-delay="0.3s">
-                <div class="tab-content">
-                    <div id="tab-1" class="tab-pane fade show p-0 active">
-                        <div class="job-item p-4 mb-4">
-                            <div class="row g-4">
-                                <div class="col-sm-12 col-md-8 d-flex align-items-center">
-                                    <img class="flex-shrink-0 img-fluid border rounded"
-                                         th:src="@{/img/com-logo-1.jpg}"
-                                         alt=""
-                                         style="width: 80px; height: 80px;">
-                                    <div class="text-start ps-4">
-                                        <h5 class="mb-3">소프트웨어 개발자</h5>
-                                        <span class="text-truncate me-3"><i
-                                                class="fa fa-map-marker-alt text-primary me-2"></i>강남구, 서울</span>
-                                        <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>경력 2년</span>
-                                        <span class="text-truncate me-0"><i
-                                                class="far fa-money-bill-alt text-primary me-2"></i>상세 내용 확인</span>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
-                                    <div class="d-flex mb-3">
-                                        <a class="btn btn-light btn-square me-3" href=""><i
-                                                class="far fa-heart text-primary"></i></a>
-                                        <a class="btn btn-primary" href="">지원하기</a>
-                                    </div>
-                                    <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Date
-                                        Line: 01 Jan, 2045</small>
-                                </div>
-                            </div>
+            <h2 class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s"><span style='font-size:30px;'>&#128293;</span>지금 가장 많이 본 공고<span style='font-size:30px;'>&#128293;</span></h2>
+
+            <div th:each="jobPost : ${top5PopularJobPosts}" class="job-item p-4 mb-4">
+                <div class="row g-4">
+                    <div class="col-sm-12 col-md-8 d-flex align-items-center">
+                        <img class="flex-shrink-0 img-fluid border rounded"
+                             th:src="@{/img/com-logo-#${jobPost.jobPostId}.jpg}" alt=""
+                             style="width: 80px; height: 80px;">
+                        <div class="text-start ps-4">
+                            <h5 class="mb-3" th:text="${jobPost.title}">Job Title</h5>
+                            <span class="text-truncate me-3"><i
+                                    class="fa fa-map-marker-alt text-primary me-2"></i><span
+                                    th:text="${jobPost.address}">Location</span></span>
+                            <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>Full Time</span>
+                            <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i><span
+                                    th:text="${jobPost.salary}">Salary</span></span>
                         </div>
-                        <div class="job-item p-4 mb-4">
-                            <div class="row g-4">
-                                <div class="col-sm-12 col-md-8 d-flex align-items-center">
-                                    <img class="flex-shrink-0 img-fluid border rounded"
-                                         th:src="@{/img/com-logo-2.jpg}"
-                                         alt=""
-                                         style="width: 80px; height: 80px;" src="">
-                                    <div class="text-start ps-4">
-                                        <h5 class="mb-3">ai 담당 개발자</h5>
-                                        <span class="text-truncate me-3"><i
-                                                class="fa fa-map-marker-alt text-primary me-2"></i>강남구, 서울</span>
-                                        <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>경력 5년</span>
-                                        <span class="text-truncate me-0"><i
-                                                class="far fa-money-bill-alt text-primary me-2"></i>면접 후 협의</span>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
-                                    <div class="d-flex mb-3">
-                                        <a class="btn btn-light btn-square me-3" href=""><i
-                                                class="far fa-heart text-primary"></i></a>
-                                        <a class="btn btn-primary" href="">지원하기</a>
-                                    </div>
-                                    <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Date
-                                        Line: 01 Jan, 2045</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="job-item p-4 mb-4">
-                            <div class="row g-4">
-                                <div class="col-sm-12 col-md-8 d-flex align-items-center">
-                                    <img class="flex-shrink-0 img-fluid border rounded"
-                                         th:src="@{/img/com-logo-3.jpg}"
-                                         alt=""
-                                         style="width: 80px; height: 80px;" src="">
-                                    <div class="text-start ps-4">
-                                        <h5 class="mb-3">백엔드 개발자</h5>
-                                        <span class="text-truncate me-3"><i
-                                                class="fa fa-map-marker-alt text-primary me-2"></i>구로구, 서울</span>
-                                        <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>경력무관</span>
-                                        <span class="text-truncate me-0"><i
-                                                class="far fa-money-bill-alt text-primary me-2"></i>연 3200만원</span>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
-                                    <div class="d-flex mb-3">
-                                        <a class="btn btn-light btn-square me-3" href=""><i
-                                                class="far fa-heart text-primary"></i></a>
-                                        <a class="btn btn-primary" href="">지원하기</a>
-                                    </div>
-                                    <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Date
-                                        Line: 01 Jan, 2045</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="job-item p-4 mb-4">
-                            <div class="row g-4">
-                                <div class="col-sm-12 col-md-8 d-flex align-items-center">
-                                    <img class="flex-shrink-0 img-fluid border rounded"
-                                         th:src="@{/img/com-logo-4.jpg}"
-                                         alt=""
-                                         style="width: 80px; height: 80px;">
-                                    <div class="text-start ps-4">
-                                        <h5 class="mb-3">프론트엔드 개발자</h5>
-                                        <span class="text-truncate me-3"><i
-                                                class="fa fa-map-marker-alt text-primary me-2"></i>구미, 경북</span>
-                                        <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>경력 1년</span>
-                                        <span class="text-truncate me-0"><i
-                                                class="far fa-money-bill-alt text-primary me-2"></i>면접 후 협의</span>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
-                                    <div class="d-flex mb-3">
-                                        <a class="btn btn-light btn-square me-3" href=""><i
-                                                class="far fa-heart text-primary"></i></a>
-                                        <a class="btn btn-primary" href="">지원하기</a>
-                                    </div>
-                                    <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Date
-                                        Line: 01 Jan, 2045</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="job-item p-4 mb-4">
-                            <div class="row g-4">
-                                <div class="col-sm-12 col-md-8 d-flex align-items-center">
-                                    <img class="flex-shrink-0 img-fluid border rounded"
-                                         th:src="@{/img/com-logo-5.jpg}"
-                                         alt=""
-                                         style="width: 80px; height: 80px;">
-                                    <div class="text-start ps-4">
-                                        <h5 class="mb-3">클라우드 개발자</h5>
-                                        <span class="text-truncate me-3"><i
-                                                class="fa fa-map-marker-alt text-primary me-2"></i>강북구, 서울</span>
-                                        <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>경력무관</span>
-                                        <span class="text-truncate me-0"><i
-                                                class="far fa-money-bill-alt text-primary me-2"></i>연 3000</span>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
-                                    <div class="d-flex mb-3">
-                                        <a class="btn btn-light btn-square me-3" href=""><i
-                                                class="far fa-heart text-primary"></i></a>
-                                        <a class="btn btn-primary" href="">지원하기</a>
-                                    </div>
-                                    <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Date
-                                        Line: 01 Jan, 2045</small>
-                                </div>
-                            </div>
-                        </div>
-                        <a class="btn btn-primary py-3 px-5" href="">더 많은 공고 보러가기</a>
                     </div>
-                    <div id="tab-2" class="tab-pane fade show p-0">
-                        <div class="job-item p-4 mb-4">
-                            <div class="row g-4">
-                                <div class="col-sm-12 col-md-8 d-flex align-items-center">
-                                    <img class="flex-shrink-0 img-fluid border rounded"
-                                         th:src="@{/img/com-logo-1.jpg}"
-                                         alt=""
-                                         style="width: 80px; height: 80px;">
-                                    <div class="text-start ps-4">
-                                        <h5 class="mb-3">Software Engineer</h5>
-                                        <span class="text-truncate me-3"><i
-                                                class="fa fa-map-marker-alt text-primary me-2"></i>New York, USA</span>
-                                        <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>Full Time</span>
-                                        <span class="text-truncate me-0"><i
-                                                class="far fa-money-bill-alt text-primary me-2"></i>$123 - $456</span>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
-                                    <div class="d-flex mb-3">
-                                        <a class="btn btn-light btn-square me-3" href=""><i
-                                                class="far fa-heart text-primary"></i></a>
-                                        <a class="btn btn-primary" href="">Apply Now</a>
-                                    </div>
-                                    <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Date
-                                        Line: 01 Jan, 2045</small>
-                                </div>
-                            </div>
+                    <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
+                        <div class="d-flex mb-3">
+                            <a class="btn btn-light btn-square me-3 scrap-button"
+                               sec:authorize="!hasRole('ROLE_COMPANY')"
+                               th:classappend="${scrapStatusMap[jobPost.jobPostId] != null and scrapStatusMap[jobPost.jobPostId] ? 'scrap-active' : ''}"
+                               th:href="@{#}"
+                               th:data-jobpostid="${jobPost.jobPostId}"
+                               onclick="toggleScrap(event)">
+                                <i th:classappend="${scrapStatusMap[jobPost.jobPostId] != null and scrapStatusMap[jobPost.jobPostId] ? 'fas fa-heart' : 'far fa-heart'}"></i>
+                            </a>
+                            <a class="btn btn-primary"
+                               th:href="@{/jobPost/detail/{jobPostId}(jobPostId=${jobPost.jobPostId})}">보기</a>
                         </div>
-                        <div class="job-item p-4 mb-4">
-                            <div class="row g-4">
-                                <div class="col-sm-12 col-md-8 d-flex align-items-center">
-                                    <img class="flex-shrink-0 img-fluid border rounded"
-                                         th:src="@{/img/com-logo-2.jpg}"
-                                         alt=""
-                                         style="width: 80px; height: 80px;">
-                                    <div class="text-start ps-4">
-                                        <h5 class="mb-3">Marketing Manager</h5>
-                                        <span class="text-truncate me-3"><i
-                                                class="fa fa-map-marker-alt text-primary me-2"></i>New York, USA</span>
-                                        <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>Full Time</span>
-                                        <span class="text-truncate me-0"><i
-                                                class="far fa-money-bill-alt text-primary me-2"></i>$123 - $456</span>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
-                                    <div class="d-flex mb-3">
-                                        <a class="btn btn-light btn-square me-3" href=""><i
-                                                class="far fa-heart text-primary"></i></a>
-                                        <a class="btn btn-primary" href="">Apply Now</a>
-                                    </div>
-                                    <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Date
-                                        Line: 01 Jan, 2045</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="job-item p-4 mb-4">
-                            <div class="row g-4">
-                                <div class="col-sm-12 col-md-8 d-flex align-items-center">
-                                    <img class="flex-shrink-0 img-fluid border rounded"
-                                         th:src="@{/img/com-logo-3.jpg}"
-                                         alt=""
-                                         style="width: 80px; height: 80px;">
-                                    <div class="text-start ps-4">
-                                        <h5 class="mb-3">Product Designer</h5>
-                                        <span class="text-truncate me-3"><i
-                                                class="fa fa-map-marker-alt text-primary me-2"></i>New York, USA</span>
-                                        <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>Full Time</span>
-                                        <span class="text-truncate me-0"><i
-                                                class="far fa-money-bill-alt text-primary me-2"></i>$123 - $456</span>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
-                                    <div class="d-flex mb-3">
-                                        <a class="btn btn-light btn-square me-3" href=""><i
-                                                class="far fa-heart text-primary"></i></a>
-                                        <a class="btn btn-primary" href="">Apply Now</a>
-                                    </div>
-                                    <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Date
-                                        Line: 01 Jan, 2045</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="job-item p-4 mb-4">
-                            <div class="row g-4">
-                                <div class="col-sm-12 col-md-8 d-flex align-items-center">
-                                    <img class="flex-shrink-0 img-fluid border rounded"
-                                         th:src="@{/img/com-logo-4.jpg}"
-                                         alt=""
-                                         style="width: 80px; height: 80px;">
-                                    <div class="text-start ps-4">
-                                        <h5 class="mb-3">Creative Director</h5>
-                                        <span class="text-truncate me-3"><i
-                                                class="fa fa-map-marker-alt text-primary me-2"></i>New York, USA</span>
-                                        <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>Full Time</span>
-                                        <span class="text-truncate me-0"><i
-                                                class="far fa-money-bill-alt text-primary me-2"></i>$123 - $456</span>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
-                                    <div class="d-flex mb-3">
-                                        <a class="btn btn-light btn-square me-3" href=""><i
-                                                class="far fa-heart text-primary"></i></a>
-                                        <a class="btn btn-primary" href="">Apply Now</a>
-                                    </div>
-                                    <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Date
-                                        Line: 01 Jan, 2045</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="job-item p-4 mb-4">
-                            <div class="row g-4">
-                                <div class="col-sm-12 col-md-8 d-flex align-items-center">
-                                    <img class="flex-shrink-0 img-fluid border rounded"
-                                         th:src="@{/img/com-logo-5.jpg}"
-                                         alt=""
-                                         style="width: 80px; height: 80px;">
-                                    <div class="text-start ps-4">
-                                        <h5 class="mb-3">Wordpress Developer</h5>
-                                        <span class="text-truncate me-3"><i
-                                                class="fa fa-map-marker-alt text-primary me-2"></i>New York, USA</span>
-                                        <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>Full Time</span>
-                                        <span class="text-truncate me-0"><i
-                                                class="far fa-money-bill-alt text-primary me-2"></i>$123 - $456</span>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
-                                    <div class="d-flex mb-3">
-                                        <a class="btn btn-light btn-square me-3" href=""><i
-                                                class="far fa-heart text-primary"></i></a>
-                                        <a class="btn btn-primary" href="">Apply Now</a>
-                                    </div>
-                                    <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Date
-                                        Line: 01 Jan, 2045</small>
-                                </div>
-                            </div>
-                        </div>
-                        <a class="btn btn-primary py-3 px-5" href="">Browse More Jobs</a>
-                    </div>
-                    <div id="tab-3" class="tab-pane fade show p-0">
-                        <div class="job-item p-4 mb-4">
-                            <div class="row g-4">
-                                <div class="col-sm-12 col-md-8 d-flex align-items-center">
-                                    <img class="flex-shrink-0 img-fluid border rounded"
-                                         th:src="@{/img/com-logo-1.jpg}"
-                                         alt=""
-                                         style="width: 80px; height: 80px;">
-                                    <div class="text-start ps-4">
-                                        <h5 class="mb-3">Software Engineer</h5>
-                                        <span class="text-truncate me-3"><i
-                                                class="fa fa-map-marker-alt text-primary me-2"></i>New York, USA</span>
-                                        <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>Full Time</span>
-                                        <span class="text-truncate me-0"><i
-                                                class="far fa-money-bill-alt text-primary me-2"></i>$123 - $456</span>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
-                                    <div class="d-flex mb-3">
-                                        <a class="btn btn-light btn-square me-3" href=""><i
-                                                class="far fa-heart text-primary"></i></a>
-                                        <a class="btn btn-primary" href="">Apply Now</a>
-                                    </div>
-                                    <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Date
-                                        Line: 01 Jan, 2045</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="job-item p-4 mb-4">
-                            <div class="row g-4">
-                                <div class="col-sm-12 col-md-8 d-flex align-items-center">
-                                    <img class="flex-shrink-0 img-fluid border rounded"
-                                         th:src="@{/img/com-logo-2.jpg}"
-                                         alt=""
-                                         style="width: 80px; height: 80px;">
-                                    <div class="text-start ps-4">
-                                        <h5 class="mb-3">Marketing Manager</h5>
-                                        <span class="text-truncate me-3"><i
-                                                class="fa fa-map-marker-alt text-primary me-2"></i>New York, USA</span>
-                                        <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>Full Time</span>
-                                        <span class="text-truncate me-0"><i
-                                                class="far fa-money-bill-alt text-primary me-2"></i>$123 - $456</span>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
-                                    <div class="d-flex mb-3">
-                                        <a class="btn btn-light btn-square me-3" href=""><i
-                                                class="far fa-heart text-primary"></i></a>
-                                        <a class="btn btn-primary" href="">Apply Now</a>
-                                    </div>
-                                    <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Date
-                                        Line: 01 Jan, 2045</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="job-item p-4 mb-4">
-                            <div class="row g-4">
-                                <div class="col-sm-12 col-md-8 d-flex align-items-center">
-                                    <img class="flex-shrink-0 img-fluid border rounded"
-                                         th:src="@{/img/com-logo-3.jpg}"
-                                         alt=""
-                                         style="width: 80px; height: 80px;">
-                                    <div class="text-start ps-4">
-                                        <h5 class="mb-3">Product Designer</h5>
-                                        <span class="text-truncate me-3"><i
-                                                class="fa fa-map-marker-alt text-primary me-2"></i>New York, USA</span>
-                                        <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>Full Time</span>
-                                        <span class="text-truncate me-0"><i
-                                                class="far fa-money-bill-alt text-primary me-2"></i>$123 - $456</span>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
-                                    <div class="d-flex mb-3">
-                                        <a class="btn btn-light btn-square me-3" href=""><i
-                                                class="far fa-heart text-primary"></i></a>
-                                        <a class="btn btn-primary" href="">Apply Now</a>
-                                    </div>
-                                    <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Date
-                                        Line: 01 Jan, 2045</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="job-item p-4 mb-4">
-                            <div class="row g-4">
-                                <div class="col-sm-12 col-md-8 d-flex align-items-center">
-                                    <img class="flex-shrink-0 img-fluid border rounded"
-                                         th:src="@{/img/com-logo-4.jpg}"
-                                         alt=""
-                                         style="width: 80px; height: 80px;">
-                                    <div class="text-start ps-4">
-                                        <h5 class="mb-3">Creative Director</h5>
-                                        <span class="text-truncate me-3"><i
-                                                class="fa fa-map-marker-alt text-primary me-2"></i>New York, USA</span>
-                                        <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>Full Time</span>
-                                        <span class="text-truncate me-0"><i
-                                                class="far fa-money-bill-alt text-primary me-2"></i>$123 - $456</span>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
-                                    <div class="d-flex mb-3">
-                                        <a class="btn btn-light btn-square me-3" href=""><i
-                                                class="far fa-heart text-primary"></i></a>
-                                        <a class="btn btn-primary" href="">Apply Now</a>
-                                    </div>
-                                    <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Date
-                                        Line: 01 Jan, 2045</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="job-item p-4 mb-4">
-                            <div class="row g-4">
-                                <div class="col-sm-12 col-md-8 d-flex align-items-center">
-                                    <img class="flex-shrink-0 img-fluid border rounded"
-                                         th:src="@{/img/com-logo-5.jpg}"
-                                         alt=""
-                                         style="width: 80px; height: 80px;">
-                                    <div class="text-start ps-4">
-                                        <h5 class="mb-3">Wordpress Developer</h5>
-                                        <span class="text-truncate me-3"><i
-                                                class="fa fa-map-marker-alt text-primary me-2"></i>New York, USA</span>
-                                        <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>Full Time</span>
-                                        <span class="text-truncate me-0"><i
-                                                class="far fa-money-bill-alt text-primary me-2"></i>$123 - $456</span>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
-                                    <div class="d-flex mb-3">
-                                        <a class="btn btn-light btn-square me-3" href=""><i
-                                                class="far fa-heart text-primary"></i></a>
-                                        <a class="btn btn-primary" href="">Apply Now</a>
-                                    </div>
-                                    <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Date
-                                        Line: 01 Jan, 2045</small>
-                                </div>
-                            </div>
-                        </div>
-                        <a class="btn btn-primary py-3 px-5" href="">Browse More Jobs</a>
+                        <small class="text-truncate">
+                            <i class="far fa-calendar-alt text-primary me-2"></i>
+                            <span th:text="${#dates.format(jobPost.endDate, 'yyyy-MM-dd')}"></span> 마감
+                        </small>
                     </div>
                 </div>
             </div>
@@ -579,115 +143,114 @@
     </div>
     <!-- Jobs End -->
 
-
-    <!-- Testimonial Start -->
-    <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
-        <div class="container">
-            <h1 class="text-center mb-5">취업 선배들의 조언</h1>
-            <div class="owl-carousel testimonial-carousel">
-                <div class="testimonial-item bg-light rounded p-4">
-                    <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
-                    <p>취준 1개월만에 취업했습니다!! 이력서 많이 넣어보세요</p>
-                    <div class="d-flex align-items-center">
-                        <img class="img-fluid flex-shrink-0 rounded"
-                             th:src="@{/img/testimonial-1.jpg}"
-                             alt=""
-                             style="width: 50px; height: 50px;">
-                        <div class="ps-3">
-                            <h5 class="mb-1">이름</h5>
-                            <small>직업</small>
-                        </div>
+<!-- Testimonial Start -->
+<div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
+    <div class="container">
+        <h1 class="text-center mb-5">취업 선배들의 조언</h1>
+        <div class="owl-carousel testimonial-carousel">
+            <div class="testimonial-item bg-light rounded p-4">
+                <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
+                <p>취준 1개월만에 취업했습니다!! 이력서 많이 넣어보세요</p>
+                <div class="d-flex align-items-center">
+                    <img class="img-fluid flex-shrink-0 rounded"
+                         th:src="@{/img/testimonial-1.jpg}"
+                         alt=""
+                         style="width: 50px; height: 50px;">
+                    <div class="ps-3">
+                        <h5 class="mb-1">이름</h5>
+                        <small>직업</small>
                     </div>
                 </div>
-                <div class="testimonial-item bg-light rounded p-4">
-                    <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
-                    <p>후기 많이 읽어보는 게 도움이 되었네요</p>
-                    <div class="d-flex align-items-center">
-                        <img class="img-fluid flex-shrink-0 rounded"
-                             th:src="@{/img/testimonial-2.jpg}"
-                             alt=""
-                             style="width: 50px; height: 50px;">
-                        <div class="ps-3">
-                            <h5 class="mb-1">이름</h5>
-                            <small>직업</small>
-                        </div>
+            </div>
+            <div class="testimonial-item bg-light rounded p-4">
+                <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
+                <p>후기 많이 읽어보는 게 도움이 되었네요</p>
+                <div class="d-flex align-items-center">
+                    <img class="img-fluid flex-shrink-0 rounded"
+                         th:src="@{/img/testimonial-2.jpg}"
+                         alt=""
+                         style="width: 50px; height: 50px;">
+                    <div class="ps-3">
+                        <h5 class="mb-1">이름</h5>
+                        <small>직업</small>
                     </div>
                 </div>
-                <div class="testimonial-item bg-light rounded p-4">
-                    <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
-                    <p>저는 공백이 2년이 있어서 막막했는데 델토피아에 수시로 들락날락 하다보니 맘에 드는 회사에 취업할 수 있었어요!!! 다들 화이팅!!!</p>
-                    <div class="d-flex align-items-center">
-                        <img class="img-fluid flex-shrink-0 rounded"
-                             th:src="@{/img/testimonial-3.jpg}"
-                             alt=""
-                             style="width: 50px; height: 50px;">
-                        <div class="ps-3">
-                            <h5 class="mb-1">이름</h5>
-                            <small>직업</small>
-                        </div>
+            </div>
+            <div class="testimonial-item bg-light rounded p-4">
+                <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
+                <p>저는 공백이 2년이 있어서 막막했는데 델토피아에 수시로 들락날락 하다보니 맘에 드는 회사에 취업할 수 있었어요!!! 다들 화이팅!!!</p>
+                <div class="d-flex align-items-center">
+                    <img class="img-fluid flex-shrink-0 rounded"
+                         th:src="@{/img/testimonial-3.jpg}"
+                         alt=""
+                         style="width: 50px; height: 50px;">
+                    <div class="ps-3">
+                        <h5 class="mb-1">이름</h5>
+                        <small>직업</small>
                     </div>
                 </div>
-                <div class="testimonial-item bg-light rounded p-4">
-                    <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
-                    <p>현재 채용중인 공고들 꼭 확인하세요~ 그리고 우리집 고양이 루이 귀엽습니다^^</p>
-                    <div class="d-flex align-items-center">
-                        <img class="img-fluid flex-shrink-0 rounded"
-                             th:src="@{/img/testimonial-4.jpg}"
-                             alt=""
-                             style="width: 50px; height: 50px;">
-                        <div class="ps-3">
-                            <h5 class="mb-1">이름</h5>
-                            <small>직업</small>
-                        </div>
+            </div>
+            <div class="testimonial-item bg-light rounded p-4">
+                <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
+                <p>현재 채용중인 공고들 꼭 확인하세요~ 그리고 우리집 고양이 루이 귀엽습니다^^</p>
+                <div class="d-flex align-items-center">
+                    <img class="img-fluid flex-shrink-0 rounded"
+                         th:src="@{/img/testimonial-4.jpg}"
+                         alt=""
+                         style="width: 50px; height: 50px;">
+                    <div class="ps-3">
+                        <h5 class="mb-1">이름</h5>
+                        <small>직업</small>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Testimonial End -->
+</div>
+<!-- Testimonial End -->
 
-    <!-- About Start -->
-    <div class="container-xxl py-5">
-        <div class="container">
-            <div class="row g-5 align-items-center">
-                <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
-                    <div class="row g-0 about-bg rounded overflow-hidden">
-                        <div class="col-6 text-start">
-                            <img class="img-fluid w-100"
-                                 th:src="@{/img/about-1.jpg}"
-                                 alt="">
-                        </div>
-                        <div class="col-6 text-start">
-                            <img class="img-fluid"
-                                 th:src="@{/img/about-2.jpg}"
-                                 style="width: 85%; margin-top: 15%;"
-                                 alt="">
-                        </div>
-                        <div class="col-6 text-end">
-                            <img class="img-fluid"
-                                 th:src="@{/img/about-3.jpg}"
-                                 style="width: 85%;"
-                                 alt="">
-                        </div>
-                        <div class="col-6 text-end">
-                            <img class="img-fluid w-100"
-                                 th:src="@{/img/about-4.jpg}"
-                                 alt="">
-                        </div>
+<!-- About Start -->
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="row g-5 align-items-center">
+            <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
+                <div class="row g-0 about-bg rounded overflow-hidden">
+                    <div class="col-6 text-start">
+                        <img class="img-fluid w-100"
+                             th:src="@{/img/about-1.jpg}"
+                             alt="">
+                    </div>
+                    <div class="col-6 text-start">
+                        <img class="img-fluid"
+                             th:src="@{/img/about-2.jpg}"
+                             style="width: 85%; margin-top: 15%;"
+                             alt="">
+                    </div>
+                    <div class="col-6 text-end">
+                        <img class="img-fluid"
+                             th:src="@{/img/about-3.jpg}"
+                             style="width: 85%;"
+                             alt="">
+                    </div>
+                    <div class="col-6 text-end">
+                        <img class="img-fluid w-100"
+                             th:src="@{/img/about-4.jpg}"
+                             alt="">
                     </div>
                 </div>
-                <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
-                    <h1 class="mb-4">Team Deltopia</h1>
-                    <p class="mb-4">우리 델토피아는 현재, 미래의 모든 개발자 여러분을 응원합니다.</p>
-                    <p><i class="fa fa-check text-primary me-3"></i>실시간 nnn개 기업 공고 관리</p>
-                    <p><i class="fa fa-check text-primary me-3"></i>편리한 나의 이력서 관리 및 지원</p>
-                    <p><i class="fa fa-check text-primary me-3"></i>자유로운 게시판 사용</p>
-                    <a class="btn btn-primary py-3 px-5 mt-3" href="">더 보기</a>
-                </div>
+            </div>
+            <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
+                <h1 class="mb-4">Team Deltopia</h1>
+                <p class="mb-4">우리 델토피아는 현재, 미래의 모든 개발자 여러분을 응원합니다.</p>
+                <p><i class="fa fa-check text-primary me-3"></i>실시간 nnn개 기업 공고 관리</p>
+                <p><i class="fa fa-check text-primary me-3"></i>편리한 나의 이력서 관리 및 지원</p>
+                <p><i class="fa fa-check text-primary me-3"></i>자유로운 게시판 사용</p>
+                <a class="btn btn-primary py-3 px-5 mt-3" href="">더 보기</a>
             </div>
         </div>
     </div>
-    <!-- About End -->
+</div>
+<!-- About End -->
 </div>
 </body>
 </html>

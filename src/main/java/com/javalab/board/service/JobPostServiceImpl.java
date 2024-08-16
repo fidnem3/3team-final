@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -114,4 +113,9 @@ public class JobPostServiceImpl implements JobPostService {
         jobPostMapper.incrementHitCount(jobPostId);
     }
 
+
+    @Override
+    public List<JobPostVo> getTop5PopularJobPosts() {
+        return jobPostMapper.selectTop5PopularJobPosts();
+    }
 }
