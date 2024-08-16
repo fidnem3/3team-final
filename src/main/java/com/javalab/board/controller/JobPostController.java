@@ -176,6 +176,57 @@ public class JobPostController {
         }
     }
 
+    @GetMapping("/edit/{jobPostId}")
+    public String editJobPost(@PathVariable("jobPostId") Long jobPostId, Model model) {
+        JobPostVo jobPostVo = jobPostService.getJobPostById(jobPostId);
+        if (jobPostVo != null) {
+            model.addAttribute("createJobPostRequestDto", jobPostVo); // 모델에 추가
+            return "jobPost/jobPostEdit";
+        } else {
+            return "redirect:/jobPost/jobPostList";
+        }
+    }
+
+
+    @PostMapping("/edit")
+    public String updateJobPost(@ModelAttribute("createJobPostRequestDto") @Valid CreateJobPostRequestDto createJobPostRequestDto,
+                                BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            log.error("BindingResult has errors: {}", bindingResult.getAllErrors());
+            return "index";
+        }
+
+        // Get the current company ID
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String compId = ((UserDetails) authentication.getPrincipal()).getUsername();
+
+        // Create JobPostVo from DTO
+        JobPostVo jobPostVo = JobPostVo.builder()
+                .compId(compId)
+                .title(createJobPostRequestDto.getTitle())
+                .content(createJobPostRequestDto.getContent())
+                .position(createJobPostRequestDto.getPosition())
+                .salary(createJobPostRequestDto.getSalary())
+                .experience(createJobPostRequestDto.getExperience())
+                .education(createJobPostRequestDto.getEducation())
+                .address(createJobPostRequestDto.getAddress())
+                .endDate(createJobPostRequestDto.getEndDate())
+                .homepage(createJobPostRequestDto.getHomepage())
+                .build();
+
+        jobPostService.updateJobPost(jobPostVo);
+
+        return "redirect:/jobPost/myJobPostList";
+    }
+
+
+
+    @PostMapping("/delete/{jobPostId}")
+    public String deleteJobPost(@PathVariable("jobPostId") Long jobPostId) {
+        jobPostService.deleteJobPost(jobPostId);
+        return "redirect:/jobPost/myJobPostList";
+    }
+
 
 }
 
