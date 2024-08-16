@@ -28,5 +28,7 @@ public interface JobPostMapper {
     void updateJobPost(JobPostVo jobPostVo);
 
 
-    void deleteJobPost(Long jobPostId);
+    void deleteJobPost(@Param("jobPostId") Long jobPostId);
+
+    void deleteScrapsByJobPostId(@Param("jobPostId") Long jobPostId);
 }
