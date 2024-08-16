@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.javalab.board.repository.ResumeMapper">
+
+    <insert id="resumeCreate" parameterType="com.javalab.board.dto.ResumeDto">
+        <selectKey keyProperty="resumeId" resultType="int" order="BEFORE">
+        SELECT RESUME_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+
+        INSERT INTO resume (resume_id, jobSeeker_id, title, content ,education , experience , link )
+        VALUES (RESUME_SEQ.NEXTVAL, 'koko3', #{title}, #{content} ,#{education} , #{experience} ,#{link} )
+    </insert>
+
+    <select id="findAll" resultMap="ResumeWithJobSeekerMap">
+        SELECT r.resume_id, r.title, r.content, r.education, r.experience, r.link,
+        j.jobseeker_id, j.name, j.email, j.tel, j.birth, j.address
+        FROM resume r
+        JOIN jobseeker j ON r.jobseeker_id = j.jobseeker_id
+    </select>
+
+    <resultMap id="ResumeWithJobSeekerMap" type="com.javalab.board.dto.ResumeDto">
+        <id property="resumeId" column="resume_id"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="education" column="education"/>
+        <result property="experience" column="experience"/>
+        <result property="link" column="link"/>
+
+        <!-- JobSeekerVo 객체의 필드 매핑 -->
+        <association property="jobSeekerVo" javaType="com.javalab.board.vo.JobSeekerVo">
+            <id property="jobSeekerId" column="jobseeker_id"/>
+            <result property="name" column="name"/>
+            <result property="email" column="email"/>
+            <result property="tel" column="tel"/>
+            <result property="birth" column="birth"/>
+            <result property="address" column="address"/>
+        </association>
+    </resultMap>
+
+<!--    <update id="updateHits" parameterType="com.javalab.board.dto.ResumeDto">-->
+<!--        update resume-->
+<!--        SET hit_no = hit_no + 1-->
+<!--        where resume_id= #{resumeId}-->
+<!--    </update>-->
+
+
+    <resultMap id="ResumeDtoMap" type="com.javalab.board.dto.ResumeDto">
+        <id property="resumeId" column="resume_id"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="education" column="education"/>
+        <result property="experience" column="experience"/>
+        <result property="link" column="link"/>
+        <result property="hitNo" column="hit_no"/>
+        <association property="jobSeekerVo" javaType="com.javalab.board.vo.JobSeekerVo">
+            <id property="jobSeekerId" column="jobseeker_id"/>
+            <result property="name" column="name"/>
+            <result property="email" column="email"/>
+            <result property="tel" column="tel"/>
+            <result property="address" column="address"/>
+            <result property="filePath" column="file_path"/>
+        </association>
+    </resultMap>
+
+    <select id="findById" resultMap="ResumeDtoMap">
+        select r.*, j.*
+        from resume r
+        JOIN jobseeker j ON r.jobseeker_id = j.jobseeker_id
+        where resume_id = #{resumeId}
+    </select>
+
+    <update id="updateResume">
+        update resume
+        set title=#{title} , content=#{content}
+        where resume_id = #{resumeId}
+    </update>
+
+    <delete id="deleteResume">
+        delete
+        from resume
+        where resume_id=#{resumeId}
+    </delete>
+
+    <insert id="saveFile" parameterType="com.javalab.board.dto.ResumeFileDto">
+            insert into resume_file_table(originalFileName, storedFileName, resume_id)
+            values (#{originalFileName}, #{storedFileName}, #{resumeId})
+    </insert>
+
+    <select id="findFile" parameterType="int" resultType="com.javalab.board.dto.ResumeFileDto">
+        select *
+        from resume_file_table
+        where resume_id = #{resumeId}
+    </select>
+
+
+
+
+</mapper>
