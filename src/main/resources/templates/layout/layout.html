@@ -340,28 +340,41 @@ function toggleScrap(event) {
 
     CKEDITOR.replace('editor1');
 </script>
+
+
 <script>
-    $(document).ready(function () {
-        $('.dev-toggle-filter').click(function () {
-            $(this).toggleClass('open');
-            $(this).next('.filter-box').toggle();
-        });
+    document.addEventListener('DOMContentLoaded', function () {
+        const addressFilter = document.getElementById('filterAddress');
+        const educationFilter = document.getElementById('filterEducation');
+        const experienceFilter = document.getElementById('filterExperience');
+        const applyFiltersButton = document.getElementById('applyFilters');
 
-        $('.dev-button-item').click(function () {
-            $(this).toggleClass('active').siblings().removeClass('active');
-        });
+        function filterJobs() {
+            const addressValue = addressFilter.value.toLowerCase();
+            const educationValue = educationFilter.value.toLowerCase();
+            const experienceValue = experienceFilter.value.toLowerCase();
 
-        $('.search-reset').click(function () {
-            $(this).closest('.filter-box').find('.dev-button-item').removeClass('active');
-            $(this).closest('.filter-box').find('.dev-button-all').addClass('active');
-        });
+            const jobItems = document.querySelectorAll('.job-item');
+            jobItems.forEach(function (item) {
+                const address = item.getAttribute('data-address').toLowerCase();
+                const education = item.getAttribute('data-education').toLowerCase();
+                const experience = item.getAttribute('data-experience').toLowerCase();
 
-        $('#resetCondition').click(function () {
-            $('.filter-box').find('.dev-button-item').removeClass('active');
-            $('.filter-box').find('.dev-button-all').addClass('active');
-            $('#searchForm')[0].reset();
-        });
+                const matchesAddress = !addressValue || address.includes(addressValue);
+                const matchesEducation = !educationValue || education.includes(educationValue);
+                const matchesExperience = !experienceValue || experience.includes(experienceValue);
+
+                if (matchesAddress && matchesEducation && matchesExperience) {
+                    item.classList.remove('hidden');
+                } else {
+                    item.classList.add('hidden');
+                }
+            });
+        }
+
+        applyFiltersButton.addEventListener('click', filterJobs);
     });
 </script>
+
 </body>
 </html>

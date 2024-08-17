@@ -1,6 +1,7 @@
 package com.javalab.board.service;
 
 import com.javalab.board.dto.CreateJobPostRequestDto;
+import com.javalab.board.dto.JobPostFilterDto;
 import com.javalab.board.vo.CompanyVo;
 import com.javalab.board.vo.JobPostVo;
 
@@ -20,4 +21,7 @@ public interface JobPostService {
     void incrementHitCount(Long jobPostId);
     List<JobPostVo> getTop5PopularJobPosts();
     List<JobPostVo> getAllJobPostsForAdmin();
+
+
+    List<JobPostVo> getJobPostsByFilters(String address, String education, String experience);
 }
