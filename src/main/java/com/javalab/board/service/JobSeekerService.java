@@ -26,7 +26,7 @@ public interface JobSeekerService extends UserDetailsService {
      * 개인 회원 정보를 갱신합니다.
      * - @param jobSeekerVo 갱신할 개인 회원 정보 객체
      */
-    void updateJobSeeker(JobSeekerVo jobSeekerVo);
+    JobSeekerVo updateJobSeeker(JobSeekerVo jobSeekerVo);
 
     /**
      * 주어진 ID에 해당하는 개인 회원 정보를 삭제합니다.

@@ -2,6 +2,7 @@ package com.javalab.board.service;
 
 import com.javalab.board.dto.CreateJobPostRequestDto;
 import com.javalab.board.repository.JobPostMapper;
+import com.javalab.board.repository.JobSeekerScrapMapper;
 import com.javalab.board.vo.JobPostVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -10,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,6 +18,9 @@ public class JobPostServiceImpl implements JobPostService {
 
     @Autowired
     private JobPostMapper jobPostMapper;
+
+    @Autowired
+    private JobSeekerScrapMapper jobSeekerScrapMapper;
 
     @Override
     @Transactional
@@ -95,4 +98,37 @@ public class JobPostServiceImpl implements JobPostService {
     public void deleteJobPost(Long jobPostId) {
         jobPostMapper.deleteJobPost(jobPostId);
     }
+
+    @Transactional
+    public void deleteJobPostWithScraps(Long jobPostId) {
+        // 자식 레코드 삭제
+        jobSeekerScrapMapper.deleteScrapsByJobPostId(jobPostId); // 스크랩 Mapper 메서드 호출
+
+        // 부모 레코드 삭제
+        jobPostMapper.deleteJobPost(jobPostId); // 공고 Mapper 메서드 호출
+
+    }
+
+    @Override
+    public void incrementHitCount(Long jobPostId) {
+        jobPostMapper.incrementHitCount(jobPostId);
+    }
+
+
+    @Override
+    public List<JobPostVo> getTop5PopularJobPosts() {
+        return jobPostMapper.selectTop5PopularJobPosts();
+    }
+
+    @Override
+    public List<JobPostVo> getAllJobPostsForAdmin() {
+        return jobPostMapper.selectAllJobPostsForAdmin();
+    }
+
+    @Override
+    public List<JobPostVo> getJobPostsByFilters(String address, String education, String experience) {
+        return jobPostMapper.selectJobPostsByFilters(address, education, experience);
+    }
+
 }
+

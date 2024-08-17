@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:action="@{|resume/update/${resume.resumeId}|}" method="post" name="updateForm">
+    <input type="hidden" name="id" th:value="${resume.resumeId}">
+    content: <input type="text" name="boardWriter" th:value="${resume.content}" readonly><br>
+    title: <input type="text" name="boardTitle" th:value="${resume.title}"><br>
+    <input type="button" value="수정" onclick="board_update()">
+</form>
+</body>
+</html>

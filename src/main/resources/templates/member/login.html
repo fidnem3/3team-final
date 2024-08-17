@@ -81,6 +81,7 @@
     document.addEventListener('DOMContentLoaded', function() {
         var errorMessage = [[${errorMessage}]];
         var errorType = [[${errorType}]];
+        var message = [[${message}]];
 
         if (errorMessage) {
             Swal.fire({
@@ -89,17 +90,15 @@
                 icon: 'error',
                 confirmButtonText: '확인'
             });
+        } else if (message) {
+            Swal.fire({
+                title: '알림',
+                text: message,
+                icon: 'success',
+                confirmButtonText: '확인'
+            });
         }
     });
-</script>
-
-<script th:inline="javascript">
-    /* 메시지 값 읽기 */
-    let message = [[${message != null}]] ? [[${message}]] : '';
-
-    if (message) {
-        alert(message);  // 메시지가 있을 경우 팝업창 띄우기
-    }
 </script>
 </body>
 </html>

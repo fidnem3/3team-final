@@ -1,6 +1,7 @@
 package com.javalab.board.controller;
 
 import com.javalab.board.dto.BoardDto;
+import com.javalab.board.service.ResumeService;
 import com.javalab.board.vo.BoardVo;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -229,4 +230,6 @@ public class BoardController {
         // 게시물 목록 페이지로 리다이렉트
         return "redirect:/board/list.do";
     }
+
+
 }

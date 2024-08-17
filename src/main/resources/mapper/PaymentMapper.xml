@@ -3,17 +3,19 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.example.mapper.PaymentMapper">
-    <!-- 결제 정보 추가 -->
-    <insert id="insertPayment" parameterType="com.javalab.board.dto.PaymentDto">
-        INSERT INTO payment (
-        payment_id, comp_id, account_num, jobPost_id, payment_status,
-        payment_date, post_duration, daily_rate, total_amount, due_date
-        ) VALUES (
-        #{paymentId}, #{compId}, #{accountNum}, #{jobPostId}, #{paymentStatus},
-        #{paymentDate}, #{postDuration}, #{dailyRate}, #{totalAmount}, #{dueDate}
-        )
+<mapper namespace="com.javalab.board.repository.PaymentMapper">
+
+    <insert id="insertPayment" parameterType="com.javalab.board.vo.PaymentVo">
+        <selectKey keyProperty="paymentId" resultType="long" order="BEFORE">
+            SELECT PAYMENT_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO payment (payment_id, comp_id, jobPost_id, payment_date, amount)
+        VALUES (#{paymentId}, #{compId}, #{jobPostId}, #{paymentDate}, #{amount})
     </insert>
+
+
+    <!-- 결제 정보 추가 -->
+
 
     <!-- 결제 정보 업데이트 -->
     <update id="updatePayment" parameterType="com.javalab.board.dto.PaymentDto">

@@ -1,7 +1,7 @@
 package com.javalab.board.repository;
 
 import com.javalab.board.dto.CreateJobPostRequestDto;
-import com.javalab.board.vo.CompanyVo;
+import com.javalab.board.dto.JobPostFilterDto;
 import com.javalab.board.vo.JobPostVo;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Param;
@@ -29,12 +29,20 @@ public interface JobPostMapper {
 
     void updateJobPost(JobPostVo jobPostVo);
 
-    void deleteJobPost(Long jobPostId);
 
-    void updateCompanyLogo(@Param("compId") String compId, @Param("logoName") String logoName, @Param("logoPath") String logoPath);
+    void deleteJobPost(@Param("jobPostId") Long jobPostId);
 
-    // 기업 로고 조회
-    CompanyVo findCompanyByCompId(@Param("compId") String compId);
+    void deleteScrapsByJobPostId(@Param("jobPostId") Long jobPostId);
 
+    void incrementHitCount(Long jobPostId);
+
+    List<JobPostVo> selectTop5PopularJobPosts();
+
+    List<JobPostVo> selectAllJobPostsForAdmin();
+
+
+    List<JobPostVo> selectJobPostsByFilters(@Param("address") String address,
+                                            @Param("education") String education,
+                                            @Param("experience") String experience);
 
 }

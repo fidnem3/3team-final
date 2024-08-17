@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>회사 정보</title>
+</head>
+
+<body>
+<div layout:fragment="content" class="container-xxl bg-white p-0">
+    <div class="container">
+        <h1>회사 정보</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="compId">회사 ID:</label>
+                    <p id="compId" th:text="${company.compId}">회사 ID</p>
+                </div>
+                <div class="form-group">
+                    <label for="email">이메일:</label>
+                    <p id="email" th:text="${company.email}">이메일</p>
+                </div>
+                <div class="form-group">
+                    <label for="companyName">회사명:</label>
+                    <p id="companyName" th:text="${company.companyName}">회사명</p>
+                </div>
+                <div class="form-group">
+                    <label for="businessNumber">사업자 등록번호:</label>
+                    <p id="businessNumber" th:text="${company.businessNumber}">사업자 등록번호</p>
+                </div>
+                <div class="form-group">
+                    <label for="homepage">홈페이지:</label>
+                    <p id="homepage">
+                        <a th:href="${company.homepage}" th:text="${company.homepage}" target="_blank">홈페이지</a>
+                    </p>
+                </div>
+                <div class="form-group">
+                    <label for="address">주소:</label>
+                    <p id="address" th:text="${company.address}">주소</p>
+                </div>
+                <div class="form-group">
+                    <label for="status">상태:</label>
+                    <p id="status" th:text="${company.status}">상태</p>
+                </div>
+                <div class="form-group" th:if="${company.logoName}">
+                    <label>회사 로고:</label>
+                    <img th:src="@{${company.logoPath}}" th:alt="${company.logoName}" class="img-fluid">
+                </div>
+            </div>
+        </div>
+        <div class="form-group mt-4">
+            <a th:href="@{/company/edit}" class="btn btn-primary">정보 수정</a>
+            <a th:href="@{/company/withdraw}" class="btn btn-danger">회원 탈퇴</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

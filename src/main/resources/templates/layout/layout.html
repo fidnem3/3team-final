@@ -3,6 +3,7 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/html">
 <head>
+
     <meta charset="UTF-8">
     <title>Navigation Layout</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -12,6 +13,7 @@
     <!-- Favicon -->
     <link th:href="@{/img/favicon.ico}" rel="icon">
 
+    <script src="https://cdn.ckeditor.com/4.17.0/standard/ckeditor.js"></script>
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -55,8 +57,18 @@
                         <a th:href="@{/jobPost/jobPostList}" class="dropdown-item">Job List</a>
                         <a th:href="@{/jobPost/myJobPostList}" class="dropdown-item" sec:authorize="hasRole('ROLE_COMPANY')">나의 공고</a>
                         <a th:href="@{/jobSeeker/scrap/list}" class="dropdown-item" sec:authorize="hasRole('ROLE_USER')">나의 스크랩</a>
+                        <a th:href="@{/admin/jobPostsList}" class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')">공고 관리</a>
                     </div>
                 </div>
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">Resume</a>
+                    <div class="dropdown-menu rounded-0 m-0">
+                        <a th:href="@{/resume/resumeDetail}" class="dropdown-item">New Resume</a>
+                        <a th:href="@{/resume/resumeList}" class="dropdown-item">Resume List</a>
+                        <a th:href="@{/resume/myResumeList}" class="dropdown-item" sec:authorize="hasRole('ROLE_USER')">My Resume</a>
+                    </div>
+                </div>
+
                 <a th:href="@{/contact}" class="nav-item nav-link">Contact</a>
             </div>
             <div sec:authorize="hasRole('COMPANY')">
@@ -66,7 +78,7 @@
                         <i class="fa fa-building"></i> Company Menu
                     </a>
                     <div class="dropdown-menu rounded-0 m-0">
-                        <a th:href="@{/company/dashboard}" class="dropdown-item">Dashboard</a>
+                        <a th:href="@{/company/detail}" class="dropdown-item">My page</a>
                         <a th:href="@{/company/settings}" class="dropdown-item">Settings</a>
                         <a th:href="@{/logout}" class="dropdown-item">Logout</a>
                     </div>
@@ -79,7 +91,8 @@
                         <i class="fa fa-user"></i> User Menu
                     </a>
                     <div class="dropdown-menu rounded-0 m-0">
-                        <a th:href="@{/user/dashboard}" class="dropdown-item">Dashboard</a>
+                        <!-- Dashboard 링크 수정 -->
+                        <a th:href="@{/jobSeeker/detail}" class="dropdown-item">My page</a>
                         <a th:href="@{/user/settings}" class="dropdown-item">Settings</a>
                         <a th:href="@{/logout}" class="dropdown-item">Logout</a>
                     </div>
@@ -92,7 +105,7 @@
                         <i class="fa fa-user-shield"></i> Admin Menu
                     </a>
                     <div class="dropdown-menu rounded-0 m-0">
-                        <a th:href="@{/admin/dashboard}" class="dropdown-item">Admin Dashboard</a>
+                        <a th:href="@{/admin/adminPage}" class="dropdown-item">Admin Dashboard</a>
                         <a th:href="@{/admin/settings}" class="dropdown-item">Admin Settings</a>
                         <a th:href="@{/logout}" class="dropdown-item">Logout</a>
                     </div>
@@ -224,16 +237,16 @@
 
 <!-- index.html 에서 id=pageHeader 해당부분 안보이게 하기(header)-->
 <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var path = window.location.pathname;
-            var pageHeader = document.getElementById("pageHeader");
+    document.addEventListener("DOMContentLoaded", function() {
+        var path = window.location.pathname;
+        var pageHeader = document.getElementById("pageHeader");
 
-            if (path === '/' || path === '/index') {
-                if (pageHeader) {
-                    pageHeader.style.display = 'none';
-                }
+        if (path === '/' || path === '/index') {
+            if (pageHeader) {
+                pageHeader.style.display = 'none';
             }
-        });
+        }
+    });
 </script>
 <!-- index.html 에서 home 안보이게 하기 -->
 <script>
@@ -311,11 +324,16 @@ function toggleScrap(event) {
     })
     .then(data => {
         if (data) {
+            const icon = button.querySelector('i');
             if (data.isScrapped) {
                 button.classList.add('scrap-active');
+                icon.classList.remove('far');
+                icon.classList.add('fas');
                 alert('스크랩 완료');
             } else {
                 button.classList.remove('scrap-active');
+                icon.classList.remove('fas');
+                icon.classList.add('far');
                 alert('스크랩 취소');
             }
         }
@@ -325,49 +343,40 @@ function toggleScrap(event) {
 
     CKEDITOR.replace('editor1');
 </script>
+
+
 <script>
-    $(document).ready(function () {
-        $('.dev-toggle-filter').click(function () {
-            $(this).toggleClass('open');
-            $(this).next('.filter-box').toggle();
-        });
+    document.addEventListener('DOMContentLoaded', function () {
+        const addressFilter = document.getElementById('filterAddress');
+        const educationFilter = document.getElementById('filterEducation');
+        const experienceFilter = document.getElementById('filterExperience');
+        const applyFiltersButton = document.getElementById('applyFilters');
 
-        $('.dev-button-item').click(function () {
-            $(this).toggleClass('active').siblings().removeClass('active');
-        });
+        function filterJobs() {
+            const addressValue = addressFilter.value.toLowerCase();
+            const educationValue = educationFilter.value.toLowerCase();
+            const experienceValue = experienceFilter.value.toLowerCase();
 
-        $('.search-reset').click(function () {
-            $(this).closest('.filter-box').find('.dev-button-item').removeClass('active');
-            $(this).closest('.filter-box').find('.dev-button-all').addClass('active');
-        });
+            const jobItems = document.querySelectorAll('.job-item');
+            jobItems.forEach(function (item) {
+                const address = item.getAttribute('data-address').toLowerCase();
+                const education = item.getAttribute('data-education').toLowerCase();
+                const experience = item.getAttribute('data-experience').toLowerCase();
 
-        $('#resetCondition').click(function () {
-            $('.filter-box').find('.dev-button-item').removeClass('active');
-            $('.filter-box').find('.dev-button-all').addClass('active');
-            $('#searchForm')[0].reset();
-        });
+                const matchesAddress = !addressValue || address.includes(addressValue);
+                const matchesEducation = !educationValue || education.includes(educationValue);
+                const matchesExperience = !experienceValue || experience.includes(experienceValue);
+
+                if (matchesAddress && matchesEducation && matchesExperience) {
+                    item.classList.remove('hidden');
+                } else {
+                    item.classList.add('hidden');
+                }
+            });
+        }
+
+        applyFiltersButton.addEventListener('click', filterJobs);
     });
 </script>
-<script>
-    $(document).ready(function() {
-        // 경력 수준 선택 시 연차 입력 필드 표시/숨기기
-        $('#experience').change(function() {
-            if ($(this).val() === '경력') {
-                $('#experienceYearsGroup').removeClass('d-none');
-            } else {
-                $('#experienceYearsGroup').addClass('d-none');
-            }
-        });
-
-        // 필터 폼 제출 시 알림 띄우기 (예시)
-        $('#filterForm').submit(function(event) {
-            event.preventDefault(); // 실제 제출 방지
-            alert('필터가 적용되었습니다!');
-            // 실제 필터 적용 로직 추가 필요
-        });
-    });
-</script>
-
-
 </body>
 </html>

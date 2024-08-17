@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>회원 정보</title>
+</head>
+
+<body>
+<div layout:fragment="content" class="container-xxl bg-white p-0">
+    <div class="container">
+        <h1>회원 정보</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="jobSeekerId">아이디:</label>
+                    <p id="jobSeekerId" th:text="${jobSeeker.jobSeekerId}">아이디</p>
+                </div>
+                <div class="form-group">
+                    <label for="name">이름:</label>
+                    <p id="name" th:text="${jobSeeker.name}">이름</p>
+                </div>
+                <div class="form-group">
+                    <label for="birth">생년월일:</label>
+                    <p id="birth" th:text="${jobSeeker.birth}">생년월일</p>
+                </div>
+                <div class="form-group">
+                    <label for="tel">연락처:</label>
+                    <p id="tel" th:text="${jobSeeker.tel}">연락처</p>
+                </div>
+                <div class="form-group">
+                    <label for="email">이메일:</label>
+                    <p id="email" th:text="${jobSeeker.email}">이메일</p>
+                </div>
+                <div class="form-group">
+                    <label for="address">주소:</label>
+                    <p id="address" th:text="${jobSeeker.address}">주소</p>
+                </div>
+            </div>
+        </div>
+        <div class="form-group mt-4">
+            <a th:href="@{/jobSeeker/edit}" class="btn btn-primary">정보 수정</a>
+            <a th:href="@{/jobSeeker/withdraw}" class="btn btn-danger">회원 탈퇴</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

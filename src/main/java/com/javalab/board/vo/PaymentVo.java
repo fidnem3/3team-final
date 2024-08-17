@@ -7,6 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 
 
@@ -25,21 +26,12 @@ import java.util.Date;
 @Getter @Setter
 @ToString
 @Builder
-public class PaymentVo implements Serializable {
-	private static final long serialVersionUID = 1L;
-
-	private Long paymentId;        // payment_id
-	private String compId;         // comp_id
-	private String accountNum;     // account_num
-	private Long jobPostId;        // jobPost_id
-	private String paymentStatus;  // payment_status
-	private Date paymentDate;      // payment_date
-	private Date postDuration;     // post_duration
-	private BigDecimal dailyRate;  // daily_rate
-	private BigDecimal totalAmount; // total_amount
-	// 날짜 바인딩 패턴 : yyyy-MM-dd
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@JsonFormat(pattern = "yyyy-MM-dd")
-	private Date dueDate ;
-
+@Data
+public class PaymentVo {
+	private Long paymentId;
+	private String compId;
+	private Long jobPostId;
+	private LocalDate paymentDate;
+	private Long amount;
 }
+

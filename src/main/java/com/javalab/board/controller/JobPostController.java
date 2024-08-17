@@ -1,12 +1,12 @@
 package com.javalab.board.controller;
 
 import com.javalab.board.dto.CreateJobPostRequestDto;
+import com.javalab.board.dto.JobPostFilterDto;
+import com.javalab.board.service.CompanyService;
 import com.javalab.board.service.JobPostService;
 import com.javalab.board.service.JobSeekerScrapService;
-import com.javalab.board.vo.BoardVo;
-import com.javalab.board.vo.JobPostVo;
-import com.javalab.board.vo.JobSeekerScrapVo;
-import com.javalab.board.vo.JobSeekerVo;
+import com.javalab.board.service.PaymentService;
+import com.javalab.board.vo.*;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -41,6 +41,10 @@ public class JobPostController {
 
     @Autowired
     private JobPostService jobPostService;
+    @Autowired
+    private PaymentService paymentService;
+    @Autowired
+    private CompanyService companyService;
     @Autowired
     private JobSeekerScrapService jobSeekerScrapService;
     @Autowired
@@ -87,8 +91,15 @@ public class JobPostController {
     }
 
     @GetMapping("/jobPostList")
-    public String listJobPosts(Model model, Authentication authentication) {
-        List<JobPostVo> jobPosts = jobPostService.getAllJobPosts();
+    public String listJobPosts(
+            @RequestParam(required = false) String address,
+            @RequestParam(required = false) String education,
+            @RequestParam(required = false) String experience,
+            Model model,
+            Authentication authentication) {
+
+        // Filter job posts based on parameters
+        List<JobPostVo> jobPosts = jobPostService.getJobPostsByFilters(address, education, experience);
 
         String jobSeekerId = authentication != null && authentication.getPrincipal() instanceof UserDetails
                 ? ((UserDetails) authentication.getPrincipal()).getUsername()
@@ -102,18 +113,24 @@ public class JobPostController {
         }
 
         log.info("JobPosts: {}", jobPosts);
-        log.info("ScrapStatusMap: {}", scrapStatusMap); // 추가된 로그
+        log.info("ScrapStatusMap: {}", scrapStatusMap);
 
         model.addAttribute("jobPosts", jobPosts);
         model.addAttribute("scrapStatusMap", scrapStatusMap);
+        model.addAttribute("filterAddress", address);
+        model.addAttribute("filterEducation", education);
+        model.addAttribute("filterExperience", experience);
+
         return "jobPost/jobPostList";
     }
+
 
 
 
     @GetMapping("/myJobPostList")
     public String getMyJobPosts(Model model) {
         List<JobPostVo> jobPosts = jobPostService.getJobPostsByCompany();
+
         model.addAttribute("jobPosts", jobPosts);
         return "jobPost/myJobPostList"; // Thymeleaf 템플릿 이름
     }
@@ -151,8 +168,25 @@ public class JobPostController {
             // Calculate the total amount
             long amount = durationDays * 500;
 
+            // Create and save the payment record
+            PaymentVo paymentVo = PaymentVo.builder()
+                    .compId(jobPostVo.getCompId()) // Use the company ID from the job post
+                    .jobPostId(jobPostVo.getJobPostId())
+                    .paymentDate(LocalDate.now()) // Set the current date as the payment date
+                    .amount(amount)
+                    .build();
+
+            paymentService.savePayment(paymentVo);
+
+            // Fetch company details
+            CompanyVo companyVo = companyService.getCompanyById(jobPostVo.getCompId());
+            String companyName = (companyVo != null) ? companyVo.getCompanyName() : "Unknown";
+
+            // Add attributes to the model
+            model.addAttribute("durationsDays", durationDays);
             model.addAttribute("amount", amount);
             model.addAttribute("jobPost", jobPostVo);
+            model.addAttribute("companyName", companyName);
             return "jobPost/payment"; // Return the name of the Thymeleaf template
         } else {
             return "error"; // Handle the case where the JobPost is not found
@@ -162,6 +196,9 @@ public class JobPostController {
     @GetMapping("/detail/{jobPostId}")
     public String detail(@PathVariable("jobPostId") Long jobPostId, Model model) {
         JobPostVo jobPostVo = jobPostService.findJobPostById(jobPostId);
+        // 조회수 증가
+        jobPostService.incrementHitCount(jobPostId);
+
 
         if (jobPostVo != null) {
             // 날짜 포맷팅
