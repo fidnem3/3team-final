@@ -100,5 +100,10 @@
         ORDER BY hit_no DESC
     </select>
 
+    <select id="selectAllJobPostsForAdmin" resultType="com.javalab.board.vo.JobPostVo">
+        SELECT * FROM jobPost
+        ORDER BY created DESC
+    </select>
+
 
 </mapper>
