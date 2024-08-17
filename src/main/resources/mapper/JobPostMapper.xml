@@ -101,9 +101,15 @@
     </select>
 
     <select id="selectAllJobPostsForAdmin" resultType="com.javalab.board.vo.JobPostVo">
-        SELECT * FROM jobPost
-        ORDER BY created DESC
+        SELECT jp.*,
+        p.comp_id AS compId,
+        p.payment_date AS paymentDate,
+        p.amount AS amount
+        FROM jobPost jp
+        LEFT JOIN payment p ON jp.jobPost_id = p.jobPost_id
+        ORDER BY jp.created DESC
     </select>
+
 
 
 </mapper>

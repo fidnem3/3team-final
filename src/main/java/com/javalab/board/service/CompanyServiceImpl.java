@@ -104,4 +104,9 @@ public class CompanyServiceImpl implements CompanyService {
                 authorities
         );
     }
+
+    @Override
+    public CompanyVo getCompanyById(String compId) {
+        return companyMapper.getCompanyById(compId);
+    }
 }

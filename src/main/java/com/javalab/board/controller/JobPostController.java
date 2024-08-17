@@ -1,12 +1,11 @@
 package com.javalab.board.controller;
 
 import com.javalab.board.dto.CreateJobPostRequestDto;
+import com.javalab.board.service.CompanyService;
 import com.javalab.board.service.JobPostService;
 import com.javalab.board.service.JobSeekerScrapService;
-import com.javalab.board.vo.BoardVo;
-import com.javalab.board.vo.JobPostVo;
-import com.javalab.board.vo.JobSeekerScrapVo;
-import com.javalab.board.vo.JobSeekerVo;
+import com.javalab.board.service.PaymentService;
+import com.javalab.board.vo.*;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +36,10 @@ public class JobPostController {
 
     @Autowired
     private JobPostService jobPostService;
+    @Autowired
+    private PaymentService paymentService;
+    @Autowired
+    private CompanyService companyService;
     @Autowired
     private JobSeekerScrapService jobSeekerScrapService;
 
@@ -145,8 +148,25 @@ public class JobPostController {
             // Calculate the total amount
             long amount = durationDays * 500;
 
+            // Create and save the payment record
+            PaymentVo paymentVo = PaymentVo.builder()
+                    .compId(jobPostVo.getCompId()) // Use the company ID from the job post
+                    .jobPostId(jobPostVo.getJobPostId())
+                    .paymentDate(LocalDate.now()) // Set the current date as the payment date
+                    .amount(amount)
+                    .build();
+
+            paymentService.savePayment(paymentVo);
+
+            // Fetch company details
+            CompanyVo companyVo = companyService.getCompanyById(jobPostVo.getCompId());
+            String companyName = (companyVo != null) ? companyVo.getCompanyName() : "Unknown";
+
+            // Add attributes to the model
+            model.addAttribute("durationsDays", durationDays);
             model.addAttribute("amount", amount);
             model.addAttribute("jobPost", jobPostVo);
+            model.addAttribute("companyName", companyName);
             return "jobPost/payment"; // Return the name of the Thymeleaf template
         } else {
             return "error"; // Handle the case where the JobPost is not found
