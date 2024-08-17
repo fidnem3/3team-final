@@ -42,4 +42,7 @@ public interface CompanyService extends UserDetailsService {
      */
     @Override
     UserDetails loadUserByUsername(String username);
+
+    CompanyVo getCompanyById(String compId);
 }
+

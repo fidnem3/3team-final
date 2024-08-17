@@ -32,4 +32,6 @@ public interface CompanyMapper {
      * - @param compId 삭제할 기업 회원의 회사 ID
      */
     void deleteCompany(String compId);
+
+    CompanyVo getCompanyById(String compId);
 }

@@ -75,4 +75,10 @@
         WHERE user_id = #{userId} AND user_type = 'company'
     </delete>
 
+    <select id="getCompanyById" parameterType="String" resultType="com.javalab.board.vo.CompanyVo">
+        SELECT comp_id, company_name
+        FROM company
+        WHERE comp_id = #{compId}
+    </select>
+
 </mapper>
