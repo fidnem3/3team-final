@@ -9,7 +9,7 @@ import java.util.List;
 @Mapper
 public interface ResumeMapper {
 
-    public int createResume(ResumeDto resumeDto);
+    public void createResume(ResumeDto resumeDto);
 
     public List<ResumeDto> findAll();
 

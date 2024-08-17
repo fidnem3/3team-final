@@ -4,13 +4,16 @@ import com.javalab.board.dto.ResumeDto;
 import com.javalab.board.dto.ResumeSkillDto;
 import com.javalab.board.repository.ResumeMapper;
 import com.javalab.board.repository.ResumeSkillMapper;
-import com.javalab.board.vo.BoardVo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.sql.SQLOutput;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +25,29 @@ public class ResumeService {
 
 
     @Transactional
-    public void resumeCreate(ResumeDto resumeDto) {
+    public void resumeCreate(ResumeDto resumeDto , MultipartFile file ) throws IOException {
+
+        //이력서 파일 첨부
+
+        String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/files";
+
+        UUID uuid = UUID.randomUUID();
+
+        String fileName = uuid + "_" + file.getOriginalFilename();
+
+        File saveFile = new File(projectPath ,fileName);
+
+        file.transferTo((saveFile));
+
+        resumeDto.setFileName(fileName);
+
+        resumeDto.setFilePath("/files/" + fileName);
+
+
+        System.out.println("FileName: " + resumeDto.getFileName());
+        System.out.println("FilePath: " + resumeDto.getFilePath());
+
+
         // 1. 이력서를 저장합니다.
         resumeMapper.createResume(resumeDto);
 
@@ -34,6 +59,8 @@ public class ResumeService {
             resumeSkillDto.setSkill(skillsAsString); // 변환된 문자열을 저장
             resumeSkillMapper.resumeSkillCreate(resumeSkillDto);
         }
+
+
     }
 
     public List<ResumeDto> findAll() {

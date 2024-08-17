@@ -9,8 +9,8 @@
         SELECT RESUME_SEQ.NEXTVAL FROM DUAL
         </selectKey>
 
-        INSERT INTO resume (resume_id, jobSeeker_id, title, content ,education , experience , link )
-        VALUES (RESUME_SEQ.NEXTVAL, 'koko3', #{title}, #{content} ,#{education} , #{experience} ,#{link} )
+        INSERT INTO resume (resume_id, jobSeeker_id, title, content ,education , experience , link ,file_name,file_path)
+        VALUES (#{resumeId}, 'koko3', #{title}, #{content} ,#{education} , #{experience} ,#{link} ,#{fileName}, #{filePath})
     </insert>
 
     <select id="findAll" resultMap="ResumeWithJobSeekerMap">
@@ -54,6 +54,7 @@
         <result property="experience" column="experience"/>
         <result property="link" column="link"/>
         <result property="hitNo" column="hit_no"/>
+
         <association property="jobSeekerVo" javaType="com.javalab.board.vo.JobSeekerVo">
             <id property="jobSeekerId" column="jobseeker_id"/>
             <result property="name" column="name"/>

@@ -62,9 +62,11 @@ public class ResumeController {
     //  저장 폼 전송
 
     @PostMapping("/save")
-    public String save(@ModelAttribute("resumeDto") ResumeDto resumeDto) {
+    public String save(@ModelAttribute("resumeDto") ResumeDto resumeDto ,MultipartFile file) throws Exception{
+
         System.out.println("resumeDto = " + resumeDto);
-        resumeService.resumeCreate(resumeDto);
+
+        resumeService.resumeCreate(resumeDto , file);
         return "index";
     }
 
