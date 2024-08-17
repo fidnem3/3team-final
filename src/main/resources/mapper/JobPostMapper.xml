@@ -111,5 +111,16 @@
     </select>
 
 
+    <select id="selectJobPostsByFilters" parameterType="map" resultType="com.javalab.board.vo.JobPostVo">
+        SELECT * FROM jobPost
+        WHERE
+        (#{address, jdbcType=VARCHAR} IS NULL OR address = #{address, jdbcType=VARCHAR})
+        AND (#{education, jdbcType=VARCHAR} IS NULL OR education = #{education, jdbcType=VARCHAR})
+        AND (#{experience, jdbcType=VARCHAR} IS NULL OR experience = #{experience, jdbcType=VARCHAR})
+        AND payment_status = 'After Payment'
+    </select>
+
+
+
 
 </mapper>

@@ -1,6 +1,7 @@
 package com.javalab.board.controller;
 
 import com.javalab.board.dto.CreateJobPostRequestDto;
+import com.javalab.board.dto.JobPostFilterDto;
 import com.javalab.board.service.CompanyService;
 import com.javalab.board.service.JobPostService;
 import com.javalab.board.service.JobSeekerScrapService;
@@ -83,8 +84,15 @@ public class JobPostController {
     }
 
     @GetMapping("/jobPostList")
-    public String listJobPosts(Model model, Authentication authentication) {
-        List<JobPostVo> jobPosts = jobPostService.getAllJobPosts();
+    public String listJobPosts(
+            @RequestParam(required = false) String address,
+            @RequestParam(required = false) String education,
+            @RequestParam(required = false) String experience,
+            Model model,
+            Authentication authentication) {
+
+        // Filter job posts based on parameters
+        List<JobPostVo> jobPosts = jobPostService.getJobPostsByFilters(address, education, experience);
 
         String jobSeekerId = authentication != null && authentication.getPrincipal() instanceof UserDetails
                 ? ((UserDetails) authentication.getPrincipal()).getUsername()
@@ -98,12 +106,17 @@ public class JobPostController {
         }
 
         log.info("JobPosts: {}", jobPosts);
-        log.info("ScrapStatusMap: {}", scrapStatusMap); // 추가된 로그
+        log.info("ScrapStatusMap: {}", scrapStatusMap);
 
         model.addAttribute("jobPosts", jobPosts);
         model.addAttribute("scrapStatusMap", scrapStatusMap);
+        model.addAttribute("filterAddress", address);
+        model.addAttribute("filterEducation", education);
+        model.addAttribute("filterExperience", experience);
+
         return "jobPost/jobPostList";
     }
+
 
 
 
@@ -251,7 +264,6 @@ public class JobPostController {
         jobPostService.deleteJobPost(jobPostId);
         return "redirect:/jobPost/myJobPostList";
     }
-
 
 
 }

@@ -107,7 +107,8 @@ public class JobPostServiceImpl implements JobPostService {
         // 부모 레코드 삭제
         jobPostMapper.deleteJobPost(jobPostId); // 공고 Mapper 메서드 호출
 
-}
+    }
+
     @Override
     public void incrementHitCount(Long jobPostId) {
         jobPostMapper.incrementHitCount(jobPostId);
@@ -123,4 +124,11 @@ public class JobPostServiceImpl implements JobPostService {
     public List<JobPostVo> getAllJobPostsForAdmin() {
         return jobPostMapper.selectAllJobPostsForAdmin();
     }
+
+    @Override
+    public List<JobPostVo> getJobPostsByFilters(String address, String education, String experience) {
+        return jobPostMapper.selectJobPostsByFilters(address, education, experience);
+    }
+
 }
+
