@@ -17,4 +17,5 @@ public interface JobPostService {
     void updateJobPost(JobPostVo jobPostVo);
     void deleteJobPost(Long jobPostId);
     void incrementHitCount(Long jobPostId);
+    List<JobPostVo> getTop5PopularJobPosts();
 }

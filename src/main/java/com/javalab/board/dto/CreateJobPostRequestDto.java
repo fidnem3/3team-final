@@ -34,4 +34,7 @@ public class CreateJobPostRequestDto {
     private String status;
     private String logoPath; // Path to the image
     private String paymentStatus; // 'Before Payment', 'After Payment'
+
+    public CreateJobPostRequestDto(Long jobPostId, String title, String address, String salary, Date endDate, Integer hitNo) {
+    }
 }
