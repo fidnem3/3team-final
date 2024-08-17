@@ -11,7 +11,9 @@ public interface ResumeMapper {
 
     public void createResume(ResumeDto resumeDto);
 
-    public List<ResumeDto> findAll();
+    public List<ResumeDto> findAll(String jobSeekerId);;
+
+
 
 //    public void updateHits(int resumeId);
 

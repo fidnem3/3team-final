@@ -11,7 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.SQLOutput;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,22 +29,12 @@ public class ResumeService {
         //이력서 파일 첨부
 
         String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/files";
-
         UUID uuid = UUID.randomUUID();
-
         String fileName = uuid + "_" + file.getOriginalFilename();
-
         File saveFile = new File(projectPath ,fileName);
-
         file.transferTo((saveFile));
-
         resumeDto.setFileName(fileName);
-
         resumeDto.setFilePath("/files/" + fileName);
-
-
-        System.out.println("FileName: " + resumeDto.getFileName());
-        System.out.println("FilePath: " + resumeDto.getFilePath());
 
 
         // 1. 이력서를 저장합니다.
@@ -62,11 +51,16 @@ public class ResumeService {
 
 
     }
-
-    public List<ResumeDto> findAll() {
-        return resumeMapper.findAll();
-
+    public List<ResumeDto> findAll(String jobSeekerId)  {
+        return resumeMapper.findAll(jobSeekerId);
     }
+
+
+
+//    public List<ResumeDto> findAll() {
+//        return resumeMapper.findAll();
+//
+//    }
 
 //    public void updateHits(int resumeId) {
 //        resumeMapper.updateHits(resumeId);
@@ -77,7 +71,16 @@ public class ResumeService {
     }
 
 
-    public void updateResume(ResumeDto resumeDto) {
+    public void updateResume(ResumeDto resumeDto, MultipartFile file) throws IOException {
+
+        String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/files";
+        UUID uuid = UUID.randomUUID();
+        String fileName = uuid + "_" + file.getOriginalFilename();
+        File saveFile = new File(projectPath ,fileName);
+        file.transferTo((saveFile));
+        resumeDto.setFileName(fileName);
+        resumeDto.setFilePath("/files/" + fileName);
+
         resumeMapper.updateResume(resumeDto);
     }
 
