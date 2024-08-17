@@ -18,4 +18,5 @@ public interface JobPostService {
     void deleteJobPost(Long jobPostId);
     void incrementHitCount(Long jobPostId);
     List<JobPostVo> getTop5PopularJobPosts();
+    List<JobPostVo> getAllJobPostsForAdmin();
 }
