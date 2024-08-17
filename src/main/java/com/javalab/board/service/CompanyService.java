@@ -8,6 +8,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import java.util.Optional;
 
 public interface CompanyService extends UserDetailsService {
+
+
+
     /**
      * 새로운 기업 회원을 등록합니다.
      * - @param companyVo 등록할 기업 회원 정보 객체

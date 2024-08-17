@@ -26,6 +26,10 @@ public class CompanyServiceImpl implements CompanyService {
     @Autowired
     private UserRolesMapper userRolesMapper;
 
+
+
+
+
     @Override
     @Transactional
     public void registerCompany(CompanyVo companyVo, UserRolesVo userRolesVo) {

@@ -73,12 +73,13 @@
         WHERE jobPost_id = #{jobPostId, jdbcType=BIGINT}
     </update>
 
-
-
     <delete id="deleteJobPost">
         DELETE FROM jobPost
         WHERE jobPost_id = #{jobPostId}
     </delete>
 
+    <select id="findCompanyByCompId" parameterType="String" resultType="com.javalab.board.vo.CompanyVo">
+        SELECT * FROM company WHERE comp_id = #{compId}
+    </select>
 
 </mapper>

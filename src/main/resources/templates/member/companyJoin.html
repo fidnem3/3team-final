@@ -18,7 +18,7 @@
             <!-- Object 타입 줄때 Get.addAttributeName 이랑 같아야함
                  Posting 에서도 ModelAttribute 줄때 같아야함 대소문자 구분 잘하셈!!!!!!!!!!!!!!!
                    기본적으로 그냥 앞에 대문자 써서 하는게 편할듯?-->
-        <form th:action="@{/member/companyJoin}" th:object="${CompanyVo}" method="post" class="signup-form">
+        <form th:action="@{/member/companyJoin}" th:object="${CompanyVo}" method="post" enctype="multipart/form-data" class="signup-form">
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
 
             <!-- 회사ID -->
@@ -79,6 +79,8 @@
                     <option value="Rejected">Rejected</option>
                 </select>
             </div>
+
+            <input type="file" name="file" />
 
             <button type="submit" class="signup-button">
                 <span>회원가입</span>

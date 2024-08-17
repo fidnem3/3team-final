@@ -19,6 +19,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -39,6 +43,9 @@ public class JobPostController {
     private JobPostService jobPostService;
     @Autowired
     private JobSeekerScrapService jobSeekerScrapService;
+    @Autowired
+    private TemplateEngine templateEngine;
+
 
     @GetMapping("/jobPostCreate")
     public String createJobPost(Model model) {
@@ -220,8 +227,6 @@ public class JobPostController {
         return "redirect:/jobPost/myJobPostList";
     }
 
-
-
     @PostMapping("/delete/{jobPostId}")
     public String deleteJobPost(@PathVariable("jobPostId") Long jobPostId) {
         jobPostService.deleteJobPost(jobPostId);
@@ -230,4 +235,6 @@ public class JobPostController {
 
 
 }
+
+
 
