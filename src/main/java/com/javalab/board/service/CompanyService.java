@@ -27,7 +27,7 @@ public interface CompanyService extends UserDetailsService {
      * 기업 회원 정보를 갱신합니다.
      * - @param companyVo 갱신할 기업 회원 정보 객체
      */
-    void updateCompany(CompanyVo companyVo);
+    CompanyVo updateCompany(CompanyVo companyVo);
 
     /**
      * 주어진 ID에 해당하는 기업 회원 정보를 삭제합니다.
