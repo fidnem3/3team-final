@@ -13,7 +13,7 @@
     <!-- Favicon -->
     <link th:href="@{/img/favicon.ico}" rel="icon">
 
-    <script src="https://cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
+    <script src="https://cdn.ckeditor.com/4.17.0/standard/ckeditor.js"></script>
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,7 +34,6 @@
     <!-- Template Stylesheet -->
     <link th:href="@{/css/style.css}" rel="stylesheet">
 
-    <script src="https://cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
 </head>
 <body>
 <header>
@@ -56,13 +55,14 @@
                         <a th:href="@{/jobPost/jobPostList}" class="dropdown-item">Job List</a>
                         <a th:href="@{/jobPost/myJobPostList}" class="dropdown-item" sec:authorize="hasRole('ROLE_COMPANY')">나의 공고</a>
                         <a th:href="@{/jobSeeker/scrap/list}" class="dropdown-item" sec:authorize="hasRole('ROLE_USER')">나의 스크랩</a>
+                        <a th:href="@{/admin/jobPostsList}" class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')">공고 관리</a>
                     </div>
                 </div>
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">Resume</a>
                     <div class="dropdown-menu rounded-0 m-0">
+                        <a th:href="@{/resume/resumeDetail}" class="dropdown-item">New Resume</a>
                         <a th:href="@{/resume/resumeList}" class="dropdown-item">Resume List</a>
-                        <a th:href="@{/resume/resumeDetail}" class="dropdown-item">Resume Detail</a>
                         <a th:href="@{/resume/myResumeList}" class="dropdown-item" sec:authorize="hasRole('ROLE_USER')">My Resume</a>
                     </div>
                 </div>
@@ -76,7 +76,7 @@
                         <i class="fa fa-building"></i> Company Menu
                     </a>
                     <div class="dropdown-menu rounded-0 m-0">
-                        <a th:href="@{/company/dashboard}" class="dropdown-item">Dashboard</a>
+                        <a th:href="@{/company/detail}" class="dropdown-item">My page</a>
                         <a th:href="@{/company/settings}" class="dropdown-item">Settings</a>
                         <a th:href="@{/logout}" class="dropdown-item">Logout</a>
                     </div>
@@ -103,7 +103,7 @@
                         <i class="fa fa-user-shield"></i> Admin Menu
                     </a>
                     <div class="dropdown-menu rounded-0 m-0">
-                        <a th:href="@{/member/adminPage}" class="dropdown-item">Admin Dashboard</a>
+                        <a th:href="@{/admin/adminPage}" class="dropdown-item">Admin Dashboard</a>
                         <a th:href="@{/admin/settings}" class="dropdown-item">Admin Settings</a>
                         <a th:href="@{/logout}" class="dropdown-item">Logout</a>
                     </div>
@@ -340,28 +340,41 @@ function toggleScrap(event) {
 
     CKEDITOR.replace('editor1');
 </script>
+
+
 <script>
-    $(document).ready(function () {
-        $('.dev-toggle-filter').click(function () {
-            $(this).toggleClass('open');
-            $(this).next('.filter-box').toggle();
-        });
+    document.addEventListener('DOMContentLoaded', function () {
+        const addressFilter = document.getElementById('filterAddress');
+        const educationFilter = document.getElementById('filterEducation');
+        const experienceFilter = document.getElementById('filterExperience');
+        const applyFiltersButton = document.getElementById('applyFilters');
 
-        $('.dev-button-item').click(function () {
-            $(this).toggleClass('active').siblings().removeClass('active');
-        });
+        function filterJobs() {
+            const addressValue = addressFilter.value.toLowerCase();
+            const educationValue = educationFilter.value.toLowerCase();
+            const experienceValue = experienceFilter.value.toLowerCase();
 
-        $('.search-reset').click(function () {
-            $(this).closest('.filter-box').find('.dev-button-item').removeClass('active');
-            $(this).closest('.filter-box').find('.dev-button-all').addClass('active');
-        });
+            const jobItems = document.querySelectorAll('.job-item');
+            jobItems.forEach(function (item) {
+                const address = item.getAttribute('data-address').toLowerCase();
+                const education = item.getAttribute('data-education').toLowerCase();
+                const experience = item.getAttribute('data-experience').toLowerCase();
 
-        $('#resetCondition').click(function () {
-            $('.filter-box').find('.dev-button-item').removeClass('active');
-            $('.filter-box').find('.dev-button-all').addClass('active');
-            $('#searchForm')[0].reset();
-        });
+                const matchesAddress = !addressValue || address.includes(addressValue);
+                const matchesEducation = !educationValue || education.includes(educationValue);
+                const matchesExperience = !experienceValue || experience.includes(experienceValue);
+
+                if (matchesAddress && matchesEducation && matchesExperience) {
+                    item.classList.remove('hidden');
+                } else {
+                    item.classList.add('hidden');
+                }
+            });
+        }
+
+        applyFiltersButton.addEventListener('click', filterJobs);
     });
 </script>
+
 </body>
 </html>

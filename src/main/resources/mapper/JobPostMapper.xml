@@ -24,11 +24,13 @@
 
     <select id="getAllJobPosts" resultType="com.javalab.board.vo.JobPostVo">
         SELECT * FROM jobPost
+        ORDER BY created DESC
     </select>
 
     <select id="selectJobPostsByCompany" parameterType="String" resultType="com.javalab.board.vo.JobPostVo">
         SELECT * FROM jobPost
         WHERE comp_id = #{compId}
+        ORDER BY created DESC
     </select>
 
     <update id="updatePaymentStatus">
@@ -84,6 +86,41 @@
         DELETE FROM jobSeekerScrap
         WHERE jobPost_id = #{jobPostId}
     </delete>
+
+    <update id="incrementHitCount" parameterType="long">
+        UPDATE jobPost
+        SET hit_no = hit_no + 1
+        WHERE jobPost_id = #{jobPostId}
+    </update>
+
+    <select id="selectTop5PopularJobPosts" resultType="com.javalab.board.vo.JobPostVo">
+        SELECT *
+        FROM jobPost
+        WHERE payment_status = 'After Payment'
+        ORDER BY hit_no DESC
+    </select>
+
+    <select id="selectAllJobPostsForAdmin" resultType="com.javalab.board.vo.JobPostVo">
+        SELECT jp.*,
+        p.comp_id AS compId,
+        p.payment_date AS paymentDate,
+        p.amount AS amount
+        FROM jobPost jp
+        LEFT JOIN payment p ON jp.jobPost_id = p.jobPost_id
+        ORDER BY jp.created DESC
+    </select>
+
+
+    <select id="selectJobPostsByFilters" parameterType="map" resultType="com.javalab.board.vo.JobPostVo">
+        SELECT * FROM jobPost
+        WHERE
+        (#{address, jdbcType=VARCHAR} IS NULL OR address = #{address, jdbcType=VARCHAR})
+        AND (#{education, jdbcType=VARCHAR} IS NULL OR education = #{education, jdbcType=VARCHAR})
+        AND (#{experience, jdbcType=VARCHAR} IS NULL OR experience = #{experience, jdbcType=VARCHAR})
+        AND payment_status = 'After Payment'
+    </select>
+
+
 
 
 </mapper>

@@ -68,14 +68,21 @@ public class CompanyServiceImpl implements CompanyService {
      */
     @Override
     @Transactional
-    public void updateCompany(CompanyVo companyVo) {
+    public CompanyVo updateCompany(CompanyVo companyVo) {
         companyMapper.updateCompany(companyVo);
+        return companyMapper.selectCompanyById(companyVo.getCompId());
     }
 
     @Override
     @Transactional
-    public void deleteCompany(String id) {
-        companyMapper.deleteCompany(id);
+    public void deleteCompany(String companyId) {
+        // 1. 먼저 UserRoles 테이블에서 관련 레코드 삭제
+        // 여기서 "company"는 사용자 유형을, "ROLE_COMPANY"는 기업 역할 ID를 나타냅니다.
+        // 실제 사용하는 역할 ID에 맞게 수정해야 합니다.
+        userRolesMapper.deleteUserRole(companyId, "company", "ROLE_COMPANY");
+
+        // 2. 그 다음 Company 테이블에서 레코드 삭제
+        companyMapper.deleteCompany(companyId);
     }
 
     @Override
@@ -96,5 +103,10 @@ public class CompanyServiceImpl implements CompanyService {
                 company.getPassword(),
                 authorities
         );
+    }
+
+    @Override
+    public CompanyVo getCompanyById(String compId) {
+        return companyMapper.getCompanyById(compId);
     }
 }

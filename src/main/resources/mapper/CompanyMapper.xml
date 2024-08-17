@@ -61,6 +61,19 @@
         WHERE user_id = #{userId} AND user_type = 'company'
     </select>
 
+    <!-- 기업 회원 정보 갱신 -->
+    <update id="updateCompany" parameterType="com.javalab.board.vo.CompanyVo">
+        UPDATE company
+        SET
+        email = #{email},
+        company_name = #{companyName},
+        business_number = #{businessNumber},
+        homepage = #{homepage},
+        address = #{address}
+        WHERE
+        comp_id = #{compId}
+    </update>
+
     <!-- 권한 업데이트 -->
     <update id="updateCompanyRole" parameterType="com.javalab.board.vo.UserRolesVo">
         UPDATE UserRoles
@@ -69,10 +82,16 @@
         WHERE user_id = #{userId} AND user_type = 'company'
     </update>
 
-    <!-- 권한 삭제 -->
-    <delete id="deleteCompanyRole" parameterType="com.javalab.board.vo.UserRolesVo">
-        DELETE FROM UserRoles
-        WHERE user_id = #{userId} AND user_type = 'company'
+    <!-- 기업 회원 정보 삭제 -->
+    <delete id="deleteCompany" parameterType="string">
+        DELETE FROM company WHERE comp_id = #{compId}
     </delete>
+
+    <select id="getCompanyById" parameterType="String" resultType="com.javalab.board.vo.CompanyVo">
+        SELECT comp_id, company_name
+        FROM company
+        WHERE comp_id = #{compId}
+    </select>
+
 
 </mapper>
