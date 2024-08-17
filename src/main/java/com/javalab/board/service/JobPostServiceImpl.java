@@ -118,4 +118,9 @@ public class JobPostServiceImpl implements JobPostService {
     public List<JobPostVo> getTop5PopularJobPosts() {
         return jobPostMapper.selectTop5PopularJobPosts();
     }
+
+    @Override
+    public List<JobPostVo> getAllJobPostsForAdmin() {
+        return jobPostMapper.selectAllJobPostsForAdmin();
+    }
 }

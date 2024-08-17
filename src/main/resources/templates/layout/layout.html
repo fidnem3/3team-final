@@ -13,7 +13,7 @@
     <!-- Favicon -->
     <link th:href="@{/img/favicon.ico}" rel="icon">
 
-    <script src="https://cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
+    <script src="https://cdn.ckeditor.com/4.17.0/standard/ckeditor.js"></script>
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,7 +34,6 @@
     <!-- Template Stylesheet -->
     <link th:href="@{/css/style.css}" rel="stylesheet">
 
-    <script src="https://cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
 </head>
 <body>
 <header>
@@ -56,13 +55,14 @@
                         <a th:href="@{/jobPost/jobPostList}" class="dropdown-item">Job List</a>
                         <a th:href="@{/jobPost/myJobPostList}" class="dropdown-item" sec:authorize="hasRole('ROLE_COMPANY')">나의 공고</a>
                         <a th:href="@{/jobSeeker/scrap/list}" class="dropdown-item" sec:authorize="hasRole('ROLE_USER')">나의 스크랩</a>
+                        <a th:href="@{/admin/jobPostsList}" class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')">공고 관리</a>
                     </div>
                 </div>
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">Resume</a>
                     <div class="dropdown-menu rounded-0 m-0">
+                        <a th:href="@{/resume/resumeDetail}" class="dropdown-item">New Resume</a>
                         <a th:href="@{/resume/resumeList}" class="dropdown-item">Resume List</a>
-                        <a th:href="@{/resume/resumeDetail}" class="dropdown-item">Resume Detail</a>
                         <a th:href="@{/resume/myResumeList}" class="dropdown-item" sec:authorize="hasRole('ROLE_USER')">My Resume</a>
                     </div>
                 </div>
@@ -103,7 +103,7 @@
                         <i class="fa fa-user-shield"></i> Admin Menu
                     </a>
                     <div class="dropdown-menu rounded-0 m-0">
-                        <a th:href="@{/member/adminPage}" class="dropdown-item">Admin Dashboard</a>
+                        <a th:href="@{/admin/adminPage}" class="dropdown-item">Admin Dashboard</a>
                         <a th:href="@{/admin/settings}" class="dropdown-item">Admin Settings</a>
                         <a th:href="@{/logout}" class="dropdown-item">Logout</a>
                     </div>

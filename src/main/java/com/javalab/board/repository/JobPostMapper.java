@@ -35,4 +35,6 @@ public interface JobPostMapper {
     void incrementHitCount(Long jobPostId);
 
     List<JobPostVo> selectTop5PopularJobPosts();
+
+    List<JobPostVo> selectAllJobPostsForAdmin();
 }
