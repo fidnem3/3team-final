@@ -5,16 +5,16 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>회원 탈퇴 확인</title>
+    <title>기업 회원 탈퇴 확인</title>
 </head>
 
 <body>
 <div layout:fragment="content" class="container-xxl bg-white p-0">
-    <h2>회원 탈퇴 확인</h2>
-    <p>정말로 탈퇴하시겠습니까? 이 작업은 되돌릴 수 없습니다.</p>
-    <form th:action="@{/jobSeeker/withdraw}" method="post">
+    <h2>기업 회원 탈퇴 확인</h2>
+    <p>정말로 기업 회원을 탈퇴하시겠습니까? 이 작업은 되돌릴 수 없습니다.</p>
+    <form th:action="@{/company/withdraw}" method="post">
         <button type="submit" class="btn btn-danger">탈퇴하기</button>
-        <a th:href="@{/jobSeeker/detail}" class="btn btn-secondary">취소</a>
+        <a th:href="@{/company/detail}" class="btn btn-secondary">취소</a>
     </form>
 </div>
 </body>
