@@ -61,8 +61,8 @@
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">Resume</a>
                     <div class="dropdown-menu rounded-0 m-0">
+                        <a th:href="@{/resume/resumeDetail}" class="dropdown-item">New Resume</a>
                         <a th:href="@{/resume/resumeList}" class="dropdown-item">Resume List</a>
-                        <a th:href="@{/resume/resumeDetail}" class="dropdown-item">Resume Detail</a>
                         <a th:href="@{/resume/myResumeList}" class="dropdown-item" sec:authorize="hasRole('ROLE_USER')">My Resume</a>
                     </div>
                 </div>
@@ -103,7 +103,7 @@
                         <i class="fa fa-user-shield"></i> Admin Menu
                     </a>
                     <div class="dropdown-menu rounded-0 m-0">
-                        <a th:href="@{/member/adminPage}" class="dropdown-item">Admin Dashboard</a>
+                        <a th:href="@{/admin/adminPage}" class="dropdown-item">Admin Dashboard</a>
                         <a th:href="@{/admin/settings}" class="dropdown-item">Admin Settings</a>
                         <a th:href="@{/logout}" class="dropdown-item">Logout</a>
                     </div>
