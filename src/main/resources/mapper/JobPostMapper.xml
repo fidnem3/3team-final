@@ -98,6 +98,7 @@
         FROM jobPost
         WHERE payment_status = 'After Payment'
         ORDER BY hit_no DESC
+        FETCH FIRST 5 ROWS ONLY
     </select>
 
     <select id="selectAllJobPostsForAdmin" resultType="com.javalab.board.vo.JobPostVo">

@@ -101,7 +101,7 @@
     <!-- Jobs Start -->
     <div class="container-xxl py-5">
         <div class="container">
-            <h2 class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s"><span style='font-size:30px;'>&#128293;</span>지금 가장 많이 본 공고<span style='font-size:30px;'>&#128293;</span></h2>
+            <h2 class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s"><span style='font-size:30px;'>&#128293;</span>지금 가장 많이 본 공고 TOP 5<span style='font-size:30px;'>&#128293;</span></h2>
 
             <div th:each="jobPost : ${top5PopularJobPosts}" class="job-item p-4 mb-4">
                 <div class="row g-4">
@@ -122,7 +122,7 @@
                     <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
                         <div class="d-flex mb-3">
                             <a class="btn btn-light btn-square me-3 scrap-button"
-                               sec:authorize="!hasRole('ROLE_COMPANY')"
+                               sec:authorize="!hasRole('ROLE_COMPANY') and !hasRole('ROLE_ADMIN')"
                                th:classappend="${scrapStatusMap[jobPost.jobPostId] != null and scrapStatusMap[jobPost.jobPostId] ? 'scrap-active' : ''}"
                                th:href="@{#}"
                                th:data-jobpostid="${jobPost.jobPostId}"
