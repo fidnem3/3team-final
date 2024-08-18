@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 
@@ -33,7 +34,9 @@ public class CreateJobPostRequestDto {
     private Integer hitNo;
     private String status;
     private String logoPath; // Path to the image
+    private String logoName;
     private String paymentStatus; // 'Before Payment', 'After Payment'
+    private MultipartFile logoFile; // 파일을 위한 필드 추가
 
     public CreateJobPostRequestDto(Long jobPostId, String title, String address, String salary, Date endDate, Integer hitNo) {
     }

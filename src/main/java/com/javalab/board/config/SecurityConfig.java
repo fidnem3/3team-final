@@ -14,13 +14,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.security.web.util.matcher.RequestMatchers;
 
 @Configuration
 @EnableWebSecurity
@@ -29,10 +29,10 @@ import org.springframework.security.web.util.matcher.RequestMatchers;
 public class SecurityConfig {
 
 	@Autowired
-	private  CustomUserDetailsService userDetailsService;
+	private CustomUserDetailsService userDetailsService;
 
 	@Autowired
-	private  AuthFailureHandler authFailureHandler;
+	private AuthFailureHandler authFailureHandler;
 
 	@Autowired
 	private AuthSuccessHandler authSuccessHandler;
@@ -74,7 +74,6 @@ public class SecurityConfig {
 						})
 						.failureHandler(authFailureHandler)
 				)
-
 				.logout(logout -> logout
 						.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 						.logoutSuccessUrl("/index")
@@ -84,9 +83,9 @@ public class SecurityConfig {
 				.authorizeHttpRequests(authorize -> authorize
 						.requestMatchers("/css/**", "/js/**", "/img/**", "/fonts/**", "/scss/**", "/lib/**", "/assets/**").permitAll()
 						.requestMatchers("/", "/home", "/about", "/contact", "/index", "/jobPost/jobPostList", "/jobPost/detail/**").permitAll()
-						.requestMatchers("/view/**").permitAll()
 						.requestMatchers("/member/**", "/member/adminJoin").permitAll()
-						.requestMatchers("/board/**").permitAll()
+						.requestMatchers("/board/**", "/upload/**", "/jobPost/logo/**").permitAll()
+						.requestMatchers("/error").permitAll()  // /error 경로 접근 허용
 						.requestMatchers("/member/adminPage").hasRole("ADMIN")
 						.requestMatchers("/member/companyPage").hasRole("COMPANY")
 						.requestMatchers("/member/jobSeekerPage").hasRole("USER")
@@ -107,7 +106,6 @@ public class SecurityConfig {
 								.userService(customOAuth2UserService)
 						)
 				);
-
 		return http.build();
 	}
 }

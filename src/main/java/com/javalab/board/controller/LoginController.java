@@ -18,7 +18,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @RequestMapping("/member")
 @Controller
@@ -147,24 +153,46 @@ public class LoginController {
     @PostMapping("/companyJoin")
     public String registerCompany(@Valid @ModelAttribute("CompanyVo") CompanyVo companyVo,
                                   BindingResult bindingResult,
+                                  @RequestParam("file") MultipartFile file,
                                   RedirectAttributes redirectAttributes) {
-        // 유효성 검사 오류가 있는 경우, 다시 회원가입 페이지로 이동
+        // 유효성 검사 오류가 있는 경우
         if (bindingResult.hasErrors()) {
             return "member/companyJoin";
         }
 
-        // 비밀번호를 암호화합니다.
+        // 비밀번호 암호화
         companyVo.setPassword(passwordEncoder.encode(companyVo.getPassword()));
 
-        // UserRolesVo 객체 생성 및 설정합니다.
+        // UserRolesVo 객체 생성 및 설정
         UserRolesVo userRolesVo = new UserRolesVo();
         userRolesVo.setUserId(companyVo.getCompId());
         userRolesVo.setUserType("company");
-        userRolesVo.setRoleId("ROLE_COMPANY"); // 또는 적절한 기본 역할 ID
+        userRolesVo.setRoleId("ROLE_COMPANY");
 
         try {
+            // 파일 업로드 처리
+            if (!file.isEmpty()) {
+                // 업로드할 디렉토리 경로 설정
+                String uploadDir = "C:\\filetest\\upload";
+                Path uploadPath = Paths.get(uploadDir);
+
+                // 디렉토리가 존재하지 않으면 생성
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath);
+                }
+
+                // 파일 저장
+                String fileName = file.getOriginalFilename();
+                Path filePath = uploadPath.resolve(fileName);
+                file.transferTo(filePath.toFile());
+
+                // CompanyVo에 파일 이름과 경로 설정
+                companyVo.setLogoName(fileName);
+                companyVo.setLogoPath(filePath.toString());
+            }
+
+            // 기업 등록 처리
             companyService.registerCompany(companyVo, userRolesVo);
-            // 기업 회원가입 처리
             redirectAttributes.addFlashAttribute("message", "기업 회원가입이 성공적으로 완료되었습니다.");
             log.info("회원가입 성공: {}", companyVo.getCompId());
             return "redirect:/member/login";
@@ -222,18 +250,12 @@ public class LoginController {
         }
     }
 
+
+    @GetMapping("/modify")
+    public String modify() {
+        return "/member/modify"; // 또는 JSP 파일의 이름
+    }
 }
-
-
-
-
-//    // 카카오 소셜 로그인 사용자 비밀번호 변경 화면
-    // 카카오 소셜 로그인 사용자 비밀번호 변경 화면
-//    @GetMapping("/modify")
-//    public String modifyGET() {
-//        log.info("modify get...");
-//        return "member/modify";
-//    }
 
     // 카카오 소셜 로그인 사용자 비밀번호+social 변경
 //    @PostMapping("/modify")

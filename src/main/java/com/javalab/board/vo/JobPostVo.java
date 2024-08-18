@@ -28,7 +28,8 @@ public class JobPostVo implements Serializable {
 	private String homepage;
 	private Integer hitNo;
 	private String status; // 'Pending', 'Approved', 'Rejected'
-	private String logoPath; // 사진 경로
+	private String logoPath;
+	private String logoName;
 	private Long paymentId; // 결제 ID
 	// 날짜 바인딩 패턴 : yyyy-MM-dd
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -36,5 +37,6 @@ public class JobPostVo implements Serializable {
 	private Date endDate ;
 	private Date created;
 	private String paymentStatus; // 'Before Payment', 'After Payment'
+
 
 }
