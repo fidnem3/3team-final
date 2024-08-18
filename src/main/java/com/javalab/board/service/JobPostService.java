@@ -21,6 +21,8 @@ public interface JobPostService {
     void incrementHitCount(Long jobPostId);
     List<JobPostVo> getTop5PopularJobPosts();
     List<JobPostVo> getAllJobPostsForAdmin();
+    List<JobPostVo> searchJobPosts(String keyword);
+
 
 
     List<JobPostVo> getJobPostsByFilters(String address, String education, String experience);
