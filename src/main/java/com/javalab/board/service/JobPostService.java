@@ -1,7 +1,6 @@
 package com.javalab.board.service;
 
 import com.javalab.board.dto.CreateJobPostRequestDto;
-import com.javalab.board.dto.JobPostFilterDto;
 import com.javalab.board.vo.CompanyVo;
 import com.javalab.board.vo.JobPostVo;
 
