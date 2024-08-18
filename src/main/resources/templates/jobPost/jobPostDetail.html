@@ -1,75 +1,268 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org"-->
+<!--      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"-->
+<!--      layout:decorate="~{layout/layout}">-->
+
+<!--<head>-->
+<!--    <meta charset="utf-8">-->
+<!--    <title>JobEntry - Job Portal Website Template</title>-->
+<!--    <style>-->
+<!--        /* 팝업창 스타일 */-->
+<!--        #resumePopup {-->
+<!--            display: none;-->
+<!--            position: fixed;-->
+<!--            z-index: 999;-->
+<!--            left: 0;-->
+<!--            top: 0;-->
+<!--            width: 100%;-->
+<!--            height: 100%;-->
+<!--            overflow: auto;-->
+<!--            background-color: rgb(0,0,0);-->
+<!--            background-color: rgba(0,0,0,0.4);-->
+<!--        }-->
+<!--        .popup-content {-->
+<!--            background-color: #fefefe;-->
+<!--            margin: 15% auto;-->
+<!--            padding: 20px;-->
+<!--            border: 1px solid #888;-->
+<!--            width: 80%;-->
+<!--            max-width: 500px;-->
+<!--        }-->
+<!--    </style>-->
+
+<!--</head>-->
+
+<!--<body>-->
+
+<!--&lt;!&ndash; Job Detail Start &ndash;&gt;-->
+<!--<div layout:fragment="content" class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">-->
+<!--    <div class="container">-->
+<!--        <div class="row gy-5 gx-4">-->
+<!--            <div class="col-lg-8">-->
+<!--                <div class="d-flex align-items-center mb-5">-->
+<!--                    <img class="flex-shrink-0 img-fluid border rounded"-->
+<!--                         th:src="@{'/jobPost/logo/' + ${jobPost.logoName}}"-->
+<!--                         alt="Company Logo" style="width: 80px; height: 80px;">-->
+<!--                    <div class="text-start ps-4">-->
+<!--                        <h3 class="mb-3"><span th:text="${jobPost.title}"></span></h3>-->
+<!--                        <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i><span th:text="${jobPost.address}"></span></span>-->
+<!--                        <span class="text-truncate me-3"><i-->
+<!--                                class="far fa-clock text-primary me-2"></i>Full Time</span>-->
+<!--                        <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i><span th:text="${jobPost.salary}"></span></span>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                <div class="mb-5">-->
+<!--                    <h4 class="mb-3">조건</h4>-->
+<!--                    <ul class="list-unstyled">-->
+<!--                        <li><i class="fa fa-angle-right text-primary me-2"></i><span th:text="${jobPost.education}"></span></li>-->
+<!--                        <li><i class="fa fa-angle-right text-primary me-2"></i><span th:text="${jobPost.experience}"></span></li>-->
+<!--                    </ul>-->
+<!--                    <h4 class="mb-3">내용</h4>-->
+<!--                    <span th:utext="${jobPost.content}"></span><br><br>-->
+<!--                </div>-->
+
+<!--                <div class="">-->
+<!--                    <h4 class="mb-4">Apply For The Job</h4>-->
+<!--                    <form>-->
+<!--                        <div class="row g-3">-->
+<!--                            <div class="col-12 col-sm-6">-->
+<!--                                <input type="text" class="form-control" placeholder="Your Name">-->
+<!--                            </div>-->
+<!--                            <div class="col-12 col-sm-6">-->
+<!--                                <input type="email" class="form-control" placeholder="Your Email">-->
+<!--                            </div>-->
+<!--                            <div class="col-12 col-sm-6">-->
+<!--                                <input type="text" class="form-control" placeholder="Portfolio Website">-->
+<!--                            </div>-->
+<!--                            <div class="col-12 col-sm-6">-->
+<!--                                <input type="file" class="form-control bg-white">-->
+<!--                            </div>-->
+<!--                            <div class="col-12">-->
+<!--                                <textarea class="form-control" rows="5" placeholder="Coverletter"></textarea>-->
+<!--                            </div>-->
+<!--                            <div class="col-12">-->
+<!--                                <button class="btn btn-primary w-100" type="submit">Apply Now</button>-->
+<!--                            </div>-->
+
+<!--                            &lt;!&ndash; 지원하기 버튼 &ndash;&gt;-->
+<!--                            <button id="applyButton" class="btn btn-primary">지원하기</button>-->
+
+<!--                            &lt;!&ndash; 지원하기 팝업 창 &ndash;&gt;-->
+<!--                            <div id="resumePopup">-->
+<!--                                <div class="popup-content">-->
+<!--                                    <h4 class="mb-4">이력서 선택</h4>-->
+<!--                                    <form id="applyForm" method="post" th:action="@{/jobPost/apply}">-->
+<!--                                        <input type="hidden" name="jobPostId" th:value="${jobPost.jobPostId}" />-->
+<!--                                        <div class="mb-3">-->
+<!--                                            <label for="resumeId" class="form-label">이력서 선택</label>-->
+<!--                                            <select name="resumeId" id="resumeId" class="form-select" required>-->
+<!--                                                <option value="" disabled selected>이력서를 선택하세요</option>-->
+<!--                                                <option th:each="resume : ${resumes}" th:value="${resume.resumeId}" th:text="${resume.title}"></option>-->
+<!--                                                <option th:if="${#lists.isEmpty(resumes)}" value="" disabled>이력서가 없습니다</option>-->
+<!--                                            </select>-->
+<!--                                        </div>-->
+<!--                                        <button type="submit" class="btn btn-success w-100">제출하기</button>-->
+<!--                                        <button type="button" class="btn btn-secondary w-100 mt-2" id="closePopup">취소</button>-->
+<!--                                    </form>-->
+<!--                                </div>-->
+<!--                            </div>-->
+
+
+
+<!--                        </div>-->
+<!--                    </form>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            <div class="col-lg-4">-->
+<!--                <div class="bg-light rounded p-5 mb-4 wow slideInUp" data-wow-delay="0.1s">-->
+<!--                    <h4 class="mb-4">Job Summery</h4>-->
+<!--                    <p><i class="fa fa-angle-right text-primary me-2"></i><b>작성일 :</b> <span th:text="${formattedCreated}"></span></p>-->
+<!--                    <p><i class="fa fa-angle-right text-primary me-2"></i><b>직급 :</b> <span th:text="${jobPost.position}"></span></p>-->
+<!--                    <p><i class="fa fa-angle-right text-primary me-2"></i><b>고용형태 :</b> Full Time</p>-->
+<!--                    <p><i class="fa fa-angle-right text-primary me-2"></i><b>급여 :</b> <span th:text="${jobPost.salary}"></span></p>-->
+<!--                    <p><i class="fa fa-angle-right text-primary me-2"></i><b>지역 :</b> <span th:text="${jobPost.address}"></span></p>-->
+<!--                    <p class="m-0"><i class="fa fa-angle-right text-primary me-2"></i><b>마감일자 :</b> <span th:text="${formattedEndDate}"></span></p>-->
+<!--                </div>-->
+<!--                <div class="bg-light rounded p-5 wow slideInUp" data-wow-delay="0.1s">-->
+<!--                    <h4 class="mb-4">Company Detail</h4>-->
+<!--                    <p class="m-0">Ipsum dolor ipsum accusam stet et et diam dolores, sed rebum sadipscing elitr-->
+<!--                        vero dolores. Lorem dolore elitr justo et no gubergren sadipscing, ipsum et takimata-->
+<!--                        aliquyam et rebum est ipsum lorem diam. Et lorem magna eirmod est et et sanctus et, kasd-->
+<!--                        clita labore.</p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+
+
+<!--<script>-->
+
+<!--    document.addEventListener("DOMContentLoaded", function() {-->
+<!--        var applyButton = document.getElementById("applyButton");-->
+<!--        var closePopup = document.getElementById("closePopup");-->
+<!--        var resumePopup = document.getElementById("resumePopup");-->
+
+<!--        console.log(applyButton, closePopup, resumePopup);-->
+
+<!--        applyButton.addEventListener("click", function() {-->
+<!--            resumePopup.style.display = "block";-->
+<!--        });-->
+
+<!--        closePopup.addEventListener("click", function() {-->
+<!--            resumePopup.style.display = "none";-->
+<!--        });-->
+
+<!--        window.onclick = function(event) {-->
+<!--            if (event.target == resumePopup) {-->
+<!--                resumePopup.style.display = "none";-->
+<!--            }-->
+<!--        };-->
+<!--    });-->
+<!--</script>-->
+
+
+<!--</body>-->
+<!--</html>-->
+
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/layout}">
 
 <head>
     <meta charset="utf-8">
     <title>JobEntry - Job Portal Website Template</title>
+    <style>
+        /* 팝업창 스타일 */
+        #resumePopup {
+            display: block;
+            position: fixed;
+            z-index: 999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4);
+        }
 
+        .popup-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+        }
+    </style>
 </head>
 
 <body>
-
-<!-- Job Detail Start -->
 <div layout:fragment="content" class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
     <div class="container">
         <div class="row gy-5 gx-4">
             <div class="col-lg-8">
                 <div class="d-flex align-items-center mb-5">
-                    <img class="flex-shrink-0 img-fluid border rounded"
-                         th:src="@{'/jobPost/logo/' + ${jobPost.logoName}}"
+                    <img class="flex-shrink-0 img-fluid border rounded" th:src="@{'/jobPost/logo/' + ${jobPost.logoName}}"
                          alt="Company Logo" style="width: 80px; height: 80px;">
                     <div class="text-start ps-4">
                         <h3 class="mb-3"><span th:text="${jobPost.title}"></span></h3>
-                        <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i><span th:text="${jobPost.address}"></span></span>
-                        <span class="text-truncate me-3"><i
-                                class="far fa-clock text-primary me-2"></i>Full Time</span>
-                        <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i><span th:text="${jobPost.salary}"></span></span>
+                        <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i><span
+                                th:text="${jobPost.address}"></span></span>
+                        <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>Full Time</span>
+                        <span class="text-truncate me-0"><i
+                                class="far fa-money-bill-alt text-primary me-2"></i><span
+                                th:text="${jobPost.salary}"></span></span>
                     </div>
                 </div>
 
                 <div class="mb-5">
                     <h4 class="mb-3">조건</h4>
                     <ul class="list-unstyled">
-                        <li><i class="fa fa-angle-right text-primary me-2"></i><span th:text="${jobPost.education}"></span></li>
-                        <li><i class="fa fa-angle-right text-primary me-2"></i><span th:text="${jobPost.experience}"></span></li>
+                        <li><i class="fa fa-angle-right text-primary me-2"></i><span th:text="${jobPost.education}"></span>
+                        </li>
+                        <li><i class="fa fa-angle-right text-primary me-2"></i><span
+                                th:text="${jobPost.experience}"></span></li>
                     </ul>
                     <h4 class="mb-3">내용</h4>
                     <span th:utext="${jobPost.content}"></span><br><br>
                 </div>
 
-                <div class="">
-                    <h4 class="mb-4">Apply For The Job</h4>
-                    <form>
-                        <div class="row g-3">
-                            <div class="col-12 col-sm-6">
-                                <input type="text" class="form-control" placeholder="Your Name">
-                            </div>
-                            <div class="col-12 col-sm-6">
-                                <input type="email" class="form-control" placeholder="Your Email">
-                            </div>
-                            <div class="col-12 col-sm-6">
-                                <input type="text" class="form-control" placeholder="Portfolio Website">
-                            </div>
-                            <div class="col-12 col-sm-6">
-                                <input type="file" class="form-control bg-white">
-                            </div>
-                            <div class="col-12">
-                                <textarea class="form-control" rows="5" placeholder="Coverletter"></textarea>
-                            </div>
-                            <div class="col-12">
-                                <button class="btn btn-primary w-100" type="submit">Apply Now</button>
-                            </div>
+                <div>
+                    <!-- 지원하기 버튼 -->
+                    <button id="applyButton" class="btn btn-primary w-100">지원하기</button>
+
+                    <!-- 지원하기 팝업 창 -->
+                    <div id="resumePopup">
+                        <div class="popup-content">
+                            <h4 class="mb-4">이력서 선택</h4>
+                            <form id="applyForm" method="post" th:action="@{/jobPost/apply}">
+                                <input type="hidden" name="jobPostId" th:value="${jobPost.jobPostId}"/>
+                                <div class="mb-3">
+                                    <label for="resumeId" class="form-label">이력서 선택</label>
+                                    <select name="resumeId" id="resumeId" class="form-select" required>
+                                        <option value="" disabled selected>이력서를 선택하세요</option>
+                                        <option th:each="resume : ${resumes}" th:value="${resume.resumeId}"
+                                                th:text="${resume.title}"></option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-success w-100">제출하기</button>
+                                <button type="button" class="btn btn-secondary w-100 mt-2" id="closePopup">취소</button>
+                            </form>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
 
             <div class="col-lg-4">
                 <div class="bg-light rounded p-5 mb-4 wow slideInUp" data-wow-delay="0.1s">
-                    <h4 class="mb-4">Job Summery</h4>
-                    <p><i class="fa fa-angle-right text-primary me-2"></i><b>작성일 :</b> <span th:text="${formattedCreated}"></span></p>
+                    <h4 class="mb-4">Job Summary</h4>
+                    <p><i class="fa fa-angle-right text-primary me-2"></i><b>작성일 :</b> <span
+                            th:text="${formattedCreated}"></span></p>
                     <p><i class="fa fa-angle-right text-primary me-2"></i><b>직급 :</b> <span th:text="${jobPost.position}"></span></p>
                     <p><i class="fa fa-angle-right text-primary me-2"></i><b>고용형태 :</b> Full Time</p>
                     <p><i class="fa fa-angle-right text-primary me-2"></i><b>급여 :</b> <span th:text="${jobPost.salary}"></span></p>
@@ -78,15 +271,51 @@
                 </div>
                 <div class="bg-light rounded p-5 wow slideInUp" data-wow-delay="0.1s">
                     <h4 class="mb-4">Company Detail</h4>
-                    <p class="m-0">Ipsum dolor ipsum accusam stet et et diam dolores, sed rebum sadipscing elitr
-                        vero dolores. Lorem dolore elitr justo et no gubergren sadipscing, ipsum et takimata
-                        aliquyam et rebum est ipsum lorem diam. Et lorem magna eirmod est et et sanctus et, kasd
-                        clita labore.</p>
+                    <p class="m-0">Ipsum dolor ipsum accusam stet et et diam dolores, sed rebum sadipscing elitr vero dolores. Lorem dolore elitr justo et no gubergren sadipscing, ipsum et takimata aliquyam et rebum est ipsum lorem diam. Et lorem magna eirmod est et et sanctus et, kasd clita labore.</p>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+
+<!--<script>-->
+<!--        var applyButton = document.getElementById("applyButton");-->
+<!--        var resumePopup = document.getElementById("resumePopup");-->
+<!--        var closePopup = document.getElementById("closePopup");-->
+
+
+<!--        console.log(applyButton);  // null이 아닌지 확인-->
+<!--        console.log(resumePopup);  // null이 아닌지 확인-->
+<!--        console.log("closePopup:", closePopup);-->
+
+
+<!--        applyButton.addEventListener("click", function() {-->
+<!--            console.log("지원하기 버튼이 클릭되었습니다.");  // 디버깅용 로그-->
+<!--            resumePopup.style.display = "block";-->
+<!--            resumePopup.style.visibility = "visible";-->
+<!--        });-->
+
+<!--        document.getElementById("closePopup").addEventListener("click", function() {-->
+<!--            console.log("취소 버튼이 클릭되었습니다.");  // 디버깅용 로그-->
+<!--            resumePopup.style.display = "none";-->
+<!--        });-->
+
+<!--        window.onclick = function(event) {-->
+<!--            if (event.target == resumePopup) {-->
+<!--                console.log("팝업 외부를 클릭하여 팝업을 닫습니다.");  // 디버깅용 로그-->
+<!--                resumePopup.style.display = "none";-->
+<!--            }-->
+<!--        };-->
+<!--    );-->
+<!--</script>-->
+
+<script>
+var jobPostId = /*[[${jobPost.jobPostId}]]*/ 'default_value';
+console.log(jobPostId);  // Thymeleaf가 변환한 값이 출력되어야 함
+</script>
 </body>
+
+
+
 </html>

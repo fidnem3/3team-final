@@ -1,10 +1,9 @@
 package com.javalab.board.controller;
 
 import com.javalab.board.dto.CreateJobPostRequestDto;
-import com.javalab.board.service.CompanyService;
-import com.javalab.board.service.JobPostService;
-import com.javalab.board.service.JobSeekerScrapService;
-import com.javalab.board.service.PaymentService;
+import com.javalab.board.dto.ResumeDto;
+import com.javalab.board.security.dto.CustomUserDetails;
+import com.javalab.board.service.*;
 import com.javalab.board.vo.*;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -50,6 +49,11 @@ public class JobPostController {
     private JobSeekerScrapService jobSeekerScrapService;
     @Autowired
     private TemplateEngine templateEngine;
+    @Autowired
+    private ResumeService resumeService;
+    @Autowired
+    private ApplicationService applicationService;
+
     // 파일 업로드 디렉토리
     private static final String UPLOAD_DIR = "C:/filetest/upload/";
     // 허용된 파일 확장자
@@ -240,7 +244,7 @@ public class JobPostController {
     }
 
     @GetMapping("/detail/{jobPostId}")
-    public String detail(@PathVariable("jobPostId") Long jobPostId, Model model) {
+    public String detail(@PathVariable("jobPostId") Long jobPostId, Model model){
         JobPostVo jobPostVo = jobPostService.findJobPostById(jobPostId);
         // 조회수 증가
         jobPostService.incrementHitCount(jobPostId);
@@ -255,6 +259,16 @@ public class JobPostController {
             String formattedCreated = jobPostVo.getCreated() != null
                     ? jobPostVo.getCreated().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().format(formatter)
                     : "";
+
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication != null && authentication.getPrincipal() instanceof CustomUserDetails) {
+                CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+                String loggedInUsername = userDetails.getUsername();
+
+                // 사용자의 이력서 목록 가져오기
+                List<ResumeDto> resumeDtoList = resumeService.findAll(loggedInUsername);
+                model.addAttribute("resumes", resumeDtoList);
+            }
 
             model.addAttribute("jobPost", jobPostVo); // 모델에 추가
             model.addAttribute("formattedEndDate", formattedEndDate);
@@ -315,6 +329,19 @@ public class JobPostController {
         jobPostService.deleteJobPost(jobPostId);
         return "redirect:/jobPost/myJobPostList";
     }
+
+    //지원 컨트롤러
+    @PostMapping("/apply")
+    public String applyForJob (@RequestParam("resumeId") int resumeId,
+                              @RequestParam("jobPostId") Long jobPostId,
+                              @RequestParam("jobSeekerId") String jobSeekerId,
+                              Model model) {
+        applicationService.applyForJob(resumeId, jobPostId, jobSeekerId);
+
+        return "redirect:/jobPost/jobPostList"; // 지원이 완료된 후 리다이렉트할 페이지로 수정
+    }
+
+
 
 
 }
