@@ -2,11 +2,10 @@ package com.javalab.board.vo;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -17,7 +16,6 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 @Getter
 @Setter
 @ToString
-//@Builder
 public class MemberVo extends User implements Serializable, OAuth2User {
 	private static final long serialVersionUID = 1L;
 
@@ -25,28 +23,15 @@ public class MemberVo extends User implements Serializable, OAuth2User {
 	private String password;
 	private String name;
 	private String email;
-	private int point = 0;  // 포인트 점수 필드 기본 값 설정
-	private List<String> roles = new ArrayList<>(); // 권한 리스트 기본 값 설정
-	private boolean del = false; // 기본 값 설정
-	private boolean social = false; // 기본 값 설정
-	private Map<String, Object> attributes = Map.of(); // 소셜 로그인 정보 기본 값 설정
+	private int point = 0;
+	private Collection<SimpleGrantedAuthority> roles = new ArrayList<>();
+	private boolean del = false;
+	private boolean social = false;
+	private Map<String, Object> attributes = Map.of();
 
-	// 기본 생성자
-	public MemberVo() {
-		super("defaultMemberId", "defaultPassword", List.of(new SimpleGrantedAuthority("ROLE_USER")));
-	}
-
-	public MemberVo(String memberId,
-					String password,
-					String name,
-					String email,
-					int point,
-					List<String> roles,
-					boolean del,
-					boolean social,
-					Map<String, Object> attributes) {
-
-		super(memberId, password, roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
+	public MemberVo(String memberId, String password, String name, String email, int point,
+					Collection<SimpleGrantedAuthority> roles, boolean del, boolean social, Map<String, Object> attributes) {
+		super(memberId, password, new ArrayList<>(roles)); // Convert Collection to List
 		this.memberId = memberId;
 		this.password = password;
 		this.name = name;

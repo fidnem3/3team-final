@@ -2,38 +2,34 @@ package com.javalab.board.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
-@ToString
-public class SocialMemberDto extends User implements OAuth2User {
-    private static final long serialVersionUID = 1L;
-
+public class SocialMemberDto implements OAuth2User {
     private String memberId;
     private String name;
     private String email;
-    private int point = 0; // 포인트 점수 필드 기본 값 설정
-    private boolean del = false; // 기본 값 설정
-    private boolean social = true; // 기본 값 설정
-    private List<String> roles; // 권한 리스트
-    private Map<String, Object> attributes; // 소셜 로그인 정보
+    private Collection<? extends GrantedAuthority> roles;
+    private Map<String, Object> attributes;
+    private boolean isSocial; // Add this field to indicate social login
 
-    public SocialMemberDto(String username, String password, Collection<? extends GrantedAuthority> authorities, Map<String, Object> attributes) {
-        super(username, password, authorities);
-        this.memberId = username;
-        this.roles = authorities.stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toList());
+    public SocialMemberDto(String memberId, String name, String email, Collection<? extends GrantedAuthority> roles, Map<String, Object> attributes, boolean isSocial) {
+        this.memberId = memberId;
+        this.name = name;
+        this.email = email;
+        this.roles = roles;
         this.attributes = attributes;
+        this.isSocial = isSocial;
+    }
+
+    @Override
+    public <A> A getAttribute(String name) {
+        return this.attributes != null ? (A) this.attributes.get(name) : null;
     }
 
     @Override
@@ -42,7 +38,16 @@ public class SocialMemberDto extends User implements OAuth2User {
     }
 
     @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.roles;
+    }
+
+    @Override
     public String getName() {
         return this.memberId;
+    }
+
+    public boolean isSocial() {
+        return this.isSocial;
     }
 }

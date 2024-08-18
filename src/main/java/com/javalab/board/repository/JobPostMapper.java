@@ -1,7 +1,6 @@
 package com.javalab.board.repository;
 
 import com.javalab.board.dto.CreateJobPostRequestDto;
-import com.javalab.board.dto.JobPostFilterDto;
 import com.javalab.board.vo.JobPostVo;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Param;

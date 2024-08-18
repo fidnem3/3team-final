@@ -1,5 +1,6 @@
 package com.javalab.board.security.handler;
 
+import com.javalab.board.dto.SocialMemberDto;
 import com.javalab.board.vo.MemberVo;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -7,10 +8,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Map;
 
 @Log4j2
 @RequiredArgsConstructor
@@ -22,26 +27,51 @@ public class CustomSocialLoginSuccessHandler implements AuthenticationSuccessHan
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 
         log.info("----------------------------------------------------------");
-        log.info("여기는 CustomLoginSuccessHandler onAuthenticationSuccess ..........");
-        log.info(authentication.getPrincipal());
+        log.info("CustomSocialLoginSuccessHandler onAuthenticationSuccess");
+        log.info("Authentication Principal: {}", authentication.getPrincipal());
 
-        // 시큐리티에 보관한 정보 추출
-        MemberVo memberVo = (MemberVo) authentication.getPrincipal();
+        Object principal = authentication.getPrincipal();
 
-        log.info("memberVo.isSocial() : " + memberVo.isSocial());
-        boolean boolPass = passwordEncoder.matches("1111", memberVo.getPassword());
-        log.info("passwordEncoder.matches(1111) 맞나? : " + boolPass);
+        // Handle MemberVo type
+        if (principal instanceof MemberVo) {
+            MemberVo memberVo = (MemberVo) principal;
 
-        // 비밀번호가 1111이라는 얘기는 아직 안 바꿨다는 의미
-        if (memberVo.isSocial() && (memberVo.getPassword().equals("1111")
-                || passwordEncoder.matches("1111", memberVo.getPassword()))) {
-            log.info("소셜 로그인으로 수정화면으로 이동합니다.");
-            log.info("회원정보 수정화면으로 이동합니다. ");
-            response.sendRedirect("/member/modify");
-            return;
-        } else {    // 비밀번호가 1111이 아니라는 얘기는 바꿨다는 의미
-            log.info("비밀번호가 1111이 아니므로 게시판 리스트로 이동합니다.");
-            response.sendRedirect("/board/list");
+            log.info("MemberVo isSocial: {}", memberVo.isSocial());
+            boolean passwordMatches = passwordEncoder.matches("1111", memberVo.getPassword());
+            log.info("Password matches 1111: {}", passwordMatches);
+
+            if (memberVo.isSocial() && passwordMatches) {
+                log.info("Redirecting to password modification page.");
+                response.sendRedirect("/member/modify");
+            } else {
+                log.info("Redirecting to index page.");
+                response.sendRedirect("/index");
+            }
+        }
+        // Handle OAuth2User type
+        else if (principal instanceof OAuth2User) {
+            OAuth2User oauth2User = (OAuth2User) principal;
+            if (oauth2User instanceof SocialMemberDto) {
+                SocialMemberDto socialMemberDto = (SocialMemberDto) oauth2User;
+
+                log.info("SocialMemberDto isSocial: {}", socialMemberDto.isSocial());
+
+                if (socialMemberDto.isSocial()) {
+                    log.info("Redirecting to password modification page.");
+                    response.sendRedirect("/member/modify");
+                } else {
+                    log.info("Redirecting to index page.");
+                    response.sendRedirect("/index");
+                }
+            } else {
+                log.error("OAuth2User is not an instance of SocialMemberDto: {}", oauth2User.getClass());
+                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Unexpected OAuth2User type");
+            }
+        }
+        // Handle unknown principal type
+        else {
+            log.error("Unknown principal type: {}", principal.getClass());
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Unexpected principal type");
         }
     }
 }

@@ -21,7 +21,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.security.web.util.matcher.RequestMatchers;
 
 @Configuration
 @EnableWebSecurity
@@ -85,7 +84,8 @@ public class SecurityConfig {
 						.requestMatchers("/css/**", "/js/**", "/img/**", "/fonts/**", "/scss/**", "/lib/**", "/assets/**").permitAll()
 						.requestMatchers("/", "/home", "/about", "/contact", "/index", "/jobPost/jobPostList", "/jobPost/detail/**").permitAll()
 						.requestMatchers("/member/**", "/member/adminJoin").permitAll()
-						.requestMatchers("/board/**", "/upload/**").permitAll()
+						.requestMatchers("/board/**", "/upload/**", "/jobPost/logo/**").permitAll()
+						.requestMatchers("/error").permitAll()  // /error 경로 접근 허용
 						.requestMatchers("/member/adminPage").hasRole("ADMIN")
 						.requestMatchers("/member/companyPage").hasRole("COMPANY")
 						.requestMatchers("/member/jobSeekerPage").hasRole("USER")
@@ -106,7 +106,6 @@ public class SecurityConfig {
 								.userService(customOAuth2UserService)
 						)
 				);
-
 		return http.build();
 	}
 }

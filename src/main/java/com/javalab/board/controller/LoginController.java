@@ -250,18 +250,12 @@ public class LoginController {
         }
     }
 
+
+    @GetMapping("/modify")
+    public String modify() {
+        return "/member/modify"; // 또는 JSP 파일의 이름
+    }
 }
-
-
-
-
-//    // 카카오 소셜 로그인 사용자 비밀번호 변경 화면
-    // 카카오 소셜 로그인 사용자 비밀번호 변경 화면
-//    @GetMapping("/modify")
-//    public String modifyGET() {
-//        log.info("modify get...");
-//        return "member/modify";
-//    }
 
     // 카카오 소셜 로그인 사용자 비밀번호+social 변경
 //    @PostMapping("/modify")
