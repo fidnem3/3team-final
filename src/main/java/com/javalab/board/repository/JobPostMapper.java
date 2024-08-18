@@ -43,4 +43,6 @@ public interface JobPostMapper {
                                             @Param("education") String education,
                                             @Param("experience") String experience);
 
+    List<JobPostVo> searchJobPosts(@Param("keyword") String keyword);
+
 }

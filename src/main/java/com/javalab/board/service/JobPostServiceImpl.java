@@ -130,5 +130,10 @@ public class JobPostServiceImpl implements JobPostService {
         return jobPostMapper.selectJobPostsByFilters(address, education, experience);
     }
 
+    @Override
+    public List<JobPostVo> searchJobPosts(String keyword) {
+        return jobPostMapper.searchJobPosts(keyword);
+    }
+
 }
 
