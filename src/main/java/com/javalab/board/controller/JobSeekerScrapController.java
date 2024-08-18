@@ -1,10 +1,13 @@
 package com.javalab.board.controller;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 
+import com.javalab.board.repository.JobPostMapper;
+import com.javalab.board.vo.JobPostVo;
 import com.javalab.board.vo.JobSeekerVo;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +35,9 @@ public class JobSeekerScrapController {
     @Autowired
     private JobSeekerScrapService jobSeekerScrapService;
 
+    @Autowired
+    private JobPostMapper jobPostMapper;
+
 
     @PostMapping("/scrap/toggle")
     public ResponseEntity<Map<String, Object>> toggleScrap(@RequestBody Map<String, Object> request, Authentication authentication) {
@@ -53,10 +59,21 @@ public class JobSeekerScrapController {
             jobSeekerId = userDetails.getUsername(); // UserDetails의 getUsername() 메서드를 사용
         }
 
+        // Retrieve the JobPostVo object to get logo information
+        JobPostVo jobPostVo = jobPostMapper.getJobPostById(jobPostId);
+        if (jobPostVo == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.singletonMap("error", "JobPost not found"));
+        }
+
         // Create a scrap VO object with required fields
         JobSeekerScrapVo scrapVo = new JobSeekerScrapVo();
         scrapVo.setJobSeekerId(jobSeekerId);
         scrapVo.setJobPostId(jobPostId);
+        scrapVo.setLogoName(jobPostVo.getLogoName());
+        scrapVo.setLogoPath(jobPostVo.getLogoPath());
+
+
+
 
         // Toggle scrap status
         if (isScrapped) {
@@ -75,29 +92,32 @@ public class JobSeekerScrapController {
     public String listJobSeekerScrap(Authentication authentication, Model model) {
         String jobSeekerId = null;
 
-        // Check if the principal is an instance of OAuth2User or UserDetails
         if (authentication.getPrincipal() instanceof OAuth2User) {
             OAuth2User oauth2User = (OAuth2User) authentication.getPrincipal();
-            jobSeekerId = oauth2User.getName(); // OAuth2User의 getName() 메서드를 사용
+            jobSeekerId = oauth2User.getName();
         } else if (authentication.getPrincipal() instanceof UserDetails) {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            jobSeekerId = userDetails.getUsername(); // UserDetails의 getUsername() 메서드를 사용
+            jobSeekerId = userDetails.getUsername();
         } else {
-            // Handle the case where the authentication principal is neither OAuth2User nor UserDetails
-            // This might be an error or unexpected state
-            return "redirect:/login"; // or an error page
+            return "redirect:/login";
         }
 
-        // Check if jobSeekerId is null, which means authentication did not return a valid principal
         if (jobSeekerId == null) {
-            return "redirect:/login"; // or an error page
+            return "redirect:/login";
         }
 
-        // Fetch the scrap list for the job seeker
+        // Fetch the scrap list for the jobSeeker
         List<JobSeekerScrapVo> jobSeekerScrapList = jobSeekerScrapService.getScrapList(jobSeekerId);
+
+        // Log for debugging
+        jobSeekerScrapList.forEach(item -> {
+            System.out.println("JobSeekerScrapVo: " + item.getLogoName());
+            System.out.println("JobSeekerScrapVo Logo Path: " + item.getLogoPath());
+        });
+
         model.addAttribute("scrapList", jobSeekerScrapList);
 
-        return "scrap/jobSeekerScrapList"; // HTML 파일 이름
+        return "scrap/jobSeekerScrapList";
     }
 
 }

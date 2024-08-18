@@ -7,9 +7,10 @@
 
 
     <insert id="insertScrap" parameterType="com.javalab.board.vo.JobSeekerScrapVo">
-        INSERT INTO jobSeekerScrap (scrap_id, jobSeeker_id, jobPost_id, created)
-        VALUES (jobSeekerScrap_seq.NEXTVAL, #{jobSeekerId}, #{jobPostId}, sysdate)
+        INSERT INTO jobSeekerScrap (scrap_id, jobSeeker_id, jobPost_id, logo_name, logo_path, created)
+        VALUES (jobSeekerScrap_seq.NEXTVAL, #{jobSeekerId}, #{jobPostId}, #{logoName}, #{logoPath}, sysdate)
     </insert>
+
 
     <delete id="deleteScrap" parameterType="Long">
         DELETE FROM jobSeekerScrap WHERE scrap_id = #{scrapId}
