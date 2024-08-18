@@ -11,6 +11,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -52,7 +54,10 @@ public class HomeController {
     }
 
     @GetMapping("/index")
-    public String index(Model model, Authentication authentication) {
+    public String index(@RequestParam(required = false, defaultValue = "") String keyword, Model model, Authentication authentication) {
+        if (!keyword.isEmpty()) {
+            return "redirect:/jobPost/jobPostList?keyword=" + keyword;
+        }
         List<JobPostVo> top5PopularJobPosts = jobPostService.getTop5PopularJobPosts();
         Map<Long, Boolean> scrapStatusMap = new HashMap<>();
         String jobSeekerId = authentication != null && authentication.getPrincipal() instanceof UserDetails

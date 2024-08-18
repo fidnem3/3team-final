@@ -88,11 +88,21 @@ public class JobPostController {
             @RequestParam(required = false) String address,
             @RequestParam(required = false) String education,
             @RequestParam(required = false) String experience,
+            @RequestParam(required = false, defaultValue = "") String keyword,
             Model model,
             Authentication authentication) {
 
-        // Filter job posts based on parameters
-        List<JobPostVo> jobPosts = jobPostService.getJobPostsByFilters(address, education, experience);
+
+        List<JobPostVo> jobPosts;
+
+        if (keyword != null && !keyword.isEmpty()) {
+            // 검색어가 있을 경우 검색된 공고를 가져옴
+            jobPosts = jobPostService.searchJobPosts(keyword);
+        } else {
+            // 필터가 있는 경우 해당 조건으로 공고를 필터링
+            jobPosts = jobPostService.getJobPostsByFilters(address, education, experience);
+        }
+
 
         String jobSeekerId = authentication != null && authentication.getPrincipal() instanceof UserDetails
                 ? ((UserDetails) authentication.getPrincipal()).getUsername()
@@ -109,6 +119,7 @@ public class JobPostController {
         log.info("ScrapStatusMap: {}", scrapStatusMap);
 
         model.addAttribute("jobPosts", jobPosts);
+        model.addAttribute("keyword", keyword); // 검색어를 템플릿에 전달
         model.addAttribute("scrapStatusMap", scrapStatusMap);
         model.addAttribute("filterAddress", address);
         model.addAttribute("filterEducation", education);
