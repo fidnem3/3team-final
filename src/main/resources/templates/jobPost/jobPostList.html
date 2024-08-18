@@ -31,37 +31,48 @@
     <h1 class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">Job Listing</h1>
     <div class="container">
     <!-- Filter Form -->
-    <div class="row mb-3 align-items-end">
-        <div class="col-md-3">
-            <select id="filterAddress" class="form-control">
-                <option value="">지역</option>
-                <option value="서울">서울</option>
-                <option value="부산">부산</option>
-                <!-- 다른 주소 추가 -->
-            </select>
+        <div class="container-fluid bg-primary mb-5 wow fadeIn" data-wow-delay="0.1s" style="padding: 35px;">
+            <div class="container">
+                <div class="row g-2">
+                    <div class="col-md-10">
+                        <div class="row g-2">
+                            <div class="col-md-3">
+                                <select id="filterAddress" class="form-select border-0">
+                                    <option value="">지역</option>
+                                    <option value="서울">서울</option>
+                                    <option value="부산">부산</option>
+                                    <!-- 다른 주소 추가 -->
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <select id="filterEducation" class="form-select border-0">
+                                    <option value="">학력</option>
+                                    <option value="학력무관">학력무관</option>
+                                    <option value="고졸">고졸이상</option>
+                                    <option value="초대졸">초대졸이상</option>
+                                    <option value="대졸">대졸이상</option>
+                                    <!-- 다른 교육 수준 추가 -->
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <select id="filterExperience" class="form-select border-0">
+                                    <option value="">경력</option>
+                                    <option value="경력무관">경력무관</option>
+                                    <option value="신입">신입</option>
+                                    <option value="경력 1년">경력 1년이상</option>
+                                    <option value="경력 2년">경력 2년이상</option>
+                                    <!-- 다른 경험 추가 -->
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <button id="applyFilters" class="btn btn-dark border-0 w-100">적용하기</button>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-md-3">
-            <select id="filterEducation" class="form-control">
-                <option value="">학력</option>
-                <option value="대졸">대졸이상</option>
-                <option value="고졸">고졸이상</option>
-                <option value="학력무관">학력무관</option>
-                <!-- 다른 교육 수준 추가 -->
-            </select>
-        </div>
-        <div class="col-md-3">
-            <select id="filterExperience" class="form-control">
-                <option value="">경력</option>
-                <option value="경력 2년">경력 2년이상</option>
-                <option value="경력 1년">경력 1년이상</option>
-                <option value="경력무관">경력무관</option>
-                <!-- 다른 경험 추가 -->
-            </select>
-        </div>
-        <div class="col-md-3 text-center">
-            <button id="applyFilters" class="btn btn-primary">Apply Filters</button>
-        </div>
-    </div>
+
 
 
         <div class="tab-class text-center wow fadeInUp" data-wow-delay="0.3s">

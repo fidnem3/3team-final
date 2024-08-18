@@ -18,6 +18,53 @@
         }
 
     </style>
+    <style>
+        @import url(https://fonts.googleapis.com/css?family=Open+Sans);
+
+
+
+        .search {
+          width: 100%;
+          display: flex;
+          justify-content: center;
+        }
+
+        .searchTerm {
+          width: 100%;
+          border: 3px solid #FFFFE0;
+          border-right: none;
+          padding: 10px;
+          height: 50px;
+          border-radius: 5px 0 0 5px;
+          outline: none;
+          color: #9DBFAF;
+        }
+
+        .searchTerm:focus{
+          color: #228B22;
+        }
+
+        .searchButton {
+          width: 40px;
+          height: 50px;
+          border: 1px solid #FFFFE0;
+          background: #98FB98;
+          text-align: center;
+          color: #228B22;
+          border-radius: 0 5px 5px 0;
+          cursor: pointer;
+          font-size: 20px;
+        }
+
+        /*Resize the wrap to see the search bar change!*/
+        .wrap{
+          width: 50%;
+          position: relative;
+          padding: 0;
+          margin: 0 auto;
+        }
+
+    </style>
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
@@ -65,35 +112,15 @@
 
     <!-- Search Start -->
     <div class="container-fluid bg-primary mb-5 wow fadeIn" data-wow-delay="0.1s" style="padding: 35px;">
-        <div class="container">
-            <div class="row g-2">
-                <div class="col-md-10">
-                    <div class="row g-2">
-                        <div class="col-md-4">
-                            <input type="text" class="form-control border-0" placeholder="키워드 입력"/>
-                        </div>
-                        <div class="col-md-4">
-                            <select class="form-select border-0">
-                                <option selected>카테고리</option>
-                                <option value="1">카테고리 1</option>
-                                <option value="2">카테고리 2</option>
-                                <option value="3">카테고리 3</option>
-                            </select>
-                        </div>
-                        <div class="col-md-4">
-                            <select class="form-select border-0">
-                                <option selected>지역</option>
-                                <option value="1">지역 1</option>
-                                <option value="2">지역 2</option>
-                                <option value="3">지역 3</option>
-                            </select>
-                        </div>
-                    </div>
+        <div class="wrap">
+            <form id="searchForm" action="/jobPost/jobPostList" method="get" onsubmit="return validateForm()">
+                <div class="search">
+                    <input type="text" name="keyword" class="searchTerm" placeholder="공고를 검색하세요" th:value="${keyword}">
+                    <button type="submit" class="searchButton">
+                        <i class="fa fa-search"></i>
+                    </button>
                 </div>
-                <div class="col-md-2">
-                    <button class="btn btn-dark border-0 w-100">Search</button>
-                </div>
-            </div>
+            </form>
         </div>
     </div>
     <!-- Search End -->
@@ -101,7 +128,7 @@
     <!-- Jobs Start -->
     <div class="container-xxl py-5">
         <div class="container">
-            <h2 class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s"><span style='font-size:30px;'>&#128293;</span>지금 가장 많이 본 공고<span style='font-size:30px;'>&#128293;</span></h2>
+            <h2 class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s"><span style='font-size:30px;'>&#128293;</span>지금 가장 많이 본 공고 TOP 5<span style='font-size:30px;'>&#128293;</span></h2>
 
             <div th:each="jobPost : ${top5PopularJobPosts}" class="job-item p-4 mb-4">
                 <div class="row g-4">
@@ -122,7 +149,7 @@
                     <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
                         <div class="d-flex mb-3">
                             <a class="btn btn-light btn-square me-3 scrap-button"
-                               sec:authorize="!hasRole('ROLE_COMPANY')"
+                               sec:authorize="!hasRole('ROLE_COMPANY') and !hasRole('ROLE_ADMIN')"
                                th:classappend="${scrapStatusMap[jobPost.jobPostId] != null and scrapStatusMap[jobPost.jobPostId] ? 'scrap-active' : ''}"
                                th:href="@{#}"
                                th:data-jobpostid="${jobPost.jobPostId}"
