@@ -69,7 +69,9 @@
         company_name = #{companyName},
         business_number = #{businessNumber},
         homepage = #{homepage},
-        address = #{address}
+        address = #{address},
+        logo_path = #{logoPath},  <!-- 추가된 필드 -->
+        logo_name = #{logoName}   <!-- 추가된 필드 -->
         WHERE
         comp_id = #{compId}
     </update>
@@ -88,7 +90,7 @@
     </delete>
 
     <select id="getCompanyById" parameterType="String" resultType="com.javalab.board.vo.CompanyVo">
-        SELECT comp_id, company_name
+        SELECT comp_id, company_name, logo_path, logo_name
         FROM company
         WHERE comp_id = #{compId}
     </select>

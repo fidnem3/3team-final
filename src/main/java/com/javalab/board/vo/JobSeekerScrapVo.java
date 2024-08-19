@@ -23,5 +23,7 @@ public class JobSeekerScrapVo {
     private String title;
     private String salary;
     private String address;
+    private String logoName;
+    private String logoPath;
 
 }

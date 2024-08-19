@@ -4,6 +4,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.javalab.board.service.JobPostService;
+import com.javalab.board.service.CompanyService; // 추가된 임포트
+import com.javalab.board.vo.CompanyVo;
+import com.javalab.board.vo.JobPostVo;
 import com.javalab.board.vo.JobSeekerVo;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,20 +35,33 @@ public class JobSeekerScrapController {
     @Autowired
     private JobSeekerScrapService jobSeekerScrapService;
 
+    @Autowired
+    private JobPostService jobPostService; // 추가된 임포트
+    @Autowired
+    private CompanyService companyService; // 추가된 임포트
+
     @PostMapping("/scrap/toggle")
     public ResponseEntity<Map<String, Object>> toggleScrap(@RequestBody Map<String, Object> request, Authentication authentication) {
         Long jobPostId = Long.valueOf(request.get("jobPostId").toString());
         boolean isScrapped = Boolean.parseBoolean(request.get("isScrapped").toString());
 
-        // 변경된 부분: UserDetails 대신 OAuth2User로 체크
-        if (authentication == null || !(authentication.getPrincipal() instanceof OAuth2User)) {
+        // Check authentication and determine user ID
+        String jobSeekerId = null;
+        if (authentication == null) {
             // 로그인하지 않은 경우, 로그인 페이지로 리다이렉트
             return ResponseEntity.status(HttpStatus.FOUND).header(HttpHeaders.LOCATION, "/login").build();
         }
 
-        // 변경된 부분: OAuth2User에서 사용자 ID 추출
-        OAuth2User oauth2User = (OAuth2User) authentication.getPrincipal();
-        String jobSeekerId = oauth2User.getName(); // OAuth2User의 getName() 메서드를 사용
+        if (authentication.getPrincipal() instanceof OAuth2User) {
+            OAuth2User oauth2User = (OAuth2User) authentication.getPrincipal();
+            jobSeekerId = oauth2User.getName(); // OAuth2User의 getName() 메서드를 사용
+        } else if (authentication.getPrincipal() instanceof UserDetails) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            jobSeekerId = userDetails.getUsername(); // UserDetails의 getUsername() 메서드를 사용
+        } else {
+            // 인증 정보를 확인할 수 없는 경우, 로그인 페이지로 리다이렉트
+            return ResponseEntity.status(HttpStatus.FOUND).header(HttpHeaders.LOCATION, "/login").build();
+        }
 
         // Create a scrap VO object with required fields
         JobSeekerScrapVo scrapVo = new JobSeekerScrapVo();
@@ -66,18 +83,41 @@ public class JobSeekerScrapController {
 
     @GetMapping("/scrap/list")
     public String listJobSeekerScrap(Authentication authentication, Model model) {
-        // 변경된 부분: UserDetails 대신 OAuth2User로 체크
-        if (authentication == null || !(authentication.getPrincipal() instanceof OAuth2User)) {
-            // Handle unauthenticated users
+        // Check authentication and determine user ID
+        String jobSeekerId = null;
+        if (authentication == null) {
+            // 로그인하지 않은 경우, 로그인 페이지로 리다이렉트
             return "redirect:/login";
         }
 
-        // 변경된 부분: OAuth2User에서 사용자 ID 추출
-        OAuth2User oauth2User = (OAuth2User) authentication.getPrincipal();
-        String jobSeekerId = oauth2User.getName(); // OAuth2User의 getName() 메서드를 사용
+        if (authentication.getPrincipal() instanceof OAuth2User) {
+            OAuth2User oauth2User = (OAuth2User) authentication.getPrincipal();
+            jobSeekerId = oauth2User.getName(); // OAuth2User의 getName() 메서드를 사용
+        } else if (authentication.getPrincipal() instanceof UserDetails) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            jobSeekerId = userDetails.getUsername(); // UserDetails의 getUsername() 메서드를 사용
+        } else {
+            // 인증 정보를 확인할 수 없는 경우, 로그인 페이지로 리다이렉트
+            return "redirect:/login";
+        }
 
+        // Get the list of scrapped job posts
         List<JobSeekerScrapVo> jobSeekerScrapList = jobSeekerScrapService.getScrapList(jobSeekerId);
         model.addAttribute("scrapList", jobSeekerScrapList);
+
+        // Optional: Fetch additional details like company info if needed
+        for (JobSeekerScrapVo scrapVo : jobSeekerScrapList) {
+            Long jobPostId = scrapVo.getJobPostId();
+            JobPostVo jobPostVo = jobPostService.getJobPostById(jobPostId);
+            if (jobPostVo != null) {
+                String compId = jobPostVo.getCompId();
+                CompanyVo companyVo = companyService.getCompanyById(compId);
+                if (companyVo != null) {
+                    scrapVo.setLogoName(companyVo.getLogoName());
+                    scrapVo.setLogoPath(companyVo.getLogoPath());
+                }
+            }
+        }
 
         return "scrap/jobSeekerScrapList"; // HTML 파일 이름
     }
