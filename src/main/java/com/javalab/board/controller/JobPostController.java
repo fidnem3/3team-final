@@ -1,10 +1,9 @@
 package com.javalab.board.controller;
 
 import com.javalab.board.dto.CreateJobPostRequestDto;
-import com.javalab.board.service.CompanyService;
-import com.javalab.board.service.JobPostService;
-import com.javalab.board.service.JobSeekerScrapService;
-import com.javalab.board.service.PaymentService;
+import com.javalab.board.dto.ResumeDto;
+import com.javalab.board.security.dto.CustomUserDetails;
+import com.javalab.board.service.*;
 import com.javalab.board.vo.*;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -50,11 +49,15 @@ public class JobPostController {
     private JobSeekerScrapService jobSeekerScrapService;
     @Autowired
     private TemplateEngine templateEngine;
+    @Autowired
+    private ResumeService resumeService;
+    @Autowired
+    private ApplicationService applicationService;
+
     // 파일 업로드 디렉토리
     private static final String UPLOAD_DIR = "C:/filetest/upload/";
     // 허용된 파일 확장자
     private static final List<String> ALLOWED_EXTENSIONS = List.of("jpg", "jpeg", "png", "gif");
-
 
 
     @GetMapping("/jobPostCreate")
@@ -152,8 +155,6 @@ public class JobPostController {
     }
 
 
-
-
     @GetMapping("/myJobPostList")
     public String getMyJobPosts(Model model) {
         List<JobPostVo> jobPosts = jobPostService.getJobPostsByCompany();
@@ -237,6 +238,16 @@ public class JobPostController {
                     ? jobPostVo.getCreated().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().format(formatter)
                     : "";
 
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication != null && authentication.getPrincipal() instanceof CustomUserDetails) {
+                CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+                String loggedInUsername = userDetails.getUsername();
+
+                // 사용자의 이력서 목록 가져오기
+                List<ResumeDto> resumeDtoList = resumeService.findAll(loggedInUsername);
+                model.addAttribute("resumes", resumeDtoList);
+            }
+
             model.addAttribute("jobPost", jobPostVo); // 모델에 추가
             model.addAttribute("formattedEndDate", formattedEndDate);
             model.addAttribute("formattedCreated", formattedCreated);
@@ -297,8 +308,30 @@ public class JobPostController {
         return "redirect:/jobPost/myJobPostList";
     }
 
+    // 지원하기 기능
+    @PostMapping("/apply")
+    public String applyForJob(@RequestParam("resumeId") int resumeId,
+                              @RequestParam("jobPostId") Long jobPostId) {
 
+        // 현재 인증된 사용자 가져오기
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof CustomUserDetails) {
+            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+            String jobSeekerId = userDetails.getUsername();
+
+            // 서비스 메서드 호출
+            applicationService.applyForJob(resumeId, jobPostId, jobSeekerId);
+
+            return "redirect:/application/list"; // 지원이 완료된 후 리다이렉트할 페이지
+        }
+
+        // 인증 정보가 없는 경우 또는 처리 중 오류가 발생한 경우 처리
+        return "redirect:/error"; // 적절한 오류 페이지로 리다이렉트
+    }
 }
+
+
+
 
 
 

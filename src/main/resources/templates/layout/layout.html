@@ -71,9 +71,10 @@
                 <div class="nav-item dropdown" sec:authorize="!hasRole('ROLE_ADMIN')">
                     <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">Resume</a>
                     <div class="dropdown-menu rounded-0 m-0">
-                        <a th:href="@{/resume/resumeDetail}" class="dropdown-item">New Resume</a>
-                        <a th:href="@{/resume/resumeList}" class="dropdown-item">Resume List</a>
-                        <a th:href="@{/resume/myResumeList}" class="dropdown-item" sec:authorize="hasRole('ROLE_USER')">My Resume</a>
+                        <a th:href="@{/resume/save}" class="dropdown-item">New Resume</a>
+                        <a th:href="@{/resume/list}" class="dropdown-item">Resume List</a>
+                        <a th:href="@{/resume/list}" class="dropdown-item" sec:authorize="hasRole('ROLE_USER')">My
+                            Resume</a>
                     </div>
                 </div>
 
@@ -351,6 +352,112 @@ function toggleScrap(event) {
     CKEDITOR.replace('editor1');
 </script>
 <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var path = window.location.pathname;
+        var pageHeader = document.getElementById("pageHeader");
+
+        if (path === '/' || path === '/index') {
+            if (pageHeader) {
+                pageHeader.style.display = 'none';
+            }
+        }
+    });
+</script>
+<!-- index.html 에서 home 안보이게 하기 -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // 현재 페이지의 경로를 확인
+        if (window.location.pathname === '/index' || window.location.pathname === '/') {
+            // 'homeLink' ID를 가진 요소를 찾고 숨기기
+            var homeLink = document.getElementById("homeLink");
+            if (homeLink) {
+                homeLink.style.display = 'none';
+            }
+        }
+    });
+</script>
+<!-- 페이지 마다 text 다르게 하는 script-->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var path = window.location.pathname;
+        console.log("Current path:", path); // 현재 경로 출력
+        var pageTitle = document.getElementById("pageTitle");
+        var pageName = document.getElementById("pageName");
+
+        if (path === '/jobPost/jobPostList') {
+            pageTitle.textContent = 'Job List';
+            pageName.textContent = 'Job List';
+        } else if (path == '/about') {
+            pageTitle.textContent = 'About';
+             pageName.textContent = 'About';
+        } else if (path == '/contact') {
+            pageTitle.textContent = 'Contact';
+            pageName.textContent = 'Contact';
+        } else if (path == '/jobPost/jobPostCreate') {
+            pageTitle.textContent = '공고 등록하기';
+            pageName.textContent = 'CreateJobPost';
+        } else if (path == '/jobPost/myJobPostList') {
+            pageTitle.textContent = '나의 채용공고';
+            pageName.textContent = 'MY POST';
+        } else if (path === '/anotherPage') {
+            pageTitle.textContent = 'Another Page';
+            pageName.textContent = 'Another Page';
+        }
+    });
+
+    function getCSRFToken() {
+    return document.querySelector('meta[name="_csrf"]').getAttribute('content');
+}
+
+function getCSRFHeader() {
+    return document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+}
+
+function toggleScrap(event) {
+    event.preventDefault();
+
+    const button = event.currentTarget;
+    const jobPostId = button.getAttribute('data-jobpostid');
+    const isScrapped = button.classList.contains('scrap-active');
+
+    fetch('/jobSeeker/scrap/toggle', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json',
+            [getCSRFHeader()]: getCSRFToken()
+        },
+        body: JSON.stringify({ jobPostId: jobPostId, isScrapped: isScrapped }) // isScrapped 추가
+    })
+    .then(response => {
+        if (response.redirected) {
+            window.location.href = response.url;
+            return;
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data) {
+            const icon = button.querySelector('i');
+            if (data.isScrapped) {
+                button.classList.add('scrap-active');
+                icon.classList.remove('far');
+                icon.classList.add('fas');
+                alert('스크랩 완료');
+            } else {
+                button.classList.remove('scrap-active');
+                icon.classList.remove('fas');
+                icon.classList.add('far');
+                alert('스크랩 취소');
+            }
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+    CKEDITOR.replace('editor1');
+</script>
+<script>
     $(document).ready(function () {
     $('.dev-toggle-filter').click(function () {
         $(this).toggleClass('open');
@@ -397,6 +504,30 @@ function toggleScrap(event) {
         $('.filter-box').find('.dev-button-all').addClass('active');
         $('#searchForm')[0].reset();
     });
+</script>
+
+<!-- 블랙리스트 -->
+<script>
+    $(document).ready(function () {
+   $('.dev-toggle-filter').click(function () {
+       $(this).toggleClass('open');
+       $(this).next('.filter-box').toggle();
+   });
+
+   $('.dev-button-item').click(function () {
+       $(this).toggleClass('active').siblings().removeClass('active');
+   });
+
+   $('.search-reset').click(function () {
+       $(this).closest('.filter-box').find('.dev-button-item').removeClass('active');
+       $(this).closest('.filter-box').find('.dev-button-all').addClass('active');
+   });
+
+   $('#resetCondition').click(function () {
+       $('.filter-box').find('.dev-button-item').removeClass('active');
+       $('.filter-box').find('.dev-button-all').addClass('active');
+       $('#searchForm')[0].reset();
+   });
 
     // 블랙리스트 토글 기능 추가
     $('.toggle-blacklist').click(function() {
@@ -482,6 +613,35 @@ function toggleScrap(event) {
             }
         });
     }
+</script>
+
+<!--    jobpost 모달 스크립트-->
+<script>
+    document.getElementById('modalBtn').addEventListener('click', function () {
+        var myModal = new bootstrap.Modal(document.getElementById('resumePopup'), {
+            keyboard: false
+        });
+        myModal.show();
+    });
+</script>
+
+
+<!--이력서 save파일첨부 스크립트-->
+<script>
+    document.getElementById('fileInput').addEventListener('change', function(event) {
+    var file = event.target.files[0];
+    var reader = new FileReader();
+
+    reader.onload = function(e) {
+    var imgElement = document.getElementById('photo');
+    imgElement.src = e.target.result;
+    imgElement.style.display = 'block';
+    }
+
+    if (file) {
+    reader.readAsDataURL(file);
+    }
+    });
 </script>
 </body>
 </html>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.javalab.board.repository.ApplicationMapper">
+
+    <!-- ApplicationDto와 매핑되는 ResultMap -->
+    <resultMap id="ApplicationMap" type="com.javalab.board.dto.ApplicationDto">
+        <id property="applicationId" column="APPLICATION_ID" />
+        <result property="resumeId" column="RESUME_ID" />
+        <result property="jobPostId" column="JOBPOST_ID" />
+        <result property="jobSeekerId" column="JOBSEEKER_ID" />
+        <result property="status" column="STATUS" />
+        <result property="appliedDate" column="APPLIED_DATE" />
+    </resultMap>
+
+    <!-- 지원서 제출 (INSERT) -->
+    <insert id="insertApplication" parameterType="com.javalab.board.dto.ApplicationDto">
+        INSERT INTO APPLICATION (APPLICATION_ID, RESUME_ID, JOBPOST_ID, JOBSEEKER_ID, STATUS, APPLIED_DATE ,Created)
+        VALUES (APPLICATION_SEQ.NEXTVAL, #{resumeId}, #{jobPostId}, #{jobSeekerId}, #{status}, SYSDATE , SYSDATE )
+    </insert>
+
+    <!-- 특정 jobSeekerId에 해당하는 지원서 조회 (SELECT) -->
+    <select id="selectApplicationsByJobSeekerId" parameterType="String" resultMap="ApplicationMap">
+        SELECT APPLICATION_ID, RESUME_ID, JOBPOST_ID, JOBSEEKER_ID, STATUS, APPLIED_DATE
+        FROM APPLICATION
+        WHERE JOBSEEKER_ID = #{jobSeekerId}
+    </select>
+
+    <!-- 특정 jobPostId에 대한 지원서 조회 (SELECT) -->
+    <select id="selectApplicationsByJobPostId" parameterType="Long" resultMap="ApplicationMap">
+        SELECT APPLICATION_ID, RESUME_ID, JOBPOST_ID, JOBSEEKER_ID, STATUS, APPLIED_DATE
+        FROM APPLICATION
+        WHERE JOBPOST_ID = #{jobPostId}
+    </select>
+
+    <!-- 지원서 상태 업데이트 (UPDATE) -->
+    <update id="updateApplicationStatus" parameterType="com.javalab.board.dto.ApplicationDto">
+        UPDATE APPLICATION
+        SET STATUS = #{status}
+        WHERE APPLICATION_ID = #{applicationId}
+    </update>
+
+    <!-- 지원서 삭제 (DELETE) -->
+    <delete id="deleteApplication" parameterType="Long">
+        DELETE FROM APPLICATION
+        WHERE APPLICATION_ID = #{applicationId}
+    </delete>
+
+</mapper>
