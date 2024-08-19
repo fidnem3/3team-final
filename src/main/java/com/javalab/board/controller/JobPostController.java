@@ -1,10 +1,9 @@
 package com.javalab.board.controller;
 
 import com.javalab.board.dto.CreateJobPostRequestDto;
-import com.javalab.board.service.CompanyService;
-import com.javalab.board.service.JobPostService;
-import com.javalab.board.service.JobSeekerScrapService;
-import com.javalab.board.service.PaymentService;
+import com.javalab.board.dto.ResumeDto;
+import com.javalab.board.security.dto.CustomUserDetails;
+import com.javalab.board.service.*;
 import com.javalab.board.vo.*;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -18,15 +17,21 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
+import org.springframework.web.servlet.ModelAndView;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -324,9 +329,3 @@ public class JobPostController {
         return "redirect:/error"; // 적절한 오류 페이지로 리다이렉트
     }
 }
-
-
-
-
-
-

@@ -4,10 +4,7 @@ import com.javalab.board.vo.CompanyVo;
 import com.javalab.board.vo.UserRolesVo;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.Optional;
 
 public interface CompanyService extends UserDetailsService {
@@ -17,8 +14,7 @@ public interface CompanyService extends UserDetailsService {
      * 새로운 기업 회원을 등록합니다.
      * - @param companyVo 등록할 기업 회원 정보 객체
      */
-    @Transactional
-    void registerCompany(CompanyVo companyVo, UserRolesVo userRolesVo, MultipartFile file) throws IOException;
+    void registerCompany(CompanyVo companyVo, UserRolesVo userRolesVo);
 
     /**
      * 주어진 ID에 해당하는 기업 회원의 상세 정보를 조회합니다.
@@ -59,4 +55,3 @@ public interface CompanyService extends UserDetailsService {
 
 
 }
-

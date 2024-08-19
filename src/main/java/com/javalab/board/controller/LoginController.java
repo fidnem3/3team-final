@@ -157,7 +157,9 @@ public class LoginController {
     @PostMapping("/companyJoin")
     public String registerCompany(@Valid @ModelAttribute("CompanyVo") CompanyVo companyVo,
                                   BindingResult bindingResult,
+                                  @RequestParam("file") MultipartFile file,
                                   RedirectAttributes redirectAttributes) {
+        // 유효성 검사 오류가 있는 경우
         if (bindingResult.hasErrors()) {
             return "member/companyJoin";
         }
@@ -172,6 +174,28 @@ public class LoginController {
         userRolesVo.setRoleId("ROLE_COMPANY");
 
         try {
+            // 파일 업로드 처리
+            if (!file.isEmpty()) {
+                // 업로드할 디렉토리 경로 설정
+                String uploadDir = "C:\\filetest\\upload";
+                Path uploadPath = Paths.get(uploadDir);
+
+                // 디렉토리가 존재하지 않으면 생성
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath);
+                }
+
+                // 파일 저장
+                String fileName = file.getOriginalFilename();
+                Path filePath = uploadPath.resolve(fileName);
+                file.transferTo(filePath.toFile());
+
+                // CompanyVo에 파일 이름과 경로 설정
+                companyVo.setLogoName(fileName);
+                companyVo.setLogoPath(filePath.toString());
+            }
+
+            // 기업 등록 처리
             companyService.registerCompany(companyVo, userRolesVo);
             redirectAttributes.addFlashAttribute("message", "기업 회원가입이 성공적으로 완료되었습니다.");
             log.info("회원가입 성공: {}", companyVo.getCompId());
@@ -179,7 +203,7 @@ public class LoginController {
         } catch (Exception e) {
             bindingResult.reject("registerError", "회원가입 처리 중 오류가 발생했습니다: " + e.getMessage());
             log.error("회원가입 실패: {}", e.getMessage());
-            return "member/companyJoin";
+            return "redirect:/member/companyJoin";
         }
     }
 

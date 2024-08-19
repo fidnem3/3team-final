@@ -74,7 +74,6 @@ public class SecurityConfig {
 						})
 						.failureHandler(authFailureHandler)
 				)
-
 				.logout(logout -> logout
 						.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 						.logoutSuccessUrl("/index")
@@ -85,10 +84,6 @@ public class SecurityConfig {
 						.requestMatchers("/css/**", "/js/**", "/img/**", "/fonts/**", "/scss/**", "/lib/**", "/assets/**").permitAll()
 						.requestMatchers("/", "/home", "/about", "/contact", "/index", "/jobPost/jobPostList", "/jobPost/detail/**").permitAll()
 						.requestMatchers("/member/**", "/member/adminJoin").permitAll()
-						.requestMatchers("/board/**").permitAll()
-						.requestMatchers("/admin/adminPage").hasRole("ADMIN")
-						.requestMatchers("/admin/blacklist").hasRole("ADMIN")
-
 						.requestMatchers("/board/**", "/upload/**", "/jobPost/logo/**").permitAll()
 						.requestMatchers("/error").permitAll()  // /error 경로 접근 허용
 						.requestMatchers("/member/adminPage").hasRole("ADMIN")
@@ -111,7 +106,6 @@ public class SecurityConfig {
 								.userService(customOAuth2UserService)
 						)
 				);
-
 		return http.build();
 	}
 }

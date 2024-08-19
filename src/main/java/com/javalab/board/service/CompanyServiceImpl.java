@@ -12,13 +12,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,21 +26,13 @@ public class CompanyServiceImpl implements CompanyService {
     @Autowired
     private UserRolesMapper userRolesMapper;
 
+
+
+
+
     @Override
     @Transactional
-    public void registerCompany(CompanyVo companyVo, UserRolesVo userRolesVo, MultipartFile file) throws IOException {
-
-
-        String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/files";
-        UUID uuid = UUID.randomUUID();
-        String fileName = uuid + "_" + file.getOriginalFilename();
-        File saveFile = new File(projectPath ,fileName);
-        file.transferTo((saveFile));
-        companyVo.setLogoName(fileName);
-        companyVo.setLogoPath("/files/" + fileName);
-
-
-
+    public void registerCompany(CompanyVo companyVo, UserRolesVo userRolesVo) {
         // 기업 회원 정보를 등록합니다.
         companyMapper.insertCompany(companyVo);
 
