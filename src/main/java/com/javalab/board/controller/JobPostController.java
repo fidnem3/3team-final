@@ -93,8 +93,8 @@ public class JobPostController {
                 .address(createJobPostRequestDto.getAddress())
                 .endDate(createJobPostRequestDto.getEndDate())
                 .homepage(createJobPostRequestDto.getHomepage())
-                .logoPath(logoPath)   // 기업 로고 경로
-                .logoName(logoName)   // 기업 로고 이름
+                .filepath(createJobPostRequestDto.getFilepath())
+                .filename(createJobPostRequestDto.getFilename())
                 .status("Before payment")
                 .build();
 
