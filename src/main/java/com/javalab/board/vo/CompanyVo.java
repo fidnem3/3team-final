@@ -48,5 +48,5 @@ public class CompanyVo {
     // 권한 관련 필드 추가
     private String userType; // 사용자 유형 (예: 'company')
     private String roleId;   // 권한 ID
-
+    private boolean isBlacklisted; // 데이터베이스에 매핑되지 않음
 }

@@ -33,5 +33,6 @@ public interface CompanyMapper {
      */
     void deleteCompany(String compId);
 
+    // 기업 ID로 기업 조회
     CompanyVo getCompanyById(String compId);
 }

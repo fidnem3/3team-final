@@ -1,8 +1,11 @@
 package com.javalab.board.repository;
 
 import com.javalab.board.vo.AdminVo;
+import com.javalab.board.vo.CompanyVo;
+import com.javalab.board.vo.JobSeekerVo;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
 import java.util.Optional;
 
 @Mapper
@@ -25,4 +28,15 @@ public interface AdminMapper {
 
     // Delete an Admin by ID
     void deleteAdmin(String adminId);
+
+    /**
+     * 구직자 목록 가져옴
+     */
+    List<JobSeekerVo> selectAllJobSeekers();
+
+
+    /**
+     * 기업 목록 가져옴
+     */
+    List<CompanyVo> selectAllCompany();
 }

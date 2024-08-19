@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>관리자 - 구직자 목록</title>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+</head>
+
+<body>
+<div layout:fragment="content" class="container-xxl bg-white p-0">
+    <div class="container">
+        <h1>개인회원 목록</h1>
+
+        <div th:if="${message}" class="alert alert-success" role="alert">
+            <span th:text="${message}"></span>
+        </div>
+
+        <div th:if="${error}" class="alert alert-danger" role="alert">
+            <span th:text="${error}"></span>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>구직자 ID</th>
+                        <th>이름</th>
+                        <th>이메일</th>
+                        <th>연락처</th>
+                        <th>생년월일</th>
+                        <th>주소</th>
+                        <th>블랙리스트 상태</th>
+                        <th>옵션</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="jobSeeker : ${jobSeekers}">
+                        <td th:text="${jobSeeker.jobSeekerId}">구직자 ID</td>
+                        <td th:text="${jobSeeker.name}">이름</td>
+                        <td th:text="${jobSeeker.email}">이메일</td>
+                        <td th:text="${jobSeeker.tel}">연락처</td>
+                        <td th:text="${jobSeeker.birth}">생년월일</td>
+                        <td th:text="${jobSeeker.address}">주소</td>
+                        <td th:text="${jobSeeker.isBlacklisted ? '블랙리스트' : '정상'}">블랙리스트 상태</td>
+                        <td>
+                            <a th:href="@{/admin/jobSeeker/detail/{id}(id=${jobSeeker.jobSeekerId})}" class="btn btn-info btn-sm">상세보기</a>
+                            <form th:action="@{/admin/deleteJobSeeker/{id}(id=${jobSeeker.jobSeekerId})}" method="post" style="display: inline;">
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                                <button type="submit" class="btn btn-danger btn-sm"
+                                        onclick="return confirm('정말로 이 회원을 삭제하시겠습니까?');">
+                                    삭제
+                                </button>
+                            </form>
+                            <button class="btn btn-warning btn-sm toggle-blacklist"
+                                    th:attr="data-id=${jobSeeker.jobSeekerId}, data-type='jobSeeker'"
+                                    th:text="${jobSeeker.isBlacklisted ? '블랙리스트 해제' : '블랙리스트 등록'}">
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 모달 추가 -->
+    <div class="modal fade" id="blacklistReasonModal" tabindex="-1" role="dialog" aria-labelledby="blacklistReasonModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="blacklistReasonModalLabel">블랙리스트 사유 입력</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <textarea id="blacklistReason" class="form-control" rows="3"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                    <button type="button" class="btn btn-primary" id="confirmBlacklist">확인</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
