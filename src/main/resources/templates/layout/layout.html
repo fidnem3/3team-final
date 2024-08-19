@@ -63,9 +63,9 @@
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">Resume</a>
                     <div class="dropdown-menu rounded-0 m-0">
-                        <a th:href="@{/resume/resumeDetail}" class="dropdown-item">New Resume</a>
-                        <a th:href="@{/resume/resumeList}" class="dropdown-item">Resume List</a>
-                        <a th:href="@{/resume/myResumeList}" class="dropdown-item" sec:authorize="hasRole('ROLE_USER')">My Resume</a>
+                        <a th:href="@{/resume/save}" class="dropdown-item">New Resume</a>
+                        <a th:href="@{/resume/list}" class="dropdown-item">Resume List</a>
+                        <a th:href="@{/resume/list}" class="dropdown-item" sec:authorize="hasRole('ROLE_USER')">My Resume</a>
                     </div>
                 </div>
 
