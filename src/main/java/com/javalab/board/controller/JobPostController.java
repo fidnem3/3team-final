@@ -309,10 +309,6 @@ public class JobPostController {
         return "redirect:/jobPost/myJobPostList";
     }
 
-    @PostMapping("koerne3/")
-    public String dlksfknld3(){
-        return "koko3";
-    }
 
 
 }
