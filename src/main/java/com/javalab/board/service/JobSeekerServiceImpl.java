@@ -97,4 +97,6 @@ public class JobSeekerServiceImpl implements JobSeekerService {
                 authorities
         );
     }
+
+
 }

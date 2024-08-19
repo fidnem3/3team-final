@@ -72,7 +72,9 @@
         education = #{education, jdbcType=VARCHAR},
         address = #{address, jdbcType=VARCHAR},
         end_date = #{endDate, jdbcType=DATE},
-        homepage = #{homepage, jdbcType=VARCHAR}
+        homepage = #{homepage, jdbcType=VARCHAR},
+        logo_path = #{logoPath, jdbcType=VARCHAR}, <!-- 추가된 필드 -->
+        logo_name = #{logoName, jdbcType=VARCHAR}  <!-- 추가된 필드 -->
         WHERE jobPost_id = #{jobPostId, jdbcType=BIGINT}
     </update>
 
