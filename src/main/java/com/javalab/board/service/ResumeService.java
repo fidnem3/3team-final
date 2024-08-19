@@ -25,10 +25,21 @@ public class ResumeService {
 
     @Transactional
     public void resumeCreate(ResumeDto resumeDto , MultipartFile file ) throws IOException {
+        String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/files";
+        File directory = new File(projectPath);
+
+        // 디렉토리 존재 여부 확인 후 생성
+        if (!directory.exists()) {
+            boolean isCreated = directory.mkdirs();
+            if (isCreated) {
+                System.out.println("files 디렉토리 생성.");
+            } else {
+                System.out.println("files 디렉토리 생성 실패");
+                throw new IOException("Failed to create directory for saving resumes.");
+            }
+        }
 
         //이력서 파일 첨부
-
-        String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/files";
         UUID uuid = UUID.randomUUID();
         String fileName = uuid + "_" + file.getOriginalFilename();
         File saveFile = new File(projectPath ,fileName);
@@ -51,6 +62,8 @@ public class ResumeService {
 
 
     }
+
+
     public List<ResumeDto> findAll(String jobSeekerId)  {
 
         return resumeMapper.findAll(jobSeekerId);

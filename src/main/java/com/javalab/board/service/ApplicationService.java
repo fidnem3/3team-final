@@ -6,6 +6,8 @@ import com.javalab.board.repository.ApplicationMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ApplicationService {
@@ -22,4 +24,11 @@ public class ApplicationService {
 
         applicationMapper.insertApplication(application);
     }
+
+    public List<ApplicationDto> getApplicationsByJobSeekerId(String jobSeekerId) {
+        return applicationMapper.selectApplicationsByJobSeekerId(jobSeekerId);
+    }
+
+
+
 }

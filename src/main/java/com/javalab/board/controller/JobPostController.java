@@ -60,7 +60,6 @@ public class JobPostController {
     private static final List<String> ALLOWED_EXTENSIONS = List.of("jpg", "jpeg", "png", "gif");
 
 
-
     @GetMapping("/jobPostCreate")
     public String createJobPost(Model model) {
         model.addAttribute("createJobPostRequestDto", new CreateJobPostRequestDto());
@@ -175,8 +174,6 @@ public class JobPostController {
     }
 
 
-
-
     @GetMapping("/myJobPostList")
     public String getMyJobPosts(Model model) {
         List<JobPostVo> jobPosts = jobPostService.getJobPostsByCompany();
@@ -244,7 +241,7 @@ public class JobPostController {
     }
 
     @GetMapping("/detail/{jobPostId}")
-    public String detail(@PathVariable("jobPostId") Long jobPostId, Model model){
+    public String detail(@PathVariable("jobPostId") Long jobPostId, Model model) {
         JobPostVo jobPostVo = jobPostService.findJobPostById(jobPostId);
         // 조회수 증가
         jobPostService.incrementHitCount(jobPostId);
@@ -330,21 +327,11 @@ public class JobPostController {
         return "redirect:/jobPost/myJobPostList";
     }
 
-    //지원 컨트롤러
-    @PostMapping("/apply")
-    public String applyForJob (@RequestParam("resumeId") int resumeId,
-                              @RequestParam("jobPostId") Long jobPostId,
-                              @RequestParam("jobSeekerId") String jobSeekerId,
-                              Model model) {
-        applicationService.applyForJob(resumeId, jobPostId, jobSeekerId);
-
-        return "redirect:/jobPost/jobPostList"; // 지원이 완료된 후 리다이렉트할 페이지로 수정
-    }
-
-
-
 
 }
+
+
+
 
 
 

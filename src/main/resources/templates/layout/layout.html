@@ -55,9 +55,12 @@
                     <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">Jobs</a>
                     <div class="dropdown-menu rounded-0 m-0">
                         <a th:href="@{/jobPost/jobPostList}" class="dropdown-item">Job List</a>
-                        <a th:href="@{/jobPost/myJobPostList}" class="dropdown-item" sec:authorize="hasRole('ROLE_COMPANY')">나의 공고</a>
-                        <a th:href="@{/jobSeeker/scrap/list}" class="dropdown-item" sec:authorize="hasRole('ROLE_USER')">나의 스크랩</a>
-                        <a th:href="@{/admin/jobPostsList}" class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')">공고 관리</a>
+                        <a th:href="@{/jobPost/myJobPostList}" class="dropdown-item"
+                           sec:authorize="hasRole('ROLE_COMPANY')">나의 공고</a>
+                        <a th:href="@{/jobSeeker/scrap/list}" class="dropdown-item"
+                           sec:authorize="hasRole('ROLE_USER')">나의 스크랩</a>
+                        <a th:href="@{/admin/jobPostsList}" class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')">공고
+                            관리</a>
                     </div>
                 </div>
                 <div class="nav-item dropdown">
@@ -65,7 +68,8 @@
                     <div class="dropdown-menu rounded-0 m-0">
                         <a th:href="@{/resume/save}" class="dropdown-item">New Resume</a>
                         <a th:href="@{/resume/list}" class="dropdown-item">Resume List</a>
-                        <a th:href="@{/resume/list}" class="dropdown-item" sec:authorize="hasRole('ROLE_USER')">My Resume</a>
+                        <a th:href="@{/resume/list}" class="dropdown-item" sec:authorize="hasRole('ROLE_USER')">My
+                            Resume</a>
                     </div>
                 </div>
 
@@ -378,5 +382,32 @@ function toggleScrap(event) {
         applyFiltersButton.addEventListener('click', filterJobs);
     });
 </script>
-</body>
-</html>
+
+<!--    jobpost 모달 스크립트-->
+<script>
+    document.getElementById('modalBtn').addEventListener('click', function () {
+        var myModal = new bootstrap.Modal(document.getElementById('resumePopup'), {
+            keyboard: false
+        });
+        myModal.show();
+    });
+</script>
+
+
+<!--이력서 save파일첨부 스크립트-->
+<script>
+    document.getElementById('fileInput').addEventListener('change', function(event) {
+    var file = event.target.files[0];
+    var reader = new FileReader();
+
+    reader.onload = function(e) {
+    var imgElement = document.getElementById('photo');
+    imgElement.src = e.target.result;
+    imgElement.style.display = 'block';
+    }
+
+    if (file) {
+    reader.readAsDataURL(file);
+    }
+    });
+</script>
