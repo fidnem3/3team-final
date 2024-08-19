@@ -17,5 +17,5 @@ public class BlacklistDto {
     private String reason;
     private Date blacklistDate;
     private String type;
-    private boolean isBlacklisted;  // 변경된 부분
+    private boolean isBlacklisted;
 }
