@@ -66,8 +66,7 @@ public class JobPostController {
     @PostMapping("/jobPostCreate")
     public String create(
             @ModelAttribute("createJobPostRequestDto") @Valid CreateJobPostRequestDto createJobPostRequestDto,
-            BindingResult bindingResult,
-            @RequestParam("logoFile") MultipartFile logoFile) {
+            BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             return "jobPost/jobPostCreate";
@@ -77,24 +76,10 @@ public class JobPostController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String compId = ((UserDetails) authentication.getPrincipal()).getUsername();
 
-        // 파일 처리
-        String logoPath = null;
-        String logoName = null;
-
-        if (!logoFile.isEmpty()) {
-            try {
-                String originalFilename = logoFile.getOriginalFilename();
-                if (originalFilename != null) {
-                    logoName = UUID.randomUUID() + "_" + originalFilename;
-                    Path path = Paths.get("C:/filetest/upload/" + logoName);
-                    Files.createDirectories(path.getParent());
-                    Files.write(path, logoFile.getBytes());
-                    logoPath = "/jobPost/logo/" + logoName;
-                }
-            } catch (IOException e) {
-                log.error("파일 업로드 오류: {}", e.getMessage());
-            }
-        }
+        // 기업 정보 조회
+        CompanyVo companyVo = companyService.getCompanyById(compId);
+        String logoPath = companyVo != null ? companyVo.getLogoPath() : null;
+        String logoName = companyVo != null ? companyVo.getLogoName() : null;
 
         // DTO를 VO로 변환
         JobPostVo jobPostVo = JobPostVo.builder()
@@ -108,17 +93,13 @@ public class JobPostController {
                 .address(createJobPostRequestDto.getAddress())
                 .endDate(createJobPostRequestDto.getEndDate())
                 .homepage(createJobPostRequestDto.getHomepage())
-                .logoPath(logoPath)   // 파일 경로
-                .logoName(logoName)   // 파일 이름
+                .logoPath(logoPath)   // 기업 로고 경로
+                .logoName(logoName)   // 기업 로고 이름
                 .status("Before payment")
                 .build();
-        log.info("Uploaded file - Name: {}, Path: {}", logoName, logoPath);
 
         // JobPost 저장
         Long jobPostId = jobPostService.saveJobPost(jobPostVo);
-
-
-        log.info("JobPost created with ID: {}", jobPostId);
 
         // 게시물 목록 페이지로 리다이렉트
         return "redirect:/jobPost/jobPostList";
