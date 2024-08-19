@@ -329,9 +329,3 @@ public class JobPostController {
         return "redirect:/error"; // 적절한 오류 페이지로 리다이렉트
     }
 }
-
-
-
-
-
-
