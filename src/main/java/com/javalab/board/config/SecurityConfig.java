@@ -83,7 +83,7 @@ public class SecurityConfig {
 				.authorizeHttpRequests(authorize -> authorize
 						.requestMatchers("/css/**", "/js/**", "/img/**", "/fonts/**", "/scss/**", "/lib/**", "/assets/**").permitAll()
 						.requestMatchers("/", "/home", "/about", "/contact", "/index", "/jobPost/jobPostList", "/jobPost/detail/**").permitAll()
-						.requestMatchers("/member/**", "/member/adminJoin").permitAll()
+						.requestMatchers("/member/**", "/member/adminJoin", "/member/modify").permitAll()
 						.requestMatchers("/board/**", "/upload/**", "/jobPost/logo/**").permitAll()
 						.requestMatchers("/error").permitAll()  // /error 경로 접근 허용
 						.requestMatchers("/member/adminPage").hasRole("ADMIN")

@@ -3,10 +3,7 @@ package com.javalab.board.controller;
 import com.javalab.board.service.AdminService; // AdminService 추가
 import com.javalab.board.service.CompanyService;
 import com.javalab.board.service.JobSeekerService;
-import com.javalab.board.vo.AdminVo; // AdminVo 추가
-import com.javalab.board.vo.CompanyVo;
-import com.javalab.board.vo.JobSeekerVo;
-import com.javalab.board.vo.UserRolesVo;
+import com.javalab.board.vo.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -14,7 +11,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -208,7 +207,6 @@ public class LoginController {
     }
 
 
-
     // 개인회원가입 페이지
     @GetMapping("/join")
     public String joinPage(Model model) {
@@ -256,26 +254,50 @@ public class LoginController {
     }
 
 
+
+
     @GetMapping("/modify")
-    public String modify() {
-        return "/member/modify"; // 또는 JSP 파일의 이름
+    public String showModifyPage(@AuthenticationPrincipal Object principal, Model model) {
+        // 로그인 정보가 OAuth2User일 경우
+        if (principal instanceof OAuth2User) {
+            OAuth2User oauth2User = (OAuth2User) principal;
+            String clientName = (String) oauth2User.getAttributes().get("clientName");
+            model.addAttribute("clientName", clientName);
+        }
+
+        // 로그인 정보가 일반 사용자일 경우 (예시)
+        else if (principal instanceof MemberVo) {
+            MemberVo memberVo = (MemberVo) principal;
+            // 필요한 정보를 모델에 추가
+            model.addAttribute("clientName", "default");
+        }
+
+        return "member/modify";
+    }
+
+    @PostMapping("/modify")
+    public String modifyPassword(
+            @RequestParam(name = "newPassword", required = false) String newPassword,
+            @RequestParam(name = "businessNumber", required = false) String businessNumber,
+            @RequestParam(name = "fileUpload", required = false) MultipartFile fileUpload) {
+
+        // 비밀번호 변경 처리
+        if (newPassword != null && !newPassword.isEmpty()) {
+            // 비밀번호 변경 로직
+        }
+
+        // 비즈니스 번호 처리 (카카오톡 로그인 사용자만)
+        if (businessNumber != null && !businessNumber.isEmpty()) {
+            // 비즈니스 번호 처리 로직
+        }
+
+        // 파일 업로드 처리
+        if (fileUpload != null && !fileUpload.isEmpty()) {
+            // 파일 업로드 로직
+        }
+
+        // 성공적으로 처리 후 리다이렉트
+        return "redirect:/index"; // 비밀번호 변경 후 리다이렉트할 페이지
     }
 }
-
-    // 카카오 소셜 로그인 사용자 비밀번호+social 변경
-//    @PostMapping("/modify")
-//    public String modifyPOST(@AuthenticationPrincipal MemberVo memberVo,
-//                             @RequestParam("newPassword") String newPassword,
-//                             RedirectAttributes redirectAttributes) {
-//
-//        log.info("여기는 컨트롤러의 비밀번호 변경 메소드......email : " + memberVo.getEmail());
-//
-//        String encodedPassword = passwordEncoder.encode(newPassword);
-//
-//        // 화면에서 입력한 비밀번호 변경 및 social 상태 변경
-//        memberService.modifyPasswordAndSocialStatus(memberVo.getEmail(), encodedPassword);
-//
-//        redirectAttributes.addFlashAttribute("result", "비밀번호 변경 성공");
-//        return "redirect:/board/list"; // 비밀번호 변경 후 리다이렉트할 URL을 선택합니다.
-//    }
 
