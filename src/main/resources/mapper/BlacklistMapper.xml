@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.javalab.board.repository.BlacklistMapper">
+
+    <insert id="addBlacklist" parameterType="com.javalab.board.dto.BlacklistDto">
+        INSERT INTO blacklist (black_id, jobSeeker_id, comp_id, reason, blacklist_date, is_blacklisted, type)
+        VALUES (#{blackId,jdbcType=NUMERIC}, #{jobSeekerId,jdbcType=VARCHAR}, #{compId,jdbcType=VARCHAR},
+        #{reason,jdbcType=VARCHAR}, #{blacklistDate,jdbcType=TIMESTAMP},
+        #{isBlacklisted,jdbcType=NUMERIC}, #{type,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateBlacklist" parameterType="com.javalab.board.dto.BlacklistDto">
+        UPDATE blacklist
+        SET is_blacklisted = #{isBlacklisted,jdbcType=NUMERIC},
+        reason = #{reason,jdbcType=VARCHAR}
+        WHERE
+        (jobSeeker_id = #{jobSeekerId,jdbcType=VARCHAR} AND type = #{type,jdbcType=VARCHAR})
+        OR (comp_id = #{compId,jdbcType=VARCHAR} AND type = #{type,jdbcType=VARCHAR})
+    </update>
+
+    <select id="getBlacklistStatus" resultType="com.javalab.board.dto.BlacklistDto">
+        SELECT * FROM (
+        SELECT * FROM blacklist
+        WHERE
+        (jobSeeker_id = #{id} AND type = 'jobSeeker')
+        OR (comp_id = #{id} AND type = 'company')
+        ) WHERE ROWNUM = 1
+    </select>
+
+    <select id="getAllBlacklist" resultType="com.javalab.board.dto.BlacklistDto">
+        SELECT * FROM blacklist
+    </select>
+
+    <select id="getActiveBlacklist" resultType="com.javalab.board.dto.BlacklistDto">
+        SELECT * FROM blacklist WHERE is_blacklisted = 1
+    </select>
+
+</mapper>

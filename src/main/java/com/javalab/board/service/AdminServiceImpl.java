@@ -1,14 +1,17 @@
 package com.javalab.board.service;
 
 import com.javalab.board.repository.AdminMapper; // Admin 정보를 조회할 Mapper
+import com.javalab.board.repository.CompanyMapper;
 import com.javalab.board.repository.UserRolesMapper;
 import com.javalab.board.vo.AdminVo;
 import com.javalab.board.vo.CompanyVo;
+import com.javalab.board.vo.JobSeekerVo;
 import com.javalab.board.vo.UserRolesVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,6 +23,13 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired
     private UserRolesMapper userRolesMapper;
+
+    @Autowired
+    private CompanyMapper companyMapper;
+
+
+    @Autowired
+    private BlacklistService blacklistService;
 
     @Override
     public Optional<AdminVo> getAdminDetails(String adminId) {
@@ -54,4 +64,21 @@ public class AdminServiceImpl implements AdminService {
         userRolesMapper.insertUserRole(userRolesVo);
     }
 
+    @Override
+    public List<JobSeekerVo> getAllJobSeekers() {
+        List<JobSeekerVo> jobSeekers = adminMapper.selectAllJobSeekers();
+        for (JobSeekerVo jobSeeker : jobSeekers) {
+            jobSeeker.setBlacklisted(blacklistService.isBlacklisted(jobSeeker.getJobSeekerId(), "jobSeeker"));
+        }
+        return jobSeekers;
+    }
+
+    @Override
+    public List<CompanyVo> getAllCompanies() {
+        List<CompanyVo> companies = adminMapper.selectAllCompany();
+        for (CompanyVo company : companies) {
+            company.setBlacklisted(blacklistService.isBlacklisted(company.getCompId(), "company"));
+        }
+        return companies;
+    }
 }
