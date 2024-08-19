@@ -7,8 +7,8 @@
 
 
     <insert id="insertScrap" parameterType="com.javalab.board.vo.JobSeekerScrapVo">
-        INSERT INTO jobSeekerScrap (scrap_id, jobSeeker_id, jobPost_id, logo_name, logo_path, created)
-        VALUES (jobSeekerScrap_seq.NEXTVAL, #{jobSeekerId}, #{jobPostId}, #{logoName}, #{logoPath}, sysdate)
+        INSERT INTO jobSeekerScrap (scrap_id, jobSeeker_id, jobPost_id, created)
+        VALUES (jobSeekerScrap_seq.NEXTVAL, #{jobSeekerId}, #{jobPostId}, sysdate)
     </insert>
 
 

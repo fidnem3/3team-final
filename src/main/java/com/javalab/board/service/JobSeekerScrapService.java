@@ -55,8 +55,6 @@ public class JobSeekerScrapService {
             scrap.setSalary(jobPost.getSalary());
             scrap.setAddress(jobPost.getAddress());
             scrap.setEndDate(jobPost.getEndDate());
-            scrap.setLogoName(jobPost.getLogoName()); // JobPost에서 로고 이름을 설정
-            scrap.setLogoPath(jobPost.getLogoPath()); // JobPost에서 로고 경로를 설정
         }
 
         return scrapList;
