@@ -1,10 +1,9 @@
 package com.javalab.board.controller;
 
 import com.javalab.board.dto.CreateJobPostRequestDto;
-import com.javalab.board.service.CompanyService;
-import com.javalab.board.service.JobPostService;
-import com.javalab.board.service.JobSeekerScrapService;
-import com.javalab.board.service.PaymentService;
+import com.javalab.board.dto.ResumeDto;
+import com.javalab.board.security.dto.CustomUserDetails;
+import com.javalab.board.service.*;
 import com.javalab.board.vo.*;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -50,11 +49,15 @@ public class JobPostController {
     private JobSeekerScrapService jobSeekerScrapService;
     @Autowired
     private TemplateEngine templateEngine;
+    @Autowired
+    private ResumeService resumeService;
+    @Autowired
+    private ApplicationService applicationService;
+
     // 파일 업로드 디렉토리
     private static final String UPLOAD_DIR = "C:/filetest/upload/";
     // 허용된 파일 확장자
     private static final List<String> ALLOWED_EXTENSIONS = List.of("jpg", "jpeg", "png", "gif");
-
 
 
     @GetMapping("/jobPostCreate")
@@ -152,8 +155,6 @@ public class JobPostController {
     }
 
 
-
-
     @GetMapping("/myJobPostList")
     public String getMyJobPosts(Model model) {
         List<JobPostVo> jobPosts = jobPostService.getJobPostsByCompany();
@@ -237,6 +238,16 @@ public class JobPostController {
                     ? jobPostVo.getCreated().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().format(formatter)
                     : "";
 
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication != null && authentication.getPrincipal() instanceof CustomUserDetails) {
+                CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+                String loggedInUsername = userDetails.getUsername();
+
+                // 사용자의 이력서 목록 가져오기
+                List<ResumeDto> resumeDtoList = resumeService.findAll(loggedInUsername);
+                model.addAttribute("resumes", resumeDtoList);
+            }
+
             model.addAttribute("jobPost", jobPostVo); // 모델에 추가
             model.addAttribute("formattedEndDate", formattedEndDate);
             model.addAttribute("formattedCreated", formattedCreated);
@@ -299,6 +310,9 @@ public class JobPostController {
 
 
 }
+
+
+
 
 
 
