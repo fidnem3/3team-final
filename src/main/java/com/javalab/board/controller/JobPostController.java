@@ -1,12 +1,11 @@
 package com.javalab.board.controller;
 
 import com.javalab.board.dto.CreateJobPostRequestDto;
+import com.javalab.board.service.CompanyService;
 import com.javalab.board.service.JobPostService;
 import com.javalab.board.service.JobSeekerScrapService;
-import com.javalab.board.vo.BoardVo;
-import com.javalab.board.vo.JobPostVo;
-import com.javalab.board.vo.JobSeekerScrapVo;
-import com.javalab.board.vo.JobSeekerVo;
+import com.javalab.board.service.PaymentService;
+import com.javalab.board.vo.*;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -19,15 +18,21 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
+import org.springframework.web.servlet.ModelAndView;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -38,7 +43,19 @@ public class JobPostController {
     @Autowired
     private JobPostService jobPostService;
     @Autowired
+    private PaymentService paymentService;
+    @Autowired
+    private CompanyService companyService;
+    @Autowired
     private JobSeekerScrapService jobSeekerScrapService;
+    @Autowired
+    private TemplateEngine templateEngine;
+    // 파일 업로드 디렉토리
+    private static final String UPLOAD_DIR = "C:/filetest/upload/";
+    // 허용된 파일 확장자
+    private static final List<String> ALLOWED_EXTENSIONS = List.of("jpg", "jpeg", "png", "gif");
+
+
 
     @GetMapping("/jobPostCreate")
     public String createJobPost(Model model) {
@@ -47,17 +64,26 @@ public class JobPostController {
     }
 
     @PostMapping("/jobPostCreate")
-    public String create(@ModelAttribute("createJobPostRequestDto") @Valid CreateJobPostRequestDto createJobPostRequestDto,
-                         BindingResult bindingResult) {
-        log.info("CreateJobPostRequestDto: {}", createJobPostRequestDto);
+    public String create(
+            @ModelAttribute("createJobPostRequestDto") @Valid CreateJobPostRequestDto createJobPostRequestDto,
+            BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            return "jobPost/jobPostCreate";
+        }
 
         // 사용자 인증 정보 얻기
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String compId = ((UserDetails) authentication.getPrincipal()).getUsername();
 
+        // 기업 정보 조회
+        CompanyVo companyVo = companyService.getCompanyById(compId);
+        String logoPath = companyVo != null ? companyVo.getLogoPath() : null;
+        String logoName = companyVo != null ? companyVo.getLogoName() : null;
+
         // DTO를 VO로 변환
         JobPostVo jobPostVo = JobPostVo.builder()
-                .compId(compId)  // 현재 사용자 ID 설정
+                .compId(compId)
                 .title(createJobPostRequestDto.getTitle())
                 .content(createJobPostRequestDto.getContent())
                 .position(createJobPostRequestDto.getPosition())
@@ -67,21 +93,39 @@ public class JobPostController {
                 .address(createJobPostRequestDto.getAddress())
                 .endDate(createJobPostRequestDto.getEndDate())
                 .homepage(createJobPostRequestDto.getHomepage())
-                .status("Before payment") // 기본 상태를 'Pending'으로 설정
+                .logoPath(logoPath)   // 기업 로고 경로
+                .logoName(logoName)   // 기업 로고 이름
+                .status("Before payment")
                 .build();
 
         // JobPost 저장
         Long jobPostId = jobPostService.saveJobPost(jobPostVo);
 
-        log.info("JobPost created with ID: {}", jobPostId);
-
         // 게시물 목록 페이지로 리다이렉트
         return "redirect:/jobPost/jobPostList";
     }
 
+
     @GetMapping("/jobPostList")
-    public String listJobPosts(Model model, Authentication authentication) {
-        List<JobPostVo> jobPosts = jobPostService.getAllJobPosts();
+    public String listJobPosts(
+            @RequestParam(required = false) String address,
+            @RequestParam(required = false) String education,
+            @RequestParam(required = false) String experience,
+            @RequestParam(required = false, defaultValue = "") String keyword,
+            Model model,
+            Authentication authentication) {
+
+
+        List<JobPostVo> jobPosts;
+
+        if (keyword != null && !keyword.isEmpty()) {
+            // 검색어가 있을 경우 검색된 공고를 가져옴
+            jobPosts = jobPostService.searchJobPosts(keyword);
+        } else {
+            // 필터가 있는 경우 해당 조건으로 공고를 필터링
+            jobPosts = jobPostService.getJobPostsByFilters(address, education, experience);
+        }
+
 
         String jobSeekerId = authentication != null && authentication.getPrincipal() instanceof UserDetails
                 ? ((UserDetails) authentication.getPrincipal()).getUsername()
@@ -95,12 +139,18 @@ public class JobPostController {
         }
 
         log.info("JobPosts: {}", jobPosts);
-        log.info("ScrapStatusMap: {}", scrapStatusMap); // 추가된 로그
+        log.info("ScrapStatusMap: {}", scrapStatusMap);
 
         model.addAttribute("jobPosts", jobPosts);
+        model.addAttribute("keyword", keyword); // 검색어를 템플릿에 전달
         model.addAttribute("scrapStatusMap", scrapStatusMap);
+        model.addAttribute("filterAddress", address);
+        model.addAttribute("filterEducation", education);
+        model.addAttribute("filterExperience", experience);
+
         return "jobPost/jobPostList";
     }
+
 
 
 
@@ -145,8 +195,25 @@ public class JobPostController {
             // Calculate the total amount
             long amount = durationDays * 500;
 
+            // Create and save the payment record
+            PaymentVo paymentVo = PaymentVo.builder()
+                    .compId(jobPostVo.getCompId()) // Use the company ID from the job post
+                    .jobPostId(jobPostVo.getJobPostId())
+                    .paymentDate(LocalDate.now()) // Set the current date as the payment date
+                    .amount(amount)
+                    .build();
+
+            paymentService.savePayment(paymentVo);
+
+            // Fetch company details
+            CompanyVo companyVo = companyService.getCompanyById(jobPostVo.getCompId());
+            String companyName = (companyVo != null) ? companyVo.getCompanyName() : "Unknown";
+
+            // Add attributes to the model
+            model.addAttribute("durationsDays", durationDays);
             model.addAttribute("amount", amount);
             model.addAttribute("jobPost", jobPostVo);
+            model.addAttribute("companyName", companyName);
             return "jobPost/payment"; // Return the name of the Thymeleaf template
         } else {
             return "error"; // Handle the case where the JobPost is not found
@@ -224,8 +291,6 @@ public class JobPostController {
         return "redirect:/jobPost/myJobPostList";
     }
 
-
-
     @PostMapping("/delete/{jobPostId}")
     public String deleteJobPost(@PathVariable("jobPostId") Long jobPostId) {
         jobPostService.deleteJobPost(jobPostId);
@@ -233,6 +298,7 @@ public class JobPostController {
     }
 
 
-
 }
+
+
 

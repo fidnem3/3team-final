@@ -26,6 +26,10 @@ public class CompanyServiceImpl implements CompanyService {
     @Autowired
     private UserRolesMapper userRolesMapper;
 
+
+
+
+
     @Override
     @Transactional
     public void registerCompany(CompanyVo companyVo, UserRolesVo userRolesVo) {
@@ -103,5 +107,10 @@ public class CompanyServiceImpl implements CompanyService {
                 company.getPassword(),
                 authorities
         );
+    }
+
+    @Override
+    public CompanyVo getCompanyById(String compId) {
+        return companyMapper.getCompanyById(compId);
     }
 }

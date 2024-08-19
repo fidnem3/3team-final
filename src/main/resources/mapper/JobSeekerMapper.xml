@@ -31,6 +31,9 @@
         )
     </insert>
 
+
+
+
     <!-- 권한 삽입 -->
     <insert id="insertJobSeekerRole" parameterType="com.javalab.board.vo.UserRolesVo">
         INSERT INTO UserRoles (

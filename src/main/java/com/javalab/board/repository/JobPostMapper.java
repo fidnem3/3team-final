@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
+import java.util.Map;
 
 public interface JobPostMapper {
     Long insertJobPost(JobPostVo jobPostVo);
@@ -37,4 +38,12 @@ public interface JobPostMapper {
     List<JobPostVo> selectTop5PopularJobPosts();
 
     List<JobPostVo> selectAllJobPostsForAdmin();
+
+
+    List<JobPostVo> selectJobPostsByFilters(@Param("address") String address,
+                                            @Param("education") String education,
+                                            @Param("experience") String experience);
+
+    List<JobPostVo> searchJobPosts(@Param("keyword") String keyword);
+
 }

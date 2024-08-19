@@ -15,7 +15,7 @@
 		tel,
 		email,
 		address
-		FROM job_seeker
+		FROM jobSeeker
 		WHERE jobSeeker_id = #{jobSeekerId}
 	</select>
 
@@ -37,8 +37,8 @@
 	</select>
 
 	<!-- 개인회원 저장 -->
-	<insert id="saveJobSeeker">
-		INSERT INTO job_seeker (
+	<insert id="saveJobSeeker" parameterType="com.javalab.board.vo.JobPostVo">
+		INSERT INTO jobSeeker (
 		jobSeeker_id,
 		password,
 		name,
@@ -90,7 +90,7 @@
 
 	<!-- 사용자 권한 저장 -->
 	<insert id="saveRole">
-		INSERT INTO user_roles (user_id, user_type, role_id)
+		INSERT INTO UserRoles (user_id, user_type, role_id)
 		VALUES (#{userId}, (CASE
 		WHEN (SELECT comp_id FROM company WHERE comp_id = #{userId}) IS NOT NULL THEN 'company'
 		WHEN (SELECT jobSeeker_id FROM jobSeeker WHERE jobSeeker_id = #{userId}) IS NOT NULL THEN 'jobSeeker'
@@ -100,15 +100,14 @@
 
 	<!-- 사용자 권한 삭제 -->
 	<delete id="deleteRole">
-		DELETE FROM user_roles
+		DELETE FROM UserRoles
 		WHERE user_id = #{userId} AND role_id = (SELECT role_id FROM role WHERE role_name = #{roleName})
 	</delete>
-
 	<!-- 사용자 권한 조회 -->
 	<select id="getRolesByUserId" parameterType="String" resultType="java.lang.String">
 		SELECT r.role_name
-		FROM user_roles ur
-		JOIN role r ON ur.role_id = r.role_id
+		FROM UserRoles ur
+		JOIN Role r ON ur.role_id = r.role_id
 		WHERE ur.user_id = #{userId}
 	</select>
 

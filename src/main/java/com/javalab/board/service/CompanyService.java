@@ -8,6 +8,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import java.util.Optional;
 
 public interface CompanyService extends UserDetailsService {
+
+
     /**
      * 새로운 기업 회원을 등록합니다.
      * - @param companyVo 등록할 기업 회원 정보 객체
@@ -42,4 +44,15 @@ public interface CompanyService extends UserDetailsService {
      */
     @Override
     UserDetails loadUserByUsername(String username);
+
+
+    /**
+     * 주어진 기업 ID에 해당하는 기업 정보를 조회합니다.
+     * - @param compId 조회할 기업 회원의 ID
+     * - @return 조회된 기업 정보 객체
+     */
+    CompanyVo getCompanyById(String compId);
+
+
 }
+
