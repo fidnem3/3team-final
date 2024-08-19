@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
@@ -36,6 +37,7 @@ public class CompanyVo {
     @Pattern(regexp = "^(http|https)://.*$", message = "유효한 URL을 입력하세요.")
     private String homepage;
 
+    private  MultipartFile file;
     private String logoName;
     private String logoPath;
 

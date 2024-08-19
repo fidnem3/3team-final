@@ -35,8 +35,6 @@ public class JobSeekerScrapController {
     @Autowired
     private JobSeekerScrapService jobSeekerScrapService;
 
-    @Autowired
-    private JobPostMapper jobPostMapper;
 
 
     @PostMapping("/scrap/toggle")
@@ -59,20 +57,11 @@ public class JobSeekerScrapController {
             jobSeekerId = userDetails.getUsername(); // UserDetails의 getUsername() 메서드를 사용
         }
 
-        // Retrieve the JobPostVo object to get logo information
-        JobPostVo jobPostVo = jobPostMapper.getJobPostById(jobPostId);
-        if (jobPostVo == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.singletonMap("error", "JobPost not found"));
-        }
 
         // Create a scrap VO object with required fields
         JobSeekerScrapVo scrapVo = new JobSeekerScrapVo();
         scrapVo.setJobSeekerId(jobSeekerId);
         scrapVo.setJobPostId(jobPostId);
-        scrapVo.setLogoName(jobPostVo.getLogoName());
-        scrapVo.setLogoPath(jobPostVo.getLogoPath());
-
-
 
 
         // Toggle scrap status

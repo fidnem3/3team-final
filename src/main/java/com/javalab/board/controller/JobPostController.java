@@ -1,9 +1,10 @@
 package com.javalab.board.controller;
 
 import com.javalab.board.dto.CreateJobPostRequestDto;
-import com.javalab.board.dto.ResumeDto;
-import com.javalab.board.security.dto.CustomUserDetails;
-import com.javalab.board.service.*;
+import com.javalab.board.service.CompanyService;
+import com.javalab.board.service.JobPostService;
+import com.javalab.board.service.JobSeekerScrapService;
+import com.javalab.board.service.PaymentService;
 import com.javalab.board.vo.*;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -17,21 +18,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
-import org.springframework.web.servlet.ModelAndView;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
@@ -47,19 +42,6 @@ public class JobPostController {
     private CompanyService companyService;
     @Autowired
     private JobSeekerScrapService jobSeekerScrapService;
-    @Autowired
-    private TemplateEngine templateEngine;
-    @Autowired
-    private ResumeService resumeService;
-    @Autowired
-    private ApplicationService applicationService;
-
-    // 파일 업로드 디렉토리
-    private static final String UPLOAD_DIR = "C:/filetest/upload/";
-    // 허용된 파일 확장자
-    private static final List<String> ALLOWED_EXTENSIONS = List.of("jpg", "jpeg", "png", "gif");
-
-
 
     @GetMapping("/jobPostCreate")
     public String createJobPost(Model model) {
@@ -68,41 +50,17 @@ public class JobPostController {
     }
 
     @PostMapping("/jobPostCreate")
-    public String create(
-            @ModelAttribute("createJobPostRequestDto") @Valid CreateJobPostRequestDto createJobPostRequestDto,
-            BindingResult bindingResult,
-            @RequestParam("logoFile") MultipartFile logoFile) {
-
-        if (bindingResult.hasErrors()) {
-            return "jobPost/jobPostCreate";
-        }
+    public String create(@ModelAttribute("createJobPostRequestDto") @Valid CreateJobPostRequestDto createJobPostRequestDto,
+                         BindingResult bindingResult) {
+        log.info("CreateJobPostRequestDto: {}", createJobPostRequestDto);
 
         // 사용자 인증 정보 얻기
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String compId = ((UserDetails) authentication.getPrincipal()).getUsername();
 
-        // 파일 처리
-        String logoPath = null;
-        String logoName = null;
-
-        if (!logoFile.isEmpty()) {
-            try {
-                String originalFilename = logoFile.getOriginalFilename();
-                if (originalFilename != null) {
-                    logoName = UUID.randomUUID() + "_" + originalFilename;
-                    Path path = Paths.get("C:/filetest/upload/" + logoName);
-                    Files.createDirectories(path.getParent());
-                    Files.write(path, logoFile.getBytes());
-                    logoPath = "/jobPost/logo/" + logoName;
-                }
-            } catch (IOException e) {
-                log.error("파일 업로드 오류: {}", e.getMessage());
-            }
-        }
-
         // DTO를 VO로 변환
         JobPostVo jobPostVo = JobPostVo.builder()
-                .compId(compId)
+                .compId(compId)  // 현재 사용자 ID 설정
                 .title(createJobPostRequestDto.getTitle())
                 .content(createJobPostRequestDto.getContent())
                 .position(createJobPostRequestDto.getPosition())
@@ -112,22 +70,17 @@ public class JobPostController {
                 .address(createJobPostRequestDto.getAddress())
                 .endDate(createJobPostRequestDto.getEndDate())
                 .homepage(createJobPostRequestDto.getHomepage())
-                .logoPath(logoPath)   // 파일 경로
-                .logoName(logoName)   // 파일 이름
-                .status("Before payment")
+                .status("Before payment") // 기본 상태를 'Pending'으로 설정
                 .build();
-        log.info("Uploaded file - Name: {}, Path: {}", logoName, logoPath);
 
         // JobPost 저장
         Long jobPostId = jobPostService.saveJobPost(jobPostVo);
-
-
+        companyService.getCompanyById(compId);
         log.info("JobPost created with ID: {}", jobPostId);
 
         // 게시물 목록 페이지로 리다이렉트
         return "redirect:/jobPost/jobPostList";
     }
-
 
     @GetMapping("/jobPostList")
     public String listJobPosts(
@@ -244,7 +197,7 @@ public class JobPostController {
     }
 
     @GetMapping("/detail/{jobPostId}")
-    public String detail(@PathVariable("jobPostId") Long jobPostId, Model model){
+    public String detail(@PathVariable("jobPostId") Long jobPostId, Model model) {
         JobPostVo jobPostVo = jobPostService.findJobPostById(jobPostId);
         // 조회수 증가
         jobPostService.incrementHitCount(jobPostId);
@@ -259,16 +212,6 @@ public class JobPostController {
             String formattedCreated = jobPostVo.getCreated() != null
                     ? jobPostVo.getCreated().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().format(formatter)
                     : "";
-
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            if (authentication != null && authentication.getPrincipal() instanceof CustomUserDetails) {
-                CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-                String loggedInUsername = userDetails.getUsername();
-
-                // 사용자의 이력서 목록 가져오기
-                List<ResumeDto> resumeDtoList = resumeService.findAll(loggedInUsername);
-                model.addAttribute("resumes", resumeDtoList);
-            }
 
             model.addAttribute("jobPost", jobPostVo); // 모델에 추가
             model.addAttribute("formattedEndDate", formattedEndDate);
@@ -324,27 +267,13 @@ public class JobPostController {
         return "redirect:/jobPost/myJobPostList";
     }
 
+
+
     @PostMapping("/delete/{jobPostId}")
     public String deleteJobPost(@PathVariable("jobPostId") Long jobPostId) {
         jobPostService.deleteJobPost(jobPostId);
         return "redirect:/jobPost/myJobPostList";
     }
 
-    //지원 컨트롤러
-    @PostMapping("/apply")
-    public String applyForJob (@RequestParam("resumeId") int resumeId,
-                              @RequestParam("jobPostId") Long jobPostId,
-                              @RequestParam("jobSeekerId") String jobSeekerId,
-                              Model model) {
-        applicationService.applyForJob(resumeId, jobPostId, jobSeekerId);
-
-        return "redirect:/jobPost/jobPostList"; // 지원이 완료된 후 리다이렉트할 페이지로 수정
-    }
-
-
-
 
 }
-
-
-

@@ -9,18 +9,26 @@
         <selectKey keyProperty="jobPostId" resultType="long" order="BEFORE">
             SELECT JOBPOST_SEQ.NEXTVAL FROM DUAL
         </selectKey>
+
+
+
         INSERT INTO JOBPOST (
         jobPost_id, title, content, education, experience, position, address, salary, end_date, hit_no, created, comp_id, logo_path, logo_name
         ) VALUES (
         #{jobPostId}, #{title}, #{content}, #{education}, #{experience}, #{position}, #{address, jdbcType=VARCHAR}, #{salary, jdbcType=VARCHAR}, #{endDate}, 0, SYSDATE, #{compId}, #{logoPath}, #{logoName}
         )
+
+
     </insert>
 
 
 
 
     <select id="getJobPostById" resultType="com.javalab.board.vo.JobPostVo">
-        SELECT * FROM jobPost WHERE jobPost_id = #{jobPostId}
+        SELECT jp.*, c.logo_path, c.logo_name
+        FROM jobPost jp
+        LEFT JOIN company c ON jp.comp_id = c.comp_id
+        WHERE jp.jobPost_id = #{jobPostId}
     </select>
 
     <select id="getAllJobPosts" resultType="com.javalab.board.vo.JobPostVo">

@@ -27,7 +27,6 @@ public class ResumeService {
     public void resumeCreate(ResumeDto resumeDto , MultipartFile file ) throws IOException {
 
         //이력서 파일 첨부
-
         String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/files";
         UUID uuid = UUID.randomUUID();
         String fileName = uuid + "_" + file.getOriginalFilename();
