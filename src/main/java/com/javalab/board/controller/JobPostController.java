@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,6 +29,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -77,24 +79,6 @@ public class JobPostController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String compId = ((UserDetails) authentication.getPrincipal()).getUsername();
 
-        // 파일 처리
-        String logoPath = null;
-        String logoName = null;
-
-        if (!logoFile.isEmpty()) {
-            try {
-                String originalFilename = logoFile.getOriginalFilename();
-                if (originalFilename != null) {
-                    logoName = UUID.randomUUID() + "_" + originalFilename;
-                    Path path = Paths.get("C:/filetest/upload/" + logoName);
-                    Files.createDirectories(path.getParent());
-                    Files.write(path, logoFile.getBytes());
-                    logoPath = "/jobPost/logo/" + logoName;
-                }
-            } catch (IOException e) {
-                log.error("파일 업로드 오류: {}", e.getMessage());
-            }
-        }
 
         // DTO를 VO로 변환
         JobPostVo jobPostVo = JobPostVo.builder()
@@ -108,11 +92,10 @@ public class JobPostController {
                 .address(createJobPostRequestDto.getAddress())
                 .endDate(createJobPostRequestDto.getEndDate())
                 .homepage(createJobPostRequestDto.getHomepage())
-                .logoPath(logoPath)   // 파일 경로
-                .logoName(logoName)   // 파일 이름
+                .filename(createJobPostRequestDto.getFilename())  // 파일 이름 저장
+                .filepath(createJobPostRequestDto.getFilepath())  // 파일 경로 저장
                 .status("Before payment")
                 .build();
-        log.info("Uploaded file - Name: {}, Path: {}", logoName, logoPath);
 
         // JobPost 저장
         Long jobPostId = jobPostService.saveJobPost(jobPostVo);
@@ -315,6 +298,31 @@ public class JobPostController {
         jobPostService.deleteJobPost(jobPostId);
         return "redirect:/jobPost/myJobPostList";
     }
+
+    @PostMapping("/upload")
+    @ResponseBody
+    public Map<String, String> uploadImage(@RequestParam("upload") MultipartFile file) {
+        String fileName = file.getOriginalFilename();
+        Path path = Paths.get(UPLOAD_DIR + fileName);
+
+        try {
+            Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+
+            // JSON 응답 생성
+            Map<String, String> response = new HashMap<>();
+            response.put("url", "/uploads/" + fileName); // 클라이언트가 사용할 파일의 URL
+
+            return response;
+        } catch (IOException e) {
+            e.printStackTrace();
+            // 오류 발생 시 JSON 응답 생성
+            Map<String, String> response = new HashMap<>();
+            response.put("error", "File upload failed");
+            return response;
+        }
+    }
+
+
 
 
 }

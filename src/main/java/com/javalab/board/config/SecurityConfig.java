@@ -58,6 +58,9 @@ public class SecurityConfig {
 		http.userDetailsService(userDetailsService);
 
 		http
+				.headers(headers -> headers
+						.frameOptions(frameOptions -> frameOptions.sameOrigin()) // 람다 기반 DSL 사용
+				)
 				.formLogin(formLogin -> formLogin
 						.loginPage("/member/login")
 						.loginProcessingUrl("/member/action")

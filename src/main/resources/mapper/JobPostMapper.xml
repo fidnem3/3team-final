@@ -10,9 +10,9 @@
             SELECT JOBPOST_SEQ.NEXTVAL FROM DUAL
         </selectKey>
         INSERT INTO JOBPOST (
-        jobPost_id, title, content, education, experience, position, address, salary, end_date, hit_no, created, comp_id, logo_path, logo_name
+        jobPost_id, title, content, education, experience, position, address, salary, end_date, hit_no, created, comp_id, filepath, filename
         ) VALUES (
-        #{jobPostId}, #{title}, #{content}, #{education}, #{experience}, #{position}, #{address, jdbcType=VARCHAR}, #{salary, jdbcType=VARCHAR}, #{endDate}, 0, SYSDATE, #{compId}, #{logoPath}, #{logoName}
+        #{jobPostId}, #{title}, #{content}, #{education}, #{experience}, #{position}, #{address, jdbcType=VARCHAR}, #{salary, jdbcType=VARCHAR}, #{endDate}, 0, SYSDATE, #{compId}, #{filepath}, #{filename}
         )
     </insert>
 
