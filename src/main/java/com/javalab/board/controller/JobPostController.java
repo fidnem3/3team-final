@@ -42,6 +42,18 @@ public class JobPostController {
     private CompanyService companyService;
     @Autowired
     private JobSeekerScrapService jobSeekerScrapService;
+    @Autowired
+    private TemplateEngine templateEngine;
+    @Autowired
+    private ResumeService resumeService;
+    @Autowired
+    private ApplicationService applicationService;
+
+    // 파일 업로드 디렉토리
+    private static final String UPLOAD_DIR = "C:/filetest/upload/";
+    // 허용된 파일 확장자
+    private static final List<String> ALLOWED_EXTENSIONS = List.of("jpg", "jpeg", "png", "gif");
+
 
     @GetMapping("/jobPostCreate")
     public String createJobPost(Model model) {
@@ -50,17 +62,26 @@ public class JobPostController {
     }
 
     @PostMapping("/jobPostCreate")
-    public String create(@ModelAttribute("createJobPostRequestDto") @Valid CreateJobPostRequestDto createJobPostRequestDto,
-                         BindingResult bindingResult) {
-        log.info("CreateJobPostRequestDto: {}", createJobPostRequestDto);
+    public String create(
+            @ModelAttribute("createJobPostRequestDto") @Valid CreateJobPostRequestDto createJobPostRequestDto,
+            BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            return "jobPost/jobPostCreate";
+        }
 
         // 사용자 인증 정보 얻기
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String compId = ((UserDetails) authentication.getPrincipal()).getUsername();
 
+        // 기업 정보 조회
+        CompanyVo companyVo = companyService.getCompanyById(compId);
+        String logoPath = companyVo != null ? companyVo.getLogoPath() : null;
+        String logoName = companyVo != null ? companyVo.getLogoName() : null;
+
         // DTO를 VO로 변환
         JobPostVo jobPostVo = JobPostVo.builder()
-                .compId(compId)  // 현재 사용자 ID 설정
+                .compId(compId)
                 .title(createJobPostRequestDto.getTitle())
                 .content(createJobPostRequestDto.getContent())
                 .position(createJobPostRequestDto.getPosition())
@@ -70,17 +91,18 @@ public class JobPostController {
                 .address(createJobPostRequestDto.getAddress())
                 .endDate(createJobPostRequestDto.getEndDate())
                 .homepage(createJobPostRequestDto.getHomepage())
-                .status("Before payment") // 기본 상태를 'Pending'으로 설정
+                .logoPath(logoPath)   // 기업 로고 경로
+                .logoName(logoName)   // 기업 로고 이름
+                .status("Before payment")
                 .build();
 
         // JobPost 저장
         Long jobPostId = jobPostService.saveJobPost(jobPostVo);
-        companyService.getCompanyById(compId);
-        log.info("JobPost created with ID: {}", jobPostId);
 
         // 게시물 목록 페이지로 리다이렉트
         return "redirect:/jobPost/jobPostList";
     }
+
 
     @GetMapping("/jobPostList")
     public String listJobPosts(
@@ -126,8 +148,6 @@ public class JobPostController {
 
         return "jobPost/jobPostList";
     }
-
-
 
 
     @GetMapping("/myJobPostList")
@@ -213,6 +233,16 @@ public class JobPostController {
                     ? jobPostVo.getCreated().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().format(formatter)
                     : "";
 
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication != null && authentication.getPrincipal() instanceof CustomUserDetails) {
+                CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+                String loggedInUsername = userDetails.getUsername();
+
+                // 사용자의 이력서 목록 가져오기
+                List<ResumeDto> resumeDtoList = resumeService.findAll(loggedInUsername);
+                model.addAttribute("resumes", resumeDtoList);
+            }
+
             model.addAttribute("jobPost", jobPostVo); // 모델에 추가
             model.addAttribute("formattedEndDate", formattedEndDate);
             model.addAttribute("formattedCreated", formattedCreated);
@@ -267,13 +297,36 @@ public class JobPostController {
         return "redirect:/jobPost/myJobPostList";
     }
 
-
-
     @PostMapping("/delete/{jobPostId}")
     public String deleteJobPost(@PathVariable("jobPostId") Long jobPostId) {
         jobPostService.deleteJobPost(jobPostId);
         return "redirect:/jobPost/myJobPostList";
     }
 
+    // 지원하기 기능
+    @PostMapping("/apply")
+    public String applyForJob(@RequestParam("resumeId") int resumeId,
+                              @RequestParam("jobPostId") Long jobPostId) {
 
+        // 현재 인증된 사용자 가져오기
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof CustomUserDetails) {
+            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+            String jobSeekerId = userDetails.getUsername();
+
+            // 서비스 메서드 호출
+            applicationService.applyForJob(resumeId, jobPostId, jobSeekerId);
+
+            return "redirect:/application/list"; // 지원이 완료된 후 리다이렉트할 페이지
+        }
+
+        // 인증 정보가 없는 경우 또는 처리 중 오류가 발생한 경우 처리
+        return "redirect:/error"; // 적절한 오류 페이지로 리다이렉트
+    }
 }
+
+
+
+
+
+

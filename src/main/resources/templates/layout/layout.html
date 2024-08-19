@@ -55,18 +55,27 @@
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">Jobs</a>
                     <div class="dropdown-menu rounded-0 m-0">
+                        <a th:href="@{/admin/companyList}" class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')">Company List</a>
                         <a th:href="@{/jobPost/jobPostList}" class="dropdown-item">Job List</a>
-                        <a th:href="@{/jobPost/myJobPostList}" class="dropdown-item" sec:authorize="hasRole('ROLE_COMPANY')">나의 공고</a>
-                        <a th:href="@{/jobSeeker/scrap/list}" class="dropdown-item" sec:authorize="hasRole('ROLE_USER')">나의 스크랩</a>
-                        <a th:href="@{/admin/jobPostsList}" class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')">공고 관리</a>
+                        <a th:href="@{/jobPost/myJobPostList}" class="dropdown-item" sec:authorize="hasRole('ROLE_COMPANY')">My Post</a>
+                        <a th:href="@{/jobSeeker/scrap/list}" class="dropdown-item" sec:authorize="hasRole('ROLE_USER')">My Scrap</a>
+                        <a th:href="@{/admin/jobPostsList}" class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')">ManageBlackCom</a>
                     </div>
                 </div>
-                <div class="nav-item dropdown">
+                <div class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
+                    <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">JobSeekers</a>
+                    <div class="dropdown-menu rounded-0 m-0">
+                        <a th:href="@{/admin/jobSeekerList}" class="dropdown-item">JobSeeker List</a>
+                        <a th:href="@{/jobSeeker/jobSeekerManagement}" class="dropdown-item">ManageBlackJob</a>
+                    </div>
+                </div>
+                <div class="nav-item dropdown" sec:authorize="!hasRole('ROLE_ADMIN')">
                     <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">Resume</a>
                     <div class="dropdown-menu rounded-0 m-0">
                         <a th:href="@{/resume/save}" class="dropdown-item">New Resume</a>
                         <a th:href="@{/resume/list}" class="dropdown-item">Resume List</a>
-                        <a th:href="@{/resume/list}" class="dropdown-item" sec:authorize="hasRole('ROLE_USER')">My Resume</a>
+                        <a th:href="@{/resume/list}" class="dropdown-item" sec:authorize="hasRole('ROLE_USER')">My
+                            Resume</a>
                     </div>
                 </div>
 
@@ -107,7 +116,7 @@
                     </a>
                     <div class="dropdown-menu rounded-0 m-0">
                         <a th:href="@{/admin/adminPage}" class="dropdown-item">Admin Dashboard</a>
-                        <a th:href="@{/admin/settings}" class="dropdown-item">Admin Settings</a>
+                        <a th:href="@{/admin/blacklist}" class="dropdown-item">ManageBlack</a>
                         <a th:href="@{/logout}" class="dropdown-item">Logout</a>
                     </div>
                 </div>
@@ -262,7 +271,6 @@
         }
     });
 </script>
-
 <!-- 페이지 마다 text 다르게 하는 script-->
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -344,9 +352,118 @@ function toggleScrap(event) {
 
     CKEDITOR.replace('editor1');
 </script>
-
-
 <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var path = window.location.pathname;
+        var pageHeader = document.getElementById("pageHeader");
+
+        if (path === '/' || path === '/index') {
+            if (pageHeader) {
+                pageHeader.style.display = 'none';
+            }
+        }
+    });
+</script>
+<!-- index.html 에서 home 안보이게 하기 -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // 현재 페이지의 경로를 확인
+        if (window.location.pathname === '/index' || window.location.pathname === '/') {
+            // 'homeLink' ID를 가진 요소를 찾고 숨기기
+            var homeLink = document.getElementById("homeLink");
+            if (homeLink) {
+                homeLink.style.display = 'none';
+            }
+        }
+    });
+</script>
+<!-- 페이지 마다 text 다르게 하는 script-->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var path = window.location.pathname;
+        console.log("Current path:", path); // 현재 경로 출력
+        var pageTitle = document.getElementById("pageTitle");
+        var pageName = document.getElementById("pageName");
+
+        if (path === '/jobPost/jobPostList') {
+            pageTitle.textContent = 'Job List';
+            pageName.textContent = 'Job List';
+        } else if (path == '/about') {
+            pageTitle.textContent = 'About';
+             pageName.textContent = 'About';
+        } else if (path == '/contact') {
+            pageTitle.textContent = 'Contact';
+            pageName.textContent = 'Contact';
+        } else if (path == '/jobPost/jobPostCreate') {
+            pageTitle.textContent = '공고 등록하기';
+            pageName.textContent = 'CreateJobPost';
+        } else if (path == '/jobPost/myJobPostList') {
+            pageTitle.textContent = '나의 채용공고';
+            pageName.textContent = 'MY POST';
+        } else if (path === '/anotherPage') {
+            pageTitle.textContent = 'Another Page';
+            pageName.textContent = 'Another Page';
+        }
+    });
+
+    function getCSRFToken() {
+    return document.querySelector('meta[name="_csrf"]').getAttribute('content');
+}
+
+function getCSRFHeader() {
+    return document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+}
+
+function toggleScrap(event) {
+    event.preventDefault();
+
+    const button = event.currentTarget;
+    const jobPostId = button.getAttribute('data-jobpostid');
+    const isScrapped = button.classList.contains('scrap-active');
+
+    fetch('/jobSeeker/scrap/toggle', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json',
+            [getCSRFHeader()]: getCSRFToken()
+        },
+        body: JSON.stringify({ jobPostId: jobPostId, isScrapped: isScrapped }) // isScrapped 추가
+    })
+    .then(response => {
+        if (response.redirected) {
+            window.location.href = response.url;
+            return;
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data) {
+            const icon = button.querySelector('i');
+            if (data.isScrapped) {
+                button.classList.add('scrap-active');
+                icon.classList.remove('far');
+                icon.classList.add('fas');
+                alert('스크랩 완료');
+            } else {
+                button.classList.remove('scrap-active');
+                icon.classList.remove('fas');
+                icon.classList.add('far');
+                alert('스크랩 취소');
+            }
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+    CKEDITOR.replace('editor1');
+</script>
+<script>
+    $(document).ready(function () {
+    $('.dev-toggle-filter').click(function () {
+        $(this).toggleClass('open');
+        $(this).next('.filter-box').toggle();
+    });
     document.addEventListener('DOMContentLoaded', function () {
         const addressFilter = document.getElementById('filterAddress');
         const educationFilter = document.getElementById('filterEducation');
@@ -364,10 +481,17 @@ function toggleScrap(event) {
                 const education = item.getAttribute('data-education').toLowerCase();
                 const experience = item.getAttribute('data-experience').toLowerCase();
 
+    $('.dev-button-item').click(function () {
+        $(this).toggleClass('active').siblings().removeClass('active');
+    });
                 const matchesAddress = !addressValue || address.includes(addressValue);
                 const matchesEducation = !educationValue || education.includes(educationValue);
                 const matchesExperience = !experienceValue || experience.includes(experienceValue);
 
+    $('.search-reset').click(function () {
+        $(this).closest('.filter-box').find('.dev-button-item').removeClass('active');
+        $(this).closest('.filter-box').find('.dev-button-all').addClass('active');
+    });
                 if (matchesAddress && matchesEducation && matchesExperience) {
                     item.classList.remove('hidden');
                 } else {
@@ -376,7 +500,148 @@ function toggleScrap(event) {
             });
         }
 
+    $('#resetCondition').click(function () {
+        $('.filter-box').find('.dev-button-item').removeClass('active');
+        $('.filter-box').find('.dev-button-all').addClass('active');
+        $('#searchForm')[0].reset();
+    });
+</script>
+
+<!-- 블랙리스트 -->
+<script>
+    $(document).ready(function () {
+   $('.dev-toggle-filter').click(function () {
+       $(this).toggleClass('open');
+       $(this).next('.filter-box').toggle();
+   });
+
+   $('.dev-button-item').click(function () {
+       $(this).toggleClass('active').siblings().removeClass('active');
+   });
+
+   $('.search-reset').click(function () {
+       $(this).closest('.filter-box').find('.dev-button-item').removeClass('active');
+       $(this).closest('.filter-box').find('.dev-button-all').addClass('active');
+   });
+
+   $('#resetCondition').click(function () {
+       $('.filter-box').find('.dev-button-item').removeClass('active');
+       $('.filter-box').find('.dev-button-all').addClass('active');
+       $('#searchForm')[0].reset();
+   });
+
+    // 블랙리스트 토글 기능 추가
+    $('.toggle-blacklist').click(function() {
+        var id = $(this).data('id');
+        var type = $(this).data('type');
+        var isCurrentlyBlacklisted = $(this).text().includes('해제');
+
+        if (isCurrentlyBlacklisted) {
+            // 블랙리스트 해제
+            toggleBlacklist(id, type, '');
+        } else {
+            // 블랙리스트 등록
+            $('#blacklistReasonModal').modal('show');
+            $('#confirmBlacklist').data('id', id).data('type', type);
+        }
         applyFiltersButton.addEventListener('click', filterJobs);
+    });
+
+    $('#confirmBlacklist').click(function() {
+        var id = $(this).data('id');
+        var type = $(this).data('type');
+        var reason = $('#blacklistReason').val();
+        toggleBlacklist(id, type, reason);
+        $('#blacklistReasonModal').modal('hide');
+    });
+
+    function toggleBlacklist(id, type, reason) {
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+
+        $.ajax({
+            url: '/admin/blacklist/toggle',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                id: id,
+                type: type,
+                reason: reason
+            }),
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader(header, token);
+            },
+            success: function(response) {
+                if(response.isBlacklisted) {
+                    $(`button[data-id="${id}"]`).text('블랙리스트 해제');
+                    $(`button[data-id="${id}"]`).closest('tr').find('td:nth-child(8)').text('블랙리스트');
+                    alert('블랙리스트에 추가되었습니다.');
+                } else {
+                    $(`button[data-id="${id}"]`).text('블랙리스트 등록');
+                    $(`button[data-id="${id}"]`).closest('tr').find('td:nth-child(8)').text('정상');
+                    alert('블랙리스트에서 제거되었습니다.');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+                alert('오류가 발생했습니다: ' + error);
+            }
+        });
+    }
+});
+</script>
+
+
+<script>
+    function toggleBlacklist(jobSeekerId, compId) {
+        $.ajax({
+            url: '/admin/blacklist/toggle',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({jobSeekerId: jobSeekerId, compId: compId}),
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader(/*[[${_csrf.headerName}]]*/, /*[[${_csrf.token}]]*/);
+            },
+            success: function(response) {
+                if (response.isBlacklisted !== undefined) {
+                    location.reload();
+                } else {
+                    alert('상태 변경에 실패했습니다.');
+                }
+            },
+            error: function() {
+                alert('서버와의 통신 중 오류가 발생했습니다.');
+            }
+        });
+    }
+</script>
+
+<!--    jobpost 모달 스크립트-->
+<script>
+    document.getElementById('modalBtn').addEventListener('click', function () {
+        var myModal = new bootstrap.Modal(document.getElementById('resumePopup'), {
+            keyboard: false
+        });
+        myModal.show();
+    });
+</script>
+
+
+<!--이력서 save파일첨부 스크립트-->
+<script>
+    document.getElementById('fileInput').addEventListener('change', function(event) {
+    var file = event.target.files[0];
+    var reader = new FileReader();
+
+    reader.onload = function(e) {
+    var imgElement = document.getElementById('photo');
+    imgElement.src = e.target.result;
+    imgElement.style.display = 'block';
+    }
+
+    if (file) {
+    reader.readAsDataURL(file);
+    }
     });
 </script>
 </body>

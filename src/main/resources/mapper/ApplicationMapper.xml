@@ -17,8 +17,8 @@
 
     <!-- 지원서 제출 (INSERT) -->
     <insert id="insertApplication" parameterType="com.javalab.board.dto.ApplicationDto">
-        INSERT INTO APPLICATION (APPLICATION_ID, RESUME_ID, JOBPOST_ID, JOBSEEKER_ID, STATUS, APPLIED_DATE)
-        VALUES (APPLICATION_SEQ.NEXTVAL, #{resumeId}, #{jobPostId}, #{jobSeekerId}, #{status}, #{appliedDate})
+        INSERT INTO APPLICATION (APPLICATION_ID, RESUME_ID, JOBPOST_ID, JOBSEEKER_ID, STATUS, APPLIED_DATE ,Created)
+        VALUES (APPLICATION_SEQ.NEXTVAL, #{resumeId}, #{jobPostId}, #{jobSeekerId}, #{status}, SYSDATE , SYSDATE )
     </insert>
 
     <!-- 특정 jobSeekerId에 해당하는 지원서 조회 (SELECT) -->

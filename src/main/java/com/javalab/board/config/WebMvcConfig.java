@@ -15,5 +15,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/**")
                 .addResourceLocations("file:src/main/resources/static/");
+
     }
+
+    // URL 경로와 파일 시스템 경로를 매핑
+    public void addResourceHandlers2(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/jobPost/logo/**")
+            .addResourceLocations("file:/C:/filetest/upload/");
+        }
 }

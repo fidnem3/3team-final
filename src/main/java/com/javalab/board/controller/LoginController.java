@@ -157,7 +157,7 @@ public class LoginController {
     @PostMapping("/companyJoin")
     public String registerCompany(@Valid @ModelAttribute("CompanyVo") CompanyVo companyVo,
                                   BindingResult bindingResult,
-                                  RedirectAttributes redirectAttributes , MultipartFile file) {
+                                  RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             return "member/companyJoin";
         }
@@ -165,13 +165,14 @@ public class LoginController {
         // 비밀번호 암호화
         companyVo.setPassword(passwordEncoder.encode(companyVo.getPassword()));
 
+        // UserRolesVo 객체 생성 및 설정
         UserRolesVo userRolesVo = new UserRolesVo();
         userRolesVo.setUserId(companyVo.getCompId());
         userRolesVo.setUserType("company");
         userRolesVo.setRoleId("ROLE_COMPANY");
 
         try {
-            companyService.registerCompany(companyVo, userRolesVo , file);
+            companyService.registerCompany(companyVo, userRolesVo);
             redirectAttributes.addFlashAttribute("message", "기업 회원가입이 성공적으로 완료되었습니다.");
             log.info("회원가입 성공: {}", companyVo.getCompId());
             return "redirect:/member/login";
