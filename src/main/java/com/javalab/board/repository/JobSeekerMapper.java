@@ -4,6 +4,8 @@ import com.javalab.board.vo.JobSeekerVo;
 import com.javalab.board.vo.UserRolesVo;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface JobSeekerMapper {
 
@@ -37,4 +39,7 @@ public interface JobSeekerMapper {
      * - @param jobSeekerId 삭제할 개인 회원의 ID
      */
     void deleteJobSeeker(String jobSeekerId);
+
+
+
 }

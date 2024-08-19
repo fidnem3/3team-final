@@ -52,13 +52,21 @@
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">Jobs</a>
                     <div class="dropdown-menu rounded-0 m-0">
+                        <a th:href="@{/admin/companyList}" class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')">Company List</a>
                         <a th:href="@{/jobPost/jobPostList}" class="dropdown-item">Job List</a>
-                        <a th:href="@{/jobPost/myJobPostList}" class="dropdown-item" sec:authorize="hasRole('ROLE_COMPANY')">나의 공고</a>
-                        <a th:href="@{/jobSeeker/scrap/list}" class="dropdown-item" sec:authorize="hasRole('ROLE_USER')">나의 스크랩</a>
-                        <a th:href="@{/admin/jobPostsList}" class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')">공고 관리</a>
+                        <a th:href="@{/jobPost/myJobPostList}" class="dropdown-item" sec:authorize="hasRole('ROLE_COMPANY')">My Post</a>
+                        <a th:href="@{/jobSeeker/scrap/list}" class="dropdown-item" sec:authorize="hasRole('ROLE_USER')">My Scrap</a>
+                        <a th:href="@{/admin/jobPostsList}" class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')">ManageBlackCom</a>
                     </div>
                 </div>
-                <div class="nav-item dropdown">
+                <div class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
+                    <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">JobSeekers</a>
+                    <div class="dropdown-menu rounded-0 m-0">
+                        <a th:href="@{/admin/jobSeekerList}" class="dropdown-item">JobSeeker List</a>
+                        <a th:href="@{/jobSeeker/jobSeekerManagement}" class="dropdown-item">ManageBlackJob</a>
+                    </div>
+                </div>
+                <div class="nav-item dropdown" sec:authorize="!hasRole('ROLE_ADMIN')">
                     <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">Resume</a>
                     <div class="dropdown-menu rounded-0 m-0">
                         <a th:href="@{/resume/resumeDetail}" class="dropdown-item">New Resume</a>
@@ -66,7 +74,6 @@
                         <a th:href="@{/resume/myResumeList}" class="dropdown-item" sec:authorize="hasRole('ROLE_USER')">My Resume</a>
                     </div>
                 </div>
-
                 <a th:href="@{/contact}" class="nav-item nav-link">Contact</a>
             </div>
             <div sec:authorize="hasRole('COMPANY')">
@@ -104,7 +111,7 @@
                     </a>
                     <div class="dropdown-menu rounded-0 m-0">
                         <a th:href="@{/admin/adminPage}" class="dropdown-item">Admin Dashboard</a>
-                        <a th:href="@{/admin/settings}" class="dropdown-item">Admin Settings</a>
+                        <a th:href="@{/admin/blacklist}" class="dropdown-item">ManageBlack</a>
                         <a th:href="@{/logout}" class="dropdown-item">Logout</a>
                     </div>
                 </div>
@@ -340,28 +347,113 @@ function toggleScrap(event) {
 
     CKEDITOR.replace('editor1');
 </script>
+
+
 <script>
     $(document).ready(function () {
-        $('.dev-toggle-filter').click(function () {
-            $(this).toggleClass('open');
-            $(this).next('.filter-box').toggle();
-        });
-
-        $('.dev-button-item').click(function () {
-            $(this).toggleClass('active').siblings().removeClass('active');
-        });
-
-        $('.search-reset').click(function () {
-            $(this).closest('.filter-box').find('.dev-button-item').removeClass('active');
-            $(this).closest('.filter-box').find('.dev-button-all').addClass('active');
-        });
-
-        $('#resetCondition').click(function () {
-            $('.filter-box').find('.dev-button-item').removeClass('active');
-            $('.filter-box').find('.dev-button-all').addClass('active');
-            $('#searchForm')[0].reset();
-        });
+    $('.dev-toggle-filter').click(function () {
+        $(this).toggleClass('open');
+        $(this).next('.filter-box').toggle();
     });
+
+    $('.dev-button-item').click(function () {
+        $(this).toggleClass('active').siblings().removeClass('active');
+    });
+
+    $('.search-reset').click(function () {
+        $(this).closest('.filter-box').find('.dev-button-item').removeClass('active');
+        $(this).closest('.filter-box').find('.dev-button-all').addClass('active');
+    });
+
+    $('#resetCondition').click(function () {
+        $('.filter-box').find('.dev-button-item').removeClass('active');
+        $('.filter-box').find('.dev-button-all').addClass('active');
+        $('#searchForm')[0].reset();
+    });
+
+    // 블랙리스트 토글 기능 추가
+    $('.toggle-blacklist').click(function() {
+        var id = $(this).data('id');
+        var type = $(this).data('type');
+        var isCurrentlyBlacklisted = $(this).text().includes('해제');
+
+        if (isCurrentlyBlacklisted) {
+            // 블랙리스트 해제
+            toggleBlacklist(id, type, '');
+        } else {
+            // 블랙리스트 등록
+            $('#blacklistReasonModal').modal('show');
+            $('#confirmBlacklist').data('id', id).data('type', type);
+        }
+    });
+
+    $('#confirmBlacklist').click(function() {
+        var id = $(this).data('id');
+        var type = $(this).data('type');
+        var reason = $('#blacklistReason').val();
+        toggleBlacklist(id, type, reason);
+        $('#blacklistReasonModal').modal('hide');
+    });
+
+    function toggleBlacklist(id, type, reason) {
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+
+        $.ajax({
+            url: '/admin/blacklist/toggle',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                id: id,
+                type: type,
+                reason: reason
+            }),
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader(header, token);
+            },
+            success: function(response) {
+                if(response.isBlacklisted) {
+                    $(`button[data-id="${id}"]`).text('블랙리스트 해제');
+                    $(`button[data-id="${id}"]`).closest('tr').find('td:nth-child(8)').text('블랙리스트');
+                    alert('블랙리스트에 추가되었습니다.');
+                } else {
+                    $(`button[data-id="${id}"]`).text('블랙리스트 등록');
+                    $(`button[data-id="${id}"]`).closest('tr').find('td:nth-child(8)').text('정상');
+                    alert('블랙리스트에서 제거되었습니다.');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+                alert('오류가 발생했습니다: ' + error);
+            }
+        });
+    }
+});
+</script>
+
+
+<script>
+    function toggleBlacklist(jobSeekerId, compId) {
+        $.ajax({
+            url: '/admin/blacklist/toggle',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({jobSeekerId: jobSeekerId, compId: compId}),
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader(/*[[${_csrf.headerName}]]*/, /*[[${_csrf.token}]]*/);
+            },
+            success: function(response) {
+                if (response.isBlacklisted !== undefined) {
+                    location.reload();
+                } else {
+                    alert('상태 변경에 실패했습니다.');
+                }
+            },
+            error: function() {
+                alert('서버와의 통신 중 오류가 발생했습니다.');
+            }
+        });
+    }
 </script>
 </body>
 </html>

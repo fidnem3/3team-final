@@ -87,9 +87,9 @@ public class SecurityConfig {
 						.requestMatchers("/view/**").permitAll()
 						.requestMatchers("/member/**", "/member/adminJoin").permitAll()
 						.requestMatchers("/board/**").permitAll()
-						.requestMatchers("/member/adminPage").hasRole("ADMIN")
-						.requestMatchers("/member/companyPage").hasRole("COMPANY")
-						.requestMatchers("/member/jobSeekerPage").hasRole("USER")
+						.requestMatchers("/admin/adminPage").hasRole("ADMIN")
+						.requestMatchers("/admin/blacklist").hasRole("ADMIN")
+
 						.anyRequest().authenticated()
 				)
 				.sessionManagement(sessionManagement -> sessionManagement

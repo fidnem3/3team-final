@@ -93,4 +93,6 @@
         DELETE FROM jobSeeker WHERE jobSeeker_id = #{jobSeekerId}
     </delete>
 
+
+
 </mapper>

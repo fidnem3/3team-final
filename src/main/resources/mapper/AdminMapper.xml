@@ -37,4 +37,14 @@
         DELETE FROM admin WHERE admin_id = #{adminId}
     </delete>
 
+    <!-- 모든 구직자 가져옴 -->
+    <select id="selectAllJobSeekers" resultType="com.javalab.board.vo.JobSeekerVo">
+        SELECT * FROM jobSeeker
+    </select>
+
+    <!-- 모든 기업 가져옴 -->
+    <select id="selectAllCompany" resultType="com.javalab.board.vo.CompanyVo">
+        SELECT * FROM company
+    </select>
+
 </mapper>
