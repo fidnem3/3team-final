@@ -1,9 +1,11 @@
 package com.javalab.board.repository;
 
+import com.javalab.board.dto.BlacklistDto;
 import com.javalab.board.vo.AdminVo;
 import com.javalab.board.vo.CompanyVo;
 import com.javalab.board.vo.JobSeekerVo;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -39,4 +41,13 @@ public interface AdminMapper {
      * 기업 목록 가져옴
      */
     List<CompanyVo> selectAllCompany();
+
+
+    // BlacklistMapper의 메서드를 재사용
+    List<BlacklistDto> getAllBlacklist();
+    List<BlacklistDto> getActiveBlacklist();
+    BlacklistDto getBlacklistStatus(@Param("id") String id, @Param("type") String type);
+    int addBlacklist(BlacklistDto blacklist);
+    void updateBlacklist(BlacklistDto blacklist);
+
 }

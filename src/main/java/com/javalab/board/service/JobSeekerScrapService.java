@@ -1,11 +1,9 @@
 package com.javalab.board.service;
 
+import com.javalab.board.repository.CompanyMapper;
 import com.javalab.board.repository.JobPostMapper;
 import com.javalab.board.repository.JobSeekerScrapMapper;
-import com.javalab.board.vo.JobPostVo;
-import com.javalab.board.vo.JobSeekerScrapVo;
-import com.javalab.board.vo.JobSeekerVo;
-import com.javalab.board.vo.UserRolesVo;
+import com.javalab.board.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,7 +18,9 @@ public class JobSeekerScrapService {
     @Autowired
     private JobSeekerScrapMapper scrapMapper;
     @Autowired
-    private JobPostMapper jobPostMapper;
+    private JobPostMapper jobPostMapper;@Autowired
+    private CompanyMapper companyMapper;
+
 
     public boolean checkIfScrapped(String jobSeekerId, Long jobPostId) {
         return scrapMapper.existsByJobSeekerIdAndJobPostId(jobSeekerId, jobPostId);
@@ -51,14 +51,29 @@ public class JobSeekerScrapService {
 
         for (JobSeekerScrapVo scrap : scrapList) {
             JobPostVo jobPost = jobPostMapper.getJobPostDetailsById(scrap.getJobPostId());
-            scrap.setTitle(jobPost.getTitle());
-            scrap.setSalary(jobPost.getSalary());
-            scrap.setAddress(jobPost.getAddress());
-            scrap.setEndDate(jobPost.getEndDate());
-            scrap.setLogoName(jobPost.getLogoName()); // JobPost에서 로고 이름을 설정
-            scrap.setLogoPath(jobPost.getLogoPath()); // JobPost에서 로고 경로를 설정
+
+            if (jobPost != null) {
+                CompanyVo companyVo = companyMapper.getCompanyById(jobPost.getCompId());
+
+                // Check if companyVo is null
+                if (companyVo != null) {
+                    scrap.setLogoName(companyVo.getLogoName());
+                } else {
+                    // Handle the case where companyVo is null
+                    scrap.setLogoName("defaultLogoName"); // Set a default logo name or handle accordingly
+                }
+
+                // Set other details
+                scrap.setTitle(jobPost.getTitle());
+                scrap.setSalary(jobPost.getSalary());
+                scrap.setAddress(jobPost.getAddress());
+                scrap.setEndDate(jobPost.getEndDate());
+            } else {
+                // Handle the case where jobPost is null if needed
+            }
         }
 
         return scrapList;
     }
+
 }

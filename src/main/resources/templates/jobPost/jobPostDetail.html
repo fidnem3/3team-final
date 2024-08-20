@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+
       layout:decorate="~{layout/layout}">
 
 
@@ -36,7 +38,7 @@
             <div class="col-lg-8">
                 <div class="d-flex align-items-center mb-5">
                     <img class="flex-shrink-0 img-fluid border rounded"
-                         th:src="@{'/jobPost/logo/' + ${jobPost.logoName}}"
+                         th:src="@{/jobPost/logo/{logoName}(logoName=${jobPost.logoName})}"
                          alt="Company Logo" style="width: 80px; height: 80px;">
                     <div class="text-start ps-4">
                         <h3 class="mb-3"><span th:text="${jobPost.title}"></span></h3>
@@ -64,7 +66,7 @@
 
                 <div>
                     <!-- 지원하기 버튼 -->
-                    <button id="modalBtn" class="btn btn-primary w-100">지원하기</button>
+                    <button id="modalBtn" class="btn btn-primary w-100" sec:authorize="hasRole('ROLE_USER')">지원하기</button>
 
                     <!--모달 창-->
                     <div class="modal" id="resumePopup" tabindex="-1" aria-labelledby="resumePopupLabel"

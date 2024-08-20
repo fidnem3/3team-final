@@ -10,28 +10,32 @@
             SELECT JOBPOST_SEQ.NEXTVAL FROM DUAL
         </selectKey>
         INSERT INTO JOBPOST (
-        jobPost_id, title, content, education, experience, position, address, salary, end_date, hit_no, created, comp_id, logo_path, logo_name
+        jobPost_id, title, content, education, experience, position, address, salary, end_date, hit_no, created, comp_id
         ) VALUES (
-        #{jobPostId}, #{title}, #{content}, #{education}, #{experience}, #{position}, #{address, jdbcType=VARCHAR}, #{salary, jdbcType=VARCHAR}, #{endDate}, 0, SYSDATE, #{compId}, #{logoPath}, #{logoName}
+        #{jobPostId}, #{title}, #{content}, #{education}, #{experience}, #{position}, #{address, jdbcType=VARCHAR}, #{salary, jdbcType=VARCHAR}, #{endDate}, 0, SYSDATE, #{compId}
         )
     </insert>
 
-
-
-
     <select id="getJobPostById" resultType="com.javalab.board.vo.JobPostVo">
-        SELECT * FROM jobPost WHERE jobPost_id = #{jobPostId}
+        SELECT jp.*, c.logo_name AS logoName  <!-- 회사 로고 이름 추가 -->
+        FROM jobPost jp
+        LEFT JOIN company c ON jp.comp_id = c.comp_id  <!-- company 테이블과 조인 -->
+        WHERE jp.jobPost_id = #{jobPostId}
     </select>
 
     <select id="getAllJobPosts" resultType="com.javalab.board.vo.JobPostVo">
-        SELECT * FROM jobPost
-        ORDER BY created DESC
+        SELECT jp.*, c.logo_name AS logoName  <!-- 회사 로고 이름 추가 -->
+        FROM jobPost jp
+        LEFT JOIN company c ON jp.comp_id = c.comp_id  <!-- company 테이블과 조인 -->
+        ORDER BY jp.created DESC
     </select>
 
     <select id="selectJobPostsByCompany" parameterType="String" resultType="com.javalab.board.vo.JobPostVo">
-        SELECT * FROM jobPost
-        WHERE comp_id = #{compId}
-        ORDER BY created DESC
+        SELECT jp.*, c.logo_name AS logoName  <!-- 회사 로고 이름 추가 -->
+        FROM jobPost jp
+        LEFT JOIN company c ON jp.comp_id = c.comp_id  <!-- company 테이블과 조인 -->
+        WHERE jp.comp_id = #{compId}
+        ORDER BY jp.created DESC
     </select>
 
     <update id="updatePaymentStatus">
@@ -41,25 +45,27 @@
     </update>
 
     <select id="findJobPostById" parameterType="long" resultType="com.javalab.board.vo.JobPostVo">
-        SELECT * FROM jobPost
-        WHERE jobPost_id = #{jobPostId}
+        SELECT jp.*, c.logo_name AS logoName  <!-- 회사 로고 이름 추가 -->
+        FROM jobPost jp
+        LEFT JOIN company c ON jp.comp_id = c.comp_id  <!-- company 테이블과 조인 -->
+        WHERE jp.jobPost_id = #{jobPostId}
     </select>
 
     <select id="getScrapList" parameterType="string"
             resultType="com.javalab.board.vo.JobPostVo">
-        SELECT j.jobPost_id, j.title, j.created, k.jobSeeker_id
+        SELECT j.jobPost_id, j.title, j.created, k.jobSeeker_id, c.logo_name AS logoName  <!-- 회사 로고 이름 추가 -->
         FROM jobSeekerScrap s
         JOIN jobPost j ON s.jobPost_id = j.jobPost_id
         JOIN jobSeeker k ON s.jobSeeker_id = k.jobSeeker_id
+        LEFT JOIN company c ON j.comp_id = c.comp_id  <!-- company 테이블과 조인 -->
         WHERE s.jobSeeker_id = #{jobSeekerId}
-
     </select>
 
-    <!-- jobPostId로 공고 정보 가져오기 -->
     <select id="getJobPostDetailsById" resultType="com.javalab.board.vo.JobPostVo">
-        SELECT title, salary, address, end_date
-        FROM jobPost
-        WHERE jobPost_id = #{jobPostId}
+        SELECT jp.title, jp.salary, jp.address, jp.end_date, c.logo_name AS logoName  <!-- 회사 로고 이름 추가 -->
+        FROM jobPost jp
+        LEFT JOIN company c ON jp.comp_id = c.comp_id  <!-- company 테이블과 조인 -->
+        WHERE jp.jobPost_id = #{jobPostId}
     </select>
 
     <update id="updateJobPost" parameterType="com.javalab.board.vo.JobPostVo">
@@ -72,13 +78,9 @@
         education = #{education, jdbcType=VARCHAR},
         address = #{address, jdbcType=VARCHAR},
         end_date = #{endDate, jdbcType=DATE},
-        homepage = #{homepage, jdbcType=VARCHAR},
-        logo_path = #{logoPath, jdbcType=VARCHAR}, <!-- 추가된 필드 -->
-        logo_name = #{logoName, jdbcType=VARCHAR}  <!-- 추가된 필드 -->
+        homepage = #{homepage, jdbcType=VARCHAR}
         WHERE jobPost_id = #{jobPostId, jdbcType=BIGINT}
     </update>
-
-
 
     <delete id="deleteJobPost">
         DELETE FROM jobPost
@@ -97,37 +99,41 @@
     </update>
 
     <select id="selectTop5PopularJobPosts" resultType="com.javalab.board.vo.JobPostVo">
-        SELECT *
-        FROM jobPost
-        WHERE payment_status = 'After Payment'
-        ORDER BY hit_no DESC
+        SELECT jp.*, c.logo_name AS logoName  <!-- 회사 로고 이름 추가 -->
+        FROM jobPost jp
+        LEFT JOIN company c ON jp.comp_id = c.comp_id  <!-- company 테이블과 조인 -->
+        WHERE jp.payment_status = 'After Payment'
+        ORDER BY jp.hit_no DESC
         FETCH FIRST 5 ROWS ONLY
     </select>
 
     <select id="selectAllJobPostsForAdmin" resultType="com.javalab.board.vo.JobPostVo">
-        SELECT jp.*,
+        SELECT jp.*, c.logo_name AS logoName,  <!-- 회사 로고 이름 추가 -->
         p.comp_id AS compId,
         p.payment_date AS paymentDate,
         p.amount AS amount
         FROM jobPost jp
+        LEFT JOIN company c ON jp.comp_id = c.comp_id  <!-- company 테이블과 조인 -->
         LEFT JOIN payment p ON jp.jobPost_id = p.jobPost_id
         ORDER BY jp.created DESC
     </select>
 
-
     <select id="selectJobPostsByFilters" parameterType="map" resultType="com.javalab.board.vo.JobPostVo">
-        SELECT * FROM jobPost
+        SELECT jp.*, c.logo_name AS logoName  <!-- 회사 로고 이름 추가 -->
+        FROM jobPost jp
+        LEFT JOIN company c ON jp.comp_id = c.comp_id  <!-- company 테이블과 조인 -->
         WHERE
-        (#{address, jdbcType=VARCHAR} IS NULL OR address = #{address, jdbcType=VARCHAR})
-        AND (#{education, jdbcType=VARCHAR} IS NULL OR education = #{education, jdbcType=VARCHAR})
-        AND (#{experience, jdbcType=VARCHAR} IS NULL OR experience = #{experience, jdbcType=VARCHAR})
-        AND payment_status = 'After Payment'
+        (#{address, jdbcType=VARCHAR} IS NULL OR jp.address = #{address, jdbcType=VARCHAR})
+        AND (#{education, jdbcType=VARCHAR} IS NULL OR jp.education = #{education, jdbcType=VARCHAR})
+        AND (#{experience, jdbcType=VARCHAR} IS NULL OR jp.experience = #{experience, jdbcType=VARCHAR})
+        AND jp.payment_status = 'After Payment'
     </select>
 
-    <!-- 검색 기능을 위한 쿼리 추가 -->
     <select id="searchJobPosts" resultType="com.javalab.board.vo.JobPostVo">
-        SELECT * FROM JobPost
-        WHERE title LIKE '%' || #{keyword} || '%'
+        SELECT jp.*, c.logo_name AS logoName  <!-- 회사 로고 이름 추가 -->
+        FROM jobPost jp
+        LEFT JOIN company c ON jp.comp_id = c.comp_id  <!-- company 테이블과 조인 -->
+        WHERE jp.title LIKE '%' || #{keyword} || '%'
     </select>
 
 </mapper>
