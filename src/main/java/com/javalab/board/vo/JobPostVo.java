@@ -28,8 +28,8 @@ public class JobPostVo implements Serializable {
 	private String homepage;
 	private Integer hitNo;
 	private String status; // 'Pending', 'Approved', 'Rejected'
-	private String logoPath;
-	private String logoName;
+	private String filename;
+	private String filepath;
 	private Long paymentId; // 결제 ID
 	// 날짜 바인딩 패턴 : yyyy-MM-dd
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
