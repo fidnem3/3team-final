@@ -1,5 +1,6 @@
 package com.javalab.board.service;
 
+import com.javalab.board.dto.ApplicationDto;
 import com.javalab.board.vo.CompanyVo;
 import com.javalab.board.vo.UserRolesVo;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -73,6 +74,28 @@ public interface CompanyService extends UserDetailsService {
     void rejectCompany(String compId);
 
 
+
+    //알림 기능 시작
+
+    /**
+     * 기업의 compId로 읽지 않은 이력서가 있는지 확인하는 메서드.
+     * @param compId 기업 ID
+     * @return 읽지 않은 이력서가 있으면 true, 없으면 false
+     */
+    boolean checkForUnreadApplications(String compId);
+
+    /**
+     * 기업의 compId로 모든 이력서를 조회하는 메서드.
+     * @param compId 기업 ID
+     * @return 해당 기업으로 제출된 모든 이력서 목록
+     */
+    List<ApplicationDto> getApplicationsByCompanyId(String compId);
+
+    /**
+     * 특정 이력서를 읽음으로 표시하는 메서드.
+     * @param applicationId 이력서 ID
+     */
+    void markApplicationAsRead(Long applicationId);
 
 }
 

@@ -1,5 +1,7 @@
 package com.javalab.board.service;
 
+import com.javalab.board.dto.ApplicationDto;
+import com.javalab.board.repository.ApplicationMapper;
 import com.javalab.board.repository.CompanyMapper;
 import com.javalab.board.repository.UserRolesMapper;
 import com.javalab.board.vo.CompanyVo;
@@ -27,6 +29,13 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Autowired
     private UserRolesMapper userRolesMapper;
+
+    @Autowired
+    private ApplicationMapper applicationMapper;
+
+
+
+
 
     @Override
     @Transactional
@@ -57,11 +66,20 @@ public class CompanyServiceImpl implements CompanyService {
         userRolesMapper.insertUserRole(userRolesVo);
     }
 
+    /**
+     * 주어진 ID에 해당하는 기업 회원의 상세 정보를 조회합니다.
+     * - @param id 조회할 기업 회원의 ID
+     * - @return 조회된 기업 회원 정보 객체를 포함하는 Optional 객체
+     */
     @Override
     public Optional<CompanyVo> getCompanyDetails(String id) {
         return Optional.ofNullable(companyMapper.selectCompanyById(id));
     }
 
+    /**
+     * 기업 회원 정보를 갱신합니다.
+     * - @param companyVo 갱신할 기업 회원 정보 객체
+     */
     @Override
     @Transactional
     public CompanyVo updateCompany(CompanyVo companyVo) {
@@ -142,4 +160,22 @@ public class CompanyServiceImpl implements CompanyService {
             System.out.println("기업을 찾을 수 없습니다: ID " + compId);
         }
     }
+
+    //알림 기능 시작
+
+    @Override
+    public boolean checkForUnreadApplications(String compId) {
+        return applicationMapper.countUnreadApplications(compId) > 0;
+    }
+
+    @Override
+    public List<ApplicationDto> getApplicationsByCompanyId(String compId) {
+        return applicationMapper.selectApplicationsByCompanyId(compId);
+    }
+
+    @Override
+    public void markApplicationAsRead(Long applicationId) {
+        applicationMapper.markApplicationAsRead(applicationId);
+    }
+
 }

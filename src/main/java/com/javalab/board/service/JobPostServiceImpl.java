@@ -96,7 +96,6 @@ public class JobPostServiceImpl implements JobPostService {
         }
         return jobPostMapper.selectJobPostsByCompany(currentCompanyId);
     }
-
     private String getCurrentCompanyId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication.getName(); // 기업회원 ID가 보통 Username으로 설정됨

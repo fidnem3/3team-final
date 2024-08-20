@@ -52,6 +52,9 @@
             <div class="navbar-nav ms-auto p-4 p-lg-0">
                 <a id="homeLink" th:href="@{/index}" class="nav-item nav-link">Home</a>
                 <a th:href="@{/about}" class="nav-item nav-link">About</a>
+
+
+
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">Jobs</a>
                     <div class="dropdown-menu rounded-0 m-0">
@@ -74,27 +77,75 @@
                     <div class="dropdown-menu rounded-0 m-0">
                         <a th:href="@{/resume/save}" class="dropdown-item">New Resume</a>
                         <a th:href="@{/resume/list}" class="dropdown-item">Resume List</a>
-                        <a th:href="@{/resume/list}" class="dropdown-item" sec:authorize="hasRole('ROLE_USER')">My
-                            Resume</a>
+                        <a th:href="@{/application/list}" class="dropdown-item" sec:authorize="hasRole('ROLE_USER')">My Job Applications
+                        </a>
                     </div>
                 </div>
 
                 <a th:href="@{/contact}" class="nav-item nav-link">Contact</a>
             </div>
-            <div sec:authorize="hasRole('COMPANY')">
-                <!-- 기업 회원 메뉴 -->
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                        <i class="fa fa-building"></i> Company Menu
-                    </a>
-                    <div class="dropdown-menu rounded-0 m-0">
-                        <a th:href="@{/company/detail}" class="dropdown-item">My page</a>
-                        <a th:href="@{/company/settings}" class="dropdown-item">Settings</a>
-                        <a th:href="@{/logout}" class="dropdown-item">Logout</a>
-                    </div>
+
+<!--            <div sec:authorize="hasRole('COMPANY')">-->
+<!--                &lt;!&ndash; 기업 회원 메뉴 &ndash;&gt;-->
+<!--                <div class="nav-item dropdown">-->
+<!--                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">-->
+<!--                        <i class="fa fa-building"></i> Company Menu-->
+<!--                    </a>-->
+<!--                    <div class="dropdown-menu rounded-0 m-0">-->
+<!--                        <a th:href="@{/company/detail}" class="dropdown-item">My page</a>-->
+<!--                        <a th:href="@{/company/applications}" class="dropdown-item">Company Application</a>-->
+<!--                        <a th:href="@{/company/settings}" class="dropdown-item">Settings</a>-->
+<!--                        <a th:href="@{/logout}" class="dropdown-item">Logout</a>-->
+<!--                    </div>-->
+
+<!--                    &lt;!&ndash; 종 아이콘 추가 &ndash;&gt;-->
+<!--                    <div class="nav-item">-->
+<!--                        <a th:href="@{/company/applications}" class="nav-link position-relative">-->
+<!--                            <i class="fa fa-bell"></i>-->
+<!--                            <div th:text="${unreadApplicationCount}"></div>-->
+<!--                            <span th:if="${unreadApplicationCount > 0}"-->
+<!--                                  th:text="${unreadApplicationCount}"-->
+<!--                                  class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">-->
+<!--                            0-->
+<!--                        </span>-->
+<!--                        </a>-->
+<!--                    </div>-->
+<!--                </div>-->
+            </div>
+        <div sec:authorize="hasRole('COMPANY')" class="d-flex align-items-center">
+
+
+            <!-- 기업 회원 메뉴 -->
+            <!-- 종 아이콘 추가 -->
+            <div class="nav-item">
+                <a th:href="@{/company/applications}" class="nav-link position-relative">
+                    <i class="fa fa-bell"></i>
+                    <span th:if="${unreadApplicationCount > 0}"
+                          th:text="${unreadApplicationCount}"
+                          class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+            </span>
+                </a>
+            </div>
+
+
+
+            <div class="nav-item dropdown me-3">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                    <i class="fa fa-building"></i> Company Menu
+                </a>
+                <div class="dropdown-menu rounded-0 m-0">
+                    <a th:href="@{/company/detail}" class="dropdown-item">My page</a>
+                    <a th:href="@{/company/applications}" class="dropdown-item">Company Application</a>
+                    <a th:href="@{/company/settings}" class="dropdown-item">Settings</a>
+                    <a th:href="@{/logout}" class="dropdown-item">Logout</a>
                 </div>
             </div>
-            <div sec:authorize="hasRole('USER')">
+
+
+        </div>
+
+
+        <div sec:authorize="hasRole('USER')">
                 <!-- 구직자 메뉴 -->
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
@@ -672,6 +723,36 @@ function toggleScrap(event) {
     }
     });
 </script>
+<!--이력서 지원 알림 서비스 -->
+<script>
+    const eventSource = new EventSource("/notifications");
+
+    eventSource.addEventListener("newResume", function(event) {
+        alert(event.data);  // "새로운 이력서가 접수되었습니다."를 표시합니다.
+    });
+
+    eventSource.onerror = function(event) {
+        console.error("SSE error", event);
+    };
+</script>
+
+<!--이력서 읽음 표시하는 -->
+<script>
+    function openResumePopup(applicationId, resumeId) {
+        // 이력서를 읽음으로 표시하는 URL을 호출
+        var markAsReadUrl = '/company/applications/markAsReadAndView/' + resumeId + '?applicationId=' + applicationId;
+
+        // 팝업창으로 이력서 상세 페이지 열기
+        var popup = window.open(markAsReadUrl, '_blank', 'width=1000,height=1000');
+
+        // 팝업창이 성공적으로 열리면 부모 창에서 목록을 새로고침
+        popup.onload = function() {
+            window.location.reload();
+        };
+    }
+</script>
+
+
 <script>
     $(document).ready(function() {
         // 승인 버튼 클릭 시

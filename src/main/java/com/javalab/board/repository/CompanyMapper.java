@@ -40,6 +40,11 @@ public interface CompanyMapper {
     // 기업 ID로 기업 조회
     CompanyVo getCompanyById(String compId);
 
+    //읽기 조회
+    void markApplicationAsRead(Long applicationId);
+
+
+
 
     /**
      * 특정 상태를 가진 기업 목록을 조회합니다.
