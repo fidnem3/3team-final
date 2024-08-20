@@ -3,17 +3,17 @@ package com.javalab.board.controller;
 import com.javalab.board.service.AdminService; // AdminService 추가
 import com.javalab.board.service.CompanyService;
 import com.javalab.board.service.JobSeekerService;
-import com.javalab.board.vo.AdminVo; // AdminVo 추가
-import com.javalab.board.vo.CompanyVo;
-import com.javalab.board.vo.JobSeekerVo;
-import com.javalab.board.vo.UserRolesVo;
+import com.javalab.board.vo.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,10 +21,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.swing.plaf.multi.MultiTabbedPaneUI;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.UUID;
 
 @RequestMapping("/member")
 @Controller
@@ -153,19 +156,45 @@ public class LoginController {
     @PostMapping("/companyJoin")
     public String registerCompany(@Valid @ModelAttribute("CompanyVo") CompanyVo companyVo,
                                   BindingResult bindingResult,
+                                  @RequestParam("file") MultipartFile file,
                                   RedirectAttributes redirectAttributes) {
+        // 유효성 검사 오류가 있는 경우
         if (bindingResult.hasErrors()) {
             return "member/companyJoin";
         }
 
+        // 비밀번호 암호화
         companyVo.setPassword(passwordEncoder.encode(companyVo.getPassword()));
 
+        // UserRolesVo 객체 생성 및 설정
         UserRolesVo userRolesVo = new UserRolesVo();
         userRolesVo.setUserId(companyVo.getCompId());
         userRolesVo.setUserType("company");
         userRolesVo.setRoleId("ROLE_COMPANY");
 
         try {
+            // 파일 업로드 처리
+            if (!file.isEmpty()) {
+                // 업로드할 디렉토리 경로 설정
+                String uploadDir = "C:\\filetest\\upload";
+                Path uploadPath = Paths.get(uploadDir);
+
+                // 디렉토리가 존재하지 않으면 생성
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath);
+                }
+
+                // 파일 저장
+                String fileName = file.getOriginalFilename();
+                Path filePath = uploadPath.resolve(fileName);
+                file.transferTo(filePath.toFile());
+
+                // CompanyVo에 파일 이름과 경로 설정
+                companyVo.setLogoName(fileName);
+                companyVo.setLogoPath(filePath.toString());
+            }
+
+            // 기업 등록 처리
             companyService.registerCompany(companyVo, userRolesVo);
             redirectAttributes.addFlashAttribute("message", "기업 회원가입이 성공적으로 완료되었습니다.");
             log.info("회원가입 성공: {}", companyVo.getCompId());
@@ -173,7 +202,7 @@ public class LoginController {
         } catch (Exception e) {
             bindingResult.reject("registerError", "회원가입 처리 중 오류가 발생했습니다: " + e.getMessage());
             log.error("회원가입 실패: {}", e.getMessage());
-            return "member/companyJoin";
+            return "redirect:/member/companyJoin";
         }
     }
 
@@ -225,26 +254,50 @@ public class LoginController {
     }
 
 
+
+
     @GetMapping("/modify")
-    public String modify() {
-        return "/member/modify"; // 또는 JSP 파일의 이름
+    public String showModifyPage(@AuthenticationPrincipal Object principal, Model model) {
+        // 로그인 정보가 OAuth2User일 경우
+        if (principal instanceof OAuth2User) {
+            OAuth2User oauth2User = (OAuth2User) principal;
+            String clientName = (String) oauth2User.getAttributes().get("clientName");
+            model.addAttribute("clientName", clientName);
+        }
+
+        // 로그인 정보가 일반 사용자일 경우 (예시)
+        else if (principal instanceof MemberVo) {
+            MemberVo memberVo = (MemberVo) principal;
+            // 필요한 정보를 모델에 추가
+            model.addAttribute("clientName", "default");
+        }
+
+        return "member/modify";
+    }
+
+    @PostMapping("/modify")
+    public String modifyPassword(
+            @RequestParam(name = "newPassword", required = false) String newPassword,
+            @RequestParam(name = "businessNumber", required = false) String businessNumber,
+            @RequestParam(name = "fileUpload", required = false) MultipartFile fileUpload) {
+
+        // 비밀번호 변경 처리
+        if (newPassword != null && !newPassword.isEmpty()) {
+            // 비밀번호 변경 로직
+        }
+
+        // 비즈니스 번호 처리 (카카오톡 로그인 사용자만)
+        if (businessNumber != null && !businessNumber.isEmpty()) {
+            // 비즈니스 번호 처리 로직
+        }
+
+        // 파일 업로드 처리
+        if (fileUpload != null && !fileUpload.isEmpty()) {
+            // 파일 업로드 로직
+        }
+
+        // 성공적으로 처리 후 리다이렉트
+        return "redirect:/index"; // 비밀번호 변경 후 리다이렉트할 페이지
     }
 }
-
-    // 카카오 소셜 로그인 사용자 비밀번호+social 변경
-//    @PostMapping("/modify")
-//    public String modifyPOST(@AuthenticationPrincipal MemberVo memberVo,
-//                             @RequestParam("newPassword") String newPassword,
-//                             RedirectAttributes redirectAttributes) {
-//
-//        log.info("여기는 컨트롤러의 비밀번호 변경 메소드......email : " + memberVo.getEmail());
-//
-//        String encodedPassword = passwordEncoder.encode(newPassword);
-//
-//        // 화면에서 입력한 비밀번호 변경 및 social 상태 변경
-//        memberService.modifyPasswordAndSocialStatus(memberVo.getEmail(), encodedPassword);
-//
-//        redirectAttributes.addFlashAttribute("result", "비밀번호 변경 성공");
-//        return "redirect:/board/list"; // 비밀번호 변경 후 리다이렉트할 URL을 선택합니다.
-//    }
 

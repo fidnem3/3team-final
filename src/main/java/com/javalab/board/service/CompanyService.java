@@ -79,4 +79,3 @@ public interface CompanyService extends UserDetailsService {
     void markApplicationAsRead(Long applicationId);
 
 }
-

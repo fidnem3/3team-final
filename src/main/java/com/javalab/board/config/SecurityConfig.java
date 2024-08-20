@@ -58,6 +58,12 @@ public class SecurityConfig {
 		http.userDetailsService(userDetailsService);
 
 		http
+				.headers(headers -> headers
+						.frameOptions(frameOptions -> frameOptions.sameOrigin()) // 람다 기반 DSL 사용
+				)
+				.csrf(csrf -> csrf
+						.ignoringRequestMatchers(new AntPathRequestMatcher("/jobPost/uploadImage"))
+				)
 				.formLogin(formLogin -> formLogin
 						.loginPage("/member/login")
 						.loginProcessingUrl("/member/action")
@@ -74,7 +80,6 @@ public class SecurityConfig {
 						})
 						.failureHandler(authFailureHandler)
 				)
-
 				.logout(logout -> logout
 						.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 						.logoutSuccessUrl("/index")
@@ -84,6 +89,8 @@ public class SecurityConfig {
 				.authorizeHttpRequests(authorize -> authorize
 						.requestMatchers("/css/**", "/js/**", "/img/**", "/fonts/**", "/scss/**", "/lib/**", "/assets/**").permitAll()
 						.requestMatchers("/", "/home", "/about", "/contact", "/index", "/jobPost/jobPostList", "/jobPost/detail/**").permitAll()
+						.requestMatchers("/member/**", "/member/adminJoin", "/member/modify").permitAll()
+						.requestMatchers("/board/**", "/upload/**", "/jobPost/logo/**", "/jobPost/uploaded/**").permitAll()
 						.requestMatchers("/member/**", "/member/adminJoin").permitAll()
 						.requestMatchers("/board/**").permitAll()
 						.requestMatchers("/admin/adminPage").hasRole("ADMIN")
@@ -112,7 +119,6 @@ public class SecurityConfig {
 								.userService(customOAuth2UserService)
 						)
 				);
-
 		return http.build();
 	}
 }

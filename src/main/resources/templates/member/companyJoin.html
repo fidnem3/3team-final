@@ -69,7 +69,6 @@
                 <input type="url" id="homepage" th:field="*{homepage}" placeholder="홈페이지 URL을 입력해주세요 ex) http://..">
                 <div th:if="${#fields.hasErrors('homepage')}" th:errors="*{homepage}" class="fieldError">Invalid URL</div>
             </div>
-
             <div class="form-group">
                 <label for="logoFile">Logo Image:</label>
                 <div class="file-upload">

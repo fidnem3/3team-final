@@ -33,8 +33,6 @@ public class CreateJobPostRequestDto {
     private String homepage;
     private Integer hitNo;
     private String status;
-    private String logoPath; // Path to the image
-    private String logoName;
     private String paymentStatus; // 'Before Payment', 'After Payment'
     private MultipartFile logoFile; // 파일을 위한 필드 추가
 
