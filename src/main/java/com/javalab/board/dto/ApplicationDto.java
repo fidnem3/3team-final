@@ -1,6 +1,7 @@
 package com.javalab.board.dto;
 
 
+import com.javalab.board.vo.JobPostVo;
 import lombok.*;
 
 import java.util.Date;
@@ -19,6 +20,7 @@ public class ApplicationDto {
     private String isRead;       // 지원 상태
     private Date appliedDate;    // 지원 일자
     private Date created;
+    private JobPostVo jobPost;
 
 
 }

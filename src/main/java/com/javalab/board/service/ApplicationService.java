@@ -4,6 +4,7 @@ package com.javalab.board.service;
 import com.javalab.board.dto.ApplicationDto;
 import com.javalab.board.repository.ApplicationMapper;
 import com.javalab.board.repository.CompanyMapper;
+import com.javalab.board.vo.JobPostVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -23,6 +24,8 @@ public class ApplicationService {
     final private List<SseEmitter> emitters = new ArrayList<>();
 
     final CompanyMapper companyMapper;
+
+    private final JobPostService jobPostService;
 
 
 
@@ -52,6 +55,22 @@ public class ApplicationService {
     public List<ApplicationDto> getApplicationsByCompanyId(String compId) {
         return applicationMapper.selectApplicationsByCompanyId(compId);
     }
+
+    // 예시 메소드: 지원서와 연결된 JobPost 정보를 가져오는 메소드
+    public JobPostVo getJobPostByApplicationId(Long applicationId) {
+        // 지원서 정보를 가져옴
+        ApplicationDto application = applicationMapper.getApplicationById(applicationId);
+        if (application != null) {
+            // JobPost 정보를 가져옴
+            Long jobPostId = application.getJobPostId();
+            return jobPostService.getJobPostById(jobPostId);
+        }
+        return null; // 지원서가 존재하지 않거나 공고가 없는 경우
+    }
+
+
+
+
 
     //    지원 알림 기능
     public void registerEmitter(SseEmitter emitter) {
@@ -91,6 +110,8 @@ public class ApplicationService {
         // 새로운 이력서가 접수되었을 때 호출됩니다.
         sendNotification("새로운 이력서가 접수 되었습니다. 확인해 주세요.");
     }
+
+
 
 //    private void notifyCompanyNewApplication(Long jobPostId) {
 //        // jobPostId를 사용하여 해당 공고의 compId를 가져와 알림 상태를 저장합니다.

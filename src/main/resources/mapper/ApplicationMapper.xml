@@ -60,6 +60,23 @@
     </delete>
 
 
+
+    <!-- applicationId를 기준으로 JobPost 정보를 가져오는 쿼리 -->
+    <select id="selectJobPostByApplicationId" parameterType="long" resultType="com.javalab.board.vo.JobPostVo">
+        SELECT jp.*
+        FROM JobPost jp
+        JOIN Application a ON jp.job_post_id = a.job_post_id
+        WHERE a.application_id = #{applicationId}
+    </select>
+
+    <!-- applicationId로 특정 지원서를 가져오는 쿼리 -->
+    <select id="getApplicationById" parameterType="long" resultType="com.javalab.board.dto.ApplicationDto">
+        SELECT application_id, resume_id, jobpost_id, jobseeker_id, is_read, applied_date
+        FROM Application
+        WHERE application_id = #{applicationId}
+    </select>
+
+
     <!-- 알림 기능 시작-->
 
     <!-- 회사 ID로 읽지 않은 지원서 개수를 세는 쿼리 -->

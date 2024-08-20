@@ -1,3 +1,343 @@
+<!--&lt;!&ndash;<!DOCTYPE html>&ndash;&gt;-->
+<!--&lt;!&ndash;<html xmlns:th="http://www.thymeleaf.org"&ndash;&gt;-->
+<!--&lt;!&ndash;      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"&ndash;&gt;-->
+<!--&lt;!&ndash;      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"&ndash;&gt;-->
+<!--&lt;!&ndash;      layout:decorate="~{layout/layout}">&ndash;&gt;-->
+
+<!--&lt;!&ndash;<head>&ndash;&gt;-->
+<!--&lt;!&ndash;    <meta charset="utf-8">&ndash;&gt;-->
+<!--&lt;!&ndash;    <title>Job Applications</title>&ndash;&gt;-->
+<!--&lt;!&ndash;    <meta content="width=device-width, initial-scale=1.0" name="viewport">&ndash;&gt;-->
+<!--&lt;!&ndash;</head>&ndash;&gt;-->
+
+<!--&lt;!&ndash;<body>&ndash;&gt;-->
+<!--&lt;!&ndash;<div layout:fragment="content" class="container-xxl bg-white p-0">&ndash;&gt;-->
+<!--&lt;!&ndash;    &lt;!&ndash; Job Applications Start &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="container-xxl py-5">&ndash;&gt;-->
+<!--&lt;!&ndash;        <div class="container">&ndash;&gt;-->
+<!--&lt;!&ndash;            <h1 class="text-center mb-5">지원 내역</h1>&ndash;&gt;-->
+
+<!--&lt;!&ndash;            <div class="tab-class text-center">&ndash;&gt;-->
+<!--&lt;!&ndash;                <ul class="nav nav-pills d-inline-flex justify-content-center border-bottom mb-5">&ndash;&gt;-->
+<!--&lt;!&ndash;                    <li class="nav-item">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <a class="d-flex align-items-center text-start mx-3 ms-0 pb-3 active" data-bs-toggle="pill"&ndash;&gt;-->
+<!--&lt;!&ndash;                           href="#tab-1">&ndash;&gt;-->
+<!--&lt;!&ndash;                            <h6 class="mt-n1 mb-0">전체 지원 내역</h6>&ndash;&gt;-->
+<!--&lt;!&ndash;                        </a>&ndash;&gt;-->
+<!--&lt;!&ndash;                    </li>&ndash;&gt;-->
+<!--&lt;!&ndash;                </ul>&ndash;&gt;-->
+<!--&lt;!&ndash;                <div class="tab-content">&ndash;&gt;-->
+<!--&lt;!&ndash;                    <div id="tab-1" class="tab-pane fade show p-0 active">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <div class="job-item p-4 mb-4">&ndash;&gt;-->
+<!--&lt;!&ndash;                            <table class="table table-bordered">&ndash;&gt;-->
+<!--&lt;!&ndash;                                <thead>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <tr>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <th>지원 ID</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <th>이력서 ID</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <th>공고 ID</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <th>읽음 상태</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <th>지원 날짜</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <th>삭제</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                                </tr>&ndash;&gt;-->
+<!--&lt;!&ndash;                                </thead>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <tbody>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <tr th:each="jobApplication  : ${applications}">&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <td th:text="${jobApplication.applicationId}"></td>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <td th:text="${jobApplication.resumeId}"></td>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <td th:text="${jobApplication.jobPostId}"></td>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <td th:text="${jobApplication.isRead}"></td>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <td th:text="${#dates.format(jobApplication.appliedDate, 'yyyy-MM-dd HH:mm')}"></td>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <td>&ndash;&gt;-->
+<!--&lt;!&ndash;                                        <form th:action="@{/application/delete/{applicationId}(applicationId=${jobApplication.applicationId})}" method="post" style="display:inline;">&ndash;&gt;-->
+<!--&lt;!&ndash;                                            <input type="hidden" name="_method" value="delete"/> &lt;!&ndash; Spring이 DELETE 요청으로 처리하도록 설정 &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;                                            <button type="submit" class="btn btn-danger btn-sm">삭제</button>&ndash;&gt;-->
+<!--&lt;!&ndash;                                        </form>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    </td>&ndash;&gt;-->
+<!--&lt;!&ndash;                                </tr>&ndash;&gt;-->
+<!--&lt;!&ndash;                                </tbody>&ndash;&gt;-->
+<!--&lt;!&ndash;                            </table>&ndash;&gt;-->
+<!--&lt;!&ndash;                        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                </div>&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+<!--&lt;!&ndash;</body>&ndash;&gt;-->
+
+<!--&lt;!&ndash;</html><!DOCTYPE html>&ndash;&gt;-->
+<!--&lt;!&ndash;<html xmlns:th="http://www.thymeleaf.org"&ndash;&gt;-->
+<!--&lt;!&ndash;      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"&ndash;&gt;-->
+<!--&lt;!&ndash;      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"&ndash;&gt;-->
+<!--&lt;!&ndash;      layout:decorate="~{layout/layout}">&ndash;&gt;-->
+
+<!--&lt;!&ndash;<head>&ndash;&gt;-->
+<!--&lt;!&ndash;    <meta charset="utf-8">&ndash;&gt;-->
+<!--&lt;!&ndash;    <title>JobListing - Job Portal</title>&ndash;&gt;-->
+<!--&lt;!&ndash;    <meta content="width=device-width, initial-scale=1.0" name="viewport">&ndash;&gt;-->
+<!--&lt;!&ndash;    <meta content="" name="keywords">&ndash;&gt;-->
+<!--&lt;!&ndash;    <meta content="" name="description">&ndash;&gt;-->
+<!--&lt;!&ndash;    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">&ndash;&gt;-->
+<!--&lt;!&ndash;    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>&ndash;&gt;-->
+<!--&lt;!&ndash;    <style>&ndash;&gt;-->
+<!--&lt;!&ndash;        .scrap-button i.far {&ndash;&gt;-->
+<!--&lt;!&ndash;            color: green;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+<!--&lt;!&ndash;        .scrap-active i.fas {&ndash;&gt;-->
+<!--&lt;!&ndash;            color: red;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+<!--&lt;!&ndash;        .hidden { display: none; }&ndash;&gt;-->
+
+<!--&lt;!&ndash;    </style>&ndash;&gt;-->
+
+<!--&lt;!&ndash;    <meta name="_csrf" th:content="${_csrf.token}"/>&ndash;&gt;-->
+<!--&lt;!&ndash;    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>&ndash;&gt;-->
+<!--&lt;!&ndash;</head>&ndash;&gt;-->
+<!--&lt;!&ndash;<body>&ndash;&gt;-->
+<!--&lt;!&ndash;<div layout:fragment="content" class="container-xxl py-5">&ndash;&gt;-->
+<!--&lt;!&ndash;    <h1 class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">Job Listing</h1>&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="container">&ndash;&gt;-->
+<!--&lt;!&ndash;        &lt;!&ndash; Filter Form &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;        <div class="container-fluid bg-primary mb-5 wow fadeIn" data-wow-delay="0.1s" style="padding: 35px;">&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="container">&ndash;&gt;-->
+<!--&lt;!&ndash;                <div class="row g-2">&ndash;&gt;-->
+<!--&lt;!&ndash;                    <div class="col-md-10">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <div class="row g-2">&ndash;&gt;-->
+<!--&lt;!&ndash;                            <div class="col-md-3">&ndash;&gt;-->
+<!--&lt;!&ndash;                                <select id="filterAddress" class="form-select border-0">&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <option value="">지역</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <option value="서울">서울</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <option value="부산">부산</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    &lt;!&ndash; 다른 주소 추가 &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;                                </select>&ndash;&gt;-->
+<!--&lt;!&ndash;                            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <div class="col-md-3">&ndash;&gt;-->
+<!--&lt;!&ndash;                                <select id="filterEducation" class="form-select border-0">&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <option value="">학력</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <option value="학력무관">학력무관</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <option value="고졸">고졸이상</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <option value="초대졸">초대졸이상</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <option value="대졸">대졸이상</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    &lt;!&ndash; 다른 교육 수준 추가 &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;                                </select>&ndash;&gt;-->
+<!--&lt;!&ndash;                            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <div class="col-md-3">&ndash;&gt;-->
+<!--&lt;!&ndash;                                <select id="filterExperience" class="form-select border-0">&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <option value="">경력</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <option value="경력무관">경력무관</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <option value="신입">신입</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <option value="경력 1년">경력 1년이상</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <option value="경력 2년">경력 2년이상</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    &lt;!&ndash; 다른 경험 추가 &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;                                </select>&ndash;&gt;-->
+<!--&lt;!&ndash;                            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <div class="col-md-2">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <button id="applyFilters" class="btn btn-dark border-0 w-100">적용하기</button>&ndash;&gt;-->
+<!--&lt;!&ndash;                    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                </div>&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+
+
+
+<!--&lt;!&ndash;        <div class="tab-class text-center wow fadeInUp" data-wow-delay="0.3s">&ndash;&gt;-->
+<!--&lt;!&ndash;            <div id="tab-1" class="tab-pane fade show p-0 active">&ndash;&gt;-->
+<!--&lt;!&ndash;                <div id="jobList">&ndash;&gt;-->
+<!--&lt;!&ndash;                    <div th:each="jobPost : ${jobPosts}" class="job-item p-4 mb-4"&ndash;&gt;-->
+<!--&lt;!&ndash;                         th:data-address="${jobPost.address}"&ndash;&gt;-->
+<!--&lt;!&ndash;                         th:data-education="${jobPost.education}"&ndash;&gt;-->
+<!--&lt;!&ndash;                         th:data-experience="${jobPost.experience}">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <div class="row g-4">&ndash;&gt;-->
+<!--&lt;!&ndash;                            <div class="col-sm-12 col-md-8 d-flex align-items-center">&ndash;&gt;-->
+<!--&lt;!&ndash;                                <img class="flex-shrink-0 img-fluid border rounded"&ndash;&gt;-->
+<!--&lt;!&ndash;                                     th:src="@{'/jobPost/logo/' + ${jobPost.logoName}}"&ndash;&gt;-->
+<!--&lt;!&ndash;                                     alt="Company Logo" style="width: 80px; height: 80px;">&ndash;&gt;-->
+
+<!--&lt;!&ndash;                                <div class="text-start ps-4">&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <h5 class="mb-3" th:text="${jobPost.title}">Job Title</h5>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <span class="text-truncate me-3"><i&ndash;&gt;-->
+<!--&lt;!&ndash;                                            class="fa fa-map-marker-alt text-primary me-2"></i><span&ndash;&gt;-->
+<!--&lt;!&ndash;                                            th:text="${jobPost.address}">Location</span></span>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>Full Time</span>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i><span&ndash;&gt;-->
+<!--&lt;!&ndash;                                            th:text="${jobPost.salary}">Salary</span></span>&ndash;&gt;-->
+<!--&lt;!&ndash;                                </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">&ndash;&gt;-->
+<!--&lt;!&ndash;                                <div class="d-flex mb-3">&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <a class="btn btn-light btn-square me-3 scrap-button"&ndash;&gt;-->
+<!--&lt;!&ndash;                                       sec:authorize="hasRole('ROLE_USER')"&ndash;&gt;-->
+<!--&lt;!&ndash;                                       th:classappend="${scrapStatusMap[jobPost.jobPostId] != null and scrapStatusMap[jobPost.jobPostId] ? 'scrap-active' : ''}"&ndash;&gt;-->
+<!--&lt;!&ndash;                                       th:href="@{#}"&ndash;&gt;-->
+<!--&lt;!&ndash;                                       th:data-jobpostid="${jobPost.jobPostId}"&ndash;&gt;-->
+<!--&lt;!&ndash;                                       onclick="toggleScrap(event)">&ndash;&gt;-->
+<!--&lt;!&ndash;                                        <i th:classappend="${scrapStatusMap[jobPost.jobPostId] != null and scrapStatusMap[jobPost.jobPostId] ? 'fas fa-heart' : 'far fa-heart'}"></i>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    </a>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <a class="btn btn-primary"&ndash;&gt;-->
+<!--&lt;!&ndash;                                       th:href="@{/jobPost/detail/{jobPostId}(jobPostId=${jobPost.jobPostId})}">View</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                                </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <small class="text-truncate">&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <i class="far fa-calendar-alt text-primary me-2"></i>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <span th:text="${#dates.format(jobPost.endDate, 'yyyy-MM-dd')}"></span> Deadline&ndash;&gt;-->
+<!--&lt;!&ndash;                                </small>&ndash;&gt;-->
+<!--&lt;!&ndash;                            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                </div>&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;        <a class="btn btn-primary py-3 px-5" th:href="@{/jobPost/jobPostCreate}"&ndash;&gt;-->
+<!--&lt;!&ndash;           sec:authorize="hasRole('ROLE_COMPANY')">Post a Job</a>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+<!--&lt;!&ndash;</body>&ndash;&gt;-->
+<!--&lt;!&ndash;</html>&ndash;&gt;-->
+
+
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org"-->
+<!--      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"-->
+<!--      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"-->
+<!--      layout:decorate="~{layout/layout}">-->
+
+<!--<head>-->
+<!--    <meta charset="utf-8">-->
+<!--    <title>JobListing - Job Portal</title>-->
+<!--    <meta content="width=device-width, initial-scale=1.0" name="viewport">-->
+<!--    <meta content="" name="keywords">-->
+<!--    <meta content="" name="description">-->
+<!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">-->
+<!--    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
+<!--    <style>-->
+<!--        .scrap-button i.far {-->
+<!--            color: green;-->
+<!--        }-->
+<!--        .scrap-active i.fas {-->
+<!--            color: red;-->
+<!--        }-->
+<!--        .hidden { display: none; }-->
+
+<!--    </style>-->
+
+
+
+
+
+<!--    <meta name="_csrf" th:content="${_csrf.token}"/>-->
+<!--    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div layout:fragment="content" class="container-xxl py-5">-->
+<!--    <h1 class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">Job Listing</h1>-->
+<!--    <div class="container">-->
+<!--        &lt;!&ndash; Filter Form &ndash;&gt;-->
+<!--        <div class="container-fluid bg-primary mb-5 wow fadeIn" data-wow-delay="0.1s" style="padding: 35px;">-->
+<!--            <div class="container">-->
+<!--                <div class="row g-2">-->
+<!--                    <div class="col-md-10">-->
+<!--                        <div class="row g-2">-->
+<!--                            <div class="col-md-3">-->
+<!--                                <select id="filterAddress" class="form-select border-0">-->
+<!--                                    <option value="">지역</option>-->
+<!--                                    <option value="서울">서울</option>-->
+<!--                                    <option value="부산">부산</option>-->
+<!--                                    &lt;!&ndash; 다른 주소 추가 &ndash;&gt;-->
+<!--                                </select>-->
+<!--                            </div>-->
+<!--                            <div class="col-md-3">-->
+<!--                                <select id="filterEducation" class="form-select border-0">-->
+<!--                                    <option value="">학력</option>-->
+<!--                                    <option value="학력무관">학력무관</option>-->
+<!--                                    <option value="고졸">고졸이상</option>-->
+<!--                                    <option value="초대졸">초대졸이상</option>-->
+<!--                                    <option value="대졸">대졸이상</option>-->
+<!--                                    &lt;!&ndash; 다른 교육 수준 추가 &ndash;&gt;-->
+<!--                                </select>-->
+<!--                            </div>-->
+<!--                            <div class="col-md-3">-->
+<!--                                <select id="filterExperience" class="form-select border-0">-->
+<!--                                    <option value="">경력</option>-->
+<!--                                    <option value="경력무관">경력무관</option>-->
+<!--                                    <option value="신입">신입</option>-->
+<!--                                    <option value="경력 1년">경력 1년이상</option>-->
+<!--                                    <option value="경력 2년">경력 2년이상</option>-->
+<!--                                    &lt;!&ndash; 다른 경험 추가 &ndash;&gt;-->
+<!--                                </select>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="col-md-2">-->
+<!--                        <button id="applyFilters" class="btn btn-dark border-0 w-100">적용하기</button>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+
+
+<!--        &lt;!&ndash;                                <tr th:each="jobApplication  : ${applications}">&ndash;&gt;-->
+<!--        &lt;!&ndash;                                    <td th:text="${jobApplication.applicationId}"></td>&ndash;&gt;-->
+<!--        &lt;!&ndash;                                    <td th:text="${jobApplication.resumeId}"></td>&ndash;&gt;-->
+<!--        &lt;!&ndash;                                    <td th:text="${jobApplication.jobPostId}"></td>&ndash;&gt;-->
+<!--        &lt;!&ndash;                                    <td th:text="${jobApplication.isRead}"></td>&ndash;&gt;-->
+<!--        &lt;!&ndash;                                    <td th:text="${#dates.format(jobApplication.appliedDate, 'yyyy-MM-dd HH:mm')}"></td>&ndash;&gt;-->
+<!--        &lt;!&ndash;                                    <td>&ndash;&gt;-->
+
+<!--        <div class="tab-class text-center wow fadeInUp" data-wow-delay="0.3s">-->
+<!--            <div id="tab-1" class="tab-pane fade show p-0 active">-->
+<!--                <div id="jobList">-->
+<!--                    <div th:each="jobApplication  : ${applications}" class="job-item p-4 mb-4"-->
+<!--                         th:data-address="${jobApplication.applicationId}"-->
+<!--                         th:data-education="${jobApplication.resumeId}"-->
+<!--                         th:data-experience="${jobApplication.jobPostId}">-->
+<!--                        <div class="row g-4">-->
+<!--                            <div class="col-sm-12 col-md-8 d-flex align-items-center">-->
+<!--                                <img class="flex-shrink-0 img-fluid border rounded"-->
+<!--                                     th:src="@{'/jobPost/logo/' + ${jobPost.logoName}}"-->
+<!--                                     alt="Company Logo" style="width: 80px; height: 80px;">-->
+
+<!--                                <div class="text-start ps-4">-->
+<!--                                    <h5 class="mb-3" th:text="${jobApplication.isRead}">Job Title</h5>-->
+<!--                                    <span class="text-truncate me-3"><i-->
+<!--                                            class="fa fa-map-marker-alt text-primary me-2"></i><span-->
+<!--                                            th:text="${jobPost.address}">Location</span></span>-->
+<!--                                    <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>Full Time</span>-->
+<!--                                    <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i><span-->
+<!--                                            th:text="${jobPost.salary}">Salary</span></span>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">-->
+<!--                                <div class="d-flex mb-3">-->
+<!--                                    <a class="btn btn-light btn-square me-3 scrap-button"-->
+<!--                                       sec:authorize="hasRole('ROLE_USER')"-->
+<!--                                       th:classappend="${scrapStatusMap[jobPost.jobPostId] != null and scrapStatusMap[jobPost.jobPostId] ? 'scrap-active' : ''}"-->
+<!--                                       th:href="@{#}"-->
+<!--                                       th:data-jobpostid="${jobPost.jobPostId}"-->
+<!--                                       onclick="toggleScrap(event)">-->
+<!--                                        <i th:classappend="${scrapStatusMap[jobPost.jobPostId] != null and scrapStatusMap[jobPost.jobPostId] ? 'fas fa-heart' : 'far fa-heart'}"></i>-->
+<!--                                    </a>-->
+<!--                                    <a class="btn btn-primary"-->
+<!--                                       th:href="@{/jobPost/detail/{jobPostId}(jobPostId=${jobPost.jobPostId})}">View</a>-->
+<!--                                </div>-->
+<!--                                <small class="text-truncate">-->
+<!--                                    <i class="far fa-calendar-alt text-primary me-2"></i>-->
+<!--                                    <span th:text="${#dates.format(jobPost.endDate, 'yyyy-MM-dd')}"></span> Deadline-->
+<!--                                </small>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <a class="btn btn-primary py-3 px-5" th:href="@{/jobPost/jobPostCreate}"-->
+<!--           sec:authorize="hasRole('ROLE_COMPANY')">Post a Job</a>-->
+<!--    </div>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
@@ -6,65 +346,125 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Job Applications</title>
+    <title>JobListing - Job Portal</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .scrap-button i.far {
+            color: green;
+        }
+        .scrap-active i.fas {
+            color: red;
+        }
+        .hidden { display: none; }
+
+    </style>
+
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
-
 <body>
-<div layout:fragment="content" class="container-xxl bg-white p-0">
-    <!-- Job Applications Start -->
-    <div class="container-xxl py-5">
-        <div class="container">
-            <h1 class="text-center mb-5">지원 내역</h1>
+<div layout:fragment="content" class="container-xxl py-5">
+    <h1 class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">Job Listing</h1>
+    <div class="container">
+        <!-- Filter Form -->
+        <div class="container-fluid bg-primary mb-5 wow fadeIn" data-wow-delay="0.1s" style="padding: 35px;">
+            <div class="container">
+                <div class="row g-2">
+                    <div class="col-md-10">
+                        <div class="row g-2">
+                            <div class="col-md-3">
+                                <select id="filterAddress" class="form-select border-0">
+                                    <option value="">지역</option>
+                                    <option value="서울">서울</option>
+                                    <option value="부산">부산</option>
+                                    <!-- 다른 주소 추가 -->
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <select id="filterEducation" class="form-select border-0">
+                                    <option value="">학력</option>
+                                    <option value="학력무관">학력무관</option>
+                                    <option value="고졸">고졸이상</option>
+                                    <option value="초대졸">초대졸이상</option>
+                                    <option value="대졸">대졸이상</option>
+                                    <!-- 다른 교육 수준 추가 -->
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <select id="filterExperience" class="form-select border-0">
+                                    <option value="">경력</option>
+                                    <option value="경력무관">경력무관</option>
+                                    <option value="신입">신입</option>
+                                    <option value="경력 1년">경력 1년이상</option>
+                                    <option value="경력 2년">경력 2년이상</option>
+                                    <!-- 다른 경험 추가 -->
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <button id="applyFilters" class="btn btn-dark border-0 w-100">적용하기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-            <div class="tab-class text-center">
-                <ul class="nav nav-pills d-inline-flex justify-content-center border-bottom mb-5">
-                    <li class="nav-item">
-                        <a class="d-flex align-items-center text-start mx-3 ms-0 pb-3 active" data-bs-toggle="pill"
-                           href="#tab-1">
-                            <h6 class="mt-n1 mb-0">전체 지원 내역</h6>
-                        </a>
-                    </li>
-                </ul>
-                <div class="tab-content">
-                    <div id="tab-1" class="tab-pane fade show p-0 active">
-                        <div class="job-item p-4 mb-4">
-                            <table class="table table-bordered">
-                                <thead>
-                                <tr>
-                                    <th>지원 ID</th>
-                                    <th>이력서 ID</th>
-                                    <th>공고 ID</th>
-                                    <th>읽음 상태</th>
-                                    <th>지원 날짜</th>
-                                    <th>삭제</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr th:each="jobApplication  : ${applications}">
-                                    <td th:text="${jobApplication.applicationId}"></td>
-                                    <td th:text="${jobApplication.resumeId}"></td>
-                                    <td th:text="${jobApplication.jobPostId}"></td>
-                                    <td th:text="${jobApplication.isRead}"></td>
-                                    <td th:text="${#dates.format(jobApplication.appliedDate, 'yyyy-MM-dd HH:mm')}"></td>
-                                    <td>
-                                        <form th:action="@{/application/delete/{applicationId}(applicationId=${jobApplication.applicationId})}" method="post" style="display:inline;">
-                                            <input type="hidden" name="_method" value="delete"/> <!-- Spring이 DELETE 요청으로 처리하도록 설정 -->
-                                            <button type="submit" class="btn btn-danger btn-sm">삭제</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
+
+
+        <div class="tab-class text-center wow fadeInUp" data-wow-delay="0.3s">
+        <div id="tab-1" class="tab-pane fade show p-0 active">
+            <div id="jobList">
+                <div th:each="jobApplication : ${applications}" class="job-item p-4 mb-4"
+                     th:data-address="${jobApplication.jobPost.address}"
+                     th:data-education="${jobApplication.jobPost.education}"
+                     th:data-experience="${jobApplication.jobPost.experience}">
+                    <div class="row g-4">
+                        <div class="col-sm-12 col-md-8 d-flex align-items-center">
+                            <img class="flex-shrink-0 img-fluid border rounded"
+                                 th:src="@{'/jobPost/logo/' + ${jobApplication.jobPost.logoName}}"
+                                 alt="Company Logo" style="width: 80px; height: 80px;">
+
+                            <div class="text-start ps-4">
+                                <h5 class="mb-3" th:text="${jobApplication.jobPost.title}">Job Title</h5>
+                                <span class="text-truncate me-3">
+                                    <i class="fa fa-map-marker-alt text-primary me-2"></i>
+                                    <span th:text="${jobApplication.jobPost.address}">Location</span></span>
+
+
+                                <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>Full Time</span>
+
+
+                                <span class="text-truncate me-3">
+                                    <i class="far fas fa-search text-primary me-2"></i>
+                                    <span th:text="${jobApplication.isRead}"></span></span>
+
+                                    <span class="text-truncate me-0">
+                                        <i class="far fa-money-bill-alt text-primary me-2"></i>
+                                    <span th:text="${jobApplication.jobPost.salary}">Salary</span></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
+<!--                            <div class="d-flex mb-3">-->
+<!--                                <a class="btn btn-primary"-->
+<!--                                   th:href="@{/jobPost/detail/{jobPostId}(jobPostId=${jobPost.jobPostId})}">View</a>-->
+<!--                            </div>-->
+                            <small class="text-truncate">
+                                <i class="far fa-calendar-alt text-primary me-2"></i>
+                                <span th:text="${#dates.format(jobApplication.jobPost.endDate, 'yyyy-MM-dd')}"></span> Deadline
+                            </small>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+        <a class="btn btn-primary py-3 px-5" th:href="@{/jobPost/jobPostCreate}"
+           sec:authorize="hasRole('ROLE_COMPANY')">Post a Job</a>
+    </div>
 </div>
 </body>
-
 </html>
-
-
