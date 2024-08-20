@@ -55,4 +55,3 @@ public interface CompanyService extends UserDetailsService {
 
 
 }
-

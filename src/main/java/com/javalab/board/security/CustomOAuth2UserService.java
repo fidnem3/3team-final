@@ -12,6 +12,7 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
@@ -27,52 +28,77 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        log.info("userRequest....{}", userRequest);
+        try {
+            log.info("Processing userRequest: {}", userRequest);
 
-        ClientRegistration clientRegistration = userRequest.getClientRegistration();
-        String clientName = clientRegistration.getClientName();
+            ClientRegistration clientRegistration = userRequest.getClientRegistration();
+            String clientName = clientRegistration.getClientName();
 
-        if (!"GitHub".equals(clientName)) {
-            throw new OAuth2AuthenticationException("Unsupported client: " + clientName);
+            if (!"GitHub".equalsIgnoreCase(clientName) && !"Kakao".equalsIgnoreCase(clientName)) {
+                throw new OAuth2AuthenticationException(new OAuth2Error("unsupported_client", "Unsupported client: " + clientName, null));
+            }
+
+            log.info("ClientName: {}", clientName);
+
+            OAuth2User oAuth2User = super.loadUser(userRequest);
+            Map<String, Object> attributes = oAuth2User.getAttributes();
+            log.info("OAuth2User attributes: {}", attributes);
+
+            String userId;
+            String email;
+
+            if ("GitHub".equals(clientName)) {
+                userId = String.valueOf(attributes.get("id"));
+                email = (String) attributes.get("email");
+                log.info("GitHub userId: {}, email: {}", userId, email);
+            } else { // Kakao
+                Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
+                userId = String.valueOf(attributes.get("id"));
+                email = kakaoAccount != null ? (String) kakaoAccount.get("email") : null;
+
+                log.info("Kakao attributes: {}", attributes);
+                log.info("Kakao account: {}", kakaoAccount);
+                log.info("Kakao userId: {}, email: {}", userId, email);
+            }
+
+            log.info("Received ID: {}", userId);
+
+            return processUser(userId, email, attributes, clientName);
+        } catch (OAuth2AuthenticationException e) {
+            log.error("OAuth2 Authentication Exception: ", e);
+            throw e;
+        } catch (Exception e) {
+            log.error("Unexpected error in loadUser: ", e);
+            throw new OAuth2AuthenticationException(new OAuth2Error("authentication_error", "Authentication failed: " + e.getMessage(), null));
         }
-
-        log.info("clientName {} ", clientName);
-
-        OAuth2User oAuth2User = super.loadUser(userRequest);
-
-        Map<String, Object> attributes = oAuth2User.getAttributes();
-        String userId = String.valueOf(attributes.get("id")); // GitHub ID를 사용
-
-        log.info("===============================");
-        log.info("Received ID from GitHub: {}", userId);
-        log.info("===============================");
-
-        return processUser(userId, attributes);
     }
 
-    private OAuth2User processUser(String userId, Map<String, Object> attributes) {
+    private OAuth2User processUser(String userId, String email, Map<String, Object> attributes, String clientName) {
+        if ("GitHub".equals(clientName)) {
+            return processGitHubUser(userId, email, attributes);
+        } else { // Kakao
+            return processKakaoUser(userId, email, attributes);
+        }
+    }
+
+    private OAuth2User processGitHubUser(String userId, String email, Map<String, Object> attributes) {
         JobSeekerVo jobSeeker = loginMapper.loginJobSeeker(userId);
-        CompanyVo company = loginMapper.loginCompany(userId);
-        log.info("UserID: {}", userId);
+        log.info("JobSeeker found for userId {}: {}", userId, jobSeeker);
 
-        String email = (String) attributes.get("email");
-
-        if (jobSeeker == null && company == null) {   // DB에 저장된 사용자 정보가 없으면
-            String password = passwordEncoder.encode("1111"); // 기본 비밀번호 설정
-
+        if (jobSeeker == null) {
+            String password = passwordEncoder.encode("1111");
             Collection<SimpleGrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
-            log.info("New User Authorities: {}", authorities);
 
             JobSeekerVo newJobSeeker = new JobSeekerVo();
-            newJobSeeker.setJobSeekerId(userId); // ID로 설정
+            newJobSeeker.setJobSeekerId(userId);
             newJobSeeker.setPassword(password);
-            newJobSeeker.setConfirmPassword(password);
             newJobSeeker.setName("NoName");
             newJobSeeker.setEmail(email != null ? email : "noemail@example.com");
             newJobSeeker.setAddress("NoAddress");
             loginMapper.saveJobSeeker(newJobSeeker);
+            loginMapper.saveRole(userId, "USER");
 
-            loginMapper.saveRole(userId, "USER"); // "USER" 역할 저장
+            log.info("New JobSeeker created: {}", newJobSeeker);
 
             return new SocialMemberDto(
                     userId,
@@ -80,33 +106,62 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                     email != null ? email : "noemail@example.com",
                     authorities,
                     attributes,
-                    true // Indicate this is a social user
+                    true
             );
         } else {
-            Collection<SimpleGrantedAuthority> authorities;
-            String name;
-
-            if (jobSeeker != null) {
-                authorities = loginMapper.getRolesByUserId(jobSeeker.getJobSeekerId()).stream()
-                        .map(role -> new SimpleGrantedAuthority("ROLE_" + role)) // ROLE_ prefix 추가
-                        .collect(Collectors.toList());
-                name = jobSeeker.getName();
-            } else {
-                authorities = loginMapper.getRolesByUserId(company.getCompId()).stream()
-                        .map(role -> new SimpleGrantedAuthority("ROLE_" + role)) // ROLE_ prefix 추가
-                        .collect(Collectors.toList());
-                name = company.getCompanyName();
-            }
-
-            log.info("Existing User Authorities: {}", authorities);
+            Collection<SimpleGrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+            log.info("Authorities for user {}: {}", userId, authorities);
 
             return new SocialMemberDto(
                     userId,
-                    name,
+                    jobSeeker.getName(),
                     email != null ? email : "noemail@example.com",
                     authorities,
                     attributes,
-                    true // Indicate this is a social user
+                    true
+            );
+        }
+    }
+
+    private OAuth2User processKakaoUser(String userId, String email, Map<String, Object> attributes) {
+        CompanyVo company = loginMapper.loginCompany(userId);
+        log.info("Company found for userId {}: {}", userId, company);
+
+        if (company == null) {
+            String password = passwordEncoder.encode("1111");
+            Collection<SimpleGrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_COMPANY"));
+
+            CompanyVo newCompany = new CompanyVo();
+            newCompany.setCompId(userId);
+            newCompany.setPassword(password);
+            newCompany.setCompanyName("KakaoComapny");
+            newCompany.setEmail(email != null ? email : "noemail@example.com");
+            newCompany.setBusinessNumber("000-00-00000");
+            newCompany.setAddress("NoAddress");
+            loginMapper.saveCompany(newCompany);
+            loginMapper.saveRole(userId, "COMPANY");
+
+            log.info("New Company created: {}", newCompany);
+
+            return new SocialMemberDto(
+                    userId,
+                    "NoName",
+                    email != null ? email : "noemail@example.com",
+                    authorities,
+                    attributes,
+                    true
+            );
+        } else {
+            Collection<SimpleGrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_COMPANY"));
+            log.info("Authorities for user {}: {}", userId, authorities);
+
+            return new SocialMemberDto(
+                    userId,
+                    company.getCompanyName(),
+                    email != null ? email : "noemail@example.com",
+                    authorities,
+                    attributes,
+                    true
             );
         }
     }

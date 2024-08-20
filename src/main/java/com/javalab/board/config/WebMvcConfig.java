@@ -17,19 +17,14 @@ public class WebMvcConfig implements WebMvcConfigurer {
         // 기본적인 정적 리소스 경로 설정
         registry.addResourceHandler("/**")
                 .addResourceLocations("file:src/main/resources/static/");
+        registry.addResourceHandler("/jobPost/logo/**")
+                .addResourceLocations("file:/C:/filetest/upload/");
 
         // 이미지 업로드 경로 설정
         registry.addResourceHandler("/jobPost/uploaded/**")
                 .addResourceLocations("file:C:/filetest/upload/");
 
     }
-
-    // URL 경로와 파일 시스템 경로를 매핑
-    public void addResourceHandlers2(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/jobPost/logo/**")
-            .addResourceLocations("file:/C:/filetest/upload/");
-        }
-
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
@@ -39,6 +34,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .allowedHeaders("*")
                 .allowCredentials(true); // 자격 증명 허용
     }
-}
 
+}
 

@@ -69,6 +69,12 @@
                 <input type="url" id="homepage" th:field="*{homepage}" placeholder="홈페이지 URL을 입력해주세요 ex) http://..">
                 <div th:if="${#fields.hasErrors('homepage')}" th:errors="*{homepage}" class="fieldError">Invalid URL</div>
             </div>
+            <!-- 파일 첨부 -->
+            <div class="form-group" th:classappend="${#fields.hasErrors('file')}? 'has-error'">
+                <label for="file">파일 첨부</label>
+                <input type="file" id="file" th:field="*{file}">
+                <div th:if="${#fields.hasErrors('file')}" th:errors="*{file}" class="fieldError">Invalid File</div>
+            </div>
 
             <div class="form-group">
                 <label for="logoFile">Logo Image:</label>

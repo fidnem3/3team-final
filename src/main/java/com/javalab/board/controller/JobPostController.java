@@ -336,7 +336,6 @@ public class JobPostController {
         return "redirect:/error"; // 적절한 오류 페이지로 리다이렉트
     }
 
-
     @ResponseBody
     @PostMapping("/uploadImage")
     public void fileUpload(HttpServletRequest request, HttpServletResponse response, MultipartHttpServletRequest multiFile) throws IOException {
@@ -387,84 +386,5 @@ public class JobPostController {
             printWriter.println(json.toString());
         }
     }
-
-
-
-//    @ResponseBody
-//    @PostMapping("/uploadImage")
-//    public void fileUpload(HttpServletRequest request, HttpServletResponse response, MultipartHttpServletRequest multiFile) throws IOException {
-//        JsonObject json = new JsonObject();
-//        MultipartFile file = multiFile.getFile("upload");
-//
-//        if (file != null && file.getSize() > 0 && StringUtils.isNotBlank(file.getOriginalFilename())) {
-//            if (file.getContentType().toLowerCase().startsWith("image/")) {
-//                String filename = UUID.randomUUID().toString() + ".jpg";
-//                byte[] bytes = file.getBytes();
-//                String uploadPath = "C:\\filetest\\upload";
-//                File uploadFile = new File(uploadPath);
-//                if (!uploadFile.exists()) {
-//                    uploadFile.mkdirs();
-//                }
-//                String filepath = uploadPath + File.separator + filename;
-//
-//                try (OutputStream out = new FileOutputStream(filepath)) {
-//                    out.write(bytes);
-//
-//                    // 절대 URL 생성
-//                    String fileUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + "/jobPost/uploaded/" + filename;
-//
-//                    json.addProperty("uploaded", 1);
-//                    json.addProperty("fileName", filename);
-//                    json.addProperty("url", fileUrl);
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                    json.addProperty("uploaded", 0);
-//                    json.addProperty("error", "파일 업로드 중 오류 발생: " + e.getMessage());
-//                }
-//            } else {
-//                json.addProperty("uploaded", 0);
-//                json.addProperty("error", "이미지 파일만 업로드 가능합니다.");
-//            }
-//        } else {
-//            json.addProperty("uploaded", 0);
-//            json.addProperty("error", "유효하지 않은 파일");
-//        }
-//
-//        response.setContentType("application/json");
-//        try (PrintWriter printWriter = response.getWriter()) {
-//            printWriter.println(json.toString());
-//        }
-//    }
-//
-//    @RequestMapping(value = "/uploaded/{filename:.+}", method = RequestMethod.GET)
-//    @ResponseBody
-//    public void serveFile(@PathVariable("filename") String filename, HttpServletResponse response) throws IOException {
-//        String uploadPath = "C:\\filetest\\upload\\";
-//        File file = new File(uploadPath + filename);
-//
-//        if (file.exists() && !file.isDirectory()) {
-//            String mimeType = Files.probeContentType(file.toPath());
-//            if (mimeType == null) {
-//                mimeType = "application/octet-stream";
-//            }
-//            response.setContentType(mimeType);
-//            response.setContentLengthLong(file.length());
-//
-//            try (FileInputStream fileInputStream = new FileInputStream(file);
-//                 ServletOutputStream outputStream = response.getOutputStream()) {
-//
-//                byte[] buffer = new byte[1024];
-//                int bytesRead;
-//                while ((bytesRead = fileInputStream.read(buffer)) != -1) {
-//                    outputStream.write(buffer, 0, bytesRead);
-//                }
-//                outputStream.flush();
-//            } catch (IOException e) {
-//                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "파일 전송 중 오류 발생");
-//            }
-//        } else {
-//            response.sendError(HttpServletResponse.SC_NOT_FOUND, "파일을 찾을 수 없습니다");
-//        }
-//    }
 
 }
