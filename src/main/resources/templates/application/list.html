@@ -1,35 +1,70 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/layout}">
-<head>
-    <meta charset="UTF-8">
-    <title>Job Applications</title>
-</head>
-<body>
-<div layout:fragment="content" class="container mt-5">
-    <h2>My Job Applications</h2>
-    <table class="table table-bordered">
-        <thead>
-        <tr>
-            <th>Application ID</th>
-            <th>Resume ID</th>
-            <th>Job Post ID</th>
-            <th>Status</th>
-            <th>Applied Date</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="jobApplication  : ${applications}">
-            <td th:text="${jobApplication .applicationId}"></td>
-            <td th:text="${jobApplication .resumeId}"></td>
-            <td th:text="${jobApplication .jobPostId}"></td>
-            <td th:text="${jobApplication .status}"></td>
-            <td th:text="${#dates.format(jobApplication .appliedDate, 'yyyy-MM-dd HH:mm')}"></td>
-        </tr>
-        </tbody>
-    </table>
-</div>
 
+<head>
+    <meta charset="utf-8">
+    <title>Job Applications</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+</head>
+
+<body>
+<div layout:fragment="content" class="container-xxl bg-white p-0">
+    <!-- Job Applications Start -->
+    <div class="container-xxl py-5">
+        <div class="container">
+            <h1 class="text-center mb-5">지원 내역</h1>
+
+            <div class="tab-class text-center">
+                <ul class="nav nav-pills d-inline-flex justify-content-center border-bottom mb-5">
+                    <li class="nav-item">
+                        <a class="d-flex align-items-center text-start mx-3 ms-0 pb-3 active" data-bs-toggle="pill"
+                           href="#tab-1">
+                            <h6 class="mt-n1 mb-0">전체 지원 내역</h6>
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div id="tab-1" class="tab-pane fade show p-0 active">
+                        <div class="job-item p-4 mb-4">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>지원 ID</th>
+                                    <th>이력서 ID</th>
+                                    <th>공고 ID</th>
+                                    <th>읽음 상태</th>
+                                    <th>지원 날짜</th>
+                                    <th>삭제</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="jobApplication  : ${applications}">
+                                    <td th:text="${jobApplication.applicationId}"></td>
+                                    <td th:text="${jobApplication.resumeId}"></td>
+                                    <td th:text="${jobApplication.jobPostId}"></td>
+                                    <td th:text="${jobApplication.isRead}"></td>
+                                    <td th:text="${#dates.format(jobApplication.appliedDate, 'yyyy-MM-dd HH:mm')}"></td>
+                                    <td>
+                                        <form th:action="@{/application/delete/{applicationId}(applicationId=${jobApplication.applicationId})}" method="post" style="display:inline;">
+                                            <input type="hidden" name="_method" value="delete"/> <!-- Spring이 DELETE 요청으로 처리하도록 설정 -->
+                                            <button type="submit" class="btn btn-danger btn-sm">삭제</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
+
 </html>
+
+

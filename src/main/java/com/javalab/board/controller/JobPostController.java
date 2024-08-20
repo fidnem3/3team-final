@@ -156,12 +156,15 @@ public class JobPostController {
     }
 
 
+
     @GetMapping("/myJobPostList")
     public String getMyJobPosts(Model model) {
         List<JobPostVo> jobPosts = jobPostService.getJobPostsByCompany();
 
         model.addAttribute("jobPosts", jobPosts);
+
         return "jobPost/myJobPostList"; // Thymeleaf 템플릿 이름
+
     }
 
     @PostMapping("/completePayment")
@@ -309,8 +312,26 @@ public class JobPostController {
         return "redirect:/jobPost/myJobPostList";
     }
 
+    // 지원하기 기능
+    @PostMapping("/apply")
+    public String applyForJob(@RequestParam("resumeId") int resumeId,
+                              @RequestParam("jobPostId") Long jobPostId) {
 
+        // 현재 인증된 사용자 가져오기
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof CustomUserDetails) {
+            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+            String jobSeekerId = userDetails.getUsername();
 
+                // 서비스 메서드 호출
+            applicationService.applyForJob(resumeId, jobPostId, jobSeekerId);
+
+            return "redirect:/application/list"; // 지원이 완료된 후 리다이렉트할 페이지
+        }
+
+        // 인증 정보가 없는 경우 또는 처리 중 오류가 발생한 경우 처리
+        return "redirect:/error"; // 적절한 오류 페이지로 리다이렉트
+    }
 }
 
 

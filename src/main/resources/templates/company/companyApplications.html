@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Company Applications</title>
+    <style>
+        /* 읽지 않은 이력서 스타일 */
+        .unread {
+            font-weight: bold;
+            background-color: #f8d7da; /* 배경색을 변경하여 강조 */
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content" class="container mt-5">
+    <h2>Applications for Your Job Posts</h2>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Application ID</th>
+            <th>Resume ID</th>
+            <th>Job Post ID</th>
+            <th>Status</th>
+            <th>Applied Date</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="jobApplication : ${applications}"
+            th:classappend="${jobApplication.isRead == 'N'} ? 'unread'">
+            <td th:text="${jobApplication.applicationId}"></td>
+            <td th:text="${jobApplication.resumeId}"></td>
+            <td th:text="${jobApplication.jobPostId}"></td>
+            <td>
+                <span th:text="${jobApplication.isRead == 'N' ? 'Unread' : 'Read'}"></span>
+            </td>
+            <td th:text="${#dates.format(jobApplication.appliedDate, 'yyyy-MM-dd HH:mm')}"></td>
+            <td>
+                <a th:if="${jobApplication.isRead == 'N'}"
+                   href="javascript:void(0);"
+                   th:onclick="'openResumePopup(' + ${jobApplication.applicationId} + ',' + ${jobApplication.resumeId} + ')'"
+                   class="btn btn-sm btn-success">Mark as Read & View</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

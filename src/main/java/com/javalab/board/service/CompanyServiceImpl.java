@@ -1,5 +1,7 @@
 package com.javalab.board.service;
 
+import com.javalab.board.dto.ApplicationDto;
+import com.javalab.board.repository.ApplicationMapper;
 import com.javalab.board.repository.CompanyMapper;
 import com.javalab.board.repository.UserRolesMapper;
 import com.javalab.board.vo.CompanyVo;
@@ -25,6 +27,9 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Autowired
     private UserRolesMapper userRolesMapper;
+
+    @Autowired
+    private ApplicationMapper applicationMapper;
 
 
 
@@ -113,4 +118,22 @@ public class CompanyServiceImpl implements CompanyService {
     public CompanyVo getCompanyById(String compId) {
         return companyMapper.getCompanyById(compId);
     }
+
+    //알림 기능 시작
+
+    @Override
+    public boolean checkForUnreadApplications(String compId) {
+        return applicationMapper.countUnreadApplications(compId) > 0;
+    }
+
+    @Override
+    public List<ApplicationDto> getApplicationsByCompanyId(String compId) {
+        return applicationMapper.selectApplicationsByCompanyId(compId);
+    }
+
+    @Override
+    public void markApplicationAsRead(Long applicationId) {
+        applicationMapper.markApplicationAsRead(applicationId);
+    }
+
 }

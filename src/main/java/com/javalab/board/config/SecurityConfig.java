@@ -89,6 +89,7 @@ public class SecurityConfig {
 						.requestMatchers("/admin/adminPage").hasRole("ADMIN")
 						.requestMatchers("/admin/blacklist").hasRole("ADMIN")
 
+
 						.requestMatchers("/board/**", "/upload/**", "/jobPost/logo/**").permitAll()
 						.requestMatchers("/error").permitAll()  // /error 경로 접근 허용
 						.requestMatchers("/member/adminPage").hasRole("ADMIN")
