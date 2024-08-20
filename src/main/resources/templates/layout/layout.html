@@ -58,14 +58,14 @@
                         <a th:href="@{/jobPost/jobPostList}" class="dropdown-item">Job List</a>
                         <a th:href="@{/jobPost/myJobPostList}" class="dropdown-item" sec:authorize="hasRole('ROLE_COMPANY')">My Post</a>
                         <a th:href="@{/jobSeeker/scrap/list}" class="dropdown-item" sec:authorize="hasRole('ROLE_USER')">My Scrap</a>
-                        <a th:href="@{/admin/jobPostsList}" class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')">ManageBlackCom</a>
+<!--                        <a th:href="@{/admin/jobPostsList}" class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')">ManageBlackCom</a>-->
                     </div>
                 </div>
                 <div class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
                     <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">JobSeekers</a>
                     <div class="dropdown-menu rounded-0 m-0">
                         <a th:href="@{/admin/jobSeekerList}" class="dropdown-item">JobSeeker List</a>
-                        <a th:href="@{/jobSeeker/jobSeekerManagement}" class="dropdown-item">ManageBlackJob</a>
+<!--                        <a th:href="@{/jobSeeker/jobSeekerManagement}" class="dropdown-item">ManageBlackJob</a>-->
                     </div>
                 </div>
                 <div class="nav-item dropdown" sec:authorize="!hasRole('ROLE_ADMIN')">
@@ -509,27 +509,27 @@ function toggleScrap(event) {
 <!-- 블랙리스트 -->
 <script>
     $(document).ready(function () {
-   $('.dev-toggle-filter').click(function () {
-       $(this).toggleClass('open');
-       $(this).next('.filter-box').toggle();
-   });
+    $('.dev-toggle-filter').click(function () {
+        $(this).toggleClass('open');
+        $(this).next('.filter-box').toggle();
+    });
 
-   $('.dev-button-item').click(function () {
-       $(this).toggleClass('active').siblings().removeClass('active');
-   });
+    $('.dev-button-item').click(function () {
+        $(this).toggleClass('active').siblings().removeClass('active');
+    });
 
-   $('.search-reset').click(function () {
-       $(this).closest('.filter-box').find('.dev-button-item').removeClass('active');
-       $(this).closest('.filter-box').find('.dev-button-all').addClass('active');
-   });
+    $('.search-reset').click(function () {
+        $(this).closest('.filter-box').find('.dev-button-item').removeClass('active');
+        $(this).closest('.filter-box').find('.dev-button-all').addClass('active');
+    });
 
-   $('#resetCondition').click(function () {
-       $('.filter-box').find('.dev-button-item').removeClass('active');
-       $('.filter-box').find('.dev-button-all').addClass('active');
-       $('#searchForm')[0].reset();
-   });
+    $('#resetCondition').click(function () {
+        $('.filter-box').find('.dev-button-item').removeClass('active');
+        $('.filter-box').find('.dev-button-all').addClass('active');
+        $('#searchForm')[0].reset();
+    });
 
-    // 블랙리스트 토글 기능 추가
+    // 블랙리스트 토글 기능
     $('.toggle-blacklist').click(function() {
         var id = $(this).data('id');
         var type = $(this).data('type');
@@ -543,7 +543,6 @@ function toggleScrap(event) {
             $('#blacklistReasonModal').modal('show');
             $('#confirmBlacklist').data('id', id).data('type', type);
         }
-        applyFiltersButton.addEventListener('click', filterJobs);
     });
 
     $('#confirmBlacklist').click(function() {
@@ -571,13 +570,14 @@ function toggleScrap(event) {
                 xhr.setRequestHeader(header, token);
             },
             success: function(response) {
+                var button = $(`button[data-id="${id}"]`);
                 if(response.isBlacklisted) {
-                    $(`button[data-id="${id}"]`).text('블랙리스트 해제');
-                    $(`button[data-id="${id}"]`).closest('tr').find('td:nth-child(8)').text('블랙리스트');
+                    button.text('블랙리스트 해제');
+                    button.closest('tr').find('td:nth-child(7)').text('블랙리스트');
                     alert('블랙리스트에 추가되었습니다.');
                 } else {
-                    $(`button[data-id="${id}"]`).text('블랙리스트 등록');
-                    $(`button[data-id="${id}"]`).closest('tr').find('td:nth-child(8)').text('정상');
+                    button.text('블랙리스트 등록');
+                    button.closest('tr').find('td:nth-child(7)').text('정상');
                     alert('블랙리스트에서 제거되었습니다.');
                 }
             },
@@ -592,27 +592,44 @@ function toggleScrap(event) {
 
 
 <script>
-    function toggleBlacklist(jobSeekerId, compId) {
-        $.ajax({
-            url: '/admin/blacklist/toggle',
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify({jobSeekerId: jobSeekerId, compId: compId}),
-            beforeSend: function(xhr) {
-                xhr.setRequestHeader(/*[[${_csrf.headerName}]]*/, /*[[${_csrf.token}]]*/);
-            },
-            success: function(response) {
-                if (response.isBlacklisted !== undefined) {
-                    location.reload();
+    function toggleBlacklist(jobSeekerId, compId, button) {
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+
+    $.ajax({
+        url: '/admin/blacklist/toggle',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({
+            id: jobSeekerId || compId,
+            type: jobSeekerId ? 'jobSeeker' : 'company'
+        }),
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader(header, token);
+        },
+        success: function(response) {
+            if (response.isBlacklisted !== undefined) {
+                var row = $(button).closest('tr');
+                var statusCell = row.find('td:nth-child(5)');
+
+                if (response.isBlacklisted) {
+                    statusCell.html('<span class="badge bg-danger">블랙리스트</span>');
+                    $(button).text('블랙리스트 해제');
                 } else {
-                    alert('상태 변경에 실패했습니다.');
+                    statusCell.html('<span class="badge bg-success">정상</span>');
+                    $(button).text('블랙리스트 등록');
                 }
-            },
-            error: function() {
-                alert('서버와의 통신 중 오류가 발생했습니다.');
+                alert('상태가 변경되었습니다.');
+            } else {
+                alert('상태 변경에 실패했습니다.');
             }
-        });
-    }
+        },
+        error: function(xhr, status, error) {
+            console.error("Error:", error);
+            alert('서버와의 통신 중 오류가 발생했습니다.');
+        }
+    });
+}
 </script>
 
 <!--    jobpost 모달 스크립트-->

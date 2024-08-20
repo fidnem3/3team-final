@@ -3,8 +3,11 @@
 <mapper namespace="com.javalab.board.repository.BlacklistMapper">
 
     <insert id="addBlacklist" parameterType="com.javalab.board.dto.BlacklistDto">
+        <selectKey keyProperty="blackId" resultType="long" order="BEFORE">
+            SELECT BLACKLIST_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
         INSERT INTO blacklist (black_id, jobSeeker_id, comp_id, reason, blacklist_date, is_blacklisted, type)
-        VALUES (#{blackId,jdbcType=NUMERIC}, #{jobSeekerId,jdbcType=VARCHAR}, #{compId,jdbcType=VARCHAR},
+        VALUES (#{blackId}, #{jobSeekerId,jdbcType=VARCHAR}, #{compId,jdbcType=VARCHAR},
         #{reason,jdbcType=VARCHAR}, #{blacklistDate,jdbcType=TIMESTAMP},
         #{isBlacklisted,jdbcType=NUMERIC}, #{type,jdbcType=VARCHAR})
     </insert>
@@ -22,17 +25,24 @@
         SELECT * FROM (
         SELECT * FROM blacklist
         WHERE
-        (jobSeeker_id = #{id} AND type = 'jobSeeker')
-        OR (comp_id = #{id} AND type = 'company')
+        (jobSeeker_id = #{id,jdbcType=VARCHAR} AND type = 'jobSeeker')
+        OR (comp_id = #{id,jdbcType=VARCHAR} AND type = 'company')
+        ORDER BY blacklist_date DESC
         ) WHERE ROWNUM = 1
     </select>
 
     <select id="getAllBlacklist" resultType="com.javalab.board.dto.BlacklistDto">
-        SELECT * FROM blacklist
+        SELECT * FROM blacklist ORDER BY blacklist_date DESC
     </select>
 
     <select id="getActiveBlacklist" resultType="com.javalab.board.dto.BlacklistDto">
-        SELECT * FROM blacklist WHERE is_blacklisted = 1
+        SELECT * FROM blacklist WHERE is_blacklisted = 1 ORDER BY blacklist_date DESC
     </select>
+
+    <delete id="deleteBlacklist">
+        DELETE FROM blacklist
+        WHERE (jobSeeker_id = #{jobSeekerId} AND comp_id IS NULL)
+        OR (comp_id = #{compId} AND jobSeeker_id IS NULL)
+    </delete>
 
 </mapper>
