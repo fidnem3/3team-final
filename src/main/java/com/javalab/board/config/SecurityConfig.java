@@ -81,7 +81,7 @@ public class SecurityConfig {
 						.deleteCookies("JSESSIONID")
 				)
 				.authorizeHttpRequests(authorize -> authorize
-						.requestMatchers("/css/**", "/js/**", "/img/**", "/fonts/**", "/scss/**", "/lib/**", "/assets/**").permitAll()
+						.requestMatchers("/css/**", "/js/**", "/img/**", "/fonts/**", "/scss/**", "/lib/**", "/assets/**", "/static/**").permitAll()
 						.requestMatchers("/", "/home", "/about", "/contact", "/index", "/jobPost/jobPostList", "/jobPost/detail/**").permitAll()
 						.requestMatchers("/member/**", "/member/adminJoin", "/member/modify").permitAll()
 						.requestMatchers("/board/**", "/upload/**", "/jobPost/logo/**").permitAll()

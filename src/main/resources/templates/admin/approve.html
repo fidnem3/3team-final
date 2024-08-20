@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>기업 승인 페이지</title>
+    <!-- SweetAlert2를 위한 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <!-- SweetAlert2를 위한 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+<div class="container-xxl bg-white p-0">
+    <h1>기업 승인 페이지</h1>
+
+    <!-- CSRF 토큰을 포함한 메타 태그 -->
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+    <!-- 기업 목록 테이블 -->
+    <table id="companyTable">
+        <thead>
+        <tr>
+            <th>기업 ID</th>
+            <th>기업 이름</th>
+            <th>상태</th>
+            <th>액션</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="company : ${pendingCompanies}">
+            <td th:text="${company.compId}"></td>
+            <td th:text="${company.companyName}"></td>
+            <td class="status" th:text="${company.status}"></td> <!-- 상태를 텍스트로 표시 -->
+            <td>
+                <!-- 승인 버튼 -->
+                <button type="button" class="approve-btn" th:data-id="${company.compId}">승인</button>
+
+                <!-- 거절 버튼 -->
+                <button type="button" class="reject-btn" th:data-id="${company.compId}">거절</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function() {
+        var csrfToken = $("meta[name='_csrf']").attr("content");
+        var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+
+        // AJAX 요청 전역 설정
+        $.ajaxSetup({
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader(csrfHeader, csrfToken);
+            }
+        });
+
+        // 승인 버튼 클릭 시
+        $('.approve-btn').on('click', function() {
+            var compId = $(this).data('id');
+            Swal.fire({
+                title: '승인 하시겠습니까?',
+                text: "이 작업은 되돌릴 수 없습니다!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: '승인',
+                cancelButtonText: '취소'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/admin/approveCompany',
+                        type: 'POST',
+                        data: { compId: compId },
+                        success: function(response) {
+                            Swal.fire('승인 완료', response, 'success').then(() => {
+                                // 상태 업데이트
+                                var row = $('button.approve-btn[data-id="' + compId + '"]').closest('tr');
+                                row.find('.status').text('승인됨');  // 상태를 "승인됨"으로 변경
+                                row.find('.approve-btn').prop('disabled', true);  // 승인 버튼 비활성화
+                                row.find('.reject-btn').prop('disabled', true);   // 거절 버튼 비활성화
+                            });
+                        },
+                        error: function(xhr) {
+                            Swal.fire('오류', xhr.responseText, 'error');
+                        }
+                    });
+                }
+            });
+        });
+
+        // 거절 버튼 클릭 시
+        $('.reject-btn').on('click', function() {
+            var compId = $(this).data('id');
+            Swal.fire({
+                title: '거절 하시겠습니까?',
+                text: "이 작업은 되돌릴 수 없습니다!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: '거절',
+                cancelButtonText: '취소'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/admin/rejectCompany',
+                        type: 'POST',
+                        data: { compId: compId },
+                        success: function(response) {
+                            Swal.fire('거절 완료', response, 'success').then(() => {
+                                // 상태 업데이트
+                                var row = $('button.reject-btn[data-id="' + compId + '"]').closest('tr');
+                                row.find('.status').text('거절됨');  // 상태를 "거절됨"으로 변경
+                                row.find('.approve-btn').prop('disabled', true);  // 승인 버튼 비활성화
+                                row.find('.reject-btn').prop('disabled', true);   // 거절 버튼 비활성화
+                            });
+                        },
+                        error: function(xhr) {
+                            Swal.fire('오류', xhr.responseText, 'error');
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

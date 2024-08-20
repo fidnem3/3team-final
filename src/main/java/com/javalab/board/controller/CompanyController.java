@@ -95,4 +95,6 @@ public class CompanyController {
             return "redirect:/company/detail";
         }
     }
+
+
 }
