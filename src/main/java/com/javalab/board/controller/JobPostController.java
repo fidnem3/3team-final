@@ -5,6 +5,11 @@ import com.javalab.board.dto.ResumeDto;
 import com.javalab.board.security.dto.CustomUserDetails;
 import com.javalab.board.service.*;
 import com.javalab.board.vo.*;
+import com.nimbusds.jose.shaded.gson.JsonObject;
+import com.nimbusds.oauth2.sdk.util.StringUtils;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -18,15 +23,17 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -105,7 +112,7 @@ public class JobPostController {
         Long jobPostId = jobPostService.saveJobPost(jobPostVo);
 
         // 게시물 목록 페이지로 리다이렉트
-        return "redirect:/jobPost/jobPostList";
+        return "redirect:/jobPost/myJobPostList";
     }
 
 
@@ -328,10 +335,136 @@ public class JobPostController {
         // 인증 정보가 없는 경우 또는 처리 중 오류가 발생한 경우 처리
         return "redirect:/error"; // 적절한 오류 페이지로 리다이렉트
     }
+
+
+    @ResponseBody
+    @PostMapping("/uploadImage")
+    public void fileUpload(HttpServletRequest request, HttpServletResponse response, MultipartHttpServletRequest multiFile) throws IOException {
+        JsonObject json = new JsonObject();
+        MultipartFile file = multiFile.getFile("upload");
+
+        if (file != null && file.getSize() > 0 && StringUtils.isNotBlank(file.getOriginalFilename())) {
+            if (file.getContentType().toLowerCase().startsWith("image/")) {
+                String filename = UUID.randomUUID().toString() + ".jpg";
+                byte[] bytes = file.getBytes();
+                String uploadPath = "C:/filetest/upload";
+                File uploadFile = new File(uploadPath);
+                if (!uploadFile.exists()) {
+                    uploadFile.mkdirs();
+                }
+                String filepath = uploadPath + File.separator + filename;
+
+                try (OutputStream out = new FileOutputStream(filepath)) {
+                    out.write(bytes);
+
+                    String fileUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + "/jobPost/uploaded/" + filename;
+
+                    String callback = request.getParameter("CKEditorFuncNum");
+
+                    response.setContentType("text/html; charset=UTF-8");  // UTF-8 인코딩 설정
+                    try (PrintWriter printWriter = response.getWriter()) {
+                        printWriter.println("<script type='text/javascript'>"
+                                + "window.parent.CKEDITOR.tools.callFunction("
+                                + callback + ",'" + fileUrl + "','이미지가 업로드되었습니다.')"
+                                + "</script>");
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    json.addProperty("uploaded", 0);
+                    json.addProperty("error", "파일 업로드 중 오류 발생: " + e.getMessage());
+                }
+            } else {
+                json.addProperty("uploaded", 0);
+                json.addProperty("error", "이미지 파일만 업로드 가능합니다.");
+            }
+        } else {
+            json.addProperty("uploaded", 0);
+            json.addProperty("error", "유효하지 않은 파일");
+        }
+
+        response.setContentType("application/json; charset=UTF-8");  // UTF-8 인코딩 설정
+        try (PrintWriter printWriter = response.getWriter()) {
+            printWriter.println(json.toString());
+        }
+    }
+
+
+
+//    @ResponseBody
+//    @PostMapping("/uploadImage")
+//    public void fileUpload(HttpServletRequest request, HttpServletResponse response, MultipartHttpServletRequest multiFile) throws IOException {
+//        JsonObject json = new JsonObject();
+//        MultipartFile file = multiFile.getFile("upload");
+//
+//        if (file != null && file.getSize() > 0 && StringUtils.isNotBlank(file.getOriginalFilename())) {
+//            if (file.getContentType().toLowerCase().startsWith("image/")) {
+//                String filename = UUID.randomUUID().toString() + ".jpg";
+//                byte[] bytes = file.getBytes();
+//                String uploadPath = "C:\\filetest\\upload";
+//                File uploadFile = new File(uploadPath);
+//                if (!uploadFile.exists()) {
+//                    uploadFile.mkdirs();
+//                }
+//                String filepath = uploadPath + File.separator + filename;
+//
+//                try (OutputStream out = new FileOutputStream(filepath)) {
+//                    out.write(bytes);
+//
+//                    // 절대 URL 생성
+//                    String fileUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + "/jobPost/uploaded/" + filename;
+//
+//                    json.addProperty("uploaded", 1);
+//                    json.addProperty("fileName", filename);
+//                    json.addProperty("url", fileUrl);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                    json.addProperty("uploaded", 0);
+//                    json.addProperty("error", "파일 업로드 중 오류 발생: " + e.getMessage());
+//                }
+//            } else {
+//                json.addProperty("uploaded", 0);
+//                json.addProperty("error", "이미지 파일만 업로드 가능합니다.");
+//            }
+//        } else {
+//            json.addProperty("uploaded", 0);
+//            json.addProperty("error", "유효하지 않은 파일");
+//        }
+//
+//        response.setContentType("application/json");
+//        try (PrintWriter printWriter = response.getWriter()) {
+//            printWriter.println(json.toString());
+//        }
+//    }
+//
+//    @RequestMapping(value = "/uploaded/{filename:.+}", method = RequestMethod.GET)
+//    @ResponseBody
+//    public void serveFile(@PathVariable("filename") String filename, HttpServletResponse response) throws IOException {
+//        String uploadPath = "C:\\filetest\\upload\\";
+//        File file = new File(uploadPath + filename);
+//
+//        if (file.exists() && !file.isDirectory()) {
+//            String mimeType = Files.probeContentType(file.toPath());
+//            if (mimeType == null) {
+//                mimeType = "application/octet-stream";
+//            }
+//            response.setContentType(mimeType);
+//            response.setContentLengthLong(file.length());
+//
+//            try (FileInputStream fileInputStream = new FileInputStream(file);
+//                 ServletOutputStream outputStream = response.getOutputStream()) {
+//
+//                byte[] buffer = new byte[1024];
+//                int bytesRead;
+//                while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+//                    outputStream.write(buffer, 0, bytesRead);
+//                }
+//                outputStream.flush();
+//            } catch (IOException e) {
+//                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "파일 전송 중 오류 발생");
+//            }
+//        } else {
+//            response.sendError(HttpServletResponse.SC_NOT_FOUND, "파일을 찾을 수 없습니다");
+//        }
+//    }
+
 }
-
-
-
-
-
-

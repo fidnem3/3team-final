@@ -13,7 +13,7 @@
     <!-- Favicon -->
     <link th:href="@{/img/favicon.ico}" rel="icon">
 
-    <script src="//cdn.ckeditor.com/4.22.1/full/ckeditor.js"></script>
+    <script src="//cdn.ckeditor.com/4.22.1/full-all/ckeditor.js"></script>
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -35,7 +35,6 @@
     <!-- Template Stylesheet -->
     <link th:href="@{/css/style.css}" rel="stylesheet">
 
-    <script src="https://cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
 </head>
 <body>
 <header>
@@ -349,7 +348,6 @@ function toggleScrap(event) {
     .catch(error => console.error('Error:', error));
 }
 
-    CKEDITOR.replace('editor1');
 </script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -455,7 +453,6 @@ function toggleScrap(event) {
     .catch(error => console.error('Error:', error));
 }
 
-    CKEDITOR.replace('editor1');
 </script>
 <script>
     $(document).ready(function () {
@@ -591,29 +588,29 @@ function toggleScrap(event) {
 </script>
 
 
-<script>
-    function toggleBlacklist(jobSeekerId, compId) {
-        $.ajax({
-            url: '/admin/blacklist/toggle',
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify({jobSeekerId: jobSeekerId, compId: compId}),
-            beforeSend: function(xhr) {
-                xhr.setRequestHeader(/*[[${_csrf.headerName}]]*/, /*[[${_csrf.token}]]*/);
-            },
-            success: function(response) {
-                if (response.isBlacklisted !== undefined) {
-                    location.reload();
-                } else {
-                    alert('상태 변경에 실패했습니다.');
-                }
-            },
-            error: function() {
-                alert('서버와의 통신 중 오류가 발생했습니다.');
-            }
-        });
-    }
-</script>
+<!--<script>-->
+<!--    function toggleBlacklist(jobSeekerId, compId) {-->
+<!--        $.ajax({-->
+<!--            url: '/admin/blacklist/toggle',-->
+<!--            type: 'POST',-->
+<!--            contentType: 'application/json',-->
+<!--            data: JSON.stringify({jobSeekerId: jobSeekerId, compId: compId}),-->
+<!--            beforeSend: function(xhr) {-->
+<!--                xhr.setRequestHeader(/*[[${_csrf.headerName}]]*/, /*[[${_csrf.token}]]*/);-->
+<!--            },-->
+<!--            success: function(response) {-->
+<!--                if (response.isBlacklisted !== undefined) {-->
+<!--                    location.reload();-->
+<!--                } else {-->
+<!--                    alert('상태 변경에 실패했습니다.');-->
+<!--                }-->
+<!--            },-->
+<!--            error: function() {-->
+<!--                alert('서버와의 통신 중 오류가 발생했습니다.');-->
+<!--            }-->
+<!--        });-->
+<!--    }-->
+<!--</script>-->
 
 <!--    jobpost 모달 스크립트-->
 <script>
@@ -642,6 +639,15 @@ function toggleScrap(event) {
     reader.readAsDataURL(file);
     }
     });
+</script>
+
+<script>
+    CKEDITOR.replace('editor1', {
+    filebrowserUploadUrl: '/jobPost/uploadImage',
+    filebrowserImageUploadUrl: '/jobPost/uploadImage', // 이미지 업로드 URL 추가
+    filebrowserUploadMethod: 'form',
+    clipboard_handleImages: false
+});
 </script>
 </body>
 </html>

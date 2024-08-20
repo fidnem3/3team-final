@@ -61,6 +61,9 @@ public class SecurityConfig {
 				.headers(headers -> headers
 						.frameOptions(frameOptions -> frameOptions.sameOrigin()) // 람다 기반 DSL 사용
 				)
+				.csrf(csrf -> csrf
+						.ignoringRequestMatchers(new AntPathRequestMatcher("/jobPost/uploadImage"))
+				)
 				.formLogin(formLogin -> formLogin
 						.loginPage("/member/login")
 						.loginProcessingUrl("/member/action")
@@ -89,6 +92,7 @@ public class SecurityConfig {
 						.requestMatchers("/", "/home", "/about", "/contact", "/index", "/jobPost/jobPostList", "/jobPost/detail/**").permitAll()
 						.requestMatchers("/member/**", "/member/adminJoin").permitAll()
 						.requestMatchers("/board/**").permitAll()
+						.requestMatchers("/jobPost/uploadImage").permitAll()
 						.requestMatchers("/admin/adminPage").hasRole("ADMIN")
 						.requestMatchers("/admin/blacklist").hasRole("ADMIN")
 

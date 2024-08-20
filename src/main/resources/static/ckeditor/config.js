@@ -7,6 +7,4 @@ CKEDITOR.editorConfig = function( config ) {
 	// Define changes to default configuration here. For example:
 	// config.language = 'fr';
 	// config.uiColor = '#AADC6E';
-	config.extraPlugins = 'imageuploader';
-    config.filebrowserUploadUrl = '/jobPost/upload';  // 맞는 URL로 변경
 };
