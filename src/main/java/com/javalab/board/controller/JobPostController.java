@@ -103,8 +103,6 @@ public class JobPostController {
                 .address(createJobPostRequestDto.getAddress())
                 .endDate(createJobPostRequestDto.getEndDate())
                 .homepage(createJobPostRequestDto.getHomepage())
-                .filepath(createJobPostRequestDto.getFilepath())
-                .filename(createJobPostRequestDto.getFilename())
                 .status("Before payment")
                 .build();
 
@@ -135,6 +133,7 @@ public class JobPostController {
             // 필터가 있는 경우 해당 조건으로 공고를 필터링
             jobPosts = jobPostService.getJobPostsByFilters(address, education, experience);
         }
+
 
 
         String jobSeekerId = authentication != null && authentication.getPrincipal() instanceof UserDetails

@@ -85,9 +85,9 @@
                         <div class="row g-4">
                             <div class="col-sm-12 col-md-8 d-flex align-items-center">
 
-<!--                                <img class="flex-shrink-0 img-fluid border rounded"-->
-<!--                                     th:src="@{}"-->
-<!--                                     alt="Company Logo" style="width: 80px; height: 80px;">-->
+                                <img class="flex-shrink-0 img-fluid border rounded"
+                                     th:src="@{'/jobPost/logo/' + ${jobPost.logoName}}"
+                                     alt="Company Logo" style="width: 80px; height: 80px;">
 
                                 <div class="text-start ps-4">
                                     <h5 class="mb-3" th:text="${jobPost.title}">Job Title</h5>
