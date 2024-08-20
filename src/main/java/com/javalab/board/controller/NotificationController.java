@@ -1,5 +1,6 @@
 package com.javalab.board.controller;
 
+import com.javalab.board.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,10 @@ import java.io.IOException;
 public class NotificationController {
 
     private final ApplicationService applicationService;
+
+    private NotificationService notificationService;
+
+
 
     @Autowired
     public NotificationController(ApplicationService applicationService) {

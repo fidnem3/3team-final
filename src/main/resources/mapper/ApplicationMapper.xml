@@ -80,10 +80,12 @@
     <!-- 알림 기능 시작-->
 
     <!-- 회사 ID로 읽지 않은 지원서 개수를 세는 쿼리 -->
-    <select id="countUnreadApplications" parameterType="string" resultType="int">
+    <select id="countUnreadApplications" parameterType="String" resultType="int">
         SELECT COUNT(*)
-        FROM application
-        WHERE comp_id = #{compId} AND is_read = 'N'
+        FROM application a
+        JOIN jobpost jp ON a.jobpost_id = jp.jobpost_id
+        JOIN company c ON jp.comp_id = c.comp_id
+        WHERE c.comp_id = #{compId} AND a.is_read = 'N'
     </select>
 
     <!-- 특정 지원서를 읽음으로 표시하는 쿼리 -->

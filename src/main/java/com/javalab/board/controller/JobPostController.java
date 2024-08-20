@@ -117,10 +117,10 @@ public class JobPostController {
 
     @GetMapping("/jobPostList")
     public String listJobPosts(
-            @RequestParam(required = false) String address,
-            @RequestParam(required = false) String education,
-            @RequestParam(required = false) String experience,
-            @RequestParam(required = false, defaultValue = "") String keyword,
+            @RequestParam(name = "address", required = false) String address,
+            @RequestParam(name = "education", required = false) String education,
+            @RequestParam(name = "experience", required = false) String experience,
+            @RequestParam(name = "keyword", required = false, defaultValue = "") String keyword,
             Model model,
             Authentication authentication) {
 
