@@ -35,4 +35,9 @@ public interface CompanyMapper {
 
     // 기업 ID로 기업 조회
     CompanyVo getCompanyById(String compId);
+
+    //읽기 조회
+    void markApplicationAsRead(Long applicationId);
+
+
 }

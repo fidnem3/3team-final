@@ -1,5 +1,7 @@
 package com.javalab.board.controller;
 
+import com.javalab.board.dto.ApplicationDto;
+import com.javalab.board.service.ApplicationService;
 import com.javalab.board.service.CompanyService;
 import com.javalab.board.vo.CompanyVo;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,11 +10,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/company")
@@ -20,6 +21,10 @@ public class CompanyController {
 
     @Autowired
     private CompanyService companyService;
+
+    @Autowired
+    private ApplicationService applicationService;
+
 
     /**
      * 기업의 상세 정보를 보여주는 페이지로 이동합니다.
@@ -95,4 +100,72 @@ public class CompanyController {
             return "redirect:/company/detail";
         }
     }
+
+
+
+    //알림 기능 시작
+    @GetMapping("/dashboard")
+    public String showDashboard(Model model, Authentication authentication) {
+        String companyId = authentication.getName();
+        boolean hasUnreadApplications = companyService.checkForUnreadApplications(companyId);
+
+        model.addAttribute("hasUnreadApplications", hasUnreadApplications);
+        if (hasUnreadApplications) {
+            model.addAttribute("notification", "새로운 이력서가 접수되었습니다.");
+        }
+
+        return "company/dashboard";
+    }
+
+    @PostMapping("/applications/read/{applicationId}")
+    public String markApplicationAsRead(@PathVariable Long applicationId) {
+        companyService.markApplicationAsRead(applicationId);
+        return "redirect:/company/dashboard"; // 읽은 후 다시 대시보드로 리다이렉트
+    }
+
+
+
+    @GetMapping("/applications")
+    public String viewCompanyApplications(Model model, Authentication authentication) {
+        String companyId = authentication.getName();  // 로그인한 회사의 ID 가져오기
+
+        System.out.println(companyId);
+
+        // 회사의 공고에 지원한 이력서 목록 가져오기
+        List<ApplicationDto> applications = applicationService.getApplicationsByCompanyId(companyId);
+
+        model.addAttribute("applications", applications);
+        return "company/companyApplications";  // 지원 내역을 보여줄 페이지
+    }
+
+//    @GetMapping("/applications/markAsRead/{applicationId}")
+//    public String markApplicationAsRead(@PathVariable("applicationId") Long applicationId, Authentication authentication, RedirectAttributes redirectAttributes) {
+//
+//        String companyId = authentication.getName();  // 로그인한 회사의 ID 가져오기
+//
+//        companyService.markApplicationAsRead(applicationId);
+//
+//        redirectAttributes.addFlashAttribute("message", "이력서를 읽음 상태로 표시했습니다.");
+//        return "redirect:/company/applications";  // 다시 이력서 목록으로 리다이렉트
+//    }
+
+
+    @GetMapping("/applications/markAsReadAndView/{resumeId}")
+    public String markApplicationAsReadAndView(@PathVariable("resumeId") Long resumeId,
+                                               @RequestParam("applicationId") Long applicationId,
+                                               Authentication authentication,
+                                               RedirectAttributes redirectAttributes) {
+
+        String companyId = authentication.getName();  // 로그인한 회사의 ID 가져오기
+
+        // 이력서를 읽음으로 표시
+        companyService.markApplicationAsRead(applicationId);
+
+        // 이력서 상세 페이지로 리다이렉트
+        return "redirect:/resume/detail/" + resumeId;
+    }
+
+
+
+
 }

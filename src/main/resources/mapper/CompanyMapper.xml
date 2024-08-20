@@ -95,5 +95,12 @@
         WHERE comp_id = #{compId}
     </select>
 
+    <!-- 특정 지원서를 읽음으로 표시하는 쿼리 -->
+    <update id="markApplicationAsRead" parameterType="long">
+        UPDATE application
+        SET is_read = 'Y'
+        WHERE application_id = #{applicationId}
+    </update>
+
 
 </mapper>
