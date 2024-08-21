@@ -18,7 +18,6 @@ import java.io.IOException;
 @Log4j2
 public class AuthFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
-
     private final CompanyMapper companyMapper;
     private final JobSeekerMapper jobSeekerMapper;
 
@@ -33,21 +32,55 @@ public class AuthFailureHandler extends SimpleUrlAuthenticationFailureHandler {
         log.info("AuthFailureHandler onAuthenticationFailure");
         log.error("Authentication failed: ", exception);  // 예외 로깅 추가
 
-
         String msg;
         String errorType;
 
         String username = request.getParameter("username");
         String userType = request.getParameter("userType");
 
-
-
-        if ("jobSeeker".equals(userType) && companyMapper.selectCompanyById(username) != null) {
-            msg = "개인 회원 로그인 폼에서는 기업 회원으로 로그인할 수 없습니다.";
-            errorType = "wrong_form_company";
-        } else if ("company".equals(userType) && jobSeekerMapper.selectJobSeekerById(username) != null) {
-            msg = "기업 회원 로그인 폼에서는 개인 회원으로 로그인할 수 없습니다.";
-            errorType = "wrong_form_jobSeeker";
+        if ("jobSeeker".equals(userType)) {
+            if (companyMapper.selectCompanyById(username) != null) {
+                // 개인 사용자로 로그인하려는 경우 기업 사용자로 로그인할 수 없음
+                msg = "개인 회원 로그인 폼에서는 기업 회원으로 로그인할 수 없습니다.";
+                errorType = "wrong_form_company";
+            } else {
+                // 개인 사용자로 로그인하려는 경우
+                var jobSeeker = jobSeekerMapper.selectJobSeekerById(username);
+                if (jobSeeker != null) {
+                    msg = "아이디 또는 비밀번호가 올바르지 않습니다.";
+                    errorType = "invalid_credentials";
+                } else {
+                    msg = "아이디 또는 비밀번호가 올바르지 않습니다.";
+                    errorType = "invalid_credentials";
+                }
+            }
+        } else if ("company".equals(userType)) {
+            if (jobSeekerMapper.selectJobSeekerById(username) != null) {
+                // 기업 사용자로 로그인하려는 경우 개인 사용자로 로그인할 수 없음
+                msg = "기업 회원 로그인 폼에서는 개인 회원으로 로그인할 수 없습니다.";
+                errorType = "wrong_form_jobSeeker";
+            } else {
+                // 기업 사용자로 로그인하려는 경우
+                var company = companyMapper.selectCompanyById(username);
+                if (company != null) {
+                    switch (company.getStatus()) {
+                        case "PENDING":
+                            msg = "계정이 승인 대기 중입니다. 승인을 기다려주세요.";
+                            errorType = "pending";
+                            break;
+                        case "REJECTED":
+                            msg = "계정이 거절되었습니다. 관리자에게 문의하세요.";
+                            errorType = "rejected";
+                            break;
+                        default:
+                            msg = "아이디 또는 비밀번호가 올바르지 않습니다.";
+                            errorType = "invalid_credentials";
+                    }
+                } else {
+                    msg = "아이디 또는 비밀번호가 올바르지 않습니다.";
+                    errorType = "invalid_credentials";
+                }
+            }
         } else if (exception instanceof BadCredentialsException) {
             msg = "아이디 또는 비밀번호가 올바르지 않습니다.";
             errorType = "invalid_credentials";
