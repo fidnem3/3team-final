@@ -5,47 +5,98 @@
 
 <mapper namespace="com.javalab.board.repository.ApplicationMapper">
 
+
     <!-- ApplicationDto와 매핑되는 ResultMap -->
     <resultMap id="ApplicationMap" type="com.javalab.board.dto.ApplicationDto">
         <id property="applicationId" column="APPLICATION_ID" />
         <result property="resumeId" column="RESUME_ID" />
         <result property="jobPostId" column="JOBPOST_ID" />
         <result property="jobSeekerId" column="JOBSEEKER_ID" />
-        <result property="status" column="STATUS" />
         <result property="appliedDate" column="APPLIED_DATE" />
+        <result property="isRead" column="IS_READ" />
     </resultMap>
+
 
     <!-- 지원서 제출 (INSERT) -->
     <insert id="insertApplication" parameterType="com.javalab.board.dto.ApplicationDto">
-        INSERT INTO APPLICATION (APPLICATION_ID, RESUME_ID, JOBPOST_ID, JOBSEEKER_ID, STATUS, APPLIED_DATE ,Created)
-        VALUES (APPLICATION_SEQ.NEXTVAL, #{resumeId}, #{jobPostId}, #{jobSeekerId}, #{status}, SYSDATE , SYSDATE )
+        INSERT INTO APPLICATION (APPLICATION_ID, RESUME_ID, JOBPOST_ID, JOBSEEKER_ID,  APPLIED_DATE ,Created)
+        VALUES (APPLICATION_SEQ.NEXTVAL, #{resumeId}, #{jobPostId}, #{jobSeekerId},  SYSDATE , SYSDATE )
     </insert>
 
     <!-- 특정 jobSeekerId에 해당하는 지원서 조회 (SELECT) -->
     <select id="selectApplicationsByJobSeekerId" parameterType="String" resultMap="ApplicationMap">
-        SELECT APPLICATION_ID, RESUME_ID, JOBPOST_ID, JOBSEEKER_ID, STATUS, APPLIED_DATE
+        SELECT APPLICATION_ID, RESUME_ID, JOBPOST_ID, JOBSEEKER_ID, is_read, APPLIED_DATE
         FROM APPLICATION
         WHERE JOBSEEKER_ID = #{jobSeekerId}
     </select>
 
     <!-- 특정 jobPostId에 대한 지원서 조회 (SELECT) -->
     <select id="selectApplicationsByJobPostId" parameterType="Long" resultMap="ApplicationMap">
-        SELECT APPLICATION_ID, RESUME_ID, JOBPOST_ID, JOBSEEKER_ID, STATUS, APPLIED_DATE
+        SELECT APPLICATION_ID, RESUME_ID, JOBPOST_ID, JOBSEEKER_ID, is_read, APPLIED_DATE
         FROM APPLICATION
         WHERE JOBPOST_ID = #{jobPostId}
     </select>
 
+    <!-- 회사 ID로 지원서 목록을 가져오는 쿼리 (SELECT) -->
+    <select id="selectApplicationsByCompanyId" parameterType="String" resultMap="ApplicationMap">
+        SELECT a.APPLICATION_ID, a.RESUME_ID, a.JOBPOST_ID, a.JOBSEEKER_ID, a.is_read, a.APPLIED_DATE, a.IS_READ
+        FROM APPLICATION a
+        JOIN JOBPOST j ON a.JOBPOST_ID = j.JOBPOST_ID
+        WHERE j.COMP_ID = #{compId}
+    </select>
+
+
     <!-- 지원서 상태 업데이트 (UPDATE) -->
     <update id="updateApplicationStatus" parameterType="com.javalab.board.dto.ApplicationDto">
         UPDATE APPLICATION
-        SET STATUS = #{status}
+        SET is_read = #{isRead}
         WHERE APPLICATION_ID = #{applicationId}
     </update>
 
     <!-- 지원서 삭제 (DELETE) -->
-    <delete id="deleteApplication" parameterType="Long">
+    <delete id="deleteApplicationById" parameterType="Long">
         DELETE FROM APPLICATION
         WHERE APPLICATION_ID = #{applicationId}
     </delete>
+
+
+
+    <!-- applicationId를 기준으로 JobPost 정보를 가져오는 쿼리 -->
+    <select id="selectJobPostByApplicationId" parameterType="long" resultType="com.javalab.board.vo.JobPostVo">
+        SELECT jp.*
+        FROM JobPost jp
+        JOIN Application a ON jp.job_post_id = a.job_post_id
+        WHERE a.application_id = #{applicationId}
+    </select>
+
+    <!-- applicationId로 특정 지원서를 가져오는 쿼리 -->
+    <select id="getApplicationById" parameterType="long" resultType="com.javalab.board.dto.ApplicationDto">
+        SELECT application_id, resume_id, jobpost_id, jobseeker_id, is_read, applied_date
+        FROM Application
+        WHERE application_id = #{applicationId}
+    </select>
+
+
+    <!-- 알림 기능 시작-->
+
+    <!-- 회사 ID로 읽지 않은 지원서 개수를 세는 쿼리 -->
+    <select id="countUnreadApplications" parameterType="String" resultType="int">
+        SELECT COUNT(*)
+        FROM application a
+        JOIN jobpost jp ON a.jobpost_id = jp.jobpost_id
+        JOIN company c ON jp.comp_id = c.comp_id
+        WHERE c.comp_id = #{compId} AND a.is_read = 'N'
+    </select>
+
+    <!-- 특정 지원서를 읽음으로 표시하는 쿼리 -->
+    <update id="markApplicationAsRead" parameterType="long">
+        UPDATE application
+        SET is_read = 'Y'
+        WHERE application_id = #{applicationId}
+    </update>
+
+    <select id="getCompanyIdByJobPostId" resultType="java.lang.String"></select>
+
+
 
 </mapper>

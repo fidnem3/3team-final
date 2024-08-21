@@ -63,7 +63,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
             log.info("Received ID: {}", userId);
 
-            return processUser(userId, email, attributes, clientName);
+            return processUser(userId, email, attributes);
         } catch (OAuth2AuthenticationException e) {
             log.error("OAuth2 Authentication Exception: ", e);
             throw e;
@@ -73,19 +73,38 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         }
     }
 
-    private OAuth2User processUser(String userId, String email, Map<String, Object> attributes, String clientName) {
-        if ("GitHub".equals(clientName)) {
-            return processGitHubUser(userId, email, attributes);
-        } else { // Kakao
-            return processKakaoUser(userId, email, attributes);
-        }
-    }
-
-    private OAuth2User processGitHubUser(String userId, String email, Map<String, Object> attributes) {
+    private OAuth2User processUser(String userId, String email, Map<String, Object> attributes) {
         JobSeekerVo jobSeeker = loginMapper.loginJobSeeker(userId);
-        log.info("JobSeeker found for userId {}: {}", userId, jobSeeker);
+        CompanyVo company = loginMapper.loginCompany(userId);
 
-        if (jobSeeker == null) {
+        if (jobSeeker != null) {
+            // JobSeeker 처리
+            Collection<SimpleGrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+            log.info("Authorities for user {}: {}", userId, authorities);
+
+            return new SocialMemberDto(
+                    userId,
+                    jobSeeker.getName(),
+                    email != null ? email : "noemail@example.com",
+                    authorities,
+                    attributes,
+                    true
+            );
+        } else if (company != null) {
+            // Company 처리
+            Collection<SimpleGrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+            log.info("Authorities for user {}: {}", userId, authorities);
+
+            return new SocialMemberDto(
+                    userId,
+                    company.getCompanyName(),
+                    email != null ? email : "noemail@example.com",
+                    authorities,
+                    attributes,
+                    true
+            );
+        } else {
+            // 새로운 사용자 처리
             String password = passwordEncoder.encode("1111");
             Collection<SimpleGrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
 
@@ -103,61 +122,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             return new SocialMemberDto(
                     userId,
                     "NoName",
-                    email != null ? email : "noemail@example.com",
-                    authorities,
-                    attributes,
-                    true
-            );
-        } else {
-            Collection<SimpleGrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
-            log.info("Authorities for user {}: {}", userId, authorities);
-
-            return new SocialMemberDto(
-                    userId,
-                    jobSeeker.getName(),
-                    email != null ? email : "noemail@example.com",
-                    authorities,
-                    attributes,
-                    true
-            );
-        }
-    }
-
-    private OAuth2User processKakaoUser(String userId, String email, Map<String, Object> attributes) {
-        CompanyVo company = loginMapper.loginCompany(userId);
-        log.info("Company found for userId {}: {}", userId, company);
-
-        if (company == null) {
-            String password = passwordEncoder.encode("1111");
-            Collection<SimpleGrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_COMPANY"));
-
-            CompanyVo newCompany = new CompanyVo();
-            newCompany.setCompId(userId);
-            newCompany.setPassword(password);
-            newCompany.setCompanyName("KakaoComapny");
-            newCompany.setEmail(email != null ? email : "noemail@example.com");
-            newCompany.setBusinessNumber("000-00-00000");
-            newCompany.setAddress("NoAddress");
-            loginMapper.saveCompany(newCompany);
-            loginMapper.saveRole(userId, "COMPANY");
-
-            log.info("New Company created: {}", newCompany);
-
-            return new SocialMemberDto(
-                    userId,
-                    "NoName",
-                    email != null ? email : "noemail@example.com",
-                    authorities,
-                    attributes,
-                    true
-            );
-        } else {
-            Collection<SimpleGrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_COMPANY"));
-            log.info("Authorities for user {}: {}", userId, authorities);
-
-            return new SocialMemberDto(
-                    userId,
-                    company.getCompanyName(),
                     email != null ? email : "noemail@example.com",
                     authorities,
                     attributes,

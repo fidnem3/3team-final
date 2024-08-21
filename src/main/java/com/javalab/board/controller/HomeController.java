@@ -1,10 +1,17 @@
 package com.javalab.board.controller;
 
+
 import com.javalab.board.dto.CreateJobPostRequestDto;
 import com.javalab.board.dto.SuggestionDto;
 import com.javalab.board.service.JobPostService;
 import com.javalab.board.service.JobSeekerScrapService;
 import com.javalab.board.service.JobSeekerService;
+
+import com.javalab.board.security.dto.CustomUserDetails;
+import com.javalab.board.service.JobPostService;
+import com.javalab.board.service.JobSeekerScrapService;
+import com.javalab.board.service.NotificationService;
+
 import com.javalab.board.vo.BoardVo;
 import com.javalab.board.vo.JobPostVo;
 import com.javalab.board.vo.JobSeekerScrapVo;
@@ -17,6 +24,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -35,10 +43,15 @@ public class HomeController {
     @Autowired
     private JobPostService jobPostService;
 
+    @Autowired
+    private NotificationService notificationService;
+
     @GetMapping("/")
     public String home(Model model, Authentication authentication) {
         List<JobPostVo> top5PopularJobPosts = jobPostService.getTop5PopularJobPosts();
+
         Map<Long, Boolean> scrapStatusMap = new HashMap<>();
+
         String jobSeekerId = authentication != null && authentication.getPrincipal() instanceof UserDetails
                 ? ((UserDetails) authentication.getPrincipal()).getUsername()
                 : null;
@@ -53,6 +66,7 @@ public class HomeController {
         model.addAttribute("top5PopularJobPosts", top5PopularJobPosts);
         return "index"; // View name
     }
+
 
     @GetMapping("/contact")
     public String createSuggestionForm(Model model) {
@@ -61,12 +75,13 @@ public class HomeController {
     }
 
     @GetMapping("/index")
-    public String index(@RequestParam(required = false, defaultValue = "") String keyword, Model model, Authentication authentication) {
+    public String index(@RequestParam(name = "keyword", required = false, defaultValue = "") String keyword, Model model, Authentication authentication) {
         if (!keyword.isEmpty()) {
             return "redirect:/jobPost/jobPostList?keyword=" + keyword;
         }
         List<JobPostVo> top5PopularJobPosts = jobPostService.getTop5PopularJobPosts();
         Map<Long, Boolean> scrapStatusMap = new HashMap<>();
+
         String jobSeekerId = authentication != null && authentication.getPrincipal() instanceof UserDetails
                 ? ((UserDetails) authentication.getPrincipal()).getUsername()
                 : null;
@@ -82,9 +97,12 @@ public class HomeController {
         return "index"; // View name
     }
 
+
+
     @GetMapping("/about")
     public String about() {
         return "about"; // templates/about.html을 렌더링
     }
+
 
 }
