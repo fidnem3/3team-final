@@ -34,6 +34,8 @@ public class AdminController {
 
     @Autowired
     private BlacklistService blacklistService;
+    @Autowired
+    private SuggestionService suggestionService;
 
 
     @GetMapping("/adminPage")
@@ -148,6 +150,13 @@ public class AdminController {
         return "admin/approve";  // Thymeleaf 템플릿 경로
     }
 
+    @GetMapping("/suggestionList")
+    public String listJobPosts(
+            Model model) {
+        model.addAttribute("suggestions", suggestionService.getAllSuggestions());
+
+        return "admin/suggestionList";
+    }
     @GetMapping("/companyList")
     public String getCompanyList(Model model) {
         // 승인된 기업 목록을 조회합니다.
