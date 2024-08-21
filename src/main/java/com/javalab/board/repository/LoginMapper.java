@@ -1,5 +1,6 @@
 package com.javalab.board.repository;
 
+import com.javalab.board.dto.BlacklistDto;
 import com.javalab.board.vo.JobSeekerVo;
 import com.javalab.board.vo.CompanyVo;
 import org.apache.ibatis.annotations.Mapper;
@@ -56,4 +57,10 @@ public interface LoginMapper {
 	 * - @return 사용자 권한 목록
 	 */
 	List<String> getRolesByUserId(@Param("userId") String userId);
+
+
+	/**
+	 * 블랙리스트 정보 조회
+	 * */
+	BlacklistDto getBlacklistInfo(String userId, String userType);
 }

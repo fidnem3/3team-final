@@ -6,12 +6,44 @@
 <head>
     <meta charset="UTF-8">
     <title>관리자 - 블랙리스트 관리</title>
+    <style>
+        .filter-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .filter-group {
+            margin-bottom: 10px;
+        }
+        .filter-btn {
+            background-color: white;
+            border: 2px solid #28a745; /* 기본 연두색 테두리 */
+            color: #28a745;
+            margin: 0 5px;
+            border-radius: 20px; /* 타원형 테두리 */
+            padding: 8px 16px; /* 버튼 패딩 */
+            transition: all 0.3s ease;
+        }
+        .filter-btn:hover {
+            background-color: #f8f9fa;
+        }
+        .filter-btn.blacklist {
+            border-color: #dc3545; /* 블랙리스트 버튼 빨간색 테두리 */
+            color: #dc3545;
+        }
+        .filter-btn.active {
+            border-color: #28a745; /* 선택된 버튼 초록색 테두리 */
+            background-color: #28a745;
+            color: white;
+        }
+    </style>
 </head>
 
 <body>
 <div layout:fragment="content" class="container-xxl bg-white p-0">
     <div class="container">
-        <h1>블랙리스트 관리</h1>
+        <h1 class="text-center mb-4">블랙리스트 관리</h1>
 
         <div th:if="${message}" class="alert alert-success" role="alert">
             <span th:text="${message}"></span>
@@ -21,9 +53,22 @@
             <span th:text="${error}"></span>
         </div>
 
+        <div class="filter-container">
+            <div class="filter-group">
+                <button class="btn filter-btn type-filter" data-filter="all">전체</button>
+                <button class="btn filter-btn type-filter" data-filter="jobSeeker">구직자</button>
+                <button class="btn filter-btn type-filter" data-filter="company">기업</button>
+            </div>
+            <div class="filter-group">
+                <button class="btn filter-btn status-filter" data-filter="all">전체</button>
+                <button class="btn filter-btn status-filter blacklist" data-filter="blacklisted">블랙리스트</button>
+                <button class="btn filter-btn status-filter" data-filter="normal">정상</button>
+            </div>
+        </div>
+
         <div class="row">
             <div class="col-md-12">
-                <table class="table table-striped">
+                <table id="blacklistTable" class="table table-striped">
                     <thead>
                     <tr>
                         <th>구직자 ID</th>
@@ -35,7 +80,9 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="blacklist : ${blacklists}">
+                    <tr th:each="blacklist : ${blacklists}"
+                        th:data-type="${blacklist.jobSeekerId != null ? 'jobSeeker' : 'company'}"
+                        th:data-status="${blacklist.isBlacklisted() ? 'blacklisted' : 'normal'}">
                         <td th:text="${blacklist.jobSeekerId}">구직자 ID</td>
                         <td th:text="${blacklist.compId}">기업 ID</td>
                         <td th:text="${blacklist.reason}">사유</td>
@@ -47,7 +94,6 @@
                             </span>
                         </td>
                         <td>
-
                             <form th:action="@{/admin/blacklist/deleteBlacklist}" method="post" style="display: inline;">
                                 <input type="hidden" name="jobSeekerId" th:value="${blacklist.jobSeekerId}" />
                                 <input type="hidden" name="compId" th:value="${blacklist.compId}" />
@@ -66,6 +112,7 @@
     </div>
 </div>
 
+<script th:src="@{/js/blacklist.js}"></script>
 
 </body>
 </html>
