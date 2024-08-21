@@ -643,6 +643,74 @@ function toggleScrap(event) {
 }
 </script>
 
+<!-- 블랙리스트 필터 -->
+<script>
+    $(document).ready(function() {
+        var activeTypeFilter = 'all';
+        var activeStatusFilter = 'all';
+
+        $('.type-filter').click(function() {
+            activeTypeFilter = $(this).data('filter');
+            $('.type-filter').removeClass('active');
+            $(this).addClass('active');
+            filterTable();
+        });
+
+        $('.status-filter').click(function() {
+            activeStatusFilter = $(this).data('filter');
+            $('.status-filter').removeClass('active');
+            $(this).addClass('active');
+            filterTable();
+        });
+
+        function filterTable() {
+            $('#blacklistTable tbody tr').each(function() {
+                var row = $(this);
+                var type = row.data('type');
+                var status = row.data('status');
+
+                var typeMatch = activeTypeFilter === 'all' || type === activeTypeFilter;
+                var statusMatch = activeStatusFilter === 'all' || status === activeStatusFilter;
+
+                if (typeMatch && statusMatch) {
+                    row.show();
+                } else {
+                    row.hide();
+                }
+            });
+        }
+
+        // 초기 필터링 적용
+        filterTable();
+
+        // 기존 코드
+        $('.dev-toggle-filter').click(function () {
+            $(this).toggleClass('open');
+            $(this).next('.filter-box').toggle();
+        });
+
+        $('.dev-button-item').click(function () {
+            $(this).toggleClass('active').siblings().removeClass('active');
+        });
+
+        $('.search-reset').click(function () {
+            $(this).closest('.filter-box').find('.dev-button-item').removeClass('active');
+            $(this).closest('.filter-box').find('.dev-button-all').addClass('active');
+        });
+
+        $('#resetCondition').click(function () {
+            $('.filter-box').find('.dev-button-item').removeClass('active');
+            $('.filter-box').find('.dev-button-all').addClass('active');
+            $('#searchForm')[0].reset();
+            activeTypeFilter = 'all';
+            activeStatusFilter = 'all';
+            $('.type-filter, .status-filter').removeClass('active');
+            $('.type-filter[data-filter="all"], .status-filter[data-filter="all"]').addClass('active');
+            filterTable();
+        });
+    });
+</script>
+
 <!--    jobpost 모달 스크립트-->
 <script>
     document.getElementById('modalBtn').addEventListener('click', function () {

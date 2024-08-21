@@ -1,7 +1,9 @@
 package com.javalab.board.handler;
 
+import com.javalab.board.dto.BlacklistDto;
 import com.javalab.board.repository.CompanyMapper;
 import com.javalab.board.repository.JobSeekerMapper;
+import com.javalab.board.repository.LoginMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,21 +20,21 @@ import java.io.IOException;
 @Log4j2
 public class AuthFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
-
     private final CompanyMapper companyMapper;
     private final JobSeekerMapper jobSeekerMapper;
+    private final LoginMapper loginMapper;
 
     @Autowired
-    public AuthFailureHandler(CompanyMapper companyMapper, JobSeekerMapper jobSeekerMapper) {
+    public AuthFailureHandler(CompanyMapper companyMapper, JobSeekerMapper jobSeekerMapper, LoginMapper loginMapper) {
         this.companyMapper = companyMapper;
         this.jobSeekerMapper = jobSeekerMapper;
+        this.loginMapper = loginMapper;
     }
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         log.info("AuthFailureHandler onAuthenticationFailure");
-        log.error("Authentication failed: ", exception);  // 예외 로깅 추가
-
+        log.error("Authentication failed: ", exception);
 
         String msg;
         String errorType;
@@ -40,9 +42,12 @@ public class AuthFailureHandler extends SimpleUrlAuthenticationFailureHandler {
         String username = request.getParameter("username");
         String userType = request.getParameter("userType");
 
-
-
-        if ("jobSeeker".equals(userType) && companyMapper.selectCompanyById(username) != null) {
+        // 블랙리스트 체크 수정
+        BlacklistDto blacklistDto = loginMapper.getBlacklistInfo(username, userType);
+        if (blacklistDto != null && blacklistDto.isBlacklisted()) {
+            msg = "귀하의 계정은 현재 사용이 제한되었습니다. 관리자에게 문의하세요.";
+            errorType = "blacklisted";
+        } else if ("jobSeeker".equals(userType) && companyMapper.selectCompanyById(username) != null) {
             msg = "개인 회원 로그인 폼에서는 기업 회원으로 로그인할 수 없습니다.";
             errorType = "wrong_form_company";
         } else if ("company".equals(userType) && jobSeekerMapper.selectJobSeekerById(username) != null) {

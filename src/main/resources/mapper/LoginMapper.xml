@@ -111,4 +111,12 @@
 		WHERE ur.user_id = #{userId}
 	</select>
 
+
+	<!-- 블랙리스트 조회 -->
+	<select id="getBlacklistInfo" resultType="com.javalab.board.dto.BlacklistDto">
+		SELECT *
+		FROM blacklist
+		WHERE (#{userType} = 'jobSeeker' AND jobSeeker_id = #{userId})
+		OR (#{userType} = 'company' AND comp_id = #{userId})
+	</select>
 </mapper>
