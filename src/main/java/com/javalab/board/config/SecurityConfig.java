@@ -92,6 +92,7 @@ public class SecurityConfig {
 						.requestMatchers("/member/**", "/member/adminJoin", "/member/modify").permitAll()
 						.requestMatchers("/board/**", "/upload/**", "/jobPost/logo/**", "/jobPost/uploaded/**").permitAll()
 						.requestMatchers("/error").permitAll()  // /error 경로 접근 허용
+						.requestMatchers("/admin/suggestionList").hasRole("ADMIN")
 						.requestMatchers("/member/adminPage").hasRole("ADMIN")
 						.requestMatchers("/member/companyPage").hasRole("COMPANY")
 						.requestMatchers("/member/jobSeekerPage").hasRole("USER")

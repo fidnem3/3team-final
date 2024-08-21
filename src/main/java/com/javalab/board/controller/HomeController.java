@@ -1,12 +1,18 @@
 package com.javalab.board.controller;
 
+import com.javalab.board.dto.CreateJobPostRequestDto;
+import com.javalab.board.dto.SuggestionDto;
 import com.javalab.board.service.JobPostService;
 import com.javalab.board.service.JobSeekerScrapService;
+import com.javalab.board.service.JobSeekerService;
 import com.javalab.board.vo.BoardVo;
 import com.javalab.board.vo.JobPostVo;
 import com.javalab.board.vo.JobSeekerScrapVo;
+import com.javalab.board.vo.JobSeekerVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,10 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -25,6 +28,9 @@ public class HomeController {
 
     @Autowired
     private JobSeekerScrapService jobSeekerScrapService;
+
+    @Autowired
+    private JobSeekerService jobSeekerService;
 
     @Autowired
     private JobPostService jobPostService;
@@ -49,8 +55,9 @@ public class HomeController {
     }
 
     @GetMapping("/contact")
-    public String contact() {
-        return "contact"; // templates/contact.html을 렌더링
+    public String createSuggestionForm(Model model) {
+        model.addAttribute("suggestionDto", new SuggestionDto());
+        return "contact";
     }
 
     @GetMapping("/index")

@@ -32,6 +32,8 @@ public class AdminController {
 
     @Autowired
     private BlacklistService blacklistService;
+    @Autowired
+    private SuggestionService suggestionService;
 
 
     @GetMapping("/adminPage")
@@ -140,5 +142,12 @@ public class AdminController {
     }
 
 
+    @GetMapping("/suggestionList")
+    public String listJobPosts(
+            Model model) {
+        model.addAttribute("suggestions", suggestionService.getAllSuggestions());
+
+        return "admin/suggestionList";
+    }
 
 }
