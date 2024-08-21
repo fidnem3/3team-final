@@ -128,7 +128,9 @@
     <!-- Jobs Start -->
     <div class="container-xxl py-5">
         <div class="container">
-            <h2 class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s"><span style='font-size:30px;'>&#128293;</span>지금 가장 많이 본 공고 TOP 5<span style='font-size:30px;'>&#128293;</span></h2>
+            <h2 class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s"><span
+                    style='font-size:30px;'>&#128293;</span>지금 가장 많이 본 공고 TOP 5<span
+                    style='font-size:30px;'>&#128293;</span></h2>
 
             <div th:each="jobPost : ${top5PopularJobPosts}" class="job-item p-4 mb-4">
                 <div class="row g-4">
@@ -141,8 +143,10 @@
                             <span class="text-truncate me-3"><i
                                     class="fa fa-map-marker-alt text-primary me-2"></i><span
                                     th:text="${jobPost.address}">Location</span></span>
-                            <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>Full Time</span>
-                            <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i><span
+                            <span class="text-truncate me-3"><i
+                                    class="far fa-clock text-primary me-2"></i>Full Time</span>
+                            <span class="text-truncate me-0"><i
+                                    class="far fa-money-bill-alt text-primary me-2"></i><span
                                     th:text="${jobPost.salary}">Salary</span></span>
                         </div>
                     </div>
@@ -170,114 +174,114 @@
     </div>
     <!-- Jobs End -->
 
-<!-- Testimonial Start -->
-<div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
-    <div class="container">
-        <h1 class="text-center mb-5">취업 선배들의 조언</h1>
-        <div class="owl-carousel testimonial-carousel">
-            <div class="testimonial-item bg-light rounded p-4">
-                <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
-                <p>취준 1개월만에 취업했습니다!! 이력서 많이 넣어보세요</p>
-                <div class="d-flex align-items-center">
-                    <img class="img-fluid flex-shrink-0 rounded"
-                         th:src="@{/img/testimonial-1.jpg}"
-                         alt=""
-                         style="width: 50px; height: 50px;">
-                    <div class="ps-3">
-                        <h5 class="mb-1">이름</h5>
-                        <small>직업</small>
+    <!-- Testimonial Start -->
+    <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
+        <div class="container">
+            <h1 class="text-center mb-5">취업 선배들의 조언</h1>
+            <div class="owl-carousel testimonial-carousel">
+                <div class="testimonial-item bg-light rounded p-4">
+                    <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
+                    <p>취준 1개월만에 취업했습니다!! 이력서 많이 넣어보세요</p>
+                    <div class="d-flex align-items-center">
+                        <img class="img-fluid flex-shrink-0 rounded"
+                             th:src="@{/img/testimonial-1.jpg}"
+                             alt=""
+                             style="width: 50px; height: 50px;">
+                        <div class="ps-3">
+                            <h5 class="mb-1">이름</h5>
+                            <small>직업</small>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="testimonial-item bg-light rounded p-4">
-                <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
-                <p>후기 많이 읽어보는 게 도움이 되었네요</p>
-                <div class="d-flex align-items-center">
-                    <img class="img-fluid flex-shrink-0 rounded"
-                         th:src="@{/img/testimonial-2.jpg}"
-                         alt=""
-                         style="width: 50px; height: 50px;">
-                    <div class="ps-3">
-                        <h5 class="mb-1">이름</h5>
-                        <small>직업</small>
+                <div class="testimonial-item bg-light rounded p-4">
+                    <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
+                    <p>후기 많이 읽어보는 게 도움이 되었네요</p>
+                    <div class="d-flex align-items-center">
+                        <img class="img-fluid flex-shrink-0 rounded"
+                             th:src="@{/img/testimonial-2.jpg}"
+                             alt=""
+                             style="width: 50px; height: 50px;">
+                        <div class="ps-3">
+                            <h5 class="mb-1">이름</h5>
+                            <small>직업</small>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="testimonial-item bg-light rounded p-4">
-                <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
-                <p>저는 공백이 2년이 있어서 막막했는데 델토피아에 수시로 들락날락 하다보니 맘에 드는 회사에 취업할 수 있었어요!!! 다들 화이팅!!!</p>
-                <div class="d-flex align-items-center">
-                    <img class="img-fluid flex-shrink-0 rounded"
-                         th:src="@{/img/testimonial-3.jpg}"
-                         alt=""
-                         style="width: 50px; height: 50px;">
-                    <div class="ps-3">
-                        <h5 class="mb-1">이름</h5>
-                        <small>직업</small>
+                <div class="testimonial-item bg-light rounded p-4">
+                    <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
+                    <p>저는 공백이 2년이 있어서 막막했는데 델토피아에 수시로 들락날락 하다보니 맘에 드는 회사에 취업할 수 있었어요!!! 다들 화이팅!!!</p>
+                    <div class="d-flex align-items-center">
+                        <img class="img-fluid flex-shrink-0 rounded"
+                             th:src="@{/img/testimonial-3.jpg}"
+                             alt=""
+                             style="width: 50px; height: 50px;">
+                        <div class="ps-3">
+                            <h5 class="mb-1">이름</h5>
+                            <small>직업</small>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="testimonial-item bg-light rounded p-4">
-                <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
-                <p>현재 채용중인 공고들 꼭 확인하세요~ 그리고 우리집 고양이 루이 귀엽습니다^^</p>
-                <div class="d-flex align-items-center">
-                    <img class="img-fluid flex-shrink-0 rounded"
-                         th:src="@{/img/testimonial-4.jpg}"
-                         alt=""
-                         style="width: 50px; height: 50px;">
-                    <div class="ps-3">
-                        <h5 class="mb-1">이름</h5>
-                        <small>직업</small>
+                <div class="testimonial-item bg-light rounded p-4">
+                    <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
+                    <p>현재 채용중인 공고들 꼭 확인하세요~ 그리고 우리집 고양이 루이 귀엽습니다^^</p>
+                    <div class="d-flex align-items-center">
+                        <img class="img-fluid flex-shrink-0 rounded"
+                             th:src="@{/img/testimonial-4.jpg}"
+                             alt=""
+                             style="width: 50px; height: 50px;">
+                        <div class="ps-3">
+                            <h5 class="mb-1">이름</h5>
+                            <small>직업</small>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<!-- Testimonial End -->
+    <!-- Testimonial End -->
 
-<!-- About Start -->
-<div class="container-xxl py-5">
-    <div class="container">
-        <div class="row g-5 align-items-center">
-            <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
-                <div class="row g-0 about-bg rounded overflow-hidden">
-                    <div class="col-6 text-start">
-                        <img class="img-fluid w-100"
-                             th:src="@{/img/about-1.jpg}"
-                             alt="">
-                    </div>
-                    <div class="col-6 text-start">
-                        <img class="img-fluid"
-                             th:src="@{/img/about-2.jpg}"
-                             style="width: 85%; margin-top: 15%;"
-                             alt="">
-                    </div>
-                    <div class="col-6 text-end">
-                        <img class="img-fluid"
-                             th:src="@{/img/about-3.jpg}"
-                             style="width: 85%;"
-                             alt="">
-                    </div>
-                    <div class="col-6 text-end">
-                        <img class="img-fluid w-100"
-                             th:src="@{/img/about-4.jpg}"
-                             alt="">
+    <!-- About Start -->
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="row g-5 align-items-center">
+                <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
+                    <div class="row g-0 about-bg rounded overflow-hidden">
+                        <div class="col-6 text-start">
+                            <img class="img-fluid w-100"
+                                 th:src="@{/img/about-1.jpg}"
+                                 alt="">
+                        </div>
+                        <div class="col-6 text-start">
+                            <img class="img-fluid"
+                                 th:src="@{/img/about-2.jpg}"
+                                 style="width: 85%; margin-top: 15%;"
+                                 alt="">
+                        </div>
+                        <div class="col-6 text-end">
+                            <img class="img-fluid"
+                                 th:src="@{/img/about-3.jpg}"
+                                 style="width: 85%;"
+                                 alt="">
+                        </div>
+                        <div class="col-6 text-end">
+                            <img class="img-fluid w-100"
+                                 th:src="@{/img/about-4.jpg}"
+                                 alt="">
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
-                <h1 class="mb-4">Team Deltopia</h1>
-                <p class="mb-4">우리 델토피아는 현재, 미래의 모든 개발자 여러분을 응원합니다.</p>
-                <p><i class="fa fa-check text-primary me-3"></i>실시간 nnn개 기업 공고 관리</p>
-                <p><i class="fa fa-check text-primary me-3"></i>편리한 나의 이력서 관리 및 지원</p>
-                <p><i class="fa fa-check text-primary me-3"></i>자유로운 게시판 사용</p>
-                <a class="btn btn-primary py-3 px-5 mt-3" href="">더 보기</a>
+                <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
+                    <h1 class="mb-4">Team Deltopia</h1>
+                    <p class="mb-4">우리 델토피아는 현재, 미래의 모든 개발자 여러분을 응원합니다.</p>
+                    <p><i class="fa fa-check text-primary me-3"></i>실시간 nnn개 기업 공고 관리</p>
+                    <p><i class="fa fa-check text-primary me-3"></i>편리한 나의 이력서 관리 및 지원</p>
+                    <p><i class="fa fa-check text-primary me-3"></i>자유로운 게시판 사용</p>
+                    <a class="btn btn-primary py-3 px-5 mt-3" href="">더 보기</a>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<!-- About End -->
+
 </div>
 </body>
 </html>

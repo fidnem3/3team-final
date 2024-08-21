@@ -41,7 +41,7 @@ public class AuthFailureHandler extends SimpleUrlAuthenticationFailureHandler {
         if ("jobSeeker".equals(userType)) {
             if (companyMapper.selectCompanyById(username) != null) {
                 // 개인 사용자로 로그인하려는 경우 기업 사용자로 로그인할 수 없음
-                msg = "개인 회원 로그인 폼에서는 기업 회원으로 로그인할 수 없습니다.";
+                msg = "개인 회원 로그인 폼에서는 기업 회원으로 로그인할 수 없습니다다.";
                 errorType = "wrong_form_company";
             } else {
                 // 개인 사용자로 로그인하려는 경우
@@ -64,11 +64,11 @@ public class AuthFailureHandler extends SimpleUrlAuthenticationFailureHandler {
                 var company = companyMapper.selectCompanyById(username);
                 if (company != null) {
                     switch (company.getStatus()) {
-                        case "PENDING":
+                        case "Pending":
                             msg = "계정이 승인 대기 중입니다. 승인을 기다려주세요.";
                             errorType = "pending";
                             break;
-                        case "REJECTED":
+                        case "Rejected":
                             msg = "계정이 거절되었습니다. 관리자에게 문의하세요.";
                             errorType = "rejected";
                             break;

@@ -165,6 +165,17 @@ public class CompanyServiceImpl implements CompanyService {
         }
     }
 
+    @Override
+    public List<CompanyVo> getApprovedCompanies() {
+        return companyMapper.selectCompaniesByStatus("Approved");
+    }
+
+    @Override
+    public List<CompanyVo> getRejectedCompanies() {
+        // 거절된 기업 목록을 조회하는 로직
+        return companyMapper.selectCompaniesByStatus("Rejected");
+    }
+
     //알림 기능 시작
 
     @Override
@@ -181,15 +192,5 @@ public class CompanyServiceImpl implements CompanyService {
     public void markApplicationAsRead(Long applicationId) {
         applicationMapper.markApplicationAsRead(applicationId);
     }
-
-    @Override
-    @Transactional
-    public void addToCompanyList(CompanyVo companyVo) {
-        // 기업을 목록에 추가합니다.
-        companyMapper.addToCompanyList(companyVo);
-        log.info("Company added to companyList: " + companyVo.getCompanyName());
-    }
-
-
 
 }
