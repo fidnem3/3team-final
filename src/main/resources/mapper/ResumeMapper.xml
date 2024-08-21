@@ -13,12 +13,30 @@
         VALUES (#{resumeId}, #{jobSeekerId}, #{title}, #{content} ,#{education} , #{experience} ,#{link} ,#{fileName}, #{filePath})
     </insert>
 
+<!--    find all + skill-->
     <select id="findAll" resultMap="ResumeWithJobSeekerMap">
-        SELECT r.resume_id, r.title, r.content, r.education, r.experience, r.link,
-        j.jobseeker_id, j.name, j.email, j.tel, j.birth, j.address
-        FROM resume r
-        JOIN jobseeker j ON r.jobseeker_id = j.jobseeker_id
-        WHERE j.jobseeker_id = #{jobSeekerId}
+        SELECT
+        r.resume_id,
+        r.title,
+        r.content,
+        r.education,
+        r.experience,
+        r.link,
+        j.jobseeker_id,
+        j.name,
+        j.email,
+        j.tel,
+        j.birth,
+        j.address,
+        rs.skill
+        FROM
+        resume r
+        JOIN
+        jobseeker j ON r.jobseeker_id = j.jobseeker_id
+        LEFT JOIN
+        resumeskill rs ON r.resume_id = rs.resume_id
+        WHERE
+        j.jobseeker_id = #{jobSeekerId}
     </select>
 
     <resultMap id="ResumeWithJobSeekerMap" type="com.javalab.board.dto.ResumeDto">
@@ -38,6 +56,9 @@
             <result property="birth" column="birth"/>
             <result property="address" column="address"/>
         </association>
+        <collection property="skills" ofType="java.lang.String">
+            <result column="skill"/>
+        </collection>
     </resultMap>
 
 <!--    <update id="updateHits" parameterType="com.javalab.board.dto.ResumeDto">-->
@@ -91,6 +112,12 @@
         from resume
         where resume_id=#{resumeId}
     </delete>
+
+    <update id="updateResumeVisibility">
+        UPDATE resume
+        SET visibility_status = #{visibilityStatus}
+        WHERE resume_id = #{resumeId}
+    </update>
 
 
 
