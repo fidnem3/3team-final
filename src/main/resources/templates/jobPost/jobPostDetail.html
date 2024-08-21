@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+
       layout:decorate="~{layout/layout}">
 
 
@@ -8,17 +10,6 @@
     <title>JobEntry - Job Portal Website Template</title>
 
     <style>
-<!--        #resumePopup {-->
-<!--        display: none; /* 초기에는 모달을 숨김 */-->
-<!--        position: fixed;-->
-<!--        z-index: 1;-->
-<!--        left: 0;-->
-<!--        top: 0;-->
-<!--        width: 100%;-->
-<!--        height: 100%;-->
-<!--        overflow: auto;-->
-<!--        background-color: rgba(0, 0, 0, 0.4); /* 배경 색상 */-->
-<!--    }-->
            .popup-content {
         background-color: #fefefe;
         margin: 15% auto;
@@ -35,9 +26,9 @@
         <div class="row gy-5 gx-4">
             <div class="col-lg-8">
                 <div class="d-flex align-items-center mb-5">
-<!--                    <img class="flex-shrink-0 img-fluid border rounded"-->
-<!--                         th:src="@{}"-->
-<!--                         alt="Company Logo" style="width: 80px; height: 80px;">-->
+                    <img class="flex-shrink-0 img-fluid border rounded"
+                         th:src="@{/jobPost/logo/{logoName}(logoName=${jobPost.logoName})}"
+                         alt="Company Logo" style="width: 80px; height: 80px;">
                     <div class="text-start ps-4">
                         <h3 class="mb-3"><span th:text="${jobPost.title}"></span></h3>
                         <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i><span
@@ -64,7 +55,7 @@
 
                 <div>
                     <!-- 지원하기 버튼 -->
-                    <button id="modalBtn" class="btn btn-primary w-100">지원하기</button>
+                    <button id="modalBtn" class="btn btn-primary w-100" sec:authorize="hasRole('ROLE_USER')">지원하기</button>
 
                     <!--모달 창-->
                     <div class="modal" id="resumePopup" tabindex="-1" aria-labelledby="resumePopupLabel"
@@ -133,81 +124,5 @@
 </div>
 
 
-
-
 </body>
 </html>
-
-
-
-<!--<!DOCTYPE html>-->
-<!--<html xmlns:th="http://www.thymeleaf.org"-->
-<!--      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"-->
-<!--      layout:decorate="~{layout/layout}">-->
-
-<!--<head>-->
-<!--    <meta charset="utf-8">-->
-<!--    <title>JobEntry - Job Portal Website Template</title>-->
-
-<!--    <style>-->
-<!--        .popup-content {-->
-<!--            background-color: #fefefe;-->
-<!--            margin: 15% auto;-->
-<!--            padding: 20px;-->
-<!--            border: 1px solid #888;-->
-<!--            width: 80%;-->
-<!--        }-->
-<!--    </style>-->
-<!--</head>-->
-
-<!--<body>-->
-<!--<div layout:fragment="content" class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">-->
-<!--    <div class="container">-->
-<!--        <div class="row gy-5 gx-4">-->
-<!--            <div class="col-lg-8">-->
-<!--                &lt;!&ndash; Job Info &ndash;&gt;-->
-<!--                <div>-->
-<!--                    &lt;!&ndash; 지원하기 버튼 &ndash;&gt;-->
-<!--                    <button id="modalBtn" class="btn btn-primary w-100">지원하기</button>-->
-
-<!--                    &lt;!&ndash; Modal &ndash;&gt;-->
-<!--                    <div class="modal fade" id="resumePopup" tabindex="-1" aria-labelledby="resumePopupLabel"-->
-<!--                         aria-hidden="true">-->
-<!--                        <div class="modal-dialog">-->
-<!--                            <div class="modal-content">-->
-<!--                                <div class="modal-header">-->
-<!--                                    <h4 class="modal-title" id="resumePopupLabel">이력서 선택</h4>-->
-<!--                                    <button type="button" class="btn-close" data-bs-dismiss="modal"-->
-<!--                                            aria-label="Close"></button>-->
-<!--                                </div>-->
-<!--                                <div class="modal-body">-->
-<!--                                    <form id="applyForm" method="post" th:action="@{/jobPost/apply}">-->
-<!--                                        <input type="hidden" name="jobPostId" th:value="${jobPost.jobPostId}"/>-->
-<!--                                        <div class="mb-3">-->
-<!--                                            <label for="resumeId" class="form-label">이력서 선택</label>-->
-<!--                                            <select name="resumeId" id="resumeId" class="form-select" required>-->
-<!--                                                <option value="" disabled selected>이력서를 선택하세요</option>-->
-<!--                                                <option th:each="resume : ${resumes}" th:value="${resume.resumeId}"-->
-<!--                                                        th:text="${resume.title}"></option>-->
-<!--                                            </select>-->
-<!--                                        </div>-->
-<!--                                        <button type="submit" class="btn btn-success w-100">제출하기</button>-->
-<!--                                    </form>-->
-<!--                                </div>-->
-<!--                                <div class="modal-footer">-->
-<!--                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
-
-
-
-
-<!--</body>-->
-<!--</html>-->

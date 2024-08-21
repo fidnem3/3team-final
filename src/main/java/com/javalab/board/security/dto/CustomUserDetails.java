@@ -29,6 +29,7 @@ public class CustomUserDetails implements UserDetails {
         this.username = username;
         this.password = password;
         this.userRoles = userRoles;
+
     }
 
     // 사용자의 권한 목록을 반환

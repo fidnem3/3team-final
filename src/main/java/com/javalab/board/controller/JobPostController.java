@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.internal.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -116,10 +117,10 @@ public class JobPostController {
 
     @GetMapping("/jobPostList")
     public String listJobPosts(
-            @RequestParam(required = false) String address,
-            @RequestParam(required = false) String education,
-            @RequestParam(required = false) String experience,
-            @RequestParam(required = false, defaultValue = "") String keyword,
+            @RequestParam(name = "address", required = false) String address,
+            @RequestParam(name = "education", required = false) String education,
+            @RequestParam(name = "experience", required = false) String experience,
+            @RequestParam(name = "keyword", required = false, defaultValue = "") String keyword,
             Model model,
             Authentication authentication) {
 
@@ -161,12 +162,15 @@ public class JobPostController {
     }
 
 
+
     @GetMapping("/myJobPostList")
     public String getMyJobPosts(Model model) {
         List<JobPostVo> jobPosts = jobPostService.getJobPostsByCompany();
 
         model.addAttribute("jobPosts", jobPosts);
+
         return "jobPost/myJobPostList"; // Thymeleaf 템플릿 이름
+
     }
 
     @PostMapping("/completePayment")
@@ -325,7 +329,7 @@ public class JobPostController {
             CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
             String jobSeekerId = userDetails.getUsername();
 
-            // 서비스 메서드 호출
+                // 서비스 메서드 호출
             applicationService.applyForJob(resumeId, jobPostId, jobSeekerId);
 
             return "redirect:/application/list"; // 지원이 완료된 후 리다이렉트할 페이지

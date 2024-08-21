@@ -196,7 +196,7 @@ public class LoginController {
 
             // 기업 등록 처리
             companyService.registerCompany(companyVo, userRolesVo);
-            redirectAttributes.addFlashAttribute("message", "기업 회원가입이 성공적으로 완료되었습니다.");
+            redirectAttributes.addFlashAttribute("message", "회원가입이 성공적으로 완료되었습니다. 관리자의 승인을 기다려 주세요.");
             log.info("회원가입 성공: {}", companyVo.getCompId());
             return "redirect:/member/login";
         } catch (Exception e) {
@@ -255,7 +255,7 @@ public class LoginController {
 
 
 
-
+    // 소설 로그인
     @GetMapping("/modify")
     public String showModifyPage(@AuthenticationPrincipal Object principal, Model model) {
         // 로그인 정보가 OAuth2User일 경우
@@ -274,7 +274,7 @@ public class LoginController {
 
         return "member/modify";
     }
-
+    // 소설 로그인
     @PostMapping("/modify")
     public String modifyPassword(
             @RequestParam(name = "newPassword", required = false) String newPassword,

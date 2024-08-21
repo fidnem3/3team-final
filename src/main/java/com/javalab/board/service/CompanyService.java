@@ -1,10 +1,12 @@
 package com.javalab.board.service;
 
+import com.javalab.board.dto.ApplicationDto;
 import com.javalab.board.vo.CompanyVo;
 import com.javalab.board.vo.UserRolesVo;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface CompanyService extends UserDetailsService {
@@ -53,5 +55,55 @@ public interface CompanyService extends UserDetailsService {
      */
     CompanyVo getCompanyById(String compId);
 
+    /**
+     * 승인 대기 중인 기업 목록을 반환합니다.
+     * - @return 승인 대기 중인 기업 목록
+     */
+    List<CompanyVo> getPendingCompanies();
+
+    /**
+     * 주어진 기업 ID에 해당하는 기업을 승인합니다.
+     * - @param compId 승인할 기업의 ID
+     */
+    void approveCompany(String compId);
+
+    /**
+     * 주어진 기업 ID에 해당하는 기업을 거절합니다.
+     * - @param compId 거절할 기업의 ID
+     */
+    void rejectCompany(String compId);
+
+
+
+    //알림 기능 시작
+
+    /**
+     * 기업의 compId로 읽지 않은 이력서가 있는지 확인하는 메서드.
+     * @param compId 기업 ID
+     * @return 읽지 않은 이력서가 있으면 true, 없으면 false
+     */
+    boolean checkForUnreadApplications(String compId);
+
+    /**
+     * 기업의 compId로 모든 이력서를 조회하는 메서드.
+     * @param compId 기업 ID
+     * @return 해당 기업으로 제출된 모든 이력서 목록
+     */
+    List<ApplicationDto> getApplicationsByCompanyId(String compId);
+
+    /**
+     * 특정 이력서를 읽음으로 표시하는 메서드.
+     * @param applicationId 이력서 ID
+     */
+    void markApplicationAsRead(Long applicationId);
+
+
+    /**
+     * 주어진 기업 ID에 해당하는 기업 정보를 승인 후 리스트에 추가합니다.
+     * - @param compId 승인할 기업의 ID
+     */
+    void addToCompanyList(CompanyVo companyVo);
 
 }
+
+
