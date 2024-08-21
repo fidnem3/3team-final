@@ -7,7 +7,9 @@ import com.javalab.board.service.ResumeService;
 import com.javalab.board.vo.JobSeekerVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -16,8 +18,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -77,6 +82,13 @@ public class ResumeController {
         if (loggedInUsername != null) {
             List<ResumeDto> resumeDtoList = resumeService.findAll(loggedInUsername);
             model.addAttribute("resumeList", resumeDtoList);
+
+
+            Map<String, Long> educationCount = resumeDtoList.stream()
+                    .collect(Collectors.groupingBy(ResumeDto::getEducation, Collectors.counting()));
+            model.addAttribute("educationCount", educationCount);
+
+
             return "/resume/list";
         }
 
@@ -84,7 +96,8 @@ public class ResumeController {
     }
 
     @GetMapping("/detail/{resumeId}")
-    public String getResumeDetail(@PathVariable("resumeId") int resumeId, Model model) {
+    public String getResumeDetail(@PathVariable("resumeId") int resumeId, Model model, Authentication authentication) {
+
         ResumeDto resumeDto = resumeService.findById(resumeId);
         model.addAttribute("resume", resumeDto);
         return "resume/detail";
@@ -125,6 +138,18 @@ public class ResumeController {
         return "redirect:/resume/list";
     }
 
+    @PostMapping("/updateVisibility")
+    public String updateVisibility(@RequestParam("resumeId") Long resumeId,
+                                   @RequestParam("visibilityStatus") String visibilityStatus) {
+
+        System.out.println("abcdefg" + resumeId);
+        resumeService.updateResumeVisibility(resumeId, visibilityStatus);
+
+        return "redirect:/resume/list";
+    }
+
+
+
     private String getLoggedInUsername(Authentication authentication) {
         if (authentication != null) {
             Object principal = authentication.getPrincipal();
@@ -136,4 +161,7 @@ public class ResumeController {
         }
         return null;
     }
+
+
+
 }
