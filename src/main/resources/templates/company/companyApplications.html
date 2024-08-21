@@ -46,6 +46,22 @@
         </tr>
         </tbody>
     </table>
+
+    이력서 읽음 표시하는
+    <script>
+        function openResumePopup(applicationId, resumeId) {
+            // 이력서를 읽음으로 표시하는 URL을 호출
+            var markAsReadUrl = '/company/applications/markAsReadAndView/' + resumeId + '?applicationId=' + applicationId;
+
+            // 팝업창으로 이력서 상세 페이지 열기
+            var popup = window.open(markAsReadUrl, '_blank', 'width=1000,height=1000');
+
+            // 팝업창이 성공적으로 열리면 부모 창에서 목록을 새로고침
+            popup.onload = function() {
+                window.location.reload();
+            };
+        }
+    </script>
 </div>
 </body>
 </html>
