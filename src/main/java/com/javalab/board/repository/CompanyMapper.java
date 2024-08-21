@@ -60,5 +60,11 @@ public interface CompanyMapper {
      */
     void updateCompanyStatus(@Param("compId") String compId, @Param("status") String status);
 
+    /**
+     * 승인된 기업 목록을 데이터베이스에 추가합니다.
+     * - @param companyVo 추가할 기업 정보 객체
+     */
+    void addToCompanyList(CompanyVo companyVo);
+
 
 }

@@ -113,5 +113,10 @@
         WHERE application_id = #{applicationId}
     </update>
 
+    <insert id="addToCompanyList" parameterType="com.javalab.board.vo.CompanyVo">
+        INSERT INTO company (comp_id, company_name, email, business_number, homepage, address, status)
+        VALUES (#{compId}, #{companyName}, #{email}, #{businessNumber}, #{homepage}, #{address}, #{status});
+    </insert>
+
 
 </mapper>

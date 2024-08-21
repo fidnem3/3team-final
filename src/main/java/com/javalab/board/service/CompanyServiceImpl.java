@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -32,6 +33,9 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Autowired
     private ApplicationMapper applicationMapper;
+
+    // 승인된 기업 목록을 저장할 리스트
+    private List<CompanyVo> companyList = new ArrayList<>();
 
 
 
@@ -177,5 +181,15 @@ public class CompanyServiceImpl implements CompanyService {
     public void markApplicationAsRead(Long applicationId) {
         applicationMapper.markApplicationAsRead(applicationId);
     }
+
+    @Override
+    @Transactional
+    public void addToCompanyList(CompanyVo companyVo) {
+        // 기업을 목록에 추가합니다.
+        companyMapper.addToCompanyList(companyVo);
+        log.info("Company added to companyList: " + companyVo.getCompanyName());
+    }
+
+
 
 }

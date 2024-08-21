@@ -97,6 +97,13 @@ public interface CompanyService extends UserDetailsService {
      */
     void markApplicationAsRead(Long applicationId);
 
+
+    /**
+     * 주어진 기업 ID에 해당하는 기업 정보를 승인 후 리스트에 추가합니다.
+     * - @param compId 승인할 기업의 ID
+     */
+    void addToCompanyList(CompanyVo companyVo);
+
 }
 
 

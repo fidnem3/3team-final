@@ -154,8 +154,20 @@ public class AdminController {
     public ResponseEntity<String> approveCompany(@RequestParam("compId") String compId) {
         System.out.println("Received compId: " + compId); // 디버깅용
         try {
-            companyService.approveCompany(compId);  // 기업 승인 처리
-            return ResponseEntity.ok("기업이 성공적으로 승인되었습니다.");
+            // 1. 기업 승인 처리
+            companyService.approveCompany(compId);
+
+            // 2. 승인된 기업 정보를 가져오기
+            CompanyVo approvedCompany = companyService.getCompanyById(compId);
+            if (approvedCompany == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 기업을 찾을 수 없습니다.");
+            }
+
+            // 3. 승인된 기업 정보를 companyList에 추가
+            companyService.addToCompanyList(approvedCompany);
+
+            // 4. 성공 메시지 반환
+            return ResponseEntity.ok("기업이 성공적으로 승인되고, companyList에 저장되었습니다.");
         } catch (Exception e) {
             // 예외 처리 및 에러 메시지 반환
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
