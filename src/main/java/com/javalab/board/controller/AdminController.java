@@ -6,6 +6,8 @@ import com.javalab.board.vo.CompanyVo;
 import com.javalab.board.vo.JobPostVo;
 import com.javalab.board.vo.JobSeekerVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +34,8 @@ public class AdminController {
 
     @Autowired
     private BlacklistService blacklistService;
+    @Autowired
+    private SuggestionService suggestionService;
 
 
     @GetMapping("/adminPage")
@@ -100,12 +104,12 @@ public class AdminController {
     /**
      * 기업 목록을 보여주는 페이지로 이동합니다.
      */
-    @GetMapping("/companyList")
-    public String listCompanies(Model model) {
-        List<CompanyVo> companies = adminService.getAllCompanies();
-        model.addAttribute("companies", companies);
-        return "admin/companyList";
-    }
+//    @GetMapping("/companyList")
+//    public String listCompanies(Model model) {
+//        List<CompanyVo> companies = adminService.getAllCompanies();
+//        model.addAttribute("companies", companies);
+//        return "admin/companyList";
+//    }
 
     /**
      * 특정 기업의 상세 정보를 보여주는 페이지로 이동합니다.
@@ -139,6 +143,72 @@ public class AdminController {
         return "redirect:/admin/companyList";
     }
 
+    @GetMapping("/approve")
+    public String getApprovalPage(Model model) {
+        List<CompanyVo> pendingCompanies = companyService.getPendingCompanies();
+        model.addAttribute("pendingCompanies", pendingCompanies);
+        return "admin/approve";  // Thymeleaf 템플릿 경로
+    }
+
+    @GetMapping("/suggestionList")
+    public String listJobPosts(
+            Model model) {
+        model.addAttribute("suggestions", suggestionService.getAllSuggestions());
+
+        return "admin/suggestionList";
+    }
+    @GetMapping("/companyList")
+    public String getCompanyList(Model model) {
+        // 승인된 기업 목록을 조회합니다.
+        List<CompanyVo> approvedCompanies = companyService.getApprovedCompanies();
+
+        // 거절된 기업 목록을 조회합니다.
+        List<CompanyVo> rejectedCompanies = companyService.getRejectedCompanies();
+
+        // 조회된 기업 목록을 모델에 추가합니다.
+        model.addAttribute("approvedCompanies", approvedCompanies);
+        model.addAttribute("rejectedCompanies", rejectedCompanies);
+
+        // Thymeleaf 템플릿 파일 이름을 반환합니다.
+        return "admin/companyList";
+    }
 
 
+
+    @PostMapping("/approveCompany")
+    @ResponseBody
+    public ResponseEntity<String> approveCompany(@RequestParam("compId") String compId) {
+        System.out.println("Received compId: " + compId); // 디버깅용
+        try {
+            // 1. 기업 승인 처리
+            companyService.approveCompany(compId);
+
+            // 2. 승인된 기업 정보를 데이터베이스에서 직접 조회
+            CompanyVo approvedCompany = companyService.getCompanyById(compId);
+            if (approvedCompany == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 기업을 찾을 수 없습니다.");
+            }
+
+            // 3. 성공 메시지 반환
+            return ResponseEntity.ok("기업이 성공적으로 승인되었습니다.");
+        } catch (Exception e) {
+            // 예외 처리 및 에러 메시지 반환
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("기업 승인 중 오류가 발생했습니다: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/rejectCompany")
+    @ResponseBody
+    public ResponseEntity<String> rejectCompany(@RequestParam("compId") String compId) {
+        System.out.println("Received compId: " + compId); // 디버깅용
+        try {
+            companyService.rejectCompany(compId);  // 기업 거절 처리
+            return ResponseEntity.ok("기업이 성공적으로 거절되었습니다.");
+        } catch (Exception e) {
+            // 예외 처리 및 에러 메시지 반환
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("기업 거절 중 오류가 발생했습니다: " + e.getMessage());
+        }
+    }
 }

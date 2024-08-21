@@ -55,6 +55,34 @@ public interface CompanyService extends UserDetailsService {
      */
     CompanyVo getCompanyById(String compId);
 
+    /**
+     * 승인 대기 중인 기업 목록을 반환합니다.
+     * - @return 승인 대기 중인 기업 목록
+     */
+    List<CompanyVo> getPendingCompanies();
+
+    /**
+     * 주어진 기업 ID에 해당하는 기업을 승인합니다.
+     * - @param compId 승인할 기업의 ID
+     */
+    void approveCompany(String compId);
+
+    /**
+     * 주어진 기업 ID에 해당하는 기업을 거절합니다.
+     * - @param compId 거절할 기업의 ID
+     */
+    void rejectCompany(String compId);
+
+
+    /**
+     * 승인된 기업 목록을 반환합니다.
+     * - @return 승인된 기업 목록
+     */
+    List<CompanyVo> getApprovedCompanies();
+
+    List<CompanyVo> getRejectedCompanies();
+
+
 
     //알림 기능 시작
 
@@ -78,4 +106,8 @@ public interface CompanyService extends UserDetailsService {
      */
     void markApplicationAsRead(Long applicationId);
 
+
+
 }
+
+

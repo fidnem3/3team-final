@@ -1,5 +1,6 @@
 package com.javalab.board.controller;
 
+import com.javalab.board.repository.LoginMapper;
 import com.javalab.board.service.AdminService; // AdminService 추가
 import com.javalab.board.service.CompanyService;
 import com.javalab.board.service.JobSeekerService;
@@ -10,6 +11,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,6 +29,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Date;
 import java.util.UUID;
 
 @RequestMapping("/member")
@@ -38,6 +41,7 @@ public class LoginController {
     private final CompanyService companyService;
     private final JobSeekerService jobSeekerService;
     private final AdminService adminService; // AdminService 추가
+    private final LoginMapper loginMapper;  // LoginMapper 인스턴스 주입
     private final PasswordEncoder passwordEncoder;
 
     // 로그인 화면
@@ -196,7 +200,7 @@ public class LoginController {
 
             // 기업 등록 처리
             companyService.registerCompany(companyVo, userRolesVo);
-            redirectAttributes.addFlashAttribute("message", "기업 회원가입이 성공적으로 완료되었습니다.");
+            redirectAttributes.addFlashAttribute("message", "회원가입이 성공적으로 완료되었습니다. 관리자의 승인을 기다려 주세요.");
             log.info("회원가입 성공: {}", companyVo.getCompId());
             return "redirect:/member/login";
         } catch (Exception e) {
@@ -255,49 +259,68 @@ public class LoginController {
 
 
 
-
+    // 소설 로그인
     @GetMapping("/modify")
     public String showModifyPage(@AuthenticationPrincipal Object principal, Model model) {
-        // 로그인 정보가 OAuth2User일 경우
         if (principal instanceof OAuth2User) {
             OAuth2User oauth2User = (OAuth2User) principal;
-            String clientName = (String) oauth2User.getAttributes().get("clientName");
-            model.addAttribute("clientName", clientName);
+            model.addAttribute("name", oauth2User.getAttributes().get("name"));
+            model.addAttribute("birth", oauth2User.getAttributes().get("birth"));
+            model.addAttribute("tel", oauth2User.getAttributes().get("tel"));
+            model.addAttribute("address", oauth2User.getAttributes().get("address"));
+        } else if (principal instanceof JobSeekerVo) {
+            JobSeekerVo jobSeekerVo = (JobSeekerVo) principal;
+            model.addAttribute("name", jobSeekerVo.getName());
+            model.addAttribute("birth", jobSeekerVo.getBirth());
+            model.addAttribute("tel", jobSeekerVo.getTel());
+            model.addAttribute("address", jobSeekerVo.getAddress());
         }
-
-        // 로그인 정보가 일반 사용자일 경우 (예시)
-        else if (principal instanceof MemberVo) {
-            MemberVo memberVo = (MemberVo) principal;
-            // 필요한 정보를 모델에 추가
-            model.addAttribute("clientName", "default");
-        }
-
         return "member/modify";
     }
 
     @PostMapping("/modify")
-    public String modifyPassword(
+    public String modifyUser(
+            @AuthenticationPrincipal Object principal,
             @RequestParam(name = "newPassword", required = false) String newPassword,
-            @RequestParam(name = "businessNumber", required = false) String businessNumber,
-            @RequestParam(name = "fileUpload", required = false) MultipartFile fileUpload) {
+            @RequestParam(name = "name", required = false) String name,
+            @RequestParam(name = "birth", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date birth,
+            @RequestParam(name = "tel", required = false) String tel,
+            @RequestParam(name = "address", required = false) String address) {
 
-        // 비밀번호 변경 처리
-        if (newPassword != null && !newPassword.isEmpty()) {
-            // 비밀번호 변경 로직
-        }
+        if (principal instanceof OAuth2User) {
+            OAuth2User oauth2User = (OAuth2User) principal;
 
-        // 비즈니스 번호 처리 (카카오톡 로그인 사용자만)
-        if (businessNumber != null && !businessNumber.isEmpty()) {
-            // 비즈니스 번호 처리 로직
-        }
+            // 비밀번호는 소셜 로그인 사용자에게는 처리하지 않음
+            if (newPassword != null && !newPassword.isEmpty()) {
+                // 비밀번호 변경 로직 (OAuth2 사용자에게는 외부 시스템을 통해 처리해야 할 수도 있음)
+                // 예: 외부 API 호출을 통해 비밀번호 변경
+                // 이 부분은 구체적인 외부 API나 서비스에 따라 다를 수 있습니다.
+            }
 
-        // 파일 업로드 처리
-        if (fileUpload != null && !fileUpload.isEmpty()) {
-            // 파일 업로드 로직
+            // OAuth2 사용자 정보를 내부 데이터베이스에 저장하거나 외부 시스템에 업데이트
+            // 필요 시, OAuth2 사용자 정보를 업데이트할 수 있는 로직을 구현
+            // 예: 외부 API 호출을 통해 정보 업데이트
+        } else if (principal instanceof JobSeekerVo) {
+            JobSeekerVo jobSeeker = (JobSeekerVo) principal;
+
+            // 비밀번호 변경 처리
+            if (newPassword != null && !newPassword.isEmpty()) {
+                // 실제 비밀번호 암호화 로직 필요
+                jobSeeker.setPassword(newPassword); // 비밀번호 암호화 로직을 추가해야 합니다.
+            }
+
+            // 사용자 정보 수정
+            if (name != null && !name.isEmpty()) jobSeeker.setName(name);
+            if (birth != null) jobSeeker.setBirth(birth); // birth가 null 체크 필요
+            if (tel != null && !tel.isEmpty()) jobSeeker.setTel(tel);
+            if (address != null && !address.isEmpty()) jobSeeker.setAddress(address);
+
+            // 수정된 정보를 데이터베이스에 반영
+            loginMapper.updateJobSeeker(jobSeeker); // LoginMapper 객체는 @Autowired로 주입받아야 합니다.
         }
 
         // 성공적으로 처리 후 리다이렉트
-        return "redirect:/index"; // 비밀번호 변경 후 리다이렉트할 페이지
+        return "redirect:/index"; // 수정 후 리다이렉트할 페이지
     }
 }
 

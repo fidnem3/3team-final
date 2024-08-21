@@ -26,51 +26,7 @@ public class CustomSocialLoginSuccessHandler implements AuthenticationSuccessHan
         log.info("CustomSocialLoginSuccessHandler onAuthenticationSuccess");
         log.info("Authentication Principal: {}", authentication.getPrincipal());
 
-        Object principal = authentication.getPrincipal();
-
-        // Handle OAuth2User type (GitHub and Kakao)
-        if (principal instanceof OAuth2User) {
-            OAuth2User oauth2User = (OAuth2User) principal;
-
-            // Check if the OAuth2User is of type SocialMemberDto
-            if (oauth2User instanceof SocialMemberDto) {
-                SocialMemberDto socialMemberDto = (SocialMemberDto) oauth2User;
-
-                log.info("SocialMemberDto isSocial: {}", socialMemberDto.isSocial());
-
-                // Check if it's a social user and handle redirection accordingly
-                if (socialMemberDto.isSocial()) {
-                    log.info("Redirecting to password modification page.");
-                    response.sendRedirect("/member/modify");
-                } else {
-                    log.info("Redirecting to index page.");
-                    response.sendRedirect("/index");
-                }
-            } else {
-                log.error("OAuth2User is not an instance of SocialMemberDto: {}", oauth2User.getClass());
-                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Unexpected OAuth2User type");
-            }
-        }
-        // Handle MemberVo type (if used for regular authentication)
-        else if (principal instanceof MemberVo) {
-            MemberVo memberVo = (MemberVo) principal;
-
-            log.info("MemberVo isSocial: {}", memberVo.isSocial());
-            boolean passwordMatches = passwordEncoder.matches("1111", memberVo.getPassword());
-            log.info("Password matches 1111: {}", passwordMatches);
-
-            if (memberVo.isSocial() && passwordMatches) {
-                log.info("Redirecting to password modification page.");
-                response.sendRedirect("/member/modify");
-            } else {
-                log.info("Redirecting to index page.");
-                response.sendRedirect("/index");
-            }
-        }
-        // Handle unknown principal type
-        else {
-            log.error("Unknown principal type: {}", principal.getClass());
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Unexpected principal type");
-        }
+        // 무조건 index 페이지로 리다이렉트
+        response.sendRedirect("/index");
     }
 }
