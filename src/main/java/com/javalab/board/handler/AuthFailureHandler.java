@@ -64,11 +64,11 @@ public class AuthFailureHandler extends SimpleUrlAuthenticationFailureHandler {
                 var company = companyMapper.selectCompanyById(username);
                 if (company != null) {
                     switch (company.getStatus()) {
-                        case "PENDING":
+                        case "Pending":
                             msg = "계정이 승인 대기 중입니다. 승인을 기다려주세요.";
                             errorType = "pending";
                             break;
-                        case "REJECTED":
+                        case "Rejected":
                             msg = "계정이 거절되었습니다. 관리자에게 문의하세요.";
                             errorType = "rejected";
                             break;

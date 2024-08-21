@@ -37,6 +37,12 @@ public interface LoginMapper {
 	void saveCompany(CompanyVo company);
 
 	/**
+	 * JobSeeker 정보 수정
+	 * - @param jobSeeker 개인회원 정보 객체
+	 */
+	void updateJobSeeker(JobSeekerVo jobSeeker);
+
+	/**
 	 * 사용자 권한 저장
 	 * - @param userId 사용자 ID (개인 또는 기업)
 	 * - @param roleName 사용자 권한 이름

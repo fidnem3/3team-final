@@ -111,4 +111,7 @@
 		WHERE ur.user_id = #{userId}
 	</select>
 
+
+
+
 </mapper>
