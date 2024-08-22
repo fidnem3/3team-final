@@ -13,8 +13,6 @@ public interface ResumeMapper {
 
     public List<ResumeDto> findAll(String jobSeekerId);;
 
-
-
 //    public void updateHits(int resumeId);
 
     public ResumeDto findById(int resumeId);
@@ -23,6 +21,7 @@ public interface ResumeMapper {
 
     public void deleteResume(int resumeId);
 
+    void updateResumeVisibility(Long resumeId, String visibilityStatus);
 }
 
 

@@ -24,7 +24,7 @@ public class ResumeService {
 
 
     @Transactional
-    public void resumeCreate(ResumeDto resumeDto , MultipartFile file ) throws IOException {
+    public void resumeCreate(ResumeDto resumeDto, MultipartFile file) throws IOException {
         String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/files";
         File directory = new File(projectPath);
 
@@ -42,7 +42,7 @@ public class ResumeService {
         //이력서 파일 첨부
         UUID uuid = UUID.randomUUID();
         String fileName = uuid + "_" + file.getOriginalFilename();
-        File saveFile = new File(projectPath ,fileName);
+        File saveFile = new File(projectPath, fileName);
         file.transferTo((saveFile));
         resumeDto.setFileName(fileName);
         resumeDto.setFilePath("/files/" + fileName);
@@ -64,11 +64,10 @@ public class ResumeService {
     }
 
 
-    public List<ResumeDto> findAll(String jobSeekerId)  {
+    public List<ResumeDto> findAll(String jobSeekerId) {
 
         return resumeMapper.findAll(jobSeekerId);
     }
-
 
 
 //    public List<ResumeDto> findAll() {
@@ -90,7 +89,7 @@ public class ResumeService {
         String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/files";
         UUID uuid = UUID.randomUUID();
         String fileName = uuid + "_" + file.getOriginalFilename();
-        File saveFile = new File(projectPath ,fileName);
+        File saveFile = new File(projectPath, fileName);
         file.transferTo((saveFile));
         resumeDto.setFileName(fileName);
         resumeDto.setFilePath("/files/" + fileName);
@@ -99,11 +98,16 @@ public class ResumeService {
     }
 
     public void deleteResume(int resumeId) {
+
         resumeMapper.deleteResume(resumeId);
     }
 
-}
 
+    public void updateResumeVisibility(Long resumeId, String visibilityStatus) {
+
+        resumeMapper.updateResumeVisibility(resumeId, visibilityStatus);
+    }
+}
 
 
 //스킬들 각각 DB에 저장

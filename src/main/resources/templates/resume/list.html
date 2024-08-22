@@ -17,14 +17,14 @@
     <table class="table table-striped mt-3">
         <thead>
         <tr>
-            <th>번호</th>
+            <th>이력서 번호</th>
             <th>이름</th>
             <th>제목</th>
             <th>이메일</th>
             <th>연락처</th>
             <th>학력</th>
             <th>경력</th>
-            <th>자세히 보기</th>
+            <th>기술</th>
         </tr>
         </thead>
         <tbody>
@@ -36,16 +36,57 @@
             <td th:text="${resume.jobSeekerVo.tel}">010-0000-0000</td>
             <td th:text="${resume.education}">학력</td>
             <td th:text="${resume.experience}">경력</td>
+            <td th:text="${resume.skills}">기술</td>
             <td>
                 <a th:href="@{/resume/detail/{resumeId}(resumeId=${resume.resumeId})}" class="btn btn-info">보기</a>
                 <a th:href="@{/resume/update/{id}(id=${resume.resumeId})}" class="btn btn-warning">수정</a>
                 <form th:action="@{/resume/delete/{resumeId}(resumeId=${resume.resumeId})}" method="post" onsubmit="return confirm('정말 삭제하시겠습니까?');">
                     <button type="submit" class="btn btn-danger">삭제</button>
                 </form>
+                <form th:action="@{/resume/updateVisibility}" method="post">
+                    <input type="hidden" name="resumeId" th:value="${resume.resumeId}" />
+                    <select name="visibilityStatus">
+                        <option value="PUBLIC" th:selected="${resume.visibilityStatus == 'PUBLIC'}">공개</option>
+                        <option value="PRIVATE" th:selected="${resume.visibilityStatus == 'PRIVATE'}">비공개</option>
+                    </select>
+                    <button type="submit">상태 변경</button>
+                </form>
             </td>
         </tr>
         </tbody>
     </table>
+
+    <canvas id="education-chart" width="400" height="200"></canvas>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <script>
+        // 학력별 카운트 데이터를 JavaScript로 전달
+        const educationLabels = /*[[${#json.toJson(educationCount.keySet())}]]*/ [];
+        const educationData = /*[[${#json.toJson(educationCount.values())}]]*/ [];
+
+        // Chart.js를 사용하여 학력별 분포를 막대 차트로 표시
+        new Chart(document.getElementById("education-chart"), {
+            type: 'bar',
+            data: {
+                labels: educationLabels,  // 학력 종류
+                datasets: [{
+                    label: '이력서 수',
+                    data: educationData,  // 각 학력의 이력서 수
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+
+
 </div>
 </body>
 </html>
