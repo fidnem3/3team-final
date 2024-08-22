@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>관리자 - 건의 메세지 관리</title>
+</head>
+
+<body>
+<div layout:fragment="content" class="container-xxl bg-white p-0">
+    <div class="container">
+        <h1>건의 메세지 관리</h1>
+
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Telephone</th>
+                        <th>Title</th>
+                        <th>Content</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="suggestion : ${suggestions}">
+                        <td th:text="${suggestion.name}"></td>
+                        <td th:text="${suggestion.tel}"></td>
+                        <td th:text="${suggestion.title}"></td>
+                        <td th:text="${suggestion.content}"></td>
+                        <td>
+                            <!-- 삭제 폼 -->
+                            <form th:action="@{/suggestion/delete/{sugId}(sugId=${suggestion.sugId})}" method="post" style="display:inline;">
+                                <button type="submit" class="btn btn-danger btn-sm">삭제</button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

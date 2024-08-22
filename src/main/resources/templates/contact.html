@@ -54,30 +54,30 @@
                 <div class="col-md-6">
                     <div class="wow fadeInUp" data-wow-delay="0.5s">
                         <p class="mb-4">답변은 평일 기준 9:00 ~ 18: 00 사이로 진행됩니다.</p>
-                        <form>
+                        <form id="suggestionForm" th:action="@{/suggestion/create}" th:object="${suggestionDto}" method="post">
+                            <!-- 폼 필드들 -->
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="name" placeholder="Your Name">
+                                        <input type="text" class="form-control" id="name" placeholder="Your Name" th:field="*{name}">
                                         <label for="name">이름</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating">
-                                        <input type="email" class="form-control" id="email" placeholder="Your Email">
-                                        <label for="email">연락처</label>
+                                        <input type="text" class="form-control" id="tel" placeholder="Your Tel" th:field="*{tel}">
+                                        <label for="tel">연락처</label>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="subject" placeholder="Subject">
+                                        <input type="text" class="form-control" id="subject" placeholder="Subject" th:field="*{title}">
                                         <label for="subject">제목</label>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-floating">
-                                        <textarea class="form-control" placeholder="Leave a message here" id="message"
-                                                  style="height: 150px"></textarea>
+                                        <textarea class="form-control" placeholder="Leave a message here" id="message" th:field="*{content}" style="height: 150px"></textarea>
                                         <label for="message">내용</label>
                                     </div>
                                 </div>

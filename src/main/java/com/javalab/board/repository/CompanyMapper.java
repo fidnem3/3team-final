@@ -44,14 +44,12 @@ public interface CompanyMapper {
     void markApplicationAsRead(Long applicationId);
 
 
-
-
     /**
      * 특정 상태를 가진 기업 목록을 조회합니다.
      * - @param status 기업의 상태 (예: "PENDING", "APPROVED", "REJECTED")
      * - @return 특정 상태를 가진 기업 목록
      */
-    List<CompanyVo> selectCompaniesByStatus(@Param("status") String status);
+        List<CompanyVo> selectCompaniesByStatus(@Param("status") String status);
 
     /**
      * 특정 기업의 상태를 업데이트합니다.
@@ -60,11 +58,6 @@ public interface CompanyMapper {
      */
     void updateCompanyStatus(@Param("compId") String compId, @Param("status") String status);
 
-    /**
-     * 승인된 기업 목록을 데이터베이스에 추가합니다.
-     * - @param companyVo 추가할 기업 정보 객체
-     */
-    void addToCompanyList(CompanyVo companyVo);
 
 
 }
