@@ -1,6 +1,7 @@
 package com.javalab.board.service;
 
 import com.javalab.board.dto.CreateJobPostRequestDto;
+import com.javalab.board.repository.ApplicationMapper;
 import com.javalab.board.repository.CompanyMapper;
 import com.javalab.board.repository.JobPostMapper;
 import com.javalab.board.repository.JobSeekerScrapMapper;
@@ -29,6 +30,9 @@ public class JobPostServiceImpl implements JobPostService {
 
     @Autowired
     private JobSeekerScrapMapper jobSeekerScrapMapper;
+
+    @Autowired
+    private ApplicationMapper applicationMapper;
 
     @Override
     @Transactional
@@ -134,6 +138,9 @@ public class JobPostServiceImpl implements JobPostService {
     public void deleteJobPostWithScraps(Long jobPostId) {
         // 자식 레코드 삭제
         jobSeekerScrapMapper.deleteScrapsByJobPostId(jobPostId); // 스크랩 Mapper 메서드 호출
+
+        // 자식 레코드 삭제
+        applicationMapper.deleteApplicationById(jobPostId);
 
         // 부모 레코드 삭제
         jobPostMapper.deleteJobPost(jobPostId); // 공고 Mapper 메서드 호출
