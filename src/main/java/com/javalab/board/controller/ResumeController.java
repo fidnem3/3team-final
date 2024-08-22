@@ -7,6 +7,7 @@ import com.javalab.board.service.ResumeService;
 import com.javalab.board.vo.JobSeekerVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,10 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -84,6 +82,14 @@ public class ResumeController {
             model.addAttribute("resumeList", resumeDtoList);
 
 
+            // 이력서 리스트를 3개씩 묶어 partitionedResumes 리스트로 변환
+            List<List<ResumeDto>> partitionedResumes = new ArrayList<>();
+            for (int i = 0; i < resumeDtoList.size(); i += 3) {
+                partitionedResumes.add(resumeDtoList.subList(i, Math.min(i + 3, resumeDtoList.size())));
+            }
+            model.addAttribute("partitionedResumes", partitionedResumes);
+
+
             Map<String, Long> educationCount = resumeDtoList.stream()
                     .collect(Collectors.groupingBy(ResumeDto::getEducation, Collectors.counting()));
             model.addAttribute("educationCount", educationCount);
@@ -138,14 +144,15 @@ public class ResumeController {
         return "redirect:/resume/list";
     }
 
-    @PostMapping("/updateVisibility")
-    public String updateVisibility(@RequestParam("resumeId") Long resumeId,
-                                   @RequestParam("visibilityStatus") String visibilityStatus) {
 
-        System.out.println("abcdefg" + resumeId);
+    @PostMapping("/updateVisibility")
+    @ResponseBody
+    public ResponseEntity<Void> updateVisibility(@RequestParam("resumeId") Long resumeId,
+                                                 @RequestParam("visibilityStatus") String visibilityStatus) {
+        System.out.println("abdsdfsdf" +visibilityStatus);
         resumeService.updateResumeVisibility(resumeId, visibilityStatus);
 
-        return "redirect:/resume/list";
+        return ResponseEntity.ok().build();
     }
 
 
