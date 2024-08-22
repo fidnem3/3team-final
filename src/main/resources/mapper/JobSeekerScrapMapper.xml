@@ -32,4 +32,9 @@
         FROM jobSeekerScrap
         WHERE jobSeeker_id = #{jobSeekerId}
     </select>
+
+    <delete id="deleteScrapsByJobSeekerId">
+        DELETE FROM jobSeekerScrap
+        WHERE jobSeeker_id = #{jobSeekerId}
+    </delete>
 </mapper>

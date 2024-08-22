@@ -226,12 +226,14 @@
             </div>
         </div>
     </div>
+
     <script>
         function toggleVisibilityStatus(button) {
 
             const resumeId = button.getAttribute('data-resume-id');
             const currentStatus = button.textContent.trim();
             const newStatus = currentStatus === 'PUBLIC' ? 'PRIVATE' : 'PUBLIC';
+
 
             const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
             const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');

@@ -11,6 +11,11 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <style>
+
+        .container-xxl{
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+        background-color: #ffffff;
+        }
            .popup-content {
         background-color: #fefefe;
         margin: 15% auto;
@@ -26,7 +31,7 @@
     <div class="container">
         <div class="row gy-5 gx-4">
             <div class="col-lg-8">
-                <div class="d-flex align-items-center mb-5">
+                <div class="d-flex align-items-center mb-5" style="border-bottom: 1px solid #d3d3d3; width: 650px; padding-bottom: 20px; margin-bottom: 15px;">
                     <img class="flex-shrink-0 img-fluid border rounded"
                          th:src="@{/jobPost/logo/{logoName}(logoName=${jobPost.logoName})}"
                          alt="Company Logo" style="width: 80px; height: 80px;">
@@ -50,13 +55,22 @@
                         <li><i class="fa fa-angle-right text-primary me-2"></i><span
                                 th:text="${jobPost.experience}"></span></li>
                     </ul>
+                    <h4 class="mb-3">필요 기술</h4>
+                    <ul class="list-unstyled">
+                        <li th:each="skill : ${requiredSkills}">
+                            <i class="fa fa-angle-right text-primary me-2"></i>
+                            <span th:text="${skill}"></span>
+                        </li>
+                    </ul>
                     <h4 class="mb-3">내용</h4>
                     <span th:utext="${jobPost.content}"></span><br><br>
                 </div>
 
-                <div>
+                <div >
+                    <div class="form-group text-center">
                     <!-- 지원하기 버튼 -->
                     <button id="modalBtn" class="btn btn-primary w-100" sec:authorize="hasRole('ROLE_USER')">지원하기</button>
+                    </div>
 
                     <!--모달 창-->
                     <div class="modal" id="resumePopup" tabindex="-1" aria-labelledby="resumePopupLabel"
@@ -96,7 +110,7 @@
             </div>
 
             <div class="col-lg-4">
-                <div class="bg-light rounded p-5 mb-4 wow slideInUp" data-wow-delay="0.1s">
+                <div class="bg-light rounded p-5 mb-4 wow slideInUp" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);" data-wow-delay="0.1s">
                     <h4 class="mb-4">Job Summary</h4>
                     <p><i class="fa fa-angle-right text-primary me-2"></i><b>작성일 :</b> <span
                             th:text="${formattedCreated}"></span></p>
@@ -110,7 +124,7 @@
                     <p class="m-0"><i class="fa fa-angle-right text-primary me-2"></i><b>마감일자 :</b> <span
                             th:text="${formattedEndDate}"></span></p>
                 </div>
-                <div class="bg-light rounded p-5 wow slideInUp" data-wow-delay="0.1s">
+                <div class="bg-light rounded p-5 wow slideInUp" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);" data-wow-delay="0.1s">
                     <h4 class="mb-4">Company Detail</h4>
                     <p class="m-0">Ipsum dolor ipsum accusam stet et et diam dolores, sed rebum sadipscing elitr
                         vero
