@@ -9,11 +9,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Resume List</title>
     <style>
-        .cta-100 {
+
+<!--        .cta-100 {-->
 <!--            margin-top: 100px;-->
-            padding-left: 8%;
-            padding-top: 7%;
+<!--            padding-left: 8%;-->
+<!--            padding-top: 7%;-->
+<!--        }-->
+
+        .container-xxl{
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
         }
+
         .col-md-4 {
             padding-bottom: 20px;
         }
@@ -26,7 +32,8 @@
             padding-top: 20px;
         }
         .bg-blue-ui {
-            background-color: #708198 !important;
+            background-color: #0000CD !important;
+
         }
         figure img {
             width: 300px;
@@ -40,26 +47,34 @@
             height: 50%;
         }
         .blog .carousel-indicators li {
-            background: #708198;
+            margin-top : 20px;
+            top : 20px;
+            background: #F0F0F0;
             border-radius: 50%;
-            width: 8px;
-            height: 8px;
+            width: 10px;
+            height: 10px;
         }
         .blog .carousel-indicators .active {
-            background: #0fc9af;
+            background: #0000CD;
         }
         .item-box-blog {
-            border: 5px solid #dadada;
+            border: 1px solid #dadada;
+            margin-top : 50px;
             text-align: center;
             z-index: 4;
-            padding: 18px;
+            padding: 20px;
+            box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
         }
         .item-box-blog-image {
             position: relative;
         }
         .item-box-blog-image figure img {
-            width: 100%;
-            height: auto;
+       max-width: 150%;  /* 이미지의 너비를 부모 요소의 100%로 제한 */
+       max-height: 200px;  /* 최대 높이를 200px로 제한 */
+       width: auto;  /* 원본 비율 유지 */
+       height: auto;  /* 원본 비율 유지 */
+       object-fit: cover;  /* 이미지가 요소의 크기에 맞춰 잘리도록 설정 (cover, contain 등으로 변경 가능) */
+
         }
         .item-box-blog-date {
             position: absolute;
@@ -79,10 +94,10 @@
             font-size: 18px;
         }
         .item-box-blog-body {
-            padding: 10px;
+            padding: 20px;
         }
         .item-box-blog-heading a h5 {
-            margin: 0;
+            margin: 10px 0;
             line-height: 1;
             text-decoration: none;
             transition: color 0.3s;
@@ -107,29 +122,35 @@
             padding-top: 10px;
         }
 
+                .btn-container {
+                display: flex;
+                justify-content: center; /* 버튼 사이의 공간을 분배 */
+                align-items: center; /* 버튼들이 같은 높이에 위치하도록 설정 */
+                margin-top: 10px; /* 상단 여백 */
+            }
 
-        .btn.bg-blue-ui.white.read {
-            cursor: pointer;
-            padding: 4px 20px;
-            float: left;
-            margin-top: 10px;
-        }
-        .btn.bg-blue-ui.white.read:hover {
-            box-shadow: 0px 5px 15px inset #4d5f77;
-        }
+.btn.bg-blue-ui.white.read {
+    padding: 4px 20px;
+    margin-right: 10px;
+}
 
-        .btn.bg-blue-ui.white.visibility {
-            cursor: pointer;
-            padding: 4px 20px;
-            float: left;
-            margin-top: 10px;
-            margin-left: 80px;
-        }
-        .btn.bg-blue-ui.white.visibility:hover {
-            box-shadow: 0px 5px 15px inset #4d5f77;
-        }
+.btn.bg-blue-ui.white.visibility {
+    padding: 5px 20px;
+
+
+}
+
+.btn.bg-blue-ui.white.read {
+    padding: 3px 20px;
+    margin-right: 20px;
+}
+
+.btn.bg-blue-ui.white.visibility {
+    padding: 3px 20px;
+
+
     </style>
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
+<!--    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">-->
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 
@@ -138,11 +159,13 @@
 
 </head>
 
+
 <body>
-<div layout:fragment="content" class="container cta-100">
+<div layout:fragment="content" class="container-xxl bg-white p-0">
     <div class="container">
         <div class="row blog">
             <div class="col-md-12">
+
                 <div id="blogCarousel" class="carousel slide container-blog" data-ride="carousel">
                     <ol class="carousel-indicators">
                         <li th:each="resumeBatch, batchStat : ${partitionedResumes}"
@@ -159,21 +182,20 @@
                                 <div th:each="resume : ${resumeBatch}" class="col-md-4">
                                     <div class="item-box-blog">
                                         <div class="item-box-blog-image">
-                                            <!-- 이력서 ID 표시 -->
-                                            <div class="item-box-blog-date bg-blue-ui white">
-                                                <span class="mon" th:text="${resume.resumeId}">ID</span>
-                                            </div>
+
+
+<!--                                            &lt;!&ndash; 이력서 ID 표시 &ndash;&gt;-->
+<!--                                            <div class="item-box-blog-date bg-blue-ui white">-->
+<!--                                                <span class="mon" th:text="${resume.resumeId}">ID</span>-->
+<!--                                            </div>-->
 
 
                                             <!-- 이력서 이미지 표시 -->
                                             <figure>
-                                                <!-- filePath가 null이 아닐 때 -->
-                                                <img th:if="${resume.filePath != null}" th:src="${resume.filePath}" alt="Resume Image" style="width: 80%; height: 100%; display: inline-block;" id="photo">
+                                                <img th:if="${resume.filePath != null}" th:src="@{${resume.filePath}}" alt="Resume Image">
 
-                                                <!-- filePath가 null일 때 기본 이미지 사용 -->
-                                                <img th:if="${resume.filePath == null}" src="https://cdn.pixabay.com/photo/2017/02/08/14/25/computer-2048983_960_720.jpg" alt="Default Image" style="width: 80%; height: 100%; display: inline-block;" id="photo">
+                                                <img th:if="${resume.filePath == null}" src="https://cdn.pixabay.com/photo/2017/02/08/14/25/computer-2048983_960_720.jpg" alt="Default Image">
 
-<!--                                                <img th:src="${resume.filePath != null ? resume.filePath : 'https://cdn.pixabay.com/photo/2017/02/08/14/25/computer-2048983_960_720.jpg'}" alt="Resume Image">-->
                                             </figure>
                                         </div>
 
@@ -198,11 +220,13 @@
                                                 <p th:text="${resume.content}"></p>
                                             </div>
 
+                                            <div class="btn-container">
                                             <!-- 자세히 보기 버튼 -->
                                             <div class="mt">
                                                 <a th:href="@{/resume/detail/{resumeId}(resumeId=${resume.resumeId})}" class="btn bg-blue-ui white read">Read</a>
                                             </div>
 
+                                            <!--  공개 비공개 버튼-->
                                             <div class="mt">
                                                 <button th:id="'visibility-button-' + ${resume.resumeId}"
                                                         th:text="${resume.visibilityStatus}"
@@ -211,7 +235,7 @@
                                                         onclick="toggleVisibilityStatus(this)">
                                                 </button>
                                             </div>
-
+                                            </div>
 <!--                                            <div class="mt">-->
 <!--                                                <a th:href="@{/resume/detail/{resumeId}(resumeId=${resume.resumeId})}" class="btn bg-blue-ui white visibility" th:text="${resume.visibilityStatus}"></a>-->
 <!--                                            </div>-->
@@ -229,37 +253,36 @@
 
     <script>
         function toggleVisibilityStatus(button) {
+        const resumeId = button.getAttribute('data-resume-id');
+        const currentStatus = button.textContent.trim();
+        const newStatus = currentStatus === 'PUBLIC' ? 'PRIVATE' : 'PUBLIC';
 
-            const resumeId = button.getAttribute('data-resume-id');
-            const currentStatus = button.textContent.trim();
-            const newStatus = currentStatus === 'PUBLIC' ? 'PRIVATE' : 'PUBLIC';
+        const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+        const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
 
-
-            const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
-            const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
-
-            fetch('/resume/updateVisibility', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    [csrfHeader]: csrfToken  // CSRF 토큰 설정
-                },
-                body: `resumeId=${resumeId}&visibilityStatus=${newStatus}`
-            })
-            .then(response => {
-                if (response.ok) {
-                    // 성공적으로 변경되면 버튼의 텍스트를 업데이트
-                    button.textContent = newStatus;
-                } else {
-                    console.error('Visibility status update failed.');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        }
+        fetch('/resume/updateVisibility', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                [csrfHeader]: csrfToken  // CSRF 토큰 설정
+            },
+            body: `resumeId=${encodeURIComponent(resumeId)}&visibilityStatus=${encodeURIComponent(newStatus)}`
+        })
+        .then(response => {
+            if (response.ok) {
+                // 성공적으로 변경되면 버튼의 텍스트를 업데이트
+                button.textContent = newStatus;
+            } else {
+                console.error('Visibility status update failed.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
 
     </script>
 </div>
+
 </body>
 </html>

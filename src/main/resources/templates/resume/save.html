@@ -7,11 +7,17 @@
 <head>
     <meta charset="UTF-8">
     <title>이력서</title>
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<!--    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">-->
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
     <style>
+
+        .container-xxl{
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+        }
+
+
 #upload {
     opacity: 0;
 }
@@ -50,11 +56,13 @@
 
 <!--     basic CSS   -->
         body {
-            background: #C5E1A5;
         }
+
+
         form {
-            width: 60%;
-            margin: 60px auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+            width: 100%;
+            margin: 10px auto;
             background: #efefef;
             padding: 60px 120px 80px 120px;
             text-align: center;
@@ -71,7 +79,7 @@
             top: -1.6em;
             padding: 10px;
             font-family: sans-serif;
-            font-size: .8em;
+            font-size: .9em;
             letter-spacing: 1px;
             color: rgb(120,120,120);
             transition: ease .3s;
@@ -134,8 +142,8 @@
 </head>
 
 <body>
-<div layout:fragment="content" class="container">
-    <form th:action="@{/resume/save}" method="post" id="resume" enctype="multipart/form-data">
+<div layout:fragment="content" class="container-xxl bg-white p-0">
+<form th:action="@{/resume/save}" method="post" id="resume" enctype="multipart/form-data"  >
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
 
         <!-- 기본 정보 입력 폼 -->
@@ -301,7 +309,7 @@
         <div class="row py-4"   >
 
             <!-- 숨겨진 파일 입력 요소 -->
-            <input type="file" id="upload" style="display: none;" onchange="readURL(this);">
+            <input type="file" name="file" id="upload" style="display: none;" onchange="readURL(this);">
 
             <!-- 사용자 정의 버튼 -->
             <div class="input-group mb-3 px-2 py-2 rounded-pill bg-white shadow-sm text-center">
@@ -330,23 +338,6 @@
 
     <!--이력서 save파일첨부 스크립트-->
     <script>
-        document.getElementById('fileInput').addEventListener('change', function(event) {
-        var file = event.target.files[0];
-        var reader = new FileReader();
-
-        reader.onload = function(e) {
-        var imgElement = document.getElementById('photo');
-        imgElement.src = e.target.result;
-        imgElement.style.display = 'block';
-        }
-
-        if (file) {
-        reader.readAsDataURL(file);
-        }
-        });
-    </script>
-
-    <script>
         function readURL(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
@@ -366,8 +357,6 @@
                 readURL(this); // input 매개변수는 'this'로 전달
             });
         });
-
-
     </script>
 
 </div>
