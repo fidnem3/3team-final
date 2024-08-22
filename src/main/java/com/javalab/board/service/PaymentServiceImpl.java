@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class PaymentServiceImpl implements PaymentService {
@@ -52,4 +54,15 @@ public class PaymentServiceImpl implements PaymentService {
     public List<PaymentDto> getAllPayments() {
         return paymentMapper.selectAllPayments();
     }
+
+    // 그래프
+
+
+    @Override
+    public List<Map<Long, Integer>> getTotalPaymentsForAllJobPosts() {
+        List<Map<Long, Integer>> result = paymentMapper.findTotalPaymentsForAllJobPosts();
+        return result != null ? result : (List<Map<Long, Integer>>) Collections.emptyMap(); // null 처리
+    }
 }
+
+

@@ -407,5 +407,4 @@ public class JobPostController {
             printWriter.println(json.toString());
         }
     }
-
 }

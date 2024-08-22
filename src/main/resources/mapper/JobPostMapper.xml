@@ -149,4 +149,13 @@
         FROM requiredSkill
         WHERE jobPost_id = #{jobPostId}
     </select>
+
+    <select id="findAll">
+        SELECT * FROM jobPost
+    </select>
+
+    <!-- 총 공고 수를 가져오는 쿼리 -->
+    <select id="getTotalJobPosts" resultType="int">
+        SELECT COUNT(*) FROM jobPost
+    </select>
 </mapper>

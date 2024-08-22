@@ -44,10 +44,10 @@ public class AdminController {
         return "admin/adminPage"; // 이 경로는 src/main/resources/templates/admin/adminPage.html에 해당
     }
 
-    @GetMapping("/settings")
+    @GetMapping("/admin")
     public String getSettingsPage(Model model) {
         // 설정 페이지로 이동하는 메서드
-        return "admin/settings"; // 이 경로는 src/main/resources/templates/admin/settings.html에 해당
+        return "admin/admin"; // 이 경로는 src/main/resources/templates/admin/settings.html에 해당
     }
 
 
