@@ -7,6 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -37,6 +38,5 @@ public class JobPostVo implements Serializable {
 	private Date endDate ;
 	private Date created;
 	private String paymentStatus; // 'Before Payment', 'After Payment'
-
-
+	private List<String> skills;    // 요구 스킬 리스트
 }

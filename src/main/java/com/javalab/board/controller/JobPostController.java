@@ -104,6 +104,7 @@ public class JobPostController {
                 .address(createJobPostRequestDto.getAddress())
                 .endDate(createJobPostRequestDto.getEndDate())
                 .homepage(createJobPostRequestDto.getHomepage())
+                .skills(createJobPostRequestDto.getSkills())
                 .status("Before payment")
                 .build();
 
@@ -236,7 +237,7 @@ public class JobPostController {
         JobPostVo jobPostVo = jobPostService.findJobPostById(jobPostId);
         // 조회수 증가
         jobPostService.incrementHitCount(jobPostId);
-
+        // 로깅
 
         if (jobPostVo != null) {
             // 날짜 포맷팅
@@ -261,6 +262,7 @@ public class JobPostController {
             model.addAttribute("jobPost", jobPostVo); // 모델에 추가
             model.addAttribute("formattedEndDate", formattedEndDate);
             model.addAttribute("formattedCreated", formattedCreated);
+            model.addAttribute("requiredSkills", jobPostService.getRequiredSkillsByJobPostId(jobPostId)); // 필요 기술 추가
             return "jobPost/jobPostDetail"; // 공고 상세 페이지로 이동
         } else {
             // 공고를 찾을 수 없는 경우, 목록 페이지로 리다이렉트
