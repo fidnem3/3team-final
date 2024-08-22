@@ -31,4 +31,6 @@ public interface JobSeekerScrapMapper {
     public List<JobSeekerScrapVo> listJobSeekerScrap();
 
     void deleteScrapsByJobPostId(Long jobPostId);
+
+    void deleteScrapsByJobSeekerId(String jobSeekerId);
 }

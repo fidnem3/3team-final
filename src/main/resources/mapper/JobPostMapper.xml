@@ -136,4 +136,17 @@
         WHERE jp.title LIKE '%' || #{keyword} || '%'
     </select>
 
+    <insert id="insertRequiredSkill" parameterType="map">
+        <selectKey keyProperty="requiredSkillId" resultType="long" order="BEFORE">
+            SELECT REQUIREDSKILL_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO requiredSkill (requiredSkill_id, jobPost_id, skill)
+        VALUES (#{requiredSkillId}, #{jobPostId}, #{skill})
+    </insert>
+
+    <select id="getRequiredSkillsByJobPostId" resultType="string">
+        SELECT skill
+        FROM requiredSkill
+        WHERE jobPost_id = #{jobPostId}
+    </select>
 </mapper>

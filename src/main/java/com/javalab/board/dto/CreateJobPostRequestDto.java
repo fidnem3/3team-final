@@ -8,7 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
-
+import java.util.List;
 
 
 @Getter
@@ -35,6 +35,9 @@ public class CreateJobPostRequestDto {
     private String status;
     private String paymentStatus; // 'Before Payment', 'After Payment'
     private MultipartFile logoFile; // 파일을 위한 필드 추가
+
+    // 새 필드
+    private List<String> skills;  // requiredSkill 목록을 받는 필드
 
     public CreateJobPostRequestDto(Long jobPostId, String title, String address, String salary, Date endDate, Integer hitNo) {
     }
