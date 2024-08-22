@@ -1,7 +1,9 @@
 package com.javalab.board.handler;
 
+import com.javalab.board.dto.BlacklistDto;
 import com.javalab.board.repository.CompanyMapper;
 import com.javalab.board.repository.JobSeekerMapper;
+import com.javalab.board.repository.LoginMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -155,4 +157,3 @@ public class AuthFailureHandler extends SimpleUrlAuthenticationFailureHandler {
             super.onAuthenticationFailure(request, response, exception);
         }
     }
-}

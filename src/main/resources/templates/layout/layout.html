@@ -56,7 +56,7 @@
 
 
                 <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">Jobs</a>
+                    <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown" sec:authorize="!hasRole('ROLE_COMPANY')">Jobs</a>
                     <div class="dropdown-menu rounded-0 m-0">
                         <a th:href="@{/admin/companyList}" class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')">Company
                             List</a>
@@ -76,7 +76,7 @@
                     </div>
                 </div>
                 <div class="nav-item dropdown" sec:authorize="!hasRole('ROLE_ADMIN')">
-                    <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">Resume</a>
+                    <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown" sec:authorize="!hasRole('ROLE_COMPANY')">Resume</a>
                     <div class="dropdown-menu rounded-0 m-0">
                         <a th:href="@{/resume/save}" class="dropdown-item">New Resume</a>
                         <a th:href="@{/resume/list}" class="dropdown-item">Resume List</a>
@@ -116,23 +116,10 @@
             <!--                    </div>-->
             <!--                </div>-->
         </div>
+
         <div sec:authorize="hasRole('COMPANY')" class="d-flex align-items-center">
-
-
             <!-- 기업 회원 메뉴 -->
-            <!-- 종 아이콘 추가 -->
-            <div class="nav-item">
-                <a th:href="@{/company/applications}" class="nav-link position-relative">
-                    <i class="fa fa-bell"></i>
-                    <span th:if="${unreadApplicationCount > 0}"
-                          th:text="${unreadApplicationCount}"
-                          class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-            </span>
-                </a>
-            </div>
-
-
-            <div class="nav-item dropdown me-3">
+            <div class="nav-item dropdown me-2"> <!-- me-3에서 me-2로 변경 -->
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                     <i class="fa fa-building"></i> Company Menu
                 </a>
@@ -144,7 +131,16 @@
                 </div>
             </div>
 
-
+            <!-- 종 아이콘 추가 -->
+            <div class="nav-item ms-0"> <!-- ms-0 클래스 추가 -->
+                <a th:href="@{/company/applications}" class="nav-link position-relative">
+                    <i class="fa fa-bell"></i>
+                    <span th:if="${unreadApplicationCount > 0}"
+                          th:text="${unreadApplicationCount}"
+                          class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    </span>
+                </a>
+            </div>
         </div>
 
 

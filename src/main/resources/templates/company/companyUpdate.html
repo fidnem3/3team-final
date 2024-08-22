@@ -6,13 +6,43 @@
 <head>
     <meta charset="UTF-8">
     <title>회사 정보 수정</title>
+    <style>
+        .company-logo {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 20px;
+            display: block;
+        }
+        .file-upload {
+            position: relative;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        .file-upload input[type=file] {
+            position: absolute;
+            top: 0;
+            right: 0;
+            min-width: 100%;
+            min-height: 100%;
+            font-size: 100px;
+            text-align: right;
+            filter: alpha(opacity=0);
+            opacity: 0;
+            outline: none;
+            background: white;
+            cursor: inherit;
+            display: block;
+        }
+    </style>
 </head>
 
 <body>
 <div layout:fragment="content" class="container-xxl bg-white p-0">
     <div class="container">
         <h1>회사 정보 수정</h1>
-        <form th:action="@{/company/update}" th:object="${company}" method="post">
+        <form th:action="@{/company/update}" th:object="${company}" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="compId">회사 ID:</label>
                 <input type="text" id="compId" th:field="*{compId}" class="form-control" readonly/>
@@ -36,6 +66,18 @@
             <div class="form-group">
                 <label for="address">주소:</label>
                 <input type="text" id="address" th:field="*{address}" class="form-control" required="required"/>
+            </div>
+            <div class="form-group">
+                <label>현재 로고:</label>
+                <img th:if="${company.logoName}" th:src="@{/company/logo/{logoName}(logoName=${company.logoName})}" alt="현재 로고" class="company-logo">
+                <p th:unless="${company.logoName}">로고가 없습니다.</p>
+            </div>
+            <div class="form-group">
+                <label for="logoFile">새 로고 업로드:</label>
+                <div class="file-upload">
+                    <input type="file" id="logoFile" name="logoFile" accept="image/*"/>
+                    <label for="logoFile" class="btn btn-secondary">파일 선택</label>
+                </div>
             </div>
             <div class="form-group mt-4">
                 <button type="submit" class="btn btn-primary">수정 완료</button>
