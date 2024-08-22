@@ -1,216 +1,331 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/html"
       layout:decorate="~{layout/layout}">
 
 <head>
     <meta charset="UTF-8">
     <title>이력서</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <style>
+#upload {
+    opacity: 0;
+}
+
+#upload-label {
+    position: absolute;
+    top: 50%;
+    left: 1rem;
+    transform: translateY(-50%);
+}
+
+.image-area {
+    border: 2px dashed rgba(255, 255, 255, 0.7);
+    padding: 1rem;
+    position: relative;
+}
+
+.image-area::before {
+    content: 'Uploaded image result';
+    color: #fff;
+    font-weight: bold;
+    text-transform: uppercase;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.8rem;
+    z-index: 1;
+}
+
+.image-area img {
+    z-index: 2;
+    position: relative;
+}
+
+
+<!--     basic CSS   -->
+        body {
+            background: #C5E1A5;
+        }
+        form {
+            width: 60%;
+            margin: 60px auto;
+            background: #efefef;
+            padding: 60px 120px 80px 120px;
+            text-align: center;
+            -webkit-box-shadow: 2px 2px 3px rgba(0,0,0,0.1);
+            box-shadow: 2px 2px 3px rgba(0,0,0,0.1);
+        }
+        label {
+            display: block;
+            position: relative;
+            margin: 40px 0px;
+        }
+        .label-txt {
+            position: absolute;
+            top: -1.6em;
+            padding: 10px;
+            font-family: sans-serif;
+            font-size: .8em;
+            letter-spacing: 1px;
+            color: rgb(120,120,120);
+            transition: ease .3s;
+        }
+        .input {
+            width: 100%;
+            padding: 10px;
+            background: transparent;
+            border: none;
+            outline: none;
+        }
+        .line-box {
+            position: relative;
+            width: 100%;
+            height: 2px;
+            background: #BCBCBC;
+        }
+        .line {
+            position: absolute;
+            width: 0%;
+            height: 2px;
+            top: 0px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #8BC34A;
+            transition: ease .6s;
+        }
+
+        .input:focus + .line-box .line {
+            width: 100%;
+        }
+
+        .label-active {
+            top: -3em;
+        }
+
+        button {
+            display: inline-block;
+            padding: 12px 24px;
+            background: rgb(220,220,220);
+            font-weight: bold;
+            color: rgb(120,120,120);
+            border: none;
+            outline: none;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: ease .3s;
+        }
+        button:hover {
+            background: #8BC34A;
+            color: #ffffff;
+        }
+
+        .skills-wrapper label {
+        display: inline-block;
+        margin-right: 22px;
+        margin-bottom: 15px; /* 간격을 조정할 수 있습니다 */
+    }
+    </style>
 </head>
+
 <body>
-
-<div layout:fragment="content" class="container d-flex justify-content-center">
-    <form th:action="@{/resume/save}" method="post" id="resume" enctype="multipart/form-data" class="w-100" style="max-width: 40rem;">
+<div layout:fragment="content" class="container">
+    <form th:action="@{/resume/save}" method="post" id="resume" enctype="multipart/form-data">
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-        <div class="row">
-            <div class="col-12">
-                <br> 이력서 작성<br>
-                <hr />
-                <div class="card border-light mb-3" style="max-width: 40rem;">
-                    <div class="card-header">기본 정보</div>
-                    <div class="card-body">
-                        <div class="row">
 
-                            <div class="col-3 mt-3" style="text-align: center;">
-                                <!-- 파일 업로드 후 이미지 표시 -->
-                                <img src="#" alt="image" style="width: 100%; height: 100% ; display: none;" id="photo">
-                                <input type="file" name="file" id="fileInput"><br>
+        <!-- 기본 정보 입력 폼 -->
+        <label>
+            <p class="label-txt">이름 : <span th:text="${jobSeekerVo.name}"> </span></p>
+            <br>
+<!--            <input type="text" class="input" name="email">-->
+        </label>
+
+        <label>
+            <p class="label-txt">이메일 : <span th:text="${jobSeekerVo.email}"> </span> </p> <br>
+        </label>
+
+        <label>
+            <p class="label-txt">번호 : <span th:text="${jobSeekerVo.tel}"> </span> </p><br>
+        </label>
+
+        <label>
+            <p class="label-txt">제목</p>
+            <input type="text" class="input" name="title" id="title">
+            <div class="line-box">
+                <div class="line"></div>
+            </div>
+        </label>
+
+        <label>
+            <p class="label-txt">자기소개서 </p>
+            <br>
+            <textarea class="input form-control" name="content" id="content" rows="3"></textarea>
+            <div class="line-box">
+                <div class="line"></div>
+            </div>
+        </label>
+
+
+
+
+        <label>
+            <p class="label-txt">학력 사항</p><br>
+            <select class="form-select" name="education" id="education">
+                <option selected disabled>학력 사항을 선택해주세요</option>
+                <option value="초졸">초졸</option>
+                <option value="중졸">중졸</option>
+                <option value="고졸">고졸</option>
+                <option value="대졸">대졸</option>
+                <option value="대학원 이상">대학원 이상</option>
+            </select>
+            <br>
+            <div class="line-box">
+                <div class="line"></div>
+            </div>
+        </label>
+
+
+
+
+
+        <label>
+            <p class="label-txt">경력 사항</p><br>
+            <select class="form-select" name="experience" id="experience">
+                <option selected disabled>경력 사항을 선택해주세요</option>
+                <option value="신입">신입</option>
+                <option value="1년차 미만">1년차 미만</option>
+                <option value="1년">1년</option>
+                <option value="2년">2년</option>
+                <option value="3년">3년</option>
+                <option value="4년">4년</option>
+                <option value="5년">5년</option>
+                <option value="6년">6년</option>
+                <option value="7년">7년</option>
+                <option value="8년차 이상">8년차 이상</option>
+            </select>
+            <br>
+            <div class="line-box">
+                <div class="line"></div>
+            </div>
+        </label>
+
+        <div class="card border-light mb-3" style="max-width: 40rem;">
+            <div class="card-header">보유 기술</div>
+            <div class="card-body">
+                <div class="row my-3">
+                    <div class="skills-wrapper">
+                        <label>
+                            <input class="form-check-input" type="checkbox" name="skills" value="Java"> Java
+                            <div class="line-box">
+                                <div class="line"></div>
                             </div>
-
-                            <div class="col-2 pt-3" style="text-align: right">
-                                <div class="mb-2">이름</div>
-                                <div class="mb-2">Email</div>
-                                <div class="mb-2">연락처</div>
+                        </label>
+                        <label>
+                            <input class="form-check-input" type="checkbox" name="skills" value="JavaScript"> JavaScript
+                            <div class="line-box">
+                                <div class="line"></div>
                             </div>
-                            <div class="col-7 pt-3">
-                                <div class="mb-2" th:text="${jobSeekerVo.name}"></div>
-                                <div class="mb-2" th:text="${jobSeekerVo.email}"></div>
-                                <div class="mb-2" th:text="${jobSeekerVo.tel}"></div>
+                        </label>
+                        <label>
+                            <input class="form-check-input" type="checkbox" name="skills" value="Spring"> Spring
+                            <div class="line-box">
+                                <div class="line"></div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card border-light mb-3" style="max-width: 40rem;">
-                    <div class="card-header">학력 사항</div>
-                    <div class="card-body">
-                        <div class="form-group">
-                            <select class="form-select" name="education" id="education">
-                                <option selected disabled>학력 사항을 선택해주세요</option>
-                                <option value="초졸">초졸</option>
-                                <option value="중졸">중졸</option>
-                                <option value="고졸">고졸</option>
-                                <option value="대졸">대졸</option>
-                                <option value="대학원 이상">대학원 이상</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card border-light mb-3" style="max-width: 40rem;">
-                    <div class="card-header">경력 사항</div>
-                    <div class="card-body">
-                        <div class="form-group">
-                            <select class="form-select" name="experience" id="experience">
-                                <option selected disabled>경력 사항을 선택해주세요</option>
-                                <option value="신입">신입</option>
-                                <option value="1년차 미만">1년차 미만</option>
-                                <option value="1년">1년</option>
-                                <option value="2년">2년</option>
-                                <option value="3년">3년</option>
-                                <option value="4년">4년</option>
-                                <option value="5년">5년</option>
-                                <option value="6년">6년</option>
-                                <option value="7년">7년</option>
-                                <option value="8년차 이상">8년차 이상</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card border-light mb-3" style="max-width: 40rem;">
-                    <div class="card-header">보유 기술</div>
-                    <div class="card-body">
-                        <div class="row my-3">
-                            <div id="my-table-body2">
-                                <table class="table table-bordered" style="background-color: white;">
-                                    <tbody>
-                                    <tr>
-                                        <td>
-                                            <div class="form-check text-center">
-                                                <label class="form-check-label">
-                                                    <input class="form-check-input" type="checkbox" name="skills" value="Java">Java
-                                                </label>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="form-check text-center">
-                                                <label class="form-check-label">
-                                                    <input class="form-check-input" type="checkbox" name="skills" value="JavaScript">
-                                                    JavaScript
-                                                </label>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="form-check text-center">
-                                                <label class="form-check-label">
-                                                    <input class="form-check-input" type="checkbox" name="skills" value="Spring"> Spring
-                                                </label>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="form-check text-center">
-                                                <label class="form-check-label">
-                                                    <input class="form-check-input" type="checkbox" name="skills" value="HTML"> HTML
-                                                </label>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="form-check text-center">
-                                                <label class="form-check-label">
-                                                    <input class="form-check-input" type="checkbox" name="skills" value="jQuery"> jQuery
-                                                </label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="form-check text-center">
-                                                <label class="form-check-label">
-                                                    <input class="form-check-input" type="checkbox" name="skills" value="JSP"> JSP
-                                                </label>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="form-check text-center">
-                                                <label class="form-check-label">
-                                                    <input class="form-check-input" type="checkbox" name="skills" value="Vue.js"> Vue.js
-                                                </label>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="form-check text-center">
-                                                <label class="form-check-label">
-                                                    <input class="form-check-input" type="checkbox" name="skills" value="Oracle"> Oracle
-                                                </label>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="form-check text-center">
-                                                <label class="form-check-label">
-                                                    <input class="form-check-input" type="checkbox" name="skills" value="MySQL"> MySQL
-                                                </label>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="form-check text-center">
-                                                <label class="form-check-label">
-                                                    <input class="form-check-input" type="checkbox" name="skills" value="React"> React
-                                                </label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+                        </label>
+                        <label>
+                            <input class="form-check-input" type="checkbox" name="skills" value="HTML"> HTML
+                            <div class="line-box">
+                                <div class="line"></div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card border-light mb-3" style="max-width: 40rem;">
-                    <div class="card-header">자기소개서</div>
-                    <div class="card-body">
-                        <div class="form-group">
-                            <textarea class="form-control" name="content" id="content" rows="3"></textarea>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card border-light mb-3" style="max-width: 40rem;">
-                    <div class="card-header">링크</div>
-                    <div class="card-body">
-                        <div class="form-group">
-                            <input type="text" name="link" id="link" class="form-control">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card border-light mb-3" style="max-width: 40rem;">
-                    <div class="card-header">제목</div>
-                    <div class="card-body">
-                        <div class="form-group">
-                            <input type="text" name="title" id="title" class="form-control">
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="col-3 p-6">
-                    <div class="rButton" style="width: 10em;">
-                        <br>
-                        <div id="resume-render">
-                            <div id="resume-remove">
-                                <div class="row mb-2">
-                                    <button type="submit" class="btn btn-success w-100">이력서 저장</button>
-                                </div>
+                        </label>
+                        <label>
+                            <input class="form-check-input" type="checkbox" name="skills" value="jQuery"> jQuery
+                            <div class="line-box">
+                                <div class="line"></div>
                             </div>
-                        </div>
+                        </label>
+                        <label>
+                            <input class="form-check-input" type="checkbox" name="skills" value="JSP"> JSP
+                            <div class="line-box">
+                                <div class="line"></div>
+                            </div>
+                        </label>
+                        <label>
+                            <input class="form-check-input" type="checkbox" name="skills" value="Vue.js"> Vue.js
+                            <div class="line-box">
+                                <div class="line"></div>
+                            </div>
+                        </label>
+                        <label>
+                            <input class="form-check-input" type="checkbox" name="skills" value="Oracle"> Oracle
+                            <div class="line-box">
+                                <div class="line"></div>
+                            </div>
+                        </label>
+                        <label>
+                            <input class="form-check-input" type="checkbox" name="skills" value="MySQL"> MySQL
+                            <div class="line-box">
+                                <div class="line"></div>
+                            </div>
+                        </label>
+                        <label>
+                            <input class="form-check-input" type="checkbox" name="skills" value="React"> React
+                            <div class="line-box">
+                                <div class="line"></div>
+                            </div>
+                        </label>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="line-box">
+            <div class="line"></div>
+        </div>
+
+        <label>
+            <p class="label-txt">LINK</p>
+            <input type="text" class="input form-control" name="link" id="link">
+            <div class="line-box">
+                <div class="line"></div>
+            </div>
+        </label>
+
+
+
+        <br>
+        <div class="row py-4"   >
+
+            <!-- 숨겨진 파일 입력 요소 -->
+            <input type="file" id="upload" style="display: none;" onchange="readURL(this);">
+
+            <!-- 사용자 정의 버튼 -->
+            <div class="input-group mb-3 px-2 py-2 rounded-pill bg-white shadow-sm text-center">
+                <label for="upload" class="btn btn-light m-0 rounded-pill px-4 w-100 d-flex justify-content-center align-items-center">
+                    <i class="fa fa-cloud-upload mr-2 text-muted"></i>
+                    <small class="text-uppercase font-weight-bold text-muted">Choose File</small>
+                </label>
+            </div>
+
+
+            <!-- Uploaded image area-->
+                <br>
+                <p class="font-italic text-white text-center"></p>
+                <div class="image-area mt-4"><img id="imageResult" src="#" alt="" class="img-fluid rounded shadow-sm mx-auto d-block"></div>
+
+            </div>
+
+
+        <button type="submit">Submit</button>
+
+
+
     </form>
+
 
 
     <!--이력서 save파일첨부 스크립트-->
@@ -231,305 +346,30 @@
         });
     </script>
 
+    <script>
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#imageResult')
+                        .attr('src', e.target.result)
+                        .css('display', 'block'); // 이미지를 표시하기 위해 display 설정
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $(function () {
+            $('#upload').on('change', function () {
+                readURL(this); // input 매개변수는 'this'로 전달
+            });
+        });
+
+
+    </script>
 
 </div>
-
-
-
 </body>
 </html>
-
-<!--<!DOCTYPE html>-->
-<!--<html xmlns:th="http://www.thymeleaf.org"-->
-<!--      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"-->
-<!--      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"-->
-<!--      layout:decorate="~{layout/layout}">-->
-
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <title>이력서</title>-->
-<!--</head>-->
-<!--<body>-->
-
-<!--<div layout:fragment="content" class="container">-->
-<!--    <form th:action="@{/resume/save}" method="post" id="resume" enctype="multipart/form-data">-->
-<!--        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">-->
-<!--        <div class="row">-->
-<!--            <div class="col-12">-->
-<!--                <br> 이력서 작성<br>-->
-<!--                <hr />-->
-
-<!--                <div class="card border-light mb-3" style="max-width: 40rem;">-->
-<!--                    <div class="card-header">기본 정보</div>-->
-<!--                    <div class="card-body">-->
-<!--                        <div class="row">-->
-<!--                            <div class="col-3 mt-3" style="text-align: center;">-->
-<!--                                <img src="#" alt="image" style="width: 100%; height: 100%; display: none;" id="photo">-->
-<!--                                <input type="file" name="file" id="fileInput"><br>-->
-<!--                            </div>-->
-<!--                            <div class="col-2 pt-3" style="text-align: right">-->
-<!--                                <div class="mb-2">이름</div>-->
-<!--                                <div class="mb-2">Email</div>-->
-<!--                                <div class="mb-2">연락처</div>-->
-<!--                            </div>-->
-<!--                            <div class="col-7 pt-3">-->
-<!--                                <div class="mb-2" th:text="${jobSeekerVo.name}">-->
-<!--                                    <input type="text" id="name" class="form-control" placeholder="이름 입력">-->
-<!--                                </div>-->
-<!--                                <div class="mb-2" th:text="${jobSeekerVo.email}">-->
-<!--                                    <input type="email" id="email" class="form-control" placeholder="Email 입력">-->
-<!--                                </div>-->
-<!--                                <div class="mb-2" th:text="${jobSeekerVo.tel}">-->
-<!--                                    <input type="tel" id="tel" class="form-control" placeholder="연락처 입력">-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-
-<!--                &lt;!&ndash; 학력 사항 &ndash;&gt;-->
-<!--                <div class="card border-light mb-3" style="max-width: 40rem; display: none;" id="educationCard">-->
-<!--                    <div class="card-header">학력 사항</div>-->
-<!--                    <div class="card-body">-->
-<!--                        <div class="form-group">-->
-<!--                            <select class="form-select" name="education" id="education">-->
-<!--                                <option selected disabled>학력 사항을 선택해주세요</option>-->
-<!--                                <option value="초졸">초졸</option>-->
-<!--                                <option value="중졸">중졸</option>-->
-<!--                                <option value="고졸">고졸</option>-->
-<!--                                <option value="대졸">대졸</option>-->
-<!--                                <option value="대학원 이상">대학원 이상</option>-->
-<!--                            </select>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-
-<!--                &lt;!&ndash; 경력 사항 &ndash;&gt;-->
-<!--                <div class="card border-light mb-3" style="max-width: 40rem; display: none;" id="experienceCard">-->
-<!--                    <div class="card-header">경력 사항</div>-->
-<!--                    <div class="card-body">-->
-<!--                        <div class="form-group">-->
-<!--                            <select class="form-select" name="experience" id="experience">-->
-<!--                                <option selected disabled>경력 사항을 선택해주세요</option>-->
-<!--                                <option value="신입">신입</option>-->
-<!--                                <option value="1년차 미만">1년차 미만</option>-->
-<!--                                <option value="1년">1년</option>-->
-<!--                                <option value="2년">2년</option>-->
-<!--                                <option value="3년">3년</option>-->
-<!--                                <option value="4년">4년</option>-->
-<!--                                <option value="5년">5년</option>-->
-<!--                                <option value="6년">6년</option>-->
-<!--                                <option value="7년">7년</option>-->
-<!--                                <option value="8년차 이상">8년차 이상</option>-->
-<!--                            </select>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-
-<!--                &lt;!&ndash; 보유 기술 &ndash;&gt;-->
-<!--                <div class="card border-light mb-3" style="max-width: 40rem; display: none;" id="skillsCard">-->
-<!--                    <div class="card-header">보유 기술</div>-->
-<!--                    <div class="card-body">-->
-<!--                        <div class="row my-3">-->
-<!--                            <div id="my-table-body2">-->
-<!--                                <table class="table table-bordered" style="background-color: white;">-->
-<!--                                    <tbody>-->
-<!--                                    <tr>-->
-<!--                                        <td>-->
-<!--                                            <div class="form-check text-center">-->
-<!--                                                <label class="form-check-label">-->
-<!--                                                    <input class="form-check-input" type="checkbox" name="skills" value="Java">Java-->
-<!--                                                </label>-->
-<!--                                            </div>-->
-<!--                                        </td>-->
-<!--                                        <td>-->
-<!--                                            <div class="form-check text-center">-->
-<!--                                                <label class="form-check-label">-->
-<!--                                                    <input class="form-check-input" type="checkbox" name="skills" value="JavaScript">-->
-<!--                                                    JavaScript-->
-<!--                                                </label>-->
-<!--                                            </div>-->
-<!--                                        </td>-->
-<!--                                        <td>-->
-<!--                                            <div class="form-check text-center">-->
-<!--                                                <label class="form-check-label">-->
-<!--                                                    <input class="form-check-input" type="checkbox" name="skills" value="Spring"> Spring-->
-<!--                                                </label>-->
-<!--                                            </div>-->
-<!--                                        </td>-->
-<!--                                        <td>-->
-<!--                                            <div class="form-check text-center">-->
-<!--                                                <label class="form-check-label">-->
-<!--                                                    <input class="form-check-input" type="checkbox" name="skills" value="HTML"> HTML-->
-<!--                                                </label>-->
-<!--                                            </div>-->
-<!--                                        </td>-->
-<!--                                        <td>-->
-<!--                                            <div class="form-check text-center">-->
-<!--                                                <label class="form-check-label">-->
-<!--                                                    <input class="form-check-input" type="checkbox" name="skills" value="jQuery"> jQuery-->
-<!--                                                </label>-->
-<!--                                            </div>-->
-<!--                                        </td>-->
-<!--                                    </tr>-->
-<!--                                    <tr>-->
-<!--                                        <td>-->
-<!--                                            <div class="form-check text-center">-->
-<!--                                                <label class="form-check-label">-->
-<!--                                                    <input class="form-check-input" type="checkbox" name="skills" value="JSP"> JSP-->
-<!--                                                </label>-->
-<!--                                            </div>-->
-<!--                                        </td>-->
-<!--                                        <td>-->
-<!--                                            <div class="form-check text-center">-->
-<!--                                                <label class="form-check-label">-->
-<!--                                                    <input class="form-check-input" type="checkbox" name="skills" value="Vue.js"> Vue.js-->
-<!--                                                </label>-->
-<!--                                            </div>-->
-<!--                                        </td>-->
-<!--                                        <td>-->
-<!--                                            <div class="form-check text-center">-->
-<!--                                                <label class="form-check-label">-->
-<!--                                                    <input class="form-check-input" type="checkbox" name="skills" value="Oracle"> Oracle-->
-<!--                                                </label>-->
-<!--                                            </div>-->
-<!--                                        </td>-->
-<!--                                        <td>-->
-<!--                                            <div class="form-check text-center">-->
-<!--                                                <label class="form-check-label">-->
-<!--                                                    <input class="form-check-input" type="checkbox" name="skills" value="MySQL"> MySQL-->
-<!--                                                </label>-->
-<!--                                            </div>-->
-<!--                                        </td>-->
-<!--                                        <td>-->
-<!--                                            <div class="form-check text-center">-->
-<!--                                                <label class="form-check-label">-->
-<!--                                                    <input class="form-check-input" type="checkbox" name="skills" value="React"> React-->
-<!--                                                </label>-->
-<!--                                            </div>-->
-<!--                                        </td>-->
-<!--                                    </tr>-->
-<!--                                    </tbody>-->
-<!--                                </table>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-
-<!--                &lt;!&ndash; 자기소개서 &ndash;&gt;-->
-<!--                <div class="card border-light mb-3" style="max-width: 40rem; display: none;" id="contentCard">-->
-<!--                    <div class="card-header">자기소개서</div>-->
-<!--                    <div class="card-body">-->
-<!--                        <div class="form-group">-->
-<!--                            <textarea class="form-control" name="content" id="content" rows="3"></textarea>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-
-<!--                &lt;!&ndash; 링크 &ndash;&gt;-->
-<!--                <div class="card border-light mb-3" style="max-width: 40rem; display: none;" id="linkCard">-->
-<!--                    <div class="card-header">링크</div>-->
-<!--                    <div class="card-body">-->
-<!--                        <div class="form-group">-->
-<!--                            <input type="text" name="link" id="link" class="form-control">-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-
-<!--                &lt;!&ndash; 제목 &ndash;&gt;-->
-<!--                <div class="card border-light mb-3" style="max-width: 40rem; display: none;" id="titleCard">-->
-<!--                    <div class="card-header">제목</div>-->
-<!--                    <div class="card-body">-->
-<!--                        <div class="form-group">-->
-<!--                            <input type="text" name="title" id="title" class="form-control">-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-
-<!--                <div class="col-3 p-6">-->
-<!--                    <div class="rButton" style="width: 10em;">-->
-<!--                        <br>-->
-<!--                        <div id="resume-render">-->
-<!--                            <div id="resume-remove">-->
-<!--                                <div class="row mb-2">-->
-<!--                                    <button type="submit" class="btn btn-success w-100">이력서 저장</button>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </form>-->
-
-
-<!--    &lt;!&ndash;이력서 save파일첨부 스크립트&ndash;&gt;-->
-<!--    <script>-->
-<!--        document.getElementById('fileInput').addEventListener('change', function(event) {-->
-<!--            var file = event.target.files[0];-->
-<!--            var reader = new FileReader();-->
-
-<!--            reader.onload = function(e) {-->
-<!--                var imgElement = document.getElementById('photo');-->
-<!--                imgElement.src = e.target.result;-->
-<!--                imgElement.style.display = 'block';-->
-
-<!--                &lt;!&ndash;next card&ndash;&gt;-->
-<!--                document.getElementById('educationCard').style.display = 'block';-->
-
-<!--            }-->
-
-<!--            if (file) {-->
-<!--                reader.readAsDataURL(file);-->
-<!--            }-->
-<!--        });-->
-
-<!--        document.getElementById('education').addEventListener('change', function() {-->
-<!--        document.getElementById('experienceCard').style.display = 'block';-->
-<!--        });-->
-
-<!--        document.getElementById('experienceCard').addEventListener('change', function() {-->
-<!--        document.getElementById('skillsCard').style.display = 'block';-->
-<!--        });-->
-
-<!--       document.querySelectorAll('#skillsCard input[type="checkbox"]').forEach(function(checkbox) {-->
-<!--       checkbox.addEventListener('change', function() {-->
-<!--       document.getElementById('contentCard').style.display = 'block';-->
-<!--        });-->
-<!--        });-->
-
-<!--        document.getElementById('content').addEventListener('change', function() {-->
-<!--        document.getElementById('link').style.display = 'block';-->
-<!--        });-->
-
-<!--        // contentCard에서 글자 입력 시 linkCard 표시-->
-<!--        document.getElementById('content').addEventListener('input', function() {-->
-<!--        document.getElementById('linkCard').style.display = 'block';-->
-<!--        });-->
-
-<!--        // linkCard에서 글자 입력 시 titleCard 표시-->
-<!--        document.getElementById('link').addEventListener('input', function() {-->
-<!--        document.getElementById('titleCard').style.display = 'block';-->
-<!--        });-->
-
-
-<!--&lt;!&ndash;        function showNextCard(currentCardId, nextCardId) {&ndash;&gt;-->
-<!--&lt;!&ndash;            document.getElementById(currentCardId).addEventListener('input', function() {&ndash;&gt;-->
-<!--&lt;!&ndash;                document.getElementById(nextCardId).style.display = 'block';&ndash;&gt;-->
-<!--&lt;!&ndash;            });&ndash;&gt;-->
-<!--&lt;!&ndash;        }&ndash;&gt;-->
-
-
-
-<!--&lt;!&ndash;        showNextCard('name', 'educationCard');&ndash;&gt;-->
-<!--&lt;!&ndash;        showNextCard('education', 'experienceCard');&ndash;&gt;-->
-<!--&lt;!&ndash;        showNextCard('experience', 'skillsCard');&ndash;&gt;-->
-<!--&lt;!&ndash;        showNextCard('skillsCard', 'contentCard');&ndash;&gt;-->
-<!--&lt;!&ndash;        showNextCard('content', 'linkCard');&ndash;&gt;-->
-<!--&lt;!&ndash;        showNextCard('link', 'titleCard');&ndash;&gt;-->
-
-<!--    </script>-->
-
-<!--</div>-->
-<!--</body>-->
-<!--</html>-->
