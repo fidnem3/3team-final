@@ -91,8 +91,8 @@ public class SecurityConfig {
 						.requestMatchers("/", "/home", "/about", "/contact", "/index", "/jobPost/jobPostList", "/jobPost/detail/**").permitAll()
 						.requestMatchers("/member/**", "/member/adminJoin", "/member/modify").permitAll()
 						.requestMatchers("/board/**", "/upload/**", "/jobPost/logo/**", "/jobPost/uploaded/**").permitAll()
-						.requestMatchers("/member/**", "/member/adminJoin").permitAll()
-						.requestMatchers("/board/**").permitAll()
+						.requestMatchers("/member/**", "/member/adminJoin", "/api/**").permitAll()
+						.requestMatchers("/board/**", "/admin/admin").permitAll()
 						.requestMatchers("/admin/adminPage").hasRole("ADMIN")
 						.requestMatchers("/admin/blacklist").hasRole("ADMIN")
 

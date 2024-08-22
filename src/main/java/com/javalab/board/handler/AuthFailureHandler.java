@@ -41,7 +41,7 @@ public class AuthFailureHandler extends SimpleUrlAuthenticationFailureHandler {
         if ("jobSeeker".equals(userType)) {
             if (companyMapper.selectCompanyById(username) != null) {
                 // 개인 사용자로 로그인하려는 경우 기업 사용자로 로그인할 수 없음
-                msg = "개인 회원 로그인 폼에서는 기업 회원으로 로그인할 수 없습니다다.";
+                msg = "개인 회원 로그인 폼에서는 기업 회원으로 로그인할 수 없습니다";
                 errorType = "wrong_form_company";
             } else {
                 // 개인 사용자로 로그인하려는 경우

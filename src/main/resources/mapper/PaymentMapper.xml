@@ -42,4 +42,11 @@
         SELECT * FROM payment
     </select>
 
+
+    <!-- 모든 공고에 대한 총 결제 금액 조회 -->
+    <select id="findTotalPaymentsForAllJobPosts" resultType="map">
+        SELECT jobPost_id AS jobPostId, COALESCE(SUM(amount), 0) AS totalAmount
+        FROM payment
+        GROUP BY jobPost_id
+    </select>
 </mapper>
