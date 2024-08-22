@@ -1,9 +1,7 @@
 package com.javalab.board.service;
 
 import com.javalab.board.dto.CreateJobPostRequestDto;
-import com.javalab.board.repository.CompanyMapper;
-import com.javalab.board.repository.JobPostMapper;
-import com.javalab.board.repository.JobSeekerScrapMapper;
+import com.javalab.board.repository.*;
 import com.javalab.board.vo.CompanyVo;
 import com.javalab.board.vo.JobPostVo;
 import lombok.extern.slf4j.Slf4j;
@@ -24,8 +22,13 @@ public class JobPostServiceImpl implements JobPostService {
     private JobPostMapper jobPostMapper;
 
     @Autowired
+    private ApplicationMapper applicationMapper;
+
+    @Autowired
     private CompanyMapper companyMapper;
 
+    @Autowired
+    private RequiredSkillMapper requiredSkillMapper;
 
     @Autowired
     private JobSeekerScrapMapper jobSeekerScrapMapper;
@@ -34,6 +37,13 @@ public class JobPostServiceImpl implements JobPostService {
     @Transactional
     public Long saveJobPost(JobPostVo jobPostVo) {
         jobPostMapper.insertJobPost(jobPostVo);
+
+        // 스킬 저장
+        if (jobPostVo.getSkills() != null && !jobPostVo.getSkills().isEmpty()) {
+            for (String skill : jobPostVo.getSkills()) {
+                jobPostMapper.insertRequiredSkill(jobPostVo.getJobPostId(), skill);
+            }
+        }
         return jobPostVo.getJobPostId(); // 데이터베이스에서 생성된 ID를 반환
     }
 
@@ -49,13 +59,22 @@ public class JobPostServiceImpl implements JobPostService {
                 .address(dto.getAddress())
                 .endDate(dto.getEndDate())
                 .homepage(dto.getHomepage())
+                .skills(dto.getSkills())  // 여기 추가
                 .status(dto.getStatus())
                 .build();
     }
 
     @Override
     public JobPostVo getJobPostById(Long jobPostId) {
-        return jobPostMapper.getJobPostById(jobPostId);
+        JobPostVo jobPostVo = jobPostMapper.getJobPostById(jobPostId);
+
+        if (jobPostVo != null) {
+            // 필요 기술 목록 조회
+            List<String> requiredSkills = requiredSkillMapper.getRequiredSkillsByJobPostId(jobPostId);
+            jobPostVo.setSkills(requiredSkills);
+        }
+
+        return jobPostVo;
     }
 
     @Override
@@ -76,6 +95,12 @@ public class JobPostServiceImpl implements JobPostService {
                 .filter(jobPost -> "After Payment".equals(jobPost.getPaymentStatus()))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<String> getRequiredSkillsByJobPostId(Long jobPostId) {
+        return jobPostMapper.getRequiredSkillsByJobPostId(jobPostId);
+    }
+
 
     @Override
     public List<JobPostVo> getJobPostsByCompany() {
@@ -134,6 +159,9 @@ public class JobPostServiceImpl implements JobPostService {
     public void deleteJobPostWithScraps(Long jobPostId) {
         // 자식 레코드 삭제
         jobSeekerScrapMapper.deleteScrapsByJobPostId(jobPostId); // 스크랩 Mapper 메서드 호출
+
+        // 자식 레코드 삭제
+        applicationMapper.deleteApplicationById(jobPostId);
 
         // 부모 레코드 삭제
         jobPostMapper.deleteJobPost(jobPostId); // 공고 Mapper 메서드 호출

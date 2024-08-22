@@ -38,8 +38,8 @@
             </div>
         </div>
         <div class="card-footer">
-            <a th:href="@{/resume/{resumeId}/edit(resumeId=${resume.resumeId})}" class="btn btn-warning">수정</a>
-            <form th:action="@{/resume/{resumeId}/delete(resumeId=${resume.resumeId})}" method="post" style="display:inline;">
+            <a th:href="@{/resume/update/{resumeId}(resumeId=${resume.resumeId})}" class="btn btn-warning">수정</a>
+            <form th:action="@{/resume/delete/{resumeId}(resumeId=${resume.resumeId})}" method="post" style="display:inline;">
                 <button type="submit" class="btn btn-danger" onclick="return confirm('정말 삭제하시겠습니까?')">삭제</button>
             </form>
             <a th:href="@{/resume/list}" class="btn btn-secondary">목록으로</a>

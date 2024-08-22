@@ -104,6 +104,7 @@ public class JobPostController {
                 .address(createJobPostRequestDto.getAddress())
                 .endDate(createJobPostRequestDto.getEndDate())
                 .homepage(createJobPostRequestDto.getHomepage())
+                .skills(createJobPostRequestDto.getSkills())
                 .status("Before payment")
                 .build();
 
@@ -183,8 +184,30 @@ public class JobPostController {
         // 로그에 결제 정보를 출력
         log.info("Received payment notification: jobPostId={}, paymentStatus={}, imp_uid={}, merchant_uid={}", jobPostId, paymentStatus, imp_uid, merchant_uid);
 
+        // Fetch the job post details to get the company ID
+        JobPostVo jobPostVo = jobPostService.getJobPostById(jobPostId);
+
+        if (jobPostVo == null) {
+            log.error("JobPost not found for ID: {}", jobPostId);
+            return "error"; // Handle the case where the JobPost is not found
+        }
+        LocalDate createdDate = jobPostVo.getCreated().toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+        LocalDate endDate = jobPostVo.getEndDate().toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+
+        long durationDays = Duration.between(createdDate.atStartOfDay(), endDate.atStartOfDay()).toDays();
+
+        long amount = durationDays * 500;
+        // Create and save the payment record
+        PaymentVo paymentVo = PaymentVo.builder()
+                .compId(jobPostVo.getCompId()) // Use the company ID from the job post
+                .jobPostId(jobPostVo.getJobPostId())
+                .paymentDate(LocalDate.now()) // Set the current date as the payment date
+                .amount(amount)
+                .build();
+
         // 결제 상태 업데이트
         jobPostService.updatePaymentStatus(jobPostId, paymentStatus);
+        paymentService.savePayment(paymentVo);
 
         // 결제 상태 로그 출력
         log.info("Payment status updated to: {}", paymentStatus);
@@ -206,15 +229,8 @@ public class JobPostController {
             // Calculate the total amount
             long amount = durationDays * 500;
 
-            // Create and save the payment record
-            PaymentVo paymentVo = PaymentVo.builder()
-                    .compId(jobPostVo.getCompId()) // Use the company ID from the job post
-                    .jobPostId(jobPostVo.getJobPostId())
-                    .paymentDate(LocalDate.now()) // Set the current date as the payment date
-                    .amount(amount)
-                    .build();
 
-            paymentService.savePayment(paymentVo);
+
 
             // Fetch company details
             CompanyVo companyVo = companyService.getCompanyById(jobPostVo.getCompId());
@@ -236,7 +252,7 @@ public class JobPostController {
         JobPostVo jobPostVo = jobPostService.findJobPostById(jobPostId);
         // 조회수 증가
         jobPostService.incrementHitCount(jobPostId);
-
+        // 로깅
 
         if (jobPostVo != null) {
             // 날짜 포맷팅
@@ -261,6 +277,7 @@ public class JobPostController {
             model.addAttribute("jobPost", jobPostVo); // 모델에 추가
             model.addAttribute("formattedEndDate", formattedEndDate);
             model.addAttribute("formattedCreated", formattedCreated);
+            model.addAttribute("requiredSkills", jobPostService.getRequiredSkillsByJobPostId(jobPostId)); // 필요 기술 추가
             return "jobPost/jobPostDetail"; // 공고 상세 페이지로 이동
         } else {
             // 공고를 찾을 수 없는 경우, 목록 페이지로 리다이렉트

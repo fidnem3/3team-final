@@ -1,6 +1,7 @@
 package com.javalab.board.service;
 
 import com.javalab.board.repository.JobSeekerMapper;
+import com.javalab.board.repository.JobSeekerScrapMapper;
 import com.javalab.board.repository.UserRolesMapper;
 import com.javalab.board.vo.JobSeekerVo;
 import com.javalab.board.vo.UserRolesVo;
@@ -23,6 +24,9 @@ public class JobSeekerServiceImpl implements JobSeekerService {
 
     @Autowired
     private JobSeekerMapper jobSeekerMapper;
+
+    @Autowired
+    private JobSeekerScrapMapper jobSeekerScrapMapper;
 
     @Autowired
     private UserRolesMapper userRolesMapper;
@@ -72,6 +76,7 @@ public class JobSeekerServiceImpl implements JobSeekerService {
         // 여기서 "jobSeeker"는 사용자 유형을, "ROLE_USER"는 기본 역할 ID를 나타냅니다.
         // 실제 사용하는 역할 ID에 맞게 수정해야 합니다.
         userRolesMapper.deleteUserRole(jobSeekerId, "jobSeeker", "ROLE_USER");
+        jobSeekerScrapMapper.deleteScrapsByJobSeekerId(jobSeekerId);
 
         // 2. 그 다음 jobSeeker 테이블에서 레코드 삭제
         jobSeekerMapper.deleteJobSeeker(jobSeekerId);

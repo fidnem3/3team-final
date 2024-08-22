@@ -777,51 +777,9 @@ function toggleScrap(event) {
 </script>
 
 
-<!--이력서 save파일첨부 스크립트-->
-<script>
-    document.getElementById('fileInput').addEventListener('change', function(event) {
-    var file = event.target.files[0];
-    var reader = new FileReader();
 
-    reader.onload = function(e) {
-    var imgElement = document.getElementById('photo');
-    imgElement.src = e.target.result;
-    imgElement.style.display = 'block';
-    }
 
-    if (file) {
-    reader.readAsDataURL(file);
-    }
-    });
-</script>
-<!--이력서 지원 알림 서비스 -->
-<script>
-    const eventSource = new EventSource("/notifications");
 
-    eventSource.addEventListener("newResume", function(event) {
-        alert(event.data);  // "새로운 이력서가 접수되었습니다."를 표시합니다.
-    });
-
-    eventSource.onerror = function(event) {
-        console.error("SSE error", event);
-    };
-</script>
-
-<!--&lt;!&ndash;이력서 읽음 표시하는 &ndash;&gt;-->
-<!--<script>-->
-<!--    function openResumePopup(applicationId, resumeId) {-->
-<!--        // 이력서를 읽음으로 표시하는 URL을 호출-->
-<!--        var markAsReadUrl = '/company/applications/markAsReadAndView/' + resumeId + '?applicationId=' + applicationId;-->
-
-<!--        // 팝업창으로 이력서 상세 페이지 열기-->
-<!--        var popup = window.open(markAsReadUrl, '_blank', 'width=1000,height=1000');-->
-
-<!--        // 팝업창이 성공적으로 열리면 부모 창에서 목록을 새로고침-->
-<!--        popup.onload = function() {-->
-<!--            window.location.reload();-->
-<!--        };-->
-<!--    }-->
-<!--</script>-->
 
 
 <script>
