@@ -79,51 +79,54 @@
 
 
         <div class="tab-class text-center wow fadeInUp" data-wow-delay="0.3s">
-            <div id="tab-1" class="tab-pane fade show p-0 active">
-                <div id="jobList">
-                    <div th:each="jobPost : ${jobPosts}" class="job-item p-4 mb-4"
-                         th:data-address="${jobPost.address}"
-                         th:data-education="${jobPost.education}"
-                         th:data-experience="${jobPost.experience}">
-                        <div class="row g-4">
-                            <div class="col-sm-12 col-md-8 d-flex align-items-center">
+            <div class="album py-5 bg-body-tertiary">
+                <div class="container">
+                    <div class="row row-cols-1 row-cols-md-3 g-3">
+                        <div th:if="${not #lists.isEmpty(jobPosts)}">
+                            <div th:each="jobPost : ${jobPosts}" class="col">
+                                <div class="card shadow-sm">
+                                    <!-- 이미지 삽입 -->
+                                    <img class="bd-placeholder-img card-img-top" th:src="@{/jobPost/logo/{logoName}(logoName=${jobPost.logoName})}" width="100%" height="225" alt="Company Logo"/>
 
-                                <img class="flex-shrink-0 img-fluid border rounded"
-                                     th:src="@{'/jobPost/logo/' + ${jobPost.logoName}}"
-                                     alt="Company Logo" style="width: 80px; height: 80px;">
-
-                                <div class="text-start ps-4">
-                                    <h5 class="mb-3" th:text="${jobPost.title}">Job Title</h5>
-                                    <span class="text-truncate me-3"><i
-                                            class="fa fa-map-marker-alt text-primary me-2"></i><span
-                                            th:text="${jobPost.address}">Location</span></span>
-                                    <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>Full Time</span>
-                                    <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i><span
-                                            th:text="${jobPost.salary}">Salary</span></span>
+                                    <div class="card-body">
+                                        <h5 class="card-title" th:text="${jobPost.title}">Job Title</h5>
+                                        <p class="card-text">Location: <span th:text="${jobPost.address}">Location</span></p>
+                                        <p class="card-text">Salary: <span th:text="${jobPost.salary}">Salary</span></p>
+                                        <p class="card-text">Deadline: <span th:text="${#dates.format(jobPost.endDate, 'yyyy-MM-dd')}"></span></p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="btn-group">
+                                                <a class="btn btn-light btn-square scrap-button"
+                                                   th:classappend="${scrapStatusMap[jobPost.jobPostId] != null and scrapStatusMap[jobPost.jobPostId] ? 'scrap-active' : ''}"
+                                                   th:href="@{#}"
+                                                   th:data-jobpostid="${jobPost.jobPostId}"
+                                                   onclick="toggleScrap(event)">
+                                                    <i th:classappend="${scrapStatusMap[jobPost.jobPostId] != null and scrapStatusMap[jobPost.jobPostId] ? 'fas fa-heart' : 'far fa-heart'}"></i>
+                                                </a>
+                                                <a class="btn btn-primary" th:href="@{/jobPost/detail/{jobPostId}(jobPostId=${jobPost.jobPostId})}">View</a>
+                                            </div>
+                                            <small class="text-body-secondary">9 mins</small> <!-- Replace with actual timestamp or remove if not needed -->
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
-                                <div class="d-flex mb-3">
-                                    <a class="btn btn-light btn-square me-3 scrap-button"
-                                       sec:authorize="hasRole('ROLE_USER')"
-                                       th:classappend="${scrapStatusMap[jobPost.jobPostId] != null and scrapStatusMap[jobPost.jobPostId] ? 'scrap-active' : ''}"
-                                       th:href="@{#}"
-                                       th:data-jobpostid="${jobPost.jobPostId}"
-                                       onclick="toggleScrap(event)">
-                                        <i th:classappend="${scrapStatusMap[jobPost.jobPostId] != null and scrapStatusMap[jobPost.jobPostId] ? 'fas fa-heart' : 'far fa-heart'}"></i>
-                                    </a>
-                                    <a class="btn btn-primary"
-                                       th:href="@{/jobPost/detail/{jobPostId}(jobPostId=${jobPost.jobPostId})}">View</a>
+                        </div>
+                        <div th:if="${#lists.isEmpty(jobPosts)}" class="col">
+                            <div class="card shadow-sm">
+                                <!-- Placeholder image, adjust as needed -->
+                                <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
+                                    <title>Placeholder</title>
+                                    <rect width="100%" height="100%" fill="#55595c"/>
+                                    <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
+                                </svg>
+                                <div class="card-body">
+                                    <p class="card-text">No job posts available.</p>
                                 </div>
-                                <small class="text-truncate">
-                                    <i class="far fa-calendar-alt text-primary me-2"></i>
-                                    <span th:text="${#dates.format(jobPost.endDate, 'yyyy-MM-dd')}"></span> Deadline
-                                </small>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
         <div class="form-group text-center">
         <a class="btn btn-primary py-3 px-5" th:href="@{/jobPost/jobPostCreate}"

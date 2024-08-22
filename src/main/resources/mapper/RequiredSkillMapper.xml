@@ -12,4 +12,8 @@
         VALUES (#{requiredSkillId}, #{jobPostId}, #{skill})
     </insert>
 
+    <select id="getRequiredSkillsByJobPostId" parameterType="java.lang.Long" resultType="java.lang.String">
+        SELECT skill FROM requiredSkill WHERE jobPost_id = #{jobPostId}
+    </select>
+
 </mapper>
