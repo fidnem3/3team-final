@@ -22,6 +22,9 @@
         r.education,
         r.experience,
         r.link,
+        r.file_name,
+        r.file_path,
+        r.visibility_status,
         j.jobseeker_id,
         j.name,
         j.email,
@@ -46,6 +49,9 @@
         <result property="education" column="education"/>
         <result property="experience" column="experience"/>
         <result property="link" column="link"/>
+        <result property="fileName" column="file_name"/>
+        <result property="filePath" column="file_path"/>
+        <result property="visibilityStatus" column="visibility_status"/>
 
         <!-- JobSeekerVo 객체의 필드 매핑 -->
         <association property="jobSeekerVo" javaType="com.javalab.board.vo.JobSeekerVo">

@@ -8,6 +8,7 @@
 <head>
     <meta charset="utf-8">
     <title>JobEntry - Job Portal Website Template</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <style>
 
@@ -135,6 +136,21 @@
 
         </div>
     </div>
+
+    <!--이력서 지원 알림 서비스 -->
+    <script>
+        const eventSource = new EventSource("/notifications");
+
+        eventSource.addEventListener("newResume", function(event) {
+            alert(event.data);  //
+        });
+
+        eventSource.onerror = function(event) {
+            console.error("SSE error", event);
+        };
+    </script>
+
+
 </div>
 
 

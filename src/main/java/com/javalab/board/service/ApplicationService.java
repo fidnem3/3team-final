@@ -109,7 +109,7 @@ public class ApplicationService {
 
     public void newApplicationReceived() {
         // 새로운 이력서가 접수되었을 때 호출됩니다.
-        sendNotification("새로운 이력서가 접수 되었습니다. 확인해 주세요.");
+        sendNotification("지원 완료");
     }
 
 
