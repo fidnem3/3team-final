@@ -1,6 +1,7 @@
 package com.javalab.board.repository;
 
 import com.javalab.board.dto.ApplicationDto;
+import com.javalab.board.dto.YearlyOverviewDto;
 import com.javalab.board.vo.JobPostVo;
 import org.apache.ibatis.annotations.*;
 
@@ -29,6 +30,11 @@ public interface ApplicationMapper {
     void markApplicationAsRead(Long applicationId);
 
     List<ApplicationDto> selectApplicationsByCompanyId(String compId);
+
+
+    int countApplications();
+
+    List<YearlyOverviewDto> selectYearlyOverview();
 
 
 

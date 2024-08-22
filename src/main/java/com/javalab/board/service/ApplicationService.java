@@ -2,6 +2,7 @@ package com.javalab.board.service;
 
 
 import com.javalab.board.dto.ApplicationDto;
+import com.javalab.board.dto.YearlyOverviewDto;
 import com.javalab.board.repository.ApplicationMapper;
 import com.javalab.board.repository.CompanyMapper;
 import com.javalab.board.vo.JobPostVo;
@@ -119,7 +120,13 @@ public class ApplicationService {
 //        applicationMapper.markNewApplicationAsUnread(compId);
 //    }
 
+    // 총 지원서 수를 반환하는 메서드 추가
+    public int getTotalApplications() {
+        return applicationMapper.countApplications();
+    }
 
 
-
+    public List<YearlyOverviewDto> getYearlyOverview() {
+        return applicationMapper.selectYearlyOverview();
+    }
 }

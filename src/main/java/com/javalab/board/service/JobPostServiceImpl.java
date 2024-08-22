@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -208,6 +209,16 @@ public class JobPostServiceImpl implements JobPostService {
     public List<JobPostVo> searchJobPosts(String keyword) {
         return jobPostMapper.searchJobPosts(keyword);
     }
+    @Override
+    public int getTotalJobPostViews() {
+        List<JobPostVo> jobPosts = jobPostMapper.findAll();
+        // 총 조회수를 계산하는 로직
+        return jobPosts.stream().mapToInt(JobPostVo::getHitNo).sum();
+    }
 
+    @Override
+    public int getTotalJobPosts() {
+        return jobPostMapper.getTotalJobPosts(); // 매퍼를 통해 총 공고 수를 가져옵니다.
+    }
 }
 

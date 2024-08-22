@@ -48,5 +48,11 @@ public interface JobPostMapper {
 
     void insertRequiredSkill(@Param("jobPostId") Long jobPostId, @Param("skill") String skill);
     List<String> getRequiredSkillsByJobPostId(Long jobPostId);
+
+    // 모든 채용공고 가져오기
+    List<JobPostVo> findAll();
+
+    int getTotalJobPosts(); // 총 공고 수를 반환하는 메서드
+
 }
 

@@ -97,6 +97,30 @@
 
     <select id="getCompanyIdByJobPostId" resultType="java.lang.String"></select>
 
+    <!-- 총 지원서 수를 반환하는 쿼리 -->
+    <select id="countApplications" resultType="int">
+        SELECT COUNT(*) FROM application
+    </select>
+
+    <!-- 연도별 총 수익, 총 지원 수, 총 공고 수를 가져오는 쿼리 -->
+    <!-- 연도별 개요를 가져오는 쿼리 -->
+    <select id="selectYearlyOverview" resultType="com.javalab.board.dto.YearlyOverviewDto">
+        SELECT
+        EXTRACT(YEAR FROM p.payment_date) AS year,
+        COALESCE(SUM(p.amount), 0) AS totalRevenue,
+        COALESCE(COUNT(a.application_id), 0) AS totalApplications,
+        COALESCE(COUNT(DISTINCT jp.jobPost_id), 0) AS totalJobPosts
+        FROM
+        payment p
+        LEFT JOIN application a ON a.jobPost_id = p.jobPost_id
+        LEFT JOIN jobPost jp ON jp.jobPost_id = p.jobPost_id
+        GROUP BY
+        EXTRACT(YEAR FROM p.payment_date)
+        ORDER BY
+        year
+    </select>
+
+
 
 
 </mapper>

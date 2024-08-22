@@ -24,8 +24,7 @@ public interface JobPostService {
     List<JobPostVo> getTop5PopularJobPosts();
     List<JobPostVo> getAllJobPostsForAdmin();
     List<JobPostVo> searchJobPosts(String keyword);
-
-
-
+    int getTotalJobPostViews(); // 총 공고 조회한 수
+    int getTotalJobPosts(); // 총 공고 수를 반환하는 메서드
     List<JobPostVo> getJobPostsByFilters(String address, String education, String experience);
 }
