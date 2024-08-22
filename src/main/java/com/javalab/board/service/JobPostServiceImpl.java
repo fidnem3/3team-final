@@ -85,6 +85,7 @@ public class JobPostServiceImpl implements JobPostService {
             if (companyVo != null) {
                 jobPost.setLogoPath(companyVo.getLogoPath());
                 jobPost.setLogoName(companyVo.getLogoName());
+                jobPost.setCompanyName(companyVo.getCompanyName());
             } else {
                 // 회사 정보를 찾을 수 없는 경우 로그를 남겨서 확인
                 log.warn("Company information not found for JobPost with CompId: " + jobPost.getCompId());
