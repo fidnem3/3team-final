@@ -46,4 +46,7 @@ public interface JobPostMapper {
 
     List<JobPostVo> searchJobPosts(@Param("keyword") String keyword);
 
+    void insertRequiredSkill(@Param("jobPostId") Long jobPostId, @Param("skill") String skill);
+    List<String> getRequiredSkillsByJobPostId(Long jobPostId);
 }
+
