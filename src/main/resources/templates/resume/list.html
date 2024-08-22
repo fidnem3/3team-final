@@ -56,37 +56,6 @@
         </tbody>
     </table>
 
-    <canvas id="education-chart" width="400" height="200"></canvas>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
-    <script>
-        // 학력별 카운트 데이터를 JavaScript로 전달
-        const educationLabels = /*[[${#json.toJson(educationCount.keySet())}]]*/ [];
-        const educationData = /*[[${#json.toJson(educationCount.values())}]]*/ [];
-
-        // Chart.js를 사용하여 학력별 분포를 막대 차트로 표시
-        new Chart(document.getElementById("education-chart"), {
-            type: 'bar',
-            data: {
-                labels: educationLabels,  // 학력 종류
-                datasets: [{
-                    label: '이력서 수',
-                    data: educationData,  // 각 학력의 이력서 수
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    </script>
-
-
 </div>
 </body>
 </html>
