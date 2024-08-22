@@ -11,6 +11,9 @@ public interface JobPostService {
     Long saveJobPost(JobPostVo jobPostVoo);
     JobPostVo getJobPostById(Long jobPostId);
     List<JobPostVo> getAllJobPosts();
+
+    List<String> getRequiredSkillsByJobPostId(Long jobPostId);
+
     List<JobPostVo> getJobPostsByCompany();
     void updatePaymentStatus(Long jobPostId, String paymentStatus);
     JobPostVo findJobPostById(Long jobPostId);
