@@ -983,35 +983,40 @@ html
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-    // 데이터를 주기적으로 가져와서 업데이트
-    function fetchAndUpdateData() {
-    $.get('/api/all-job-posts', function(data) {
-      console.log(data); // 데이터를 콘솔에 출력하여 형식 확인
-    // 데이터가 List<Map> 형태로 반환된다고 가정
-        let totalExpenses = 0;
+        // 데이터를 주기적으로 가져와서 업데이트
+        function fetchAndUpdateData() {
+            $.get('/api/all-job-posts', function(data) {
+                console.log('API Response:', data); // 데이터의 형식 및 내용 확인
 
-        // 모든 Map을 순회하여 값 추출
-        data.forEach(map => {
-        // Map에서 값들을 추출하여 총 결제 금액을 계산
-        Object.values(map).forEach(amount => {
-        totalExpenses += amount;
-        });
-        });
+                let totalExpenses = 0;
 
-        // 총 결제 금액 표시
-        $('#totalExpenses').text(totalExpenses);
+                // 모든 Map을 순회하여 값 추출
+                data.forEach(map => {
+                    console.log('Map:', map); // 각 map의 내용 확인
 
-        // 목표 금액 및 퍼센트 계산
-        const maxValue = 100000; // 목표 금액 설정
-        const percentage = Math.min((totalExpenses / maxValue) * 100, 100);
+                    // Map에서 값들을 추출하여 총 결제 금액을 계산
+                    Object.values(map).forEach(amount => {
+                        console.log('Amount:', amount); // 각 amount의 값 확인
+                        totalExpenses += parseFloat(amount); // 문자열을 숫자로 변환
+                    });
+                });
 
-        // 진행 바 업데이트
-        $('#progressBar')
-        .css('width', percentage + '%')
-        .attr('aria-valuenow', percentage);
-        }).fail(function(jqXHR, textStatus, errorThrown) {
-        console.error('Error fetching data:', textStatus, errorThrown);
-        });
+                // 총 결제 금액 표시
+                $('#totalExpenses').text(totalExpenses.toFixed(2)); // 소수점 2자리로 표시
+
+                // 목표 금액 및 퍼센트 계산
+                const maxValue = 100000; // 목표 금액 설정
+                const percentage = Math.min((totalExpenses / maxValue) * 100, 100);
+
+                // 진행 바 업데이트
+                $('#progressBar')
+                    .css('width', percentage + '%')
+                    .attr('aria-valuenow', percentage);
+            }).fail(function(jqXHR, textStatus, errorThrown) {
+                console.error('Error fetching data:', textStatus, errorThrown);
+                $('#totalExpenses').text('Error'); // 오류 발생 시 사용자에게 표시
+                $('#progressBar').css('width', '0%').attr('aria-valuenow', '0');
+            });
         }
 
         // 페이지 로드 시 데이터 로드
@@ -1019,7 +1024,7 @@ html
 
         // 데이터 갱신을 위한 주기 설정 (예: 30초마다 업데이트)
         setInterval(fetchAndUpdateData, 30000);
-        });
+    });
 </script>
 </body>
 
