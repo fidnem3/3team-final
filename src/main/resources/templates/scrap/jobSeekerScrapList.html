@@ -18,7 +18,8 @@
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Inter:wght@700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Inter:wght@700;800&display=swap"
+          rel="stylesheet">
 
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
@@ -33,72 +34,27 @@
 
     <!-- Template Stylesheet -->
     <link th:href="@{/css/style.css}" rel="stylesheet">
-
     <style>
         .container-xxl{
-       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
-       }
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+        }
     </style>
 </head>
 
 <body>
 <div layout:fragment="content" class="container-xxl bg-white p-0">
-    <div class="container-fluid bg-primary mb-5" style="padding: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+    <div class="container-fluid bg-light mb-5" style="padding: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
     </div>
 
-
-<!--    &lt;!&ndash; Jobs Start &ndash;&gt;-->
-<!--    <div class="album py-5 bg-body-tertiary">-->
-<!--        <div class="container" style="width: 100%;">-->
-<!--            <div id="jobList" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">-->
-<!--                <div th:each="scrap : ${scrapList}" class="col job-item" th:if="${not #lists.isEmpty(scrap)}">-->
-<!--                    <a class="card-link" th:href="@{/jobPost/detail/{jobPostId}(jobPostId=${scrap.jobPostId})}">-->
-<!--                        <div class="card shadow-sm">-->
-<!--                            <img class="bd-placeholder-img card-img-top" th:src="@{/jobPost/logo/{logoName}(logoName=${scrap.logoName})}" alt="Company Logo"/>-->
-<!--                            <div class="card-body">-->
-<!--                                <h5 class="card-title" th:text="${scrap.title}">Job Title</h5>-->
-<!--                                <p class="card-text"><span th:text="${scrap.companyName}">company Name</span></p>-->
-<!--                                <div class="d-flex justify-content-end">-->
-<!--                                    <small class="text-truncate" style="right: 0;">-->
-<!--                                        <i class="far fa-calendar-alt text-primary me-2"></i>-->
-<!--                                        <span th:text="${#dates.format(scrap.endDate, 'yyyy-MM-dd')}"></span> 마감-->
-<!--                                    </small>-->
-<!--                                </div>-->
-<!--                                <hr class="my-2"> &lt;!&ndash; 여기에 선 추가 &ndash;&gt;-->
-<!--                                <div class="d-flex justify-content-start align-items-center">-->
-<!--                                    <a class="btn btn-primary" style="margin-left: auto;" th:href="@{/jobPost/detail/{jobPostId}(jobPostId=${scrap.jobPostId})}">보기</a>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </a>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div th:if="${#lists.isEmpty(scrap)}" class="col">-->
-<!--                <div class="card shadow-sm">-->
-<!--                    <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">-->
-<!--                        <title>Placeholder</title>-->
-<!--                        <rect width="100%" height="100%" fill="#55595c"/>-->
-<!--                        <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>-->
-<!--                    </svg>-->
-<!--                    <div class="card-body">-->
-<!--                        <p class="card-text">No job posts available.</p>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-
-
-
+    <!-- Jobs Start -->
     <div class="container-xxl py-5">
         <div class="container">
-            <h1 class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">마이 스크랩</h1>
 
-            <div class="tab-class text-center wow fadeInUp" data-wow-delay="0.3s">
-
-                <div class="tab-content">
+            <div class="tab-class text-center">
+                <h4>스크랩 공고</h4>
+                <div class="tab-content" style="border: 2px solid #ffffff; padding: 30px; margin: auto 0; border-radius: 3px;">
                     <div id="tab-1" class="tab-pane fade show p-0 active">
-                        <div th:each="scrap : ${scrapList}" class="job-item p-4 mb-4">
+                        <div th:each="scrap : ${scrapList}" class="job-item p-4 mb-4" style="border: 1px solid #D3D3D3; width: 100%;">
                             <div class="row g-4">
                                 <div class="col-sm-12 col-md-8 d-flex align-items-center">
                                     <img class="flex-shrink-0 img-fluid border rounded"
@@ -107,16 +63,11 @@
 
                                     <div class="text-start ps-4">
                                         <h5 class="mb-3" th:text="${scrap.title}">Job Title</h5>
-                                        <span class="text-truncate me-3"><i
-                                                class="fa fa-map-marker-alt text-primary me-2"></i><span
-                                                th:text="${scrap.address}">Location</span></span>
-                                        <span class="text-truncate me-0"><i
-                                                class="far fa-money-bill-alt text-primary me-2"></i><span
-                                                th:text="${scrap.salary}">Salary</span></span>
+                                        <span class="text-truncate me-0"><i class="fas fa-school text-primary me-2"></i><span
+                                                th:text="${scrap.companyName}">company Name</span></span>
                                         <span class="text-truncate me-3"><i
                                                 class="far fa-clock text-primary me-2"></i><span
-                                                th:text="${#dates.format(scrap.endDate, 'yyyy-MM-dd')}"></span></span>
-                                        마감
+                                                th:text="${#dates.format(scrap.endDate, 'yyyy-MM-dd')}"></span></span>마감
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
@@ -130,7 +81,7 @@
                                 </div>
                             </div>
                         </div>
-                        <a class="btn btn-primary py-3 px-5" href="#">더 보기</a>
+                        <a class="btn btn-primary py-3 px-5" href="#" style="border-radius: 8px;">더 보기</a>
                     </div>
                 </div>
 
@@ -138,7 +89,10 @@
         </div>
 
     </div>
-    <div class="container-fluid bg-primary mb-5" style="padding: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+
+    <!-- Job End -->
+
+    <div class="container-fluid bg-light mb-5" style="padding: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
     </div>
 
 </div>

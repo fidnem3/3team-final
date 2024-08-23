@@ -47,7 +47,7 @@ public class JobSeekerScrapService {
 
 
     public List<JobSeekerScrapVo> getScrapList(String jobSeekerId) {
-        List<JobSeekerScrapVo> scrapList = scrapMapper.getScrapListByJobSeekerId(jobSeekerId);
+        List<JobSeekerScrapVo> scrapList = scrapMapper.getScrapList(jobSeekerId);
 
         for (JobSeekerScrapVo scrap : scrapList) {
             JobPostVo jobPost = jobPostMapper.getJobPostDetailsById(scrap.getJobPostId());
@@ -68,6 +68,7 @@ public class JobSeekerScrapService {
                 scrap.setSalary(jobPost.getSalary());
                 scrap.setAddress(jobPost.getAddress());
                 scrap.setEndDate(jobPost.getEndDate());
+                scrap.setCompanyName(jobPost.getCompanyName());
             } else {
                 // Handle the case where jobPost is null if needed
             }

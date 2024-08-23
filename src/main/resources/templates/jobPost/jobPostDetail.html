@@ -46,9 +46,10 @@
                          alt="Company Logo" style="width: 80px; height: 80px;">
                     <div class="text-start ps-4">
                             <h3 class="mb-3"><span th:text="${jobPost.title}"></span></h3>
+                        <span class="text-truncate me-3"><span
+                                th:text="${jobPost.companyName}"></span></span>
                         <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i><span
                                 th:text="${jobPost.address}"></span></span>
-                        <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>Full Time</span>
                         <span class="text-truncate me-0"><i
                                 class="far fa-money-bill-alt text-primary me-2"></i><span
                                 th:text="${jobPost.salary}"></span></span>
@@ -75,6 +76,7 @@
                 <div>
                     <div class="d-flex justify-content-start align-items-center">
                     <!-- 지원하기 버튼 -->
+                        <div class="btn-group" style="margin-right: auto;">
                         <a class="btn btn-light btn-square me-3 scrap-button"
                            sec:authorize="!hasRole('ROLE_COMPANY') and !hasRole('ROLE_ADMIN')"
                            th:classappend="${scrapStatusMap[jobPost.jobPostId] != null and scrapStatusMap[jobPost.jobPostId] ? 'scrap-active' : ''}"
@@ -84,7 +86,7 @@
                             <i th:classappend="${scrapStatusMap[jobPost.jobPostId] != null and scrapStatusMap[jobPost.jobPostId] ? 'fas fa-heart' : 'far fa-heart'}"></i>
                         </a>
                     <button id="modalBtn" class="btn btn-primary" sec:authorize="!hasRole('ROLE_COMPANY') and !hasRole('ROLE_ADMIN')">지원하기</button>
-
+                        </div>
                     </div>
 
                     <!--모달 창-->
