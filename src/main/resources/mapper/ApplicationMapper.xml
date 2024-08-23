@@ -5,7 +5,6 @@
 
 <mapper namespace="com.javalab.board.repository.ApplicationMapper">
 
-
     <!-- ApplicationDto와 매핑되는 ResultMap -->
     <resultMap id="ApplicationMap" type="com.javalab.board.dto.ApplicationDto">
         <id property="applicationId" column="APPLICATION_ID" />
@@ -14,10 +13,28 @@
         <result property="jobSeekerId" column="JOBSEEKER_ID" />
         <result property="appliedDate" column="APPLIED_DATE" />
         <result property="isRead" column="IS_READ" />
+
+        <!-- ResumeDto 매핑 -->
+        <association property="resume" javaType="com.javalab.board.dto.ResumeDto">
+            <id property="resumeId" column="RESUME_ID" />
+            <result property="fileName" column="file_name" />
+            <result property="filePath" column="file_path" />
+            <!-- 필요한 경우 다른 ResumeDto 필드들 추가 -->
+        </association>
+
+        <!-- JobPostDto 매핑 -->
+        <association property="jobPost" javaType="com.javalab.board.vo.JobPostVo">
+            <id property="jobPostId" column="JOBPOST_ID"/>
+            <result property="title" column="TITLE" />
+            <result property="address" column="address" />
+            <result property="salary" column="SALARY" />
+            <!-- 필요한 경우 다른 JobPostDto 필드들 추가 -->
+        </association>
     </resultMap>
 
+    <!-- 회사 ID로
 
-    <!-- 지원서 제출 (INSERT) -->
+        <!- 지원서 제출 (INSERT) -->
     <insert id="insertApplication" parameterType="com.javalab.board.dto.ApplicationDto">
         INSERT INTO APPLICATION (APPLICATION_ID, RESUME_ID, JOBPOST_ID, JOBSEEKER_ID,  APPLIED_DATE ,Created)
         VALUES (APPLICATION_SEQ.NEXTVAL, #{resumeId}, #{jobPostId}, #{jobSeekerId},  SYSDATE , SYSDATE )
@@ -39,10 +56,18 @@
 
     <!-- 회사 ID로 지원서 목록을 가져오는 쿼리 (SELECT) -->
     <select id="selectApplicationsByCompanyId" parameterType="String" resultMap="ApplicationMap">
-        SELECT a.APPLICATION_ID, a.RESUME_ID, a.JOBPOST_ID, a.JOBSEEKER_ID, a.is_read, a.APPLIED_DATE, a.IS_READ
-        FROM APPLICATION a
-        JOIN JOBPOST j ON a.JOBPOST_ID = j.JOBPOST_ID
-        WHERE j.COMP_ID = #{compId}
+        SELECT
+        a.*,
+        r.*,
+        j.*
+        FROM
+        APPLICATION a
+        JOIN
+        JOBPOST j ON a.JOBPOST_ID = j.JOBPOST_ID
+        JOIN
+        RESUME r ON a.RESUME_ID = r.RESUME_ID
+        WHERE
+        j.COMP_ID = #{compId}
     </select>
 
 
@@ -95,7 +120,6 @@
         WHERE application_id = #{applicationId}
     </update>
 
-    <select id="getCompanyIdByJobPostId" resultType="java.lang.String"></select>
 
 
 
