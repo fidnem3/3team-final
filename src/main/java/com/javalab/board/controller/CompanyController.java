@@ -6,6 +6,10 @@ import com.javalab.board.service.CompanyService;
 import com.javalab.board.vo.CompanyVo;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
@@ -14,6 +18,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -32,6 +39,7 @@ public class CompanyController {
     @Autowired
     private ApplicationService applicationService;
 
+    private static final String UPLOAD_DIR = "C:/filetest/upload/";
 
     /**
      * 기업의 상세 정보를 보여주는 페이지로 이동합니다.
@@ -48,6 +56,27 @@ public class CompanyController {
         model.addAttribute("company", company);
         return "company/companyDetail";
     }
+
+    /**
+     * 회사 로고 이미지를 제공하는 엔드포인트
+     * @param logoName 로고 파일 이름
+     * @return 로고 이미지 파일
+     */
+    @GetMapping("/logo/{logoName}")
+    @ResponseBody
+    public ResponseEntity<Resource> serveFile(@PathVariable String logoName) throws IOException {
+        Path file = Paths.get(UPLOAD_DIR).resolve(logoName);
+        Resource resource = new UrlResource(file.toUri());
+
+        if (resource.exists() || resource.isReadable()) {
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                    .body(resource);
+        } else {
+            throw new RuntimeException("Could not read the file!");
+        }
+    }
+
 
     /**
      * 기업 정보를 수정할 수 있는 페이지로 이동합니다.

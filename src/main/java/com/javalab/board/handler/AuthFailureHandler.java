@@ -20,7 +20,6 @@ import java.io.IOException;
 @Log4j2
 public class AuthFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
-
     private final CompanyMapper companyMapper;
     private final JobSeekerMapper jobSeekerMapper;
     private final LoginMapper loginMapper;

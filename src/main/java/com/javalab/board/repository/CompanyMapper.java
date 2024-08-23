@@ -22,7 +22,7 @@ public interface CompanyMapper {
      * - @param id 조회할 기업 회원의 ID
      * - @return 조회된 기업 회원 정보 객체
      */
-     CompanyVo selectCompanyById(String compId);
+    CompanyVo selectCompanyById(String compId);
 
     /**
      * 기업 회원 정보를 데이터베이스에서 갱신합니다.
@@ -49,7 +49,7 @@ public interface CompanyMapper {
      * - @param status 기업의 상태 (예: "PENDING", "APPROVED", "REJECTED")
      * - @return 특정 상태를 가진 기업 목록
      */
-        List<CompanyVo> selectCompaniesByStatus(@Param("status") String status);
+    List<CompanyVo> selectCompaniesByStatus(@Param("status") String status);
 
     /**
      * 특정 기업의 상태를 업데이트합니다.
