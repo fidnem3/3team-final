@@ -5,144 +5,252 @@
 <head>
     <meta charset="UTF-8">
     <title>기업 승인 페이지</title>
-    <!-- SweetAlert2를 위한 CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <!-- SweetAlert2를 위한 JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-    /* 기본 스타일 */
-    body {
-    font-family: Arial, sans-serif;
-    background-color: #f8f9fa;
-    margin: 0;
-    padding: 0;
-    }
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #50e3c2;
+            --danger-color: #ff6b6b;
+            --text-color: #2c3e50;
+            --background-color: #f0f4f8;
+            --card-background: #ffffff;
+            --border-radius: 16px;
+            --box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);
+            --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
 
-    .container-xxl {
-    padding: 20px;
-    }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--text-color);
+            line-height: 1.8;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
 
-    h1 {
-    color: #343a40;
-    margin-bottom: 20px;
-    }
+        .container-xxl {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 60px;
+            background-color: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
 
-    table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: #ffffff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
+        h1 {
+            color: var(--primary-color);
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 50px;
+            letter-spacing: -1px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
+            display: inline-block;
+        }
 
-    th, td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #dee2e6;
-    }
+        .table-container {
+            overflow-x: auto;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            padding: 30px;
+        }
 
-    th {
-    background-color: #343a40;
-    color: #ffffff;
-    }
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 10px;
+            background-color: transparent;
+        }
 
-    td.status {
-    text-align: center;
-    padding: 10px;
-    border-radius: 5px;
-    font-weight: bold;
-    color: #ffffff;
-    }
+        th, td {
+            padding: 22px 25px;
+            text-align: left;
+            vertical-align: middle;
+            position: relative;
+        }
 
-    .status-approved {
-    background-color: #28a745; /* 초록색 */
-    }
+        th {
+             background-color: #a0a0a0;
+            color: white;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 15px;
+            letter-spacing: 1.5px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
 
-    .status-rejected {
-    background-color: #dc3545; /* 빨간색 */
-    }
+        th:hover {
+             background-color: #5a6268; /* 호버 시 약간 더 어두운 회색 */
+            transform: translateY(-2px);
+        }
 
-    .status-pending {
-    background-color: #6c757d; /* 회색 */
-    }
+        tr {
+            background-color: #f8f9fa;
+            transition: var(--transition);
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
 
-    .btn {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 5px;
-    color: #ffffff;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s ease;
-    }
+        tr:hover {
+            transform: translateY(-5px) scale(1.01);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            background-color: #e9ecef;
+        }
 
-    .btn-approve {
-    background-color: #28a745; /* 초록색 */
-    }
+        td {
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            font-size: 16px;
+        }
 
-    .btn-approve:hover {
-    background-color: #218838; /* 어두운 초록색 */
-    }
+        .btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            transition: var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin: 0 8px;
+            display: inline-flex;
+            align-items: center;
+        }
 
-    .btn-reject {
-    background-color: #dc3545; /* 빨간색 */
-    }
+        .approve-btn {
+            background-color: #2ecc71;
+            color: white;
+        }
 
-    .btn-reject:hover {
-    background-color: #c82333; /* 어두운 빨간색 */
-    }
+        .reject-btn {
+            background-color: #e74c3c;
+            color: white;
+        }
 
-    .no-companies {
-    text-align: center;
-    padding: 20px;
-    font-size: 18px;
-    color: #495057;
-    }
+        .btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 7px 14px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 100px 40px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin-top: 40px;
+            backdrop-filter: blur(15px);
+        }
+
+        .empty-state p {
+            font-size: 22px;
+            color: #7f8c8d;
+            margin-bottom: 20px;
+            font-weight: 300;
+            line-height: 1.6;
+        }
+
+        .empty-state::before {
+            content: '🏢';
+            font-size: 80px;
+            display: block;
+            margin-bottom: 30px;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .container-xxl {
+                padding: 40px;
+                margin: 30px auto;
+            }
+
+            h1 {
+                font-size: 36px;
+            }
+
+            th, td {
+                padding: 18px 20px;
+            }
+
+            .btn {
+                padding: 12px 20px;
+                font-size: 13px;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .container-xxl {
+            animation: fadeIn 0.7s ease-out;
+        }
+
+        tr {
+            animation: fadeIn 0.7s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .fas {
+            margin-right: 10px;
+            font-size: 18px;
+        }
     </style>
 </head>
 <body>
-<div layout:fragment="content" class="container-xxl bg-white p-0">
-    <h1>기업 승인 페이지</h1>
+<div layout:fragment="content" class="container-xxl">
+    <h1><i class="fas fa-building"></i> 기업 승인 페이지</h1>
 
-    <!-- CSRF 토큰을 포함한 메타 태그 -->
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 
-    <!-- 기업 목록 테이블 -->
-    <div th:if="${#lists.isEmpty(pendingCompanies)}">
+    <div th:if="${#lists.isEmpty(pendingCompanies)}" class="empty-state">
         <p>승인할 기업 회원이 없습니다.</p>
     </div>
-    <div th:unless="${#lists.isEmpty(pendingCompanies)}">
+    <div th:unless="${#lists.isEmpty(pendingCompanies)}" class="table-container">
         <table id="companyTable">
             <thead>
             <tr>
-                <th>기업 ID</th>
-                <th>기업 이름</th>
-                <th>상태</th>
-                <th>액션</th>
+                <th><i class="fas fa-id-card"></i> 기업 ID</th>
+                <th><i class="fas fa-building"></i> 기업 이름</th>
+                <th><i class="fas fa-hashtag"></i> 사업자 번호</th>
+                <th><i class="fas fa-cogs"></i> 액션</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="company : ${pendingCompanies}">
                 <td th:text="${company.compId}"></td>
                 <td th:text="${company.companyName}"></td>
-                <td class="status" th:text="${company.status}"
-                    th:classappend="${company.status == '승인됨' ? 'status-approved' :
-                    company.status == '거절됨' ? 'status-rejected' : 'status-pending'}"></td>
-
+                <td th:text="${company.businessNumber}"></td>
                 <td>
-                    <!-- 승인 버튼 -->
-                    <button type="button" class="approve-btn" th:data-id="${company.compId}">승인</button>
-
-                    <!-- 거절 버튼 -->
-                    <button type="button" class="reject-btn" th:data-id="${company.compId}">거절</button>
+                    <button type="button" class="btn approve-btn" th:data-id="${company.compId}">
+                        <i class="fas fa-user-check"></i> 승인
+                    </button>
+                    <button type="button" class="btn reject-btn" th:data-id="${company.compId}">
+                        <i class="fas fa-user-times"></i> 거절
+                    </button>
                 </td>
             </tr>
             </tbody>
         </table>
     </div>
 </div>
-
 </body>
 </html>
