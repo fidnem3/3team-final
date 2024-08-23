@@ -70,7 +70,7 @@ public class JobPostServiceImpl implements JobPostService {
         JobPostVo jobPostVo = jobPostMapper.getJobPostById(jobPostId);
 
         if (jobPostVo != null) {
-            // 필요 기술 목록 조회
+//             필요 기술 목록 조회
             List<String> requiredSkills = requiredSkillMapper.getRequiredSkillsByJobPostId(jobPostId);
             jobPostVo.setSkills(requiredSkills);
         }

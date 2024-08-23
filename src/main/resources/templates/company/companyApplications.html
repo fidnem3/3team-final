@@ -1,53 +1,181 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/layout}">
+
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <title>Company Applications</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
-        /* 읽지 않은 이력서 스타일 */
         .unread {
             font-weight: bold;
             background-color: #f8d7da; /* 배경색을 변경하여 강조 */
         }
+
+        .scrap-button i.far {
+            color: green;
+        }
+        .scrap-active i.fas {
+            color: red;
+        }
+        .hidden { display: none; }
+
+        .job-item {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #ffffff;
+        }
+
+        .job-item h5 {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .job-item img {
+            border-radius: 10px;
+            width:90px;
+            height:120px;
+        }
+
+        .text-truncate {
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+        .container-fluid {
+            padding: 35px;
+            background-color: #007bff;
+            color: #ffffff;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
     </style>
+
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 <body>
-<div layout:fragment="content" class="container mt-5">
-    <h2>Applications for Your Job Posts</h2>
-    <table class="table table-bordered">
-        <thead>
-        <tr>
-            <th>Application ID</th>
-            <th>Resume ID</th>
-            <th>Job Post ID</th>
-            <th>Status</th>
-            <th>Applied Date</th>
-            <th>Action</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="jobApplication : ${applications}"
-            th:classappend="${jobApplication.isRead == 'N'} ? 'unread'">
-            <td th:text="${jobApplication.applicationId}"></td>
-            <td th:text="${jobApplication.resumeId}"></td>
-            <td th:text="${jobApplication.jobPostId}"></td>
-            <td>
-                <span th:text="${jobApplication.isRead == 'N' ? 'Unread' : 'Read'}"></span>
-            </td>
-            <td th:text="${#dates.format(jobApplication.appliedDate, 'yyyy-MM-dd HH:mm')}"></td>
-            <td>
-                <a th:if="${jobApplication.isRead == 'N'}"
-                   href="javascript:void(0);"
-                   th:onclick="'openResumePopup(' + ${jobApplication.applicationId} + ',' + ${jobApplication.resumeId} + ')'"
-                   class="btn btn-sm btn-success">Mark as Read & View</a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+<div layout:fragment="content" class="container-xxl py-5">
+    <h1 class="text-center mb-5">Applications for Your Job Posts</h1>
+    <div class="container">
+<!--        <div class="container-fluid bg-primary mb-5">-->
+<!--            <div class="row g-2">-->
+<!--                <div class="col-md-10">-->
+<!--                    <div class="row g-2">-->
+<!--                        <div class="col-md-3">-->
+<!--                            <select id="filterAddress" class="form-select border-0">-->
+<!--                                <option value="">지역</option>-->
+<!--                                <option value="서울">서울</option>-->
+<!--                                <option value="부산">부산</option>-->
+<!--                                &lt;!&ndash; 다른 주소 추가 &ndash;&gt;-->
+<!--                            </select>-->
+<!--                        </div>-->
+<!--                        <div class="col-md-3">-->
+<!--                            <select id="filterEducation" class="form-select border-0">-->
+<!--                                <option value="">학력</option>-->
+<!--                                <option value="학력무관">학력무관</option>-->
+<!--                                <option value="고졸">고졸이상</option>-->
+<!--                                <option value="초대졸">초대졸이상</option>-->
+<!--                                <option value="대졸">대졸이상</option>-->
+<!--                                &lt;!&ndash; 다른 교육 수준 추가 &ndash;&gt;-->
+<!--                            </select>-->
+<!--                        </div>-->
+<!--                        <div class="col-md-3">-->
+<!--                            <select id="filterExperience" class="form-select border-0">-->
+<!--                                <option value="">경력</option>-->
+<!--                                <option value="경력무관">경력무관</option>-->
+<!--                                <option value="신입">신입</option>-->
+<!--                                <option value="경력 1년">경력 1년이상</option>-->
+<!--                                <option value="경력 2년">경력 2년이상</option>-->
+<!--                                &lt;!&ndash; 다른 경험 추가 &ndash;&gt;-->
+<!--                            </select>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="col-md-2">-->
+<!--                    <button id="applyFilters" class="btn btn-dark border-0 w-100">적용하기</button>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
 
-    <!--이력서 읽음 표시하는 -->
+        <div class="tab-class text-center wow fadeInUp" data-wow-delay="0.3s">
+            <div id="tab-1" class="tab-pane fade show p-0 active">
+                <div id="jobList">
+                    <div th:each="jobApplication : ${applications}" class="job-item p-4 mb-4"
+                         th:classappend="${jobApplication.isRead == 'N'} ? 'unread'"
+                         th:data-address="${jobApplication.jobPost.address}"
+                         th:data-education="${jobApplication.jobPost.education}"
+                         th:data-experience="${jobApplication.jobPost.salary}">
+                        <div class="row g-4">
+                            <div class="col-sm-12 col-md-8 d-flex align-items-center">
+                                <img class="flex-shrink-0 img-fluid border rounded"
+                                     th:src="${jobApplication.resume.filePath}"
+                                     alt="Company Logo">
+
+                                <div class="text-start ps-4">
+                                    <h5 class="mb-3" th:text="${jobApplication.jobPost.title}">Job Title</h5>
+                                    <span class="text-truncate me-3">
+                                        <i class="fa fa-map-marker-alt text-primary me-2"></i>
+                                        <span th:text="${jobApplication.jobPost.address}">Location</span></span>
+
+                                    <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>Full Time</span>
+
+                                    <span class="text-truncate me-3">
+                                        <i class="fas fa-search text-primary me-2"></i>Read:
+                                        <span th:text="${jobApplication.isRead}"></span></span>
+
+                                    <span class="text-truncate me-0">
+                                        <i class="far fa-money-bill-alt text-primary me-2"></i>
+                                        <span th:text="${jobApplication.jobPost.salary}">Salary</span></span>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
+
+                                <div class="d-flex mb-3">
+                                    <a class="btn btn-primary"
+                                       href="javascript:void(0);"
+                                       th:onclick="'openResumePopup(' + ${jobApplication.applicationId} + ',' + ${jobApplication.resumeId} + ')'">
+                                        Mark & View
+                                    </a>
+                                </div>
+
+                                <small class="text-truncate">
+                                    <i class="far fa-calendar-alt text-primary me-2"></i>
+                                    <span th:text="${#dates.format(jobApplication.appliedDate, 'yyyy-MM-dd HH:mm')}"></span> Applied Date
+                                </small>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <a class="btn btn-primary py-3 px-5" th:href="@{/jobPost/jobPostCreate}"
+           sec:authorize="hasRole('ROLE_COMPANY')">Post a Job</a>
+    </div>
+
     <script>
         function openResumePopup(applicationId, resumeId) {
             // 이력서를 읽음으로 표시하는 URL을 호출
@@ -63,7 +191,9 @@
         }
     </script>
 
-
 </div>
+
+
+
 </body>
 </html>
