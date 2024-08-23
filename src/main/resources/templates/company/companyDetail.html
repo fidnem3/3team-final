@@ -9,6 +9,11 @@
     <title>My Business Profile</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
+
+        .container-xxl{
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+        }
+
         .company-logo {
             width: 200px;
             height: 200px;
@@ -113,12 +118,14 @@
                         </div>
                     </div>
                     <div class="text-center mt-3" sec:authorize="hasRole('ROLE_COMPANY')">
-                        <a th:href="@{/company/edit}" class="btn btn-primary">정보 수정</a>
+                        <a th:href="@{/company/edit}" class="btn btn-primary">
+                            <i class="fas fa-edit"></i> 정보 수정
+                        </a>
                     </div>
                 </div>
 
                 <!-- 마이페이지 메뉴 -->
-                <div class="card-menu">
+                <div class="card-menu" sec:authorize="hasRole('ROLE_COMPANY')">
                     <div class="card">
                         <i class="fas fa-file-alt"></i>
                         <h4>나의 채용공고</h4>
@@ -139,22 +146,25 @@
                     </div>
                 </div>
 
+                <div class="text-center mt-4" sec:authorize="hasRole('ROLE_ADMIN')">
+                    <form th:action="@{/admin/deleteCompany/{id}(id=${company.compId})}" method="post"
+                          style="display: inline;">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                        <button type="submit" class="btn btn-danger"
+                                onclick="return confirm('정말로 이 회원을 삭제하시겠습니까?');">
+                            <i class="fas fa-user-minus"></i> 회원 삭제
+                        </button>
+                    </form>
+                </div>
+
                 <div class="text-center mt-3" sec:authorize="hasRole('ROLE_COMPANY')">
-                    <a th:href="@{/company/withdraw}" class="btn btn-danger">회원 탈퇴</a>
+                    <a th:href="@{/company/withdraw}" class="btn btn-danger">
+                        <i class="fas fa-sign-out-alt"></i> 회원 탈퇴
+                    </a>
                 </div>
             </div>
         </div>
 
-        <div class="text-center mt-4" sec:authorize="hasRole('ROLE_ADMIN')">
-            <form th:action="@{/admin/deleteCompany/{id}(id=${company.compId})}" method="post"
-                  style="display: inline;">
-                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-                <button type="submit" class="btn btn-danger"
-                        onclick="return confirm('정말로 이 회원을 삭제하시겠습니까?');">
-                    회원 삭제
-                </button>
-            </form>
-        </div>
     </div>
 </div>
 </body>

@@ -165,7 +165,7 @@ public class AdminController {
         // 거절된 기업 목록을 조회합니다.
         List<CompanyVo> rejectedCompanies = companyService.getRejectedCompanies();
 
-        // 조회된 기업 목록을 모델에 추가합니다.
+        // 각 기업의 로고 정보를 포함하여 모델에 추가합니다.
         model.addAttribute("approvedCompanies", approvedCompanies);
         model.addAttribute("rejectedCompanies", rejectedCompanies);
 
