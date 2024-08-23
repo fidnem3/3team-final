@@ -55,7 +55,7 @@
                 <a th:href="@{/about}" class="nav-item nav-link">About</a>
 
 
-                <div class="nav-item dropdown">
+                <div class="nav-item dropdown" sec:authorize="!hasRole('ROLE_USER')">
                     <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown" sec:authorize="!hasRole('ROLE_COMPANY')">Jobs</a>
                     <div class="dropdown-menu rounded-0 m-0">
                         <a th:href="@{/admin/companyList}" class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')">Company
@@ -75,16 +75,16 @@
                         <!--                        <a th:href="@{/jobSeeker/jobSeekerManagement}" class="dropdown-item">ManageBlackJob</a>-->
                     </div>
                 </div>
-                <div class="nav-item dropdown" sec:authorize="!hasRole('ROLE_ADMIN')">
-                    <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown" sec:authorize="!hasRole('ROLE_COMPANY')">Resume</a>
-                    <div class="dropdown-menu rounded-0 m-0">
-                        <a th:href="@{/resume/save}" class="dropdown-item">New Resume</a>
-                        <a th:href="@{/resume/list}" class="dropdown-item">Resume List</a>
-                        <a th:href="@{/application/list}" class="dropdown-item" sec:authorize="hasRole('ROLE_USER')">My
-                            Job Applications
-                        </a>
-                    </div>
-                </div>
+<!--                <div class="nav-item dropdown" sec:authorize="!hasRole('ROLE_ADMIN')">-->
+<!--                    <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown" sec:authorize="hasRole('ROLE_COMPANY')">Resume</a>-->
+<!--                    <div class="dropdown-menu rounded-0 m-0">-->
+<!--                        <a th:href="@{/resume/save}" class="dropdown-item">New Resume</a>-->
+<!--                        <a th:href="@{/resume/list}" class="dropdown-item">Resume List</a>-->
+<!--                        <a th:href="@{/application/list}" class="dropdown-item" sec:authorize="hasRole('ROLE_USER')">My-->
+<!--                            Job Applications-->
+<!--                        </a>-->
+<!--                    </div>-->
+<!--                </div>-->
 
                 <a th:href="@{/contact}" class="nav-item nav-link">Contact</a>
             </div>
