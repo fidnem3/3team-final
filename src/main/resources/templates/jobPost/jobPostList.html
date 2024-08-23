@@ -19,7 +19,7 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
         }
         .scrap-button i.far {
-            color: green;
+            color: blue;
         }
         .scrap-active i.fas {
             color: red;
@@ -63,7 +63,7 @@
         align-items: center; /* 수직 중앙 정렬 */
     }
 
- .container-fluid select.form-select {
+ .select.form-select {
     border-radius: 20px;
     height: 40px !important;
     max-height: 120px !important;
@@ -73,77 +73,80 @@
     select.form-select option {
         padding: 8px;
     }
+
+        .filter-button {
+            border-radius: 8px; /* 모서리 둥글게 */
+        }
     </style>
 
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 <body>
-<div layout:fragment="content" class="container-xxl bg-white p-0" style="padding: 30px !important;">
+<div layout:fragment="content" class="container-xxl bg-white p-0">
+    <div class="container-fluid bg-primary mb-5" style="padding: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+    </div>
+
+
     <div class="container">
-        <!-- Filter Form -->
-        <div class="container-fluid bg-primary mb-5 wow fadeIn" data-wow-delay="0.1s" style="padding: 35px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
-            <div style="padding-left: 50px; padding-right:50px;">
-            <div class="row g-2 align-items-center">
-                <!-- Drop-down boxes with 8 parts of the total width -->
-                <div class="col-md-10">
-                    <div class="row g-2">
-                        <div class="col-md-4">
-                            <select id="filterAddress" class="form-select border-0">
-                                <option value="">지역</option>
-                                <option value="서울">서울</option>
-                                <option value="경기">경기</option>
-                                <option value="강원">강원</option>
-                                <option value="대전">대전</option>
-                                <option value="충북">충북</option>
-                                <option value="충남">충남</option>
-                                <option value="전북">전북</option>
-                                <option value="전남">전남</option>
-                                <option value="경북">경북</option>
-                                <option value="경남">경남</option>
-                                <option value="부산">부산</option>
-                                <option value="제주">제주</option>
-                                <!-- 다른 주소 추가 -->
-                            </select>
-                        </div>
-                        <div class="col-md-4">
-                            <select id="filterEducation" class="form-select border-0">
-                                <option value="">학력</option>
-                                <option value="학력무관">학력무관</option>
-                                <option value="고졸 이상">고졸 이상</option>
-                                <option value="초대졸 이상">초대졸 이상</option>
-                                <option value="대졸 이상">대졸 이상</option>
-                                <option value="석사 이상">석사 이상</option>
-                                <!-- 다른 교육 수준 추가 -->
-                            </select>
-                        </div>
-                        <div class="col-md-4">
-                            <select id="filterExperience" class="form-select border-0">
-                                <option value="">경력</option>
-                                <option value="경력무관">경력무관</option>
-                                <option value="신입">신입</option>
-                                <option value="경력 1년 이상">경력 1년 이상</option>
-                                <option value="경력 2년 이상">경력 2년 이상</option>
-                                <option value="경력 3년 이상">경력 3년 이상</option>
-                                <option value="경력 5년 이상">경력 5년 이상</option>
-                                <!-- 다른 경험 추가 -->
-                            </select>
-                        </div>
+        <div style="width: 60%; margin-left: 20px;">
+        <div class="row g-2 align-items-center">
+            <!-- Drop-down boxes with 8 parts of the total width -->
+            <div class="col-md-8">
+                <div class="row g-2">
+                    <div class="col-md-4">
+                        <select id="filterAddress" class="form-select border-2" style="border-radius: 12px;">
+                            <option value="">지역</option>
+                            <option value="서울">서울</option>
+                            <option value="경기">경기</option>
+                            <option value="강원">강원</option>
+                            <option value="대전">대전</option>
+                            <option value="충북">충북</option>
+                            <option value="충남">충남</option>
+                            <option value="전북">전북</option>
+                            <option value="전남">전남</option>
+                            <option value="경북">경북</option>
+                            <option value="경남">경남</option>
+                            <option value="부산">부산</option>
+                            <option value="제주">제주</option>
+                            <!-- 다른 주소 추가 -->
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <select id="filterEducation" class="form-select border-2" style="border-radius: 12px;">
+                            <option value="">학력</option>
+                            <option value="학력무관">학력무관</option>
+                            <option value="고졸 이상">고졸 이상</option>
+                            <option value="초대졸 이상">초대졸 이상</option>
+                            <option value="대졸 이상">대졸 이상</option>
+                            <option value="석사 이상">석사 이상</option>
+                            <!-- 다른 교육 수준 추가 -->
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <select id="filterExperience" class="form-select border-2" style="border-radius: 12px;">
+                            <option value="">경력</option>
+                            <option value="경력무관">경력무관</option>
+                            <option value="신입">신입</option>
+                            <option value="경력 1년 이상">경력 1년 이상</option>
+                            <option value="경력 2년 이상">경력 2년 이상</option>
+                            <option value="경력 3년 이상">경력 3년 이상</option>
+                            <option value="경력 5년 이상">경력 5년 이상</option>
+                            <!-- 다른 경험 추가 -->
+                        </select>
                     </div>
                 </div>
-                <!-- Apply button with 2 parts of the total width -->
-                <div class="col-md-2">
-                    <button id="applyFilters" class="btn btn-dark border-0 w-100">적용하기</button>
-                </div>
+            </div>
+            <!-- Apply button with 2 parts of the total width -->
+            <div class="col-md-2">
+                <button id="applyFilters" class="btn btn-light" style="border-radius: 12px;">적용</button>
             </div>
         </div>
         </div>
-
-
-
+        <!-- Filter Form -->
         <!-- Job Posts -->
         <div class="album py-5 bg-body-tertiary">
-            <div class="container">
+            <div class="container" style="width: 100%;">
                 <div id="jobList" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                     <div th:each="jobPost : ${jobPosts}" class="col job-item" th:if="${not #lists.isEmpty(jobPosts)}"
                         th:data-address="${jobPost.address}"
@@ -158,11 +161,11 @@
                                 <div class="d-flex justify-content-end">
                                 <small class="text-truncate" style="right: 0;">
                                     <i class="far fa-calendar-alt text-primary me-2"></i>
-                                    <span th:text="${#dates.format(jobPost.endDate, 'yyyy-MM-dd')}"></span> Deadline
+                                    <span th:text="${#dates.format(jobPost.endDate, 'yyyy-MM-dd')}"></span> 마감
                                 </small>
                                 </div>
                                 <hr class="my-2"> <!-- 여기에 선 추가 -->
-                                <div class="d-flex justify-content-start align-items-center"><a class="btn btn-light btn-square me-3 scrap-button" style="right: 0;"
+                                <div class="d-flex justify-content-start align-items-center"><a class="btn btn-light btn-square me-3 scrap-button" style="right: 0; background-color:transparent;"
                                        sec:authorize="!hasRole('ROLE_COMPANY') and !hasRole('ROLE_ADMIN')"
                                        th:classappend="${scrapStatusMap[jobPost.jobPostId] != null and scrapStatusMap[jobPost.jobPostId] ? 'scrap-active' : ''}"
                                        th:href="@{#}"
@@ -192,11 +195,13 @@
                 </div>
             </div>
         <div class="form-group text-center">
-            <a class="btn btn-primary py-3 px-5" th:href="@{/jobPost/jobPostCreate}"
-               sec:authorize="hasRole('ROLE_COMPANY')" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">Post a Job</a>
+            <a class="btn btn-light py-3 px-5" th:href="@{/jobPost/jobPostCreate}"
+               sec:authorize="hasRole('ROLE_COMPANY')" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); margin-bottom: 50px;">Post a Job</a>
         </div>
         </div>
+    <div class="container-fluid bg-primary mb-5" style="padding: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
     </div>
-</div>
+    </div>
+
 </body>
 </html>

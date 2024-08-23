@@ -11,6 +11,12 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <style>
+        .scrap-button i.far {
+            color: blue;
+        }
+        .scrap-active i.fas {
+            color: red;
+        }
 
         .container-xxl{
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
@@ -24,6 +30,8 @@
         width: 80%; /* 너비 조정 */
     }
     </style>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 
 <body>
@@ -31,22 +39,28 @@
     <div class="container">
         <div class="row gy-5 gx-4">
             <div class="col-lg-8">
+
                 <div class="d-flex align-items-center mb-5" style="border-bottom: 1px solid #d3d3d3; width: 650px; padding-bottom: 20px; margin-bottom: 15px;">
                     <img class="flex-shrink-0 img-fluid border rounded"
                          th:src="@{/jobPost/logo/{logoName}(logoName=${jobPost.logoName})}"
                          alt="Company Logo" style="width: 80px; height: 80px;">
                     <div class="text-start ps-4">
-                        <h3 class="mb-3"><span th:text="${jobPost.title}"></span></h3>
+                            <h3 class="mb-3"><span th:text="${jobPost.title}"></span></h3>
                         <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i><span
                                 th:text="${jobPost.address}"></span></span>
                         <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>Full Time</span>
                         <span class="text-truncate me-0"><i
                                 class="far fa-money-bill-alt text-primary me-2"></i><span
                                 th:text="${jobPost.salary}"></span></span>
+
                     </div>
+
                 </div>
 
-                <div class="mb-5">
+
+
+
+                <div class="mb-5" style="border-bottom: 1px solid #d3d3d3; width: 650px;">
                     <h4 class="mb-3">조건</h4>
                     <ul class="list-unstyled">
                         <li><i class="fa fa-angle-right text-primary me-2"></i><span
@@ -55,21 +69,22 @@
                         <li><i class="fa fa-angle-right text-primary me-2"></i><span
                                 th:text="${jobPost.experience}"></span></li>
                     </ul>
-                    <h4 class="mb-3">필요 기술</h4>
-                    <ul class="list-unstyled">
-                        <li th:each="skill : ${requiredSkills}">
-                            <i class="fa fa-angle-right text-primary me-2"></i>
-                            <span th:text="${skill}"></span>
-                        </li>
-                    </ul>
                     <h4 class="mb-3">내용</h4>
                     <span th:utext="${jobPost.content}"></span><br><br>
                 </div>
-
-                <div >
-                    <div class="form-group text-center">
+                <div>
+                    <div class="d-flex justify-content-start align-items-center">
                     <!-- 지원하기 버튼 -->
-                    <button id="modalBtn" class="btn btn-primary w-100" sec:authorize="hasRole('ROLE_USER')">지원하기</button>
+                        <a class="btn btn-light btn-square me-3 scrap-button"
+                           sec:authorize="!hasRole('ROLE_COMPANY') and !hasRole('ROLE_ADMIN')"
+                           th:classappend="${scrapStatusMap[jobPost.jobPostId] != null and scrapStatusMap[jobPost.jobPostId] ? 'scrap-active' : ''}"
+                           th:href="@{#}"
+                           th:data-jobpostid="${jobPost.jobPostId}"
+                           onclick="toggleScrap(event)">
+                            <i th:classappend="${scrapStatusMap[jobPost.jobPostId] != null and scrapStatusMap[jobPost.jobPostId] ? 'fas fa-heart' : 'far fa-heart'}"></i>
+                        </a>
+                    <button id="modalBtn" class="btn btn-primary" sec:authorize="!hasRole('ROLE_COMPANY') and !hasRole('ROLE_ADMIN')">지원하기</button>
+
                     </div>
 
                     <!--모달 창-->
@@ -125,12 +140,13 @@
                             th:text="${formattedEndDate}"></span></p>
                 </div>
                 <div class="bg-light rounded p-5 wow slideInUp" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);" data-wow-delay="0.1s">
-                    <h4 class="mb-4">Company Detail</h4>
-                    <p class="m-0">Ipsum dolor ipsum accusam stet et et diam dolores, sed rebum sadipscing elitr
-                        vero
-                        dolores. Lorem dolore elitr justo et no gubergren sadipscing, ipsum et takimata aliquyam et
-                        rebum est ipsum lorem diam. Et lorem magna eirmod est et et sanctus et, kasd clita
-                        labore.</p>
+                    <h4 class="mb-3">필요 기술</h4>
+                    <ul class="list-unstyled">
+                        <li th:each="skill : ${requiredSkills}">
+                            <i class="fa fa-angle-right text-primary me-2"></i>
+                            <span th:text="${skill}"></span>
+                        </li>
+                    </ul>
                 </div>
             </div>
 
