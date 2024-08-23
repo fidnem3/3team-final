@@ -108,7 +108,7 @@ public class ApplicationService {
 
     public void newApplicationReceived() {
         // 새로운 이력서가 접수되었을 때 호출됩니다.
-        sendNotification("새로운 이력서가 접수 되었습니다. 확인해 주세요.");
+        sendNotification("지원 완료");
     }
 
 
@@ -119,7 +119,10 @@ public class ApplicationService {
 //        applicationMapper.markNewApplicationAsUnread(compId);
 //    }
 
-
+    // 총 지원서 수를 반환하는 메서드 추가
+    public int getTotalApplications() {
+        return applicationMapper.countApplications();
+    }
 
 
 }

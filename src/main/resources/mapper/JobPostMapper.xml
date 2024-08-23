@@ -24,7 +24,7 @@
     </select>
 
     <select id="getAllJobPosts" resultType="com.javalab.board.vo.JobPostVo">
-        SELECT jp.*, c.logo_name AS logoName  <!-- 회사 로고 이름 추가 -->
+        SELECT jp.*, c.logo_name AS logoName, c. company_name AS companyName  <!-- 회사 로고 이름 추가 -->
         FROM jobPost jp
         LEFT JOIN company c ON jp.comp_id = c.comp_id  <!-- company 테이블과 조인 -->
         ORDER BY jp.created DESC
@@ -148,5 +148,14 @@
         SELECT skill
         FROM requiredSkill
         WHERE jobPost_id = #{jobPostId}
+    </select>
+
+    <select id="findAll">
+        SELECT * FROM jobPost
+    </select>
+
+    <!-- 총 공고 수를 가져오는 쿼리 -->
+    <select id="getTotalJobPosts" resultType="int">
+        SELECT COUNT(*) FROM jobPost
     </select>
 </mapper>

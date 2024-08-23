@@ -20,7 +20,6 @@ import java.io.IOException;
 @Log4j2
 public class AuthFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
-
     private final CompanyMapper companyMapper;
     private final JobSeekerMapper jobSeekerMapper;
     private final LoginMapper loginMapper;
@@ -72,11 +71,11 @@ public class AuthFailureHandler extends SimpleUrlAuthenticationFailureHandler {
                         switch (company.getStatus()) {
                             case "PENDING":
                                 msg = "계정이 승인 대기 중입니다. 승인을 기다려주세요.";
-                                errorType = "pending";
+                                errorType = "Pending";
                                 break;
                             case "REJECTED":
                                 msg = "계정이 거절되었습니다. 관리자에게 문의하세요.";
-                                errorType = "rejected";
+                                errorType = "Rejected";
                                 break;
                             default:
                                 msg = "아이디 또는 비밀번호가 올바르지 않습니다.";
@@ -127,11 +126,11 @@ public class AuthFailureHandler extends SimpleUrlAuthenticationFailureHandler {
                     switch (company.getStatus()) {
                         case "Pending":
                             msg = "계정이 승인 대기 중입니다. 승인을 기다려주세요.";
-                            errorType = "pending";
+                            errorType = "Pending";
                             break;
                         case "Rejected":
                             msg = "계정이 거절되었습니다. 관리자에게 문의하세요.";
-                            errorType = "rejected";
+                            errorType = "Rejected";
                             break;
                         default:
                             msg = "아이디 또는 비밀번호가 올바르지 않습니다.";
@@ -150,10 +149,10 @@ public class AuthFailureHandler extends SimpleUrlAuthenticationFailureHandler {
             errorType = "unknown_error";
         }
 
-            request.getSession().setAttribute("loginErrorMessage", msg);
-            request.getSession().setAttribute("loginErrorType", errorType);
+        request.getSession().setAttribute("loginErrorMessage", msg);
+        request.getSession().setAttribute("loginErrorType", errorType);
 
-            setDefaultFailureUrl("/member/login");
-            super.onAuthenticationFailure(request, response, exception);
-        }
+        setDefaultFailureUrl("/member/login");
+        super.onAuthenticationFailure(request, response, exception);
     }
+}

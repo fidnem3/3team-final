@@ -125,18 +125,18 @@ public class JobPostController {
             Model model,
             Authentication authentication) {
 
-
         List<JobPostVo> jobPosts;
 
         if (keyword != null && !keyword.isEmpty()) {
             // 검색어가 있을 경우 검색된 공고를 가져옴
             jobPosts = jobPostService.searchJobPosts(keyword);
-        } else {
+        } else if (address != null || education != null || experience != null) {
             // 필터가 있는 경우 해당 조건으로 공고를 필터링
             jobPosts = jobPostService.getJobPostsByFilters(address, education, experience);
+        } else {
+            // 필터나 검색어가 없을 경우 전체 공고를 가져옴
+            jobPosts = jobPostService.getAllJobPosts();
         }
-
-
 
         String jobSeekerId = authentication != null && authentication.getPrincipal() instanceof UserDetails
                 ? ((UserDetails) authentication.getPrincipal()).getUsername()
@@ -161,6 +161,7 @@ public class JobPostController {
 
         return "jobPost/jobPostList";
     }
+
 
 
 
@@ -274,9 +275,20 @@ public class JobPostController {
                 model.addAttribute("resumes", resumeDtoList);
             }
 
+            String jobSeekerId = authentication != null && authentication.getPrincipal() instanceof UserDetails
+                    ? ((UserDetails) authentication.getPrincipal()).getUsername()
+                    : null;
+            Map<Long, Boolean> scrapStatusMap = new HashMap<>();
+            if (jobSeekerId != null) {
+                List<JobSeekerScrapVo> scrapList = jobSeekerScrapService.getScrapList(jobSeekerId);
+                scrapStatusMap = scrapList.stream()
+                        .collect(Collectors.toMap(JobSeekerScrapVo::getJobPostId, scrap -> true));
+            }
+
             model.addAttribute("jobPost", jobPostVo); // 모델에 추가
             model.addAttribute("formattedEndDate", formattedEndDate);
             model.addAttribute("formattedCreated", formattedCreated);
+            model.addAttribute("scrapStatusMap", scrapStatusMap);
             model.addAttribute("requiredSkills", jobPostService.getRequiredSkillsByJobPostId(jobPostId)); // 필요 기술 추가
             return "jobPost/jobPostDetail"; // 공고 상세 페이지로 이동
         } else {
@@ -406,5 +418,4 @@ public class JobPostController {
             printWriter.println(json.toString());
         }
     }
-
 }
