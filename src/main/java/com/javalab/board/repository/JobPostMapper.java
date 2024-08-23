@@ -48,5 +48,6 @@ public interface JobPostMapper {
 
     void insertRequiredSkill(@Param("jobPostId") Long jobPostId, @Param("skill") String skill);
     List<String> getRequiredSkillsByJobPostId(Long jobPostId);
+
 }
 

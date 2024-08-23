@@ -942,7 +942,38 @@ function toggleScrap(event) {
     });
 });
 
+
 </script>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const filterButtons = document.querySelectorAll('.filter-button');
+        const jobItems = document.querySelectorAll('.job-item');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const filter = this.getAttribute('data-filter').trim();
+
+                // 필터 버튼 스타일 변경
+                filterButtons.forEach(btn => {
+                    btn.classList.remove('btn-primary');
+                    btn.classList.add('btn-secondary');
+                });
+                this.classList.remove('btn-secondary');
+                this.classList.add('btn-primary');
+
+                // 항목 필터링
+                jobItems.forEach(item => {
+                    const paymentStatus = item.getAttribute('data-payment-status').trim();
+                    if (filter === 'all' || paymentStatus === filter) {
+                        item.style.display = '';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+    });
+</script>
 </body>
 </html>
