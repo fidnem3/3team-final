@@ -12,6 +12,8 @@
     <link rel="stylesheet" th:href="@{/vendor/owl-carousel/css/owl.theme.default.min.css}">
     <link rel="stylesheet" th:href="@{/vendor/jqvmap/css/jqvmap.min.css}">
     <link rel="stylesheet" th:href="@{/css/admin.css}">
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://d3js.org/topojson.v2.min.js"></script>
 </head>
 
 <body>
@@ -303,7 +305,7 @@
                     <div class="card">
                         <div class="stat-widget-two card-body">
                             <div class="stat-content">
-                                <div class="stat-text">Job Post Expenses</div>
+                                <div class="stat-text">총 결제 금액</div>
                                 <div class="stat-digit">
                                     <i class="fa fa-usd"></i><span id="totalExpenses">0</span>
                                 </div>
@@ -320,7 +322,7 @@
                     <div class="card">
                         <div class="stat-widget-two card-body">
                             <div class="stat-content">
-                                <div class="stat-text">Total Job Post Views</div>
+                                <div class="stat-text">총 공고 조회수</div>
                                 <div class="stat-digit"><i class="fa fa-eye"></i><span id="totalViews">0</span></div>
                             </div>
                             <div class="progress">
@@ -335,7 +337,7 @@
                     <div class="card">
                         <div class="stat-widget-two card-body">
                             <div class="stat-content">
-                                <div class="stat-text">Total Job Posts</div>
+                                <div class="stat-text">총 공고수</div>
                                 <div class="stat-digit"><i class="fa fa-briefcase"></i> <span id="totalJobPosts">0</span></div>
                             </div>
                             <div class="progress">
@@ -349,7 +351,7 @@
                     <div class="card">
                         <div class="stat-widget-two card-body">
                             <div class="stat-content">
-                                <div class="stat-text">Applications Received</div>
+                                <div class="stat-text">지원 수</div>
                                 <div class="stat-digit">
                                     <i class="fa fa-briefcase"></i> <span id="totalApplications">0</span>
                                 </div>
@@ -367,7 +369,7 @@
                 <div class="col-xl-8 col-lg-8 col-md-8">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Yearly Overview</h4>
+                            <h4 class="card-title">월별 수입</h4>
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -379,38 +381,38 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-4 col-lg-4 col-md-4">
-                    <div class="card">
-                        <div class="card-body text-center">
-                            <div class="m-t-10">
-                                <h4 class="card-title">Customer Feedback</h4>
-                                <h2 class="mt-3" id="feedbackCount">385749</h2>
+                    <div class="col-xl-4 col-lg-4 col-md-4">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <div class="m-t-10">
+                                    <h4 class="card-title">손님 피드백</h4>
+                                    <h2 class="mt-3" id="feedbackCount">10000</h2>
+                                </div>
+                                <div class="widget-card-circle mt-5 mb-5" id="info-circle-card">
+                                    <i class="ti-control-shuffle pa"></i>
+                                </div>
+                                <ul class="widget-line-list m-b-15">
+                                    <li class="border-right">92% <br><span class="text-success"><i
+                                            class="ti-hand-point-up"></i> Positive</span></li>
+                                    <li>8% <br><span class="text-danger"><i
+                                            class="ti-hand-point-down"></i> Negative</span></li>
+                                </ul>
                             </div>
-                            <div class="widget-card-circle mt-5 mb-5" id="info-circle-card">
-                                <i class="ti-control-shuffle pa"></i>
-                            </div>
-                            <ul class="widget-line-list m-b-15">
-                                <li class="border-right">92% <br><span class="text-success"><i
-                                        class="ti-hand-point-up"></i> Positive</span></li>
-                                <li>8% <br><span class="text-danger"><i
-                                        class="ti-hand-point-down"></i> Negative</span></li>
-                            </ul>
                         </div>
                     </div>
-                </div>
             </div>
             <div class="row">
                 <div class="col-lg-4">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Project</h4>
+                            <h4 class="card-title">사용언어</h4>
                         </div>
                         <div class="card-body">
                             <div class="current-progress">
                                 <div class="progress-content py-2">
                                     <div class="row">
                                         <div class="col-lg-4">
-                                            <div class="progress-text">Website</div>
+                                            <div class="progress-text">JS</div>
                                         </div>
                                         <div class="col-lg-8">
                                             <div class="current-progressbar">
@@ -418,7 +420,7 @@
                                                     <div class="progress-bar progress-bar-primary w-40"
                                                          role="progressbar" aria-valuenow="40" aria-valuemin="0"
                                                          aria-valuemax="100">
-                                                        40%
+                                                        7.8%
                                                     </div>
                                                 </div>
                                             </div>
@@ -428,7 +430,7 @@
                                 <div class="progress-content py-2">
                                     <div class="row">
                                         <div class="col-lg-4">
-                                            <div class="progress-text">Android</div>
+                                            <div class="progress-text">HTML</div>
                                         </div>
                                         <div class="col-lg-8">
                                             <div class="current-progressbar">
@@ -436,7 +438,7 @@
                                                     <div class="progress-bar progress-bar-primary w-60"
                                                          role="progressbar" aria-valuenow="60" aria-valuemin="0"
                                                          aria-valuemax="100">
-                                                        60%
+                                                        20.9%
                                                     </div>
                                                 </div>
                                             </div>
@@ -446,7 +448,7 @@
                                 <div class="progress-content py-2">
                                     <div class="row">
                                         <div class="col-lg-4">
-                                            <div class="progress-text">Ios</div>
+                                            <div class="progress-text">JS</div>
                                         </div>
                                         <div class="col-lg-8">
                                             <div class="current-progressbar">
@@ -454,7 +456,7 @@
                                                     <div class="progress-bar progress-bar-primary w-70"
                                                          role="progressbar" aria-valuenow="70" aria-valuemin="0"
                                                          aria-valuemax="100">
-                                                        70%
+                                                        21.3%
                                                     </div>
                                                 </div>
                                             </div>
@@ -464,15 +466,15 @@
                                 <div class="progress-content py-2">
                                     <div class="row">
                                         <div class="col-lg-4">
-                                            <div class="progress-text">Mobile</div>
+                                            <div class="progress-text">CSS</div>
                                         </div>
                                         <div class="col-lg-8">
                                             <div class="current-progressbar">
                                                 <div class="progress">
                                                     <div class="progress-bar progress-bar-primary w-90"
-                                                         role="progressbar" aria-valuenow="90" aria-valuemin="0"
+                                                         role="progressbar" aria-valuenow="7.8" aria-valuemin="0"
                                                          aria-valuemax="100">
-                                                        90%
+                                                        30.8%
                                                     </div>
                                                 </div>
                                             </div>
@@ -491,16 +493,16 @@
                                     <div class="item">
                                         <div class="testimonial-content">
                                             <div class="testimonial-text">
-                                                <i class="fa fa-quote-left"></i> Lorem ipsum dolor sit amet, consectetur
-                                                adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore
-                                                magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.
-                                                consectetur adipisicing elit.
+                                                <i class="fa fa-quote-left"></i>
+                                                우리 팀은 혁신과 협업을 중시하는 환경에서 함께 성장하고 있습니다.
+                                                당신의 열정과 역량을 발휘할 수 있는 기회를 제공하며,
+                                                함께 미래를 만들어 나갈 인재를 기다립니다!"
                                                 <i class="fa fa-quote-right"></i>
                                             </div>
                                             <div class="media">
                                                 <div class="media-body">
-                                                    <div class="testimonial-author">TYRION LANNISTER</div>
-                                                    <div class="testimonial-author-position">Founder-Ceo. Dell Corp
+                                                    <div class="testimonial-author">김은산 개발자</div>
+                                                    <div class="testimonial-author-position">Backend Developer
                                                     </div>
                                                 </div>
                                                 <img class="testimonial-author-img ml-3"
@@ -512,16 +514,14 @@
                                     <div class="item">
                                         <div class="testimonial-content">
                                             <div class="testimonial-text">
-                                                <i class="fa fa-quote-left"></i> Lorem ipsum dolor sit amet, consectetur
-                                                adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore
-                                                magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.
-                                                consectetur adipisicing elit.
+                                                <i class="fa fa-quote-left"></i> 우리 회사는 도전과 혁신을 통해 IT 솔루션의 새로운 지평을 열어가고 있습니다.
+                                                함께 성장할 열정적인 인재를 찾고 있으며, 당신의 아이디어가 실현될 수 있는 무대가 될 것입니다.
                                                 <i class="fa fa-quote-right"></i>
                                             </div>
                                             <div class="media">
                                                 <div class="media-body">
-                                                    <div class="testimonial-author">TYRION LANNISTER</div>
-                                                    <div class="testimonial-author-position">Founder-Ceo. Dell Corp
+                                                    <div class="testimonial-author">김예니 개발자</div>
+                                                    <div class="testimonial-author-position">IT Consultant
                                                     </div>
                                                 </div>
                                                 <img class="testimonial-author-img ml-3"
@@ -533,16 +533,14 @@
                                     <div class="item">
                                         <div class="testimonial-content">
                                             <div class="testimonial-text">
-                                                <i class="fa fa-quote-left"></i> Lorem ipsum dolor sit amet, consectetur
-                                                adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore
-                                                magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.
-                                                consectetur adipisicing elit.
-                                                <i class="fa fa-quote-right"></i>
+                                                <i class="fa fa-quote-left"></i>
+                                                "우리 팀은 혁신적인 아이디어와 협업을 통해 최고의 제품을 만들어가고 있습니다.
+                                                함께 성장하며 도전할 준비가 된 인재를 기다립니다!i>
                                             </div>
                                             <div class="media">
                                                 <div class="media-body">
-                                                    <div class="testimonial-author">TYRION LANNISTER</div>
-                                                    <div class="testimonial-author-position">Founder-Ceo. Dell Corp
+                                                    <div class="testimonial-author">원혜민 개발자</div>
+                                                    <div class="testimonial-author-position">Product Manager
                                                     </div>
                                                 </div>
                                                 <img class="testimonial-author-img ml-3"
