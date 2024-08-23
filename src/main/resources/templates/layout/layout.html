@@ -970,12 +970,10 @@ function toggleScrap(event) {
             button.addEventListener('click', function () {
                 const filter = this.getAttribute('data-filter').trim();
 
-                // 필터 버튼 스타일 변경
+  // 필터 버튼 스타일 변경
                 filterButtons.forEach(btn => {
                     btn.classList.remove('btn-primary');
-                    btn.classList.add('btn-secondary');
                 });
-                this.classList.remove('btn-secondary');
                 this.classList.add('btn-primary');
 
                 // 항목 필터링

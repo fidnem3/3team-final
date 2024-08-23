@@ -68,22 +68,19 @@
         }
         .filter-button {
             border-radius: 0;
-            border: 2px solid #0000CD;
+            border: 2px solid #D3D3D3;
             flex: 1;
             border-radius: 0; /* 전체 버튼의 둥글지 않도록 */
         }
         .filter-button:first-of-type {
-            border-top-left-radius: 1.25rem; /* 좌측 상단 둥글게 */
-            border-bottom-left-radius: 1.25rem; /* 좌측 하단 둥글게 */
+            border-top-left-radius: 0.7rem; /* 좌측 상단 둥글게 */
+            border-bottom-left-radius: 0.7rem; /* 좌측 하단 둥글게 */
         }
         .filter-button:last-of-type {
-            border-top-right-radius: 1.25rem; /* 우측 상단 둥글게 */
-            border-bottom-right-radius: 1.25rem; /* 우측 하단 둥글게 */
+            border-top-right-radius: 0.7rem; /* 우측 상단 둥글게 */
+            border-bottom-right-radius: 0.7rem; /* 우측 하단 둥글게 */
         }
-        .filter-button.active {
-            background-color: #007bff;
-            color: #fff;
-        }
+
     </style>
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
@@ -93,8 +90,8 @@
     <div class="container">
         <!-- Job Posts -->
         <!-- Filter Buttons -->
-            <div class="btn-group" style="margin: 0 auto; width: 20%;" role="group" aria-label="Job Post Filters">
-                <button type="button" class="btn filter-button"  data-filter="all">전체</button>
+            <div class="btn-group" style="margin-left: 30px; width: 20%;" role="group" aria-label="Job Post Filters">
+                <button type="button" class="btn filter-button" data-filter="all">전체</button>
                 <button type="button" class="btn filter-button" data-filter="Before Payment">결제 전</button>
                 <button type="button" class="btn filter-button" data-filter="After Payment">결제 후</button>
             </div>
