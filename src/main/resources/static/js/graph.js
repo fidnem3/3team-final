@@ -84,7 +84,7 @@ $(document).ready(function() {
 
                     $('#totalExpenses').text(totalExpenses);
 
-                    const maxValue = 100000;
+                    const maxValue = 2000000;
                     const percentage = Math.min((totalExpenses / maxValue) * 100, 100);
 
                     $('#progressBar')
@@ -122,7 +122,7 @@ $(document).ready(function() {
                     $('#totalJobPosts').text(data);
                     console.log('Total Job Posts:', data);
 
-                    const maxValue = 20;
+                    const maxValue = 50;
                     const percentage = Math.min((data / maxValue) * 100, 100);
 
                     $('#jobPostProgressBar')

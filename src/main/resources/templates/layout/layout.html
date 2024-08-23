@@ -795,20 +795,6 @@ function toggleScrap(event) {
         }
     });
 
-    // 상태에 맞게 CSS 클래스 적용하는 함수
-    function updateStatusClass(row, status) {
-        var statusCell = row.find('.status');
-        statusCell.removeClass('status-approved status-rejected status-pending');
-
-        if (status === '승인됨') {
-            statusCell.addClass('status-approved');
-        } else if (status === '거절됨') {
-            statusCell.addClass('status-rejected');
-        } else {
-            statusCell.addClass('status-pending');
-        }
-    }
-
     // 승인 버튼 클릭 시
     $('.approve-btn').on('click', function() {
         var compId = $(this).data('id');
@@ -832,7 +818,6 @@ function toggleScrap(event) {
                             // 상태 업데이트
                             var row = $('button.approve-btn[data-id="' + compId + '"]').closest('tr');
                             row.find('.status').text('승인됨');  // 상태를 "승인됨"으로 변경
-                            updateStatusClass(row, '승인됨');  // CSS 클래스 업데이트
                             row.find('.approve-btn').prop('disabled', true);  // 승인 버튼 비활성화
                             row.find('.reject-btn').prop('disabled', true);   // 거절 버튼 비활성화
                         });
@@ -868,7 +853,6 @@ function toggleScrap(event) {
                             // 상태 업데이트
                             var row = $('button.reject-btn[data-id="' + compId + '"]').closest('tr');
                             row.find('.status').text('거절됨');  // 상태를 "거절됨"으로 변경
-                            updateStatusClass(row, '거절됨');  // CSS 클래스 업데이트
                             row.find('.approve-btn').prop('disabled', true);  // 승인 버튼 비활성화
                             row.find('.reject-btn').prop('disabled', true);   // 거절 버튼 비활성화
                         });
