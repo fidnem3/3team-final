@@ -93,14 +93,19 @@
             <result property="address" column="address"/>
             <result property="filePath" column="file_path"/>
         </association>
+        <collection property="skills" ofType="java.lang.String">
+            <result column="skill"/>
+        </collection>
     </resultMap>
 
     <select id="findById" resultMap="ResumeDtoMap">
-        select r.*, j.*
+        select r.*, j.*, rs.*
         from resume r
         JOIN jobseeker j ON r.jobseeker_id = j.jobseeker_id
-        where resume_id = #{resumeId}
+        LEFT JOIN resumeskill rs ON r.resume_id = rs.resume_id
+        where r.resume_id = #{resumeId}
     </select>
+
 
     <update id="updateResume" parameterType="com.javalab.board.dto.ResumeDto">
         UPDATE resume
