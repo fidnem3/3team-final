@@ -6,67 +6,162 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>회사 정보</title>
+    <title>My Business Profile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+
+        .container-xxl{
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+        }
+
+        .company-logo {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 20px;
+            display: block;
+        }
+        .company-info {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .info-section {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 2px solid #ddd;
+        }
+        .info-section h3 {
+            margin-bottom: 20px;
+        }
+        .info-content {
+            margin-top: 20px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-primary.btn-withdraw:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+        .card-menu {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        .card {
+            width: 30%;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transform: translateY(-5px);
+        }
+        .card i {
+            font-size: 48px;
+            color: #007bff;
+            margin-bottom: 15px;
+        }
+        .card h4 {
+            margin-bottom: 10px;
+        }
+        .card p {
+            font-size: 14px;
+            color: #666;
+        }
+        .card a {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 8px 15px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 
 <body>
 <div layout:fragment="content" class="container-xxl bg-white p-0">
     <div class="container">
-        <h1>회사 정보</h1>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="compId">회사 ID:</label>
-                    <p id="compId" th:text="${company.compId}">회사 ID</p>
-                </div>
-                <div class="form-group">
-                    <label for="email">이메일:</label>
-                    <p id="email" th:text="${company.email}">이메일</p>
-                </div>
-                <div class="form-group">
-                    <label for="companyName">회사명:</label>
-                    <p id="companyName" th:text="${company.companyName}">회사명</p>
-                </div>
-                <div class="form-group">
-                    <label for="businessNumber">사업자 등록번호:</label>
-                    <p id="businessNumber" th:text="${company.businessNumber}">사업자 등록번호</p>
-                </div>
-                <div class="form-group">
-                    <label for="homepage">홈페이지:</label>
-                    <p id="homepage">
-                        <a th:href="${company.homepage}" th:text="${company.homepage}" target="_blank">홈페이지</a>
-                    </p>
-                </div>
-                <div class="form-group">
-                    <label for="address">주소:</label>
-                    <p id="address" th:text="${company.address}">주소</p>
-                </div>
-                <div class="form-group">
-                    <label for="status">상태:</label>
-                    <p id="status" th:text="${company.status}">상태</p>
-                </div>
-                <div class="form-group" th:if="${company.logoName}">
-                    <label>회사 로고:</label>
-                    <img th:src="@{${company.logoPath}}" th:alt="${company.logoName}" class="img-fluid">
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <div class="company-info">
+                    <img th:if="${company.logoName}" class="company-logo"
+                         th:src="@{/company/logo/{logoName}(logoName=${company.logoName})}"
+                         th:alt="${company.companyName + ' 로고'}">
+                    <h2 th:text="${company.companyName}">회사명</h2>
+                    <p th:text="${company.compId}">회사 ID</p>
                 </div>
             </div>
-        </div>
-        <div class="form-group mt-4">
-            <!-- 기업에게만 보이는 버튼 -->
-            <div sec:authorize="hasRole('ROLE_COMPANY')">
-            <a th:href="@{/company/edit}" class="btn btn-primary">정보 수정</a>
-            <a th:href="@{/company/withdraw}" class="btn btn-danger">회원 탈퇴</a>
-            </div>
+            <div class="col-md-8">
+                <div class="info-section">
+                    <h3>Basic Information</h3>
+                    <div class="info-content">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>이메일:</strong> <span th:text="${company.email}">이메일</span></p>
+                                <p><strong>사업자 등록번호:</strong> <span th:text="${company.businessNumber}">사업자 등록번호</span></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>홈페이지:</strong> <a th:href="${company.homepage}" th:text="${company.homepage}"
+                                                             target="_blank">홈페이지</a></p>
+                                <p><strong>주소:</strong> <span th:text="${company.address}">주소</span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3" sec:authorize="hasRole('ROLE_COMPANY')">
+                        <a th:href="@{/company/edit}" class="btn btn-primary">
+                            <i class="fas fa-edit"></i> 정보 수정
+                        </a>
+                    </div>
+                </div>
 
-            <!-- 관리자에게만 보이는 버튼 -->
-            <div sec:authorize="hasRole('ROLE_ADMIN')">
-                <form th:action="@{/admin/deleteCompany/{id}(id=${company.compId})}" method="post" style="display: inline;">
-                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-                    <button type="submit" class="btn btn-danger"
-                            onclick="return confirm('정말로 이 회원을 삭제하시겠습니까?');">
-                        회원 삭제
-                    </button>
-                </form>
+                <!-- 마이페이지 메뉴 -->
+                <div class="card-menu" sec:authorize="hasRole('ROLE_COMPANY')">
+                    <div class="card">
+                        <i class="fas fa-file-alt"></i>
+                        <h4>나의 채용공고</h4>
+                        <p>등록한 채용공고를<br> 관리하고 수정할 수 있습니다.</p>
+                        <a th:href="@{/jobPost/myJobPostList}">View</a>
+                    </div>
+                    <div class="card">
+                        <i class="fas fa-users"></i>
+                        <h4>인재 채용</h4>
+                        <p>Deltopia에 등록된<br> 새로운 인재를 찾아보세요.</p>
+                        <a th:href="@{/resume/list}">View</a>
+                    </div>
+                    <div class="card">
+                        <i class="fas fa-chart-bar"></i>
+                        <h4>지원자 현황</h4>
+                        <p>내 기업의 지원자 현황을<br> 확인할 수 있습니다.</p>
+                        <a th:href="@{/company/applications}">View</a>
+                    </div>
+                </div>
+
+                <div class="text-center mt-4" sec:authorize="hasRole('ROLE_ADMIN')">
+                    <form th:action="@{/admin/deleteCompany/{id}(id=${company.compId})}" method="post"
+                          style="display: inline;">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                        <button type="submit" class="btn btn-danger"
+                                onclick="return confirm('정말로 이 회원을 삭제하시겠습니까?');">
+                            <i class="fas fa-user-minus"></i> 회원 삭제
+                        </button>
+                    </form>
+                </div>
+
+                <div class="text-center mt-3" sec:authorize="hasRole('ROLE_COMPANY')">
+                    <a th:href="@{/company/withdraw}" class="btn btn-danger">
+                        <i class="fas fa-sign-out-alt"></i> 회원 탈퇴
+                    </a>
+                </div>
             </div>
         </div>
     </div>

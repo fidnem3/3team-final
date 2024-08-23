@@ -121,6 +121,10 @@
     </update>
 
 
+    <!-- 총 지원서 수를 반환하는 쿼리 -->
+    <select id="countApplications" resultType="int">
+        SELECT COUNT(*) FROM application
+    </select>
 
 
 </mapper>

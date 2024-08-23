@@ -17,9 +17,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
         // 기본적인 정적 리소스 경로 설정
         registry.addResourceHandler("/**")
                 .addResourceLocations("file:src/main/resources/static/");
+
         registry.addResourceHandler("/jobPost/logo/**")
                 .addResourceLocations("file:/C:/filetest/upload/");
-
+        registry.addResourceHandler("/upload/**")
+                        .addResourceLocations("file:/C:/filetest/upload/");
         // 이미지 업로드 경로 설정
         registry.addResourceHandler("/jobPost/uploaded/**")
                 .addResourceLocations("file:C:/filetest/upload/");
