@@ -31,5 +31,9 @@ public interface ApplicationMapper {
     List<ApplicationDto> selectApplicationsByCompanyId(String compId);
 
 
+    int countApplications();
+
+
+
 
 }

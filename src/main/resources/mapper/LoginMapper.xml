@@ -112,11 +112,22 @@
 	</select>
 
 
-	<!-- 블랙리스트 조회 -->
+<!--	&lt;!&ndash; 블랙리스트 조회 &ndash;&gt;-->
+<!--	<select id="getBlacklistInfo" resultType="com.javalab.board.dto.BlacklistDto">-->
+<!--		SELECT *-->
+<!--		FROM blacklist-->
+<!--		WHERE (#{userType} = 'jobSeeker' AND jobSeeker_id = #{userId})-->
+<!--		OR (#{userType} = 'company' AND comp_id = #{userId})-->
+<!--	</select>-->
+
 	<select id="getBlacklistInfo" resultType="com.javalab.board.dto.BlacklistDto">
-		SELECT *
-		FROM blacklist
-		WHERE (#{userType} = 'jobSeeker' AND jobSeeker_id = #{userId})
-		OR (#{userType} = 'company' AND comp_id = #{userId})
+		SELECT b.*,
+		CASE
+		WHEN #{userType} = 'jobSeeker' THEN b.jobSeeker_id
+		WHEN #{userType} = 'company' THEN b.comp_id
+		END AS userId
+		FROM blacklist b
+		WHERE (#{userType} = 'jobSeeker' AND b.jobSeeker_id = #{userId})
+		OR (#{userType} = 'company' AND b.comp_id = #{userId})
 	</select>
 </mapper>

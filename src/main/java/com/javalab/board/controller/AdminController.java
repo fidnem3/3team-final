@@ -44,10 +44,10 @@ public class AdminController {
         return "admin/adminPage"; // 이 경로는 src/main/resources/templates/admin/adminPage.html에 해당
     }
 
-    @GetMapping("/settings")
+    @GetMapping("/admin")
     public String getSettingsPage(Model model) {
         // 설정 페이지로 이동하는 메서드
-        return "admin/settings"; // 이 경로는 src/main/resources/templates/admin/settings.html에 해당
+        return "admin/admin"; // 이 경로는 src/main/resources/templates/admin/settings.html에 해당
     }
 
 
@@ -56,7 +56,7 @@ public class AdminController {
     public String viewAllJobPosts(Model model) {
         List<JobPostVo> allJobPostsForAdmin = jobPostService.getAllJobPostsForAdmin();
         model.addAttribute("jobPosts", allJobPostsForAdmin);
-        return "admin/alljobPosts"; // 뷰 이름 (admin/jobPosts.html)
+        return "admin/allJobPosts"; // 뷰 이름 (admin/jobPosts.html)
     }
 
 
@@ -165,7 +165,7 @@ public class AdminController {
         // 거절된 기업 목록을 조회합니다.
         List<CompanyVo> rejectedCompanies = companyService.getRejectedCompanies();
 
-        // 조회된 기업 목록을 모델에 추가합니다.
+        // 각 기업의 로고 정보를 포함하여 모델에 추가합니다.
         model.addAttribute("approvedCompanies", approvedCompanies);
         model.addAttribute("rejectedCompanies", rejectedCompanies);
 

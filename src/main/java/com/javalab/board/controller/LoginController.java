@@ -223,6 +223,7 @@ public class LoginController {
     @PostMapping("/join")
     public String registerJobSeeker(@Valid @ModelAttribute("JobSeekerVo") JobSeekerVo jobSeekerVo,
                                     BindingResult bindingResult,
+                                    @RequestParam("file") MultipartFile file,
                                     Model model,
                                     RedirectAttributes redirectAttributes) {
 
@@ -246,6 +247,27 @@ public class LoginController {
         userRolesVo.setRoleId("ROLE_USER");
 
         try {
+            // 파일 업로드 처리
+            if (!file.isEmpty()) {
+                // 업로드할 디렉토리 경로 설정
+                String uploadDir = "C:\\filetest\\upload";
+                Path uploadPath = Paths.get(uploadDir);
+
+                // 디렉토리가 존재하지 않으면 생성
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath);
+                }
+
+                // 파일 저장
+                String fileName = file.getOriginalFilename();
+                Path filePath = uploadPath.resolve(fileName);
+                file.transferTo(filePath.toFile());
+
+                // JobSeekerVo에 파일 이름과 경로 설정
+                jobSeekerVo.setFileName(fileName);
+                jobSeekerVo.setFilePath(filePath.toString());
+            }
+
             // 개인 회원가입 처리
             jobSeekerService.registerJobSeeker(jobSeekerVo, userRolesVo);
             redirectAttributes.addFlashAttribute("message", "개인 회원가입이 성공적으로 완료되었습니다.");

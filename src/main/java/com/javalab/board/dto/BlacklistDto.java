@@ -45,4 +45,6 @@ public class BlacklistDto {
         }
         this.isBlacklisted = isBlacklisted;
     }
+
+    private String userId;  // jobSeekerId 또는 compId를 저장
 }

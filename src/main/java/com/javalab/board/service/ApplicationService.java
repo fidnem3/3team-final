@@ -119,7 +119,10 @@ public class ApplicationService {
 //        applicationMapper.markNewApplicationAsUnread(compId);
 //    }
 
-
+    // 총 지원서 수를 반환하는 메서드 추가
+    public int getTotalApplications() {
+        return applicationMapper.countApplications();
+    }
 
 
 }
