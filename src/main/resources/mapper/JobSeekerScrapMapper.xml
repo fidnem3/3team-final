@@ -20,7 +20,7 @@
     <select id="getScrapList" parameterType="String" resultType="com.javalab.board.vo.JobSeekerScrapVo">
         SELECT s.scrap_id AS scrapId, s.jobSeeker_id AS jobSeekerId, s.jobPost_id AS jobPostId,
         s.created AS created, j.title AS title, j.end_date AS endDate, j.salary AS salary, j.address AS address,
-        c.logo_name AS logoName
+        c.logo_name AS logoName, c.company_name AS companyName
         FROM jobSeekerScrap s
         JOIN jobPost j ON s.jobPost_id = j.jobPost_id
         JOIN company c ON j.comp_id = c.comp_id
