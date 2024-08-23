@@ -9,7 +9,7 @@ import java.util.List;
 @Mapper
 public interface RequiredSkillMapper {
 
-     public Long requiredSkillCreate(RequiredSkillDto requiredSkillDto);
+    public Long requiredSkillCreate(RequiredSkillDto requiredSkillDto);
 
     List<String> getRequiredSkillsByJobPostId(Long jobPostId);
 
