@@ -27,6 +27,50 @@
             border-radius: 0.25rem;
             font-size: 0.875rem;
         }
+
+        /* 검색창 스타일 */
+.form-group {
+    position: relative;
+    margin-bottom: 20px; /* 검색창과 탭 사이의 간격을 늘림 */
+}
+
+#searchInput {
+    padding-right: 40px; /* 검색 아이콘을 위한 여백 */
+    border-radius: 0.25rem;
+    border: 1px solid #ced4da;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.075);
+    background-color: #f8f9fa; /* 검색창 배경 색상 */
+    color: #495057; /* 입력 텍스트 색상 */
+}
+
+#searchInput::placeholder {
+    color: #6c757d; /* 플레이스홀더 텍스트 색상 */
+    opacity: 1; /* Edge cases for placeholder opacity */
+}
+
+#searchInput:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25);
+    background-color: #ffffff; /* 포커스 시 배경 색상 */
+}
+
+/* 검색 아이콘 */
+.search-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6c757d;
+    font-size: 16px;
+    pointer-events: none;
+}
+
+/* 탭 버튼 스타일 */
+.nav-tabs {
+    margin-bottom: 20px; /* 탭과 다른 요소 간격 */
+}
+
     </style>
 </head>
 
@@ -43,6 +87,12 @@
             <span th:text="${error}"></span>
         </div>
 
+        <!-- 검색 필드 추가 -->
+        <div class="form-group">
+            <input type="text" id="searchInput" class="form-control" placeholder="아이디 또는 이름으로 검색하세요.">
+            <i class="fas fa-search search-icon"></i> <!-- 검색 아이콘 추가 -->
+        </div>
+
         <!-- 탭 버튼 추가 -->
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item">
@@ -54,6 +104,7 @@
                    aria-controls="rejected" aria-selected="false">거절된 기업</a>
             </li>
         </ul>
+
         <div class="tab-content mt-3" id="myTabContent">
             <!-- 승인된 기업 목록 테이블 -->
             <div class="tab-pane fade show active" id="approved" role="tabpanel" aria-labelledby="approved-tab">

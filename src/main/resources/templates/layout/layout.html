@@ -568,6 +568,48 @@ function toggleScrap(event) {
 
 </script>
 
+<!-- 검색 -->
+<script>
+    $(document).ready(function() {
+        // 검색 기능 구현
+        $('#searchInput').on('input', function() {
+            var searchTerm = $(this).val().toLowerCase();
+
+            // 기업 목록 페이지와 구직자 목록 페이지를 구분
+            if ($('.tab-pane').length > 0) {
+                // 탭이 있는 경우 (기업 목록)
+                $('.tab-pane.active .table tbody tr').each(function() {
+                    var row = $(this);
+                    var idCell = row.find('td').eq(1).text().toLowerCase(); // ID 열
+                    var nameCell = row.find('td').eq(2).text().toLowerCase(); // NAME 열
+                    var found = idCell.includes(searchTerm) || nameCell.includes(searchTerm);
+
+                    if (found) {
+                        row.show();
+                    } else {
+                        row.hide();
+                    }
+                });
+            } else {
+                // 탭이 없는 경우 (구직자 목록)
+                $('.container .table tbody tr').each(function() {
+                    var row = $(this);
+                    var idCell = row.find('td').eq(0).text().toLowerCase(); // ID 열
+                    var nameCell = row.find('td').eq(1).text().toLowerCase(); // NAME 열
+                    var found = idCell.includes(searchTerm) || nameCell.includes(searchTerm);
+
+                    if (found) {
+                        row.show();
+                    } else {
+                        row.hide();
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+
 <!-- 블랙리스트 -->
 <script>
     $(document).ready(function () {
