@@ -47,7 +47,11 @@
                 </div>
                 <div class="form-group" th:if="${company.logoName}">
                     <label>회사 로고:</label>
-                    <img th:src="@{${company.logoPath}}" th:alt="${company.logoName}" class="img-fluid">
+                    <img th:if="${company.logoName}"
+                         th:src="@{'/upload/' + ${company.logoName}}"
+                         alt="Company Logo"
+                         class="img-thumbnail"
+                         style="max-width: 100px;">
                 </div>
             </div>
         </div>

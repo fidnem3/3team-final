@@ -1,5 +1,6 @@
 package com.javalab.board.service;
 
+import com.javalab.board.dto.MonthlyOverviewDto;
 import com.javalab.board.dto.PaymentDto;
 import com.javalab.board.vo.PaymentVo;
 
@@ -12,9 +13,8 @@ public interface PaymentService {
     PaymentDto getPaymentById(Long paymentId);
     List<PaymentDto> getAllPayments();
     Long savePayment(PaymentVo paymentVo);
-
-
     List<Map<Long, Integer>> getTotalPaymentsForAllJobPosts();
+    List<MonthlyOverviewDto> getMonthlyOverview(int year);
 
 
 

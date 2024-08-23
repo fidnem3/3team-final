@@ -1,7 +1,7 @@
 package com.javalab.board.controller;
 
 
-import com.javalab.board.dto.YearlyOverviewDto;
+import com.javalab.board.dto.MonthlyOverviewDto;
 import com.javalab.board.service.ApplicationService;
 import com.javalab.board.service.JobPostService;
 import com.javalab.board.service.PaymentService;
@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,8 +38,6 @@ public class ApiController {
                     .body("Error retrieving payments for all job posts");
         }
     }
-
-
     @GetMapping("/total-job-post-views")
     public int getTotalJobPostViews() {
         return jobPostService.getTotalJobPostViews();
@@ -55,8 +54,27 @@ public class ApiController {
         return applicationService.getTotalApplications();
     }
 
-    @GetMapping("/yearly-overview")
-    public List<YearlyOverviewDto> getYearlyOverview() {
-        return applicationService.getYearlyOverview();
+    @GetMapping("/monthly-overview")
+    public List<MonthlyOverviewDto> getMonthlyOverview(@RequestParam("year") int year) {
+        return paymentService.getMonthlyOverview(year);
+    }
+
+
+    @GetMapping("/ratio")
+    public Map<String, Double> getRatio() {
+        int totalJobPosts = jobPostService.getTotalJobPosts();
+        int totalApplications = applicationService.getTotalApplications();
+
+        // 전체 수를 기준으로 비율 계산
+        double total = totalJobPosts + totalApplications;
+        double jobPostPercentage = (total == 0) ? 0 : (totalJobPosts / total) * 100;
+        double applicationPercentage = (total == 0) ? 0 : (totalApplications / total) * 100;
+
+        // 비율 정보를 담을 Map 생성
+        Map<String, Double> ratioMap = new HashMap<>();
+        ratioMap.put("jobPostPercentage", jobPostPercentage);
+        ratioMap.put("applicationPercentage", applicationPercentage);
+
+        return ratioMap;
     }
 }
