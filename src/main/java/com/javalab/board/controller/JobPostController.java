@@ -250,7 +250,7 @@ public class JobPostController {
 
     @GetMapping("/detail/{jobPostId}")
     public String detail(@PathVariable("jobPostId") Long jobPostId, Model model) {
-        JobPostVo jobPostVo = jobPostService.findJobPostById(jobPostId);
+        JobPostVo jobPostVo = jobPostService.getJobPostById(jobPostId);
         // 조회수 증가
         jobPostService.incrementHitCount(jobPostId);
         // 로깅
