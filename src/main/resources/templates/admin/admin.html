@@ -364,7 +364,6 @@
                 <!-- /# column -->
             </div>
             <div class="row">
-                <!-- 수익, 지원 수, 공고 수를 막대그래프로 표시하는 카드 -->
                 <div class="col-xl-8 col-lg-8 col-md-8">
                     <div class="card">
                         <div class="card-header">
@@ -374,7 +373,7 @@
                             <div class="row">
                                 <div class="col-xl-12 col-lg-12">
                                     <!-- Morris 차트를 표시할 곳 -->
-                                    <div id="morris-bar-chart" style="height: 300px;"></div>
+                                    <div id="morris-line-chart" style="height: 300px;"></div>
                                 </div>
                             </div>
                         </div>
@@ -786,7 +785,7 @@
                 <div class="col-sm-12 col-md-12 col-xxl-6 col-xl-4 col-lg-6">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Product Sold</h4>
+                            <h4 class="card-title">채용 공고 및 지원서 비율</h4>
                             <div class="card-action">
                                 <div class="dropdown custom-dropdown">
                                     <div data-toggle="dropdown">
@@ -802,7 +801,7 @@
                         </div>
                         <div class="card-body">
                             <div class="chart py-4">
-                                <canvas id="sold-product"></canvas>
+                                <canvas id="ratio-chart"></canvas>
                             </div>
                         </div>
                     </div>
@@ -930,12 +929,16 @@
 <!--**********************************
     Main wrapper end
 ***********************************-->
+
+<!-- 필수 스크립트 및 라이브러리 -->
+<script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+<script th:src="@{/vendor/raphael/raphael.min.js}"></script>
+<script th:src="@{/vendor/morris/morris.min.js}"></script>
 <!-- Vendor Scripts -->
+<!-- 기타 필요한 스크립트들 -->
 <script th:src="@{/vendor/global/global.min.js}"></script>
 <script th:src="@{/js/quixnav-init.js}"></script>
 <script th:src="@{/js/custom.min.js}"></script>
-<script th:src="@{/vendor/raphael/raphael.min.js}"></script>
-<script th:src="@{/vendor/morris/morris.min.js}"></script>
 <script th:src="@{/vendor/circle-progress/circle-progress.min.js}"></script>
 <script th:src="@{/vendor/chart.js/Chart.bundle.min.js}"></script>
 <script th:src="@{/vendor/gaugeJS/dist/gauge.min.js}"></script>
@@ -946,15 +949,8 @@
 <script th:src="@{/vendor/jqvmap/js/jquery.vmap.usa.js}"></script>
 <script th:src="@{/vendor/jquery.counterup/jquery.counterup.min.js}"></script>
 <script th:src="@{/js/dashboard/dashboard-1.js}"></script>
-<!-- Morris.js and dependencies -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.3.0/raphael.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
-
 <!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 <script th:src="@{/js/graph.js}"></script>
 </body>
 </html>

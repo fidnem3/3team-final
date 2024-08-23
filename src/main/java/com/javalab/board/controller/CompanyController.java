@@ -11,9 +11,16 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/company")
@@ -65,8 +72,50 @@ public class CompanyController {
      * @return 상세보기 페이지로 리다이렉트
      */
     @PostMapping("/update")
-    public String updateCompanyDetail(@ModelAttribute("company") CompanyVo companyVo, RedirectAttributes redirectAttributes) {
+    public String updateCompanyDetail(@ModelAttribute("company") CompanyVo companyVo,
+                                      @RequestParam(value = "logoFile", required = false) MultipartFile logoFile,
+                                      RedirectAttributes redirectAttributes,
+                                      Authentication authentication) {
         try {
+            // 현재 로그인한 회사의 ID 가져오기
+            String companyId = authentication.getName();
+
+            // 기존 회사 정보 가져오기
+            CompanyVo existingCompany = companyService.getCompanyDetails(companyId)
+                    .orElseThrow(() -> new IllegalArgumentException("해당 기업을 찾을 수 없습니다."));
+
+            // 새 로고 파일이 업로드된 경우
+            if (logoFile != null && !logoFile.isEmpty()) {
+                // 기존 로고 파일 삭제
+                if (existingCompany.getLogoPath() != null) {
+                    Files.deleteIfExists(Paths.get(existingCompany.getLogoPath()));
+                }
+
+                // 새 로고 파일 저장
+                String uploadDir = "C:\\filetest\\upload";
+                Path uploadPath = Paths.get(uploadDir);
+
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath);
+                }
+
+                String fileName = UUID.randomUUID().toString() + "_" + logoFile.getOriginalFilename();
+                Path filePath = uploadPath.resolve(fileName);
+                logoFile.transferTo(filePath.toFile());
+
+                // 새 로고 정보 설정
+                companyVo.setLogoName(fileName);
+                companyVo.setLogoPath(filePath.toString());
+            } else {
+                // 새 로고 파일이 업로드되지 않은 경우, 기존 로고 정보 유지
+                companyVo.setLogoName(existingCompany.getLogoName());
+                companyVo.setLogoPath(existingCompany.getLogoPath());
+            }
+
+            // 회사 ID 설정 (보안상의 이유로 폼에서 전송된 ID 대신 인증 정보의 ID 사용)
+            companyVo.setCompId(companyId);
+
+            // 회사 정보 업데이트
             CompanyVo updatedCompany = companyService.updateCompany(companyVo);
             redirectAttributes.addFlashAttribute("message", "회사 정보가 성공적으로 업데이트되었습니다.");
             return "redirect:/company/detail";

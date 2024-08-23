@@ -1,5 +1,6 @@
 package com.javalab.board.service;
 
+import com.javalab.board.dto.MonthlyOverviewDto;
 import com.javalab.board.dto.PaymentDto;
 import com.javalab.board.repository.PaymentMapper;
 import com.javalab.board.vo.PaymentVo;
@@ -57,11 +58,15 @@ public class PaymentServiceImpl implements PaymentService {
 
     // 그래프
 
-
     @Override
     public List<Map<Long, Integer>> getTotalPaymentsForAllJobPosts() {
         List<Map<Long, Integer>> result = paymentMapper.findTotalPaymentsForAllJobPosts();
         return result != null ? result : (List<Map<Long, Integer>>) Collections.emptyMap(); // null 처리
+    }
+
+    @Override
+    public List<MonthlyOverviewDto> getMonthlyOverview(int year) {
+        return paymentMapper.findMonthlyOverview(year);
     }
 }
 

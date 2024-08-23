@@ -1,5 +1,6 @@
 package com.javalab.board.repository;
 
+import com.javalab.board.dto.MonthlyOverviewDto;
 import com.javalab.board.dto.PaymentDto;
 import com.javalab.board.vo.PaymentVo;
 import org.apache.ibatis.annotations.Insert;
@@ -24,4 +25,6 @@ public interface PaymentMapper {
 
     // 모든 공고에 대한 총 결제 금액 조회
     List<Map<Long, Integer>>findTotalPaymentsForAllJobPosts();
+
+    List<MonthlyOverviewDto> findMonthlyOverview(@Param("year") int year);
 }

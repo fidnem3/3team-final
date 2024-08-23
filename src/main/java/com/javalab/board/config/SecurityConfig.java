@@ -67,17 +67,7 @@ public class SecurityConfig {
 				.formLogin(formLogin -> formLogin
 						.loginPage("/member/login")
 						.loginProcessingUrl("/member/action")
-						.successHandler((request, response, authentication) -> {
-							CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-							String userType = userDetails.getUserType();
-							if ("company".equals(userType)) {
-								response.sendRedirect("/index");
-							} else if ("jobSeeker".equals(userType)) {
-								response.sendRedirect("/index");
-							} else {
-								response.sendRedirect("/");
-							}
-						})
+						.successHandler(authSuccessHandler)
 						.failureHandler(authFailureHandler)
 				)
 				.logout(logout -> logout

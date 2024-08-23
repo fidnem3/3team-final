@@ -49,4 +49,20 @@
         FROM payment
         GROUP BY jobPost_id
     </select>
+
+    <!-- 월별 수익 조회 쿼리 -->
+    <select id="findMonthlyOverview" parameterType="int" resultType="com.javalab.board.dto.MonthlyOverviewDto">
+        SELECT
+        TO_CHAR(payment_date, 'MM') AS month,
+        COALESCE(SUM(amount), 0) AS totalRevenue
+        FROM
+        payment
+        WHERE
+        TO_CHAR(payment_date, 'YYYY') = #{year}
+        GROUP BY
+        TO_CHAR(payment_date, 'MM')
+        ORDER BY
+        TO_CHAR(payment_date, 'MM')
+    </select>
+
 </mapper>

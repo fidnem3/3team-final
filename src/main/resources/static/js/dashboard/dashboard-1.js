@@ -3,46 +3,46 @@
 
 
 
-    // Morris bar chart
-    Morris.Bar({
-        element: 'morris-bar-chart',
-        data: [{
-            y: '2006',
-            a: 100,
-            b: 90
-        }, {
-            y: '2007',
-            a: 75,
-            b: 65
-        }, {
-            y: '2008',
-            a: 50,
-            b: 40
-        }, {
-            y: '2009',
-            a: 75,
-            b: 65
-        }, {
-            y: '2010',
-            a: 50,
-            b: 40
-        }, {
-            y: '2011',
-            a: 75,
-            b: 65
-        }, {
-            y: '2012',
-            a: 100,
-            b: 90
-        }],
-        xkey: 'y',
-        ykeys: ['a', 'b'],
-        labels: ['A', 'B'],
-        barColors: ['#343957', '#5873FE'],
-        hideHover: 'auto',
-        gridLineColor: '#eef0f2',
-        resize: true
-    });
+//    // Morris bar chart
+//    Morris.Bar({
+//        element: 'morris-bar-chart',
+//        data: [{
+//            y: '2006',
+//            a: 100,
+//            b: 90
+//        }, {
+//            y: '2007',
+//            a: 75,
+//            b: 65
+//        }, {
+//            y: '2008',
+//            a: 50,
+//            b: 40
+//        }, {
+//            y: '2009',
+//            a: 75,
+//            b: 65
+//        }, {
+//            y: '2010',
+//            a: 50,
+//            b: 40
+//        }, {
+//            y: '2011',
+//            a: 75,
+//            b: 65
+//        }, {
+//            y: '2012',
+//            a: 100,
+//            b: 90
+//        }],
+//        xkey: 'y',
+//        ykeys: ['a', 'b'],
+//        labels: ['A', 'B'],
+//        barColors: ['#343957', '#5873FE'],
+//        hideHover: 'auto',
+//        gridLineColor: '#eef0f2',
+//        resize: true
+//    });
 
     $('#info-circle-card').circleProgress({
         value: 0.70,
@@ -100,42 +100,42 @@
         // }
     });
 
-    var nk = document.getElementById("sold-product");
-    // nk.height = 50
-    new Chart(nk, {
-        type: 'pie',
-        data: {
-            defaultFontFamily: 'Poppins',
-            datasets: [{
-                data: [45, 25, 20, 10],
-                borderWidth: 0,
-                backgroundColor: [
-                    "rgba(89, 59, 219, .9)",
-                    "rgba(89, 59, 219, .7)",
-                    "rgba(89, 59, 219, .5)",
-                    "rgba(89, 59, 219, .07)"
-                ],
-                hoverBackgroundColor: [
-                    "rgba(89, 59, 219, .9)",
-                    "rgba(89, 59, 219, .7)",
-                    "rgba(89, 59, 219, .5)",
-                    "rgba(89, 59, 219, .07)"
-                ]
-
-            }],
-            labels: [
-                "one",
-                "two",
-                "three",
-                "four"
-            ]
-        },
-        options: {
-            responsive: true,
-            legend: false,
-            maintainAspectRatio: false
-        }
-    });
+//    var nk = document.getElementById("sold-product");
+//    // nk.height = 50
+//    new Chart(nk, {
+//        type: 'pie',
+//        data: {
+//            defaultFontFamily: 'Poppins',
+//            datasets: [{
+//                data: [45, 25, 20, 10],
+//                borderWidth: 0,
+//                backgroundColor: [
+//                    "rgba(89, 59, 219, .9)",
+//                    "rgba(89, 59, 219, .7)",
+//                    "rgba(89, 59, 219, .5)",
+//                    "rgba(89, 59, 219, .07)"
+//                ],
+//                hoverBackgroundColor: [
+//                    "rgba(89, 59, 219, .9)",
+//                    "rgba(89, 59, 219, .7)",
+//                    "rgba(89, 59, 219, .5)",
+//                    "rgba(89, 59, 219, .07)"
+//                ]
+//
+//            }],
+//            labels: [
+//                "one",
+//                "two",
+//                "three",
+//                "four"
+//            ]
+//        },
+//        options: {
+//            responsive: true,
+//            legend: false,
+//            maintainAspectRatio: false
+//        }
+//    });
 
 
 

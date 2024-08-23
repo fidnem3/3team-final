@@ -26,20 +26,20 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 
         // 사용자의 권한에 따라 리다이렉트할 URL 설정
-        String redirectUrl = "/";
+        String redirectUrl = "/index";
 
-        for (GrantedAuthority authority : authentication.getAuthorities()) {
-            if (authority.getAuthority().equals("ROLE_USER")) {
-                redirectUrl = "/member/jobSeekerPage"; // 구직자 페이지
-                break;
-            } else if (authority.getAuthority().equals("ROLE_COMPANY")) {
-                redirectUrl = "/member/companyPage"; // 기업 페이지
-                break;
-            } else if (authority.getAuthority().equals("ROLE_ADMIN")) {
-                redirectUrl = "/member/adminPage"; // 관리자 페이지
-                break;
-            }
-        }
+//        for (GrantedAuthority authority : authentication.getAuthorities()) {
+//            if (authority.getAuthority().equals("ROLE_USER")) {
+//                redirectUrl = "/member/jobSeekerPage"; // 구직자 페이지
+//                break;
+//            } else if (authority.getAuthority().equals("ROLE_COMPANY")) {
+//                redirectUrl = "/member/companyPage"; // 기업 페이지
+//                break;
+//            } else if (authority.getAuthority().equals("ROLE_ADMIN")) {
+//                redirectUrl = "/member/adminPage"; // 관리자 페이지
+//                break;
+//            }
+//        }
 
         setDefaultTargetUrl(redirectUrl); // 설정한 URL로 리다이렉트
 

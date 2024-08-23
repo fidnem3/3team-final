@@ -2,7 +2,6 @@ package com.javalab.board.service;
 
 
 import com.javalab.board.dto.ApplicationDto;
-import com.javalab.board.dto.YearlyOverviewDto;
 import com.javalab.board.repository.ApplicationMapper;
 import com.javalab.board.repository.CompanyMapper;
 import com.javalab.board.vo.JobPostVo;
@@ -126,7 +125,4 @@ public class ApplicationService {
     }
 
 
-    public List<YearlyOverviewDto> getYearlyOverview() {
-        return applicationMapper.selectYearlyOverview();
-    }
 }
