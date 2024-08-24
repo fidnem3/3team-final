@@ -38,6 +38,7 @@ public class CompanyServiceImpl implements CompanyService {
     // 승인된 기업 목록을 저장할 리스트
     private List<CompanyVo> companyList = new ArrayList<>();
 
+    @Autowired
     private BlacklistMapper blacklistMapper;  // 블랙리스트 상태를 가져오기 위한 Mapper
 
 
