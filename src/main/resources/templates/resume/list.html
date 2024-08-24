@@ -182,12 +182,6 @@
                                         <div class="item-box-blog-image">
 
 
-                                            <!--                                            &lt;!&ndash; 이력서 ID 표시 &ndash;&gt;-->
-                                            <!--                                            <div class="item-box-blog-date bg-blue-ui white">-->
-                                            <!--                                                <span class="mon" th:text="${resume.resumeId}">ID</span>-->
-                                            <!--                                            </div>-->
-
-
                                             <!-- 이력서 이미지 표시 -->
                                             <figure>
                                                 <img th:if="${resume.filePath != null}" th:src="@{${resume.filePath}}" alt="Resume Image">
@@ -210,7 +204,6 @@
                                                 <p><i class="fa fa-user-o"></i> <span th:text="${resume.jobSeekerVo.name}">Name</span></p>
                                                 <p><i class="fa fa-envelope-o" aria-hidden="true"></i> <span th:text="${resume.jobSeekerVo.email}">example@email.com</span></p>
                                                 <p> <span th:text="${resume.skills}">010-0000-0000</span></p>
-                                                <!--                                                <p><i class="fa fa-phone"></i> <span th:text="${resume.jobSeekerVo.tel}">010-0000-0000</span></p>-->
                                             </div>
 
                                             <!-- 이력서 내용 (요약) 표시 -->
@@ -225,7 +218,7 @@
                                                 </div>
 
                                                 <!--  공개 비공개 버튼-->
-                                                <div class="mt">
+                                                <div class="mt" sec:authorize="hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')">
                                                     <button th:id="'visibility-button-' + ${resume.resumeId}"
                                                             th:text="${resume.visibilityStatus}"
                                                             th:data-resume-id="${resume.resumeId}"
@@ -234,10 +227,6 @@
                                                     </button>
                                                 </div>
                                             </div>
-                                            <!--                                            <div class="mt">-->
-                                            <!--                                                <a th:href="@{/resume/detail/{resumeId}(resumeId=${resume.resumeId})}" class="btn bg-blue-ui white visibility" th:text="${resume.visibilityStatus}"></a>-->
-                                            <!--                                            </div>-->
-
                                         </div>
                                     </div>
                                 </div>

@@ -107,6 +107,10 @@ public class ResumeService {
 
         resumeMapper.updateResumeVisibility(resumeId, visibilityStatus);
     }
+
+    public List<ResumeDto> findPublicResumesForCompany() {
+        return resumeMapper.findPublicResumes();
+    }
 }
 
 

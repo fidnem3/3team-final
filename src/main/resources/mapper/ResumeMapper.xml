@@ -131,6 +131,35 @@
     </update>
 
 
+<!--    PUBLIC 유저만 보이게-->
+        <select id="findPublicResumes" resultMap="ResumeWithJobSeekerMap">
+            SELECT
+            r.resume_id,
+            r.title,
+            r.content,
+            r.education,
+            r.experience,
+            r.link,
+            r.file_name,
+            r.file_path,
+            r.visibility_status,
+            j.jobseeker_id,
+            j.name,
+            j.email,
+            j.tel,
+            j.birth,
+            j.address,
+            rs.skill
+            FROM
+            resume r
+            JOIN
+            jobseeker j ON r.jobseeker_id = j.jobseeker_id
+            LEFT JOIN
+            resumeskill rs ON r.resume_id = rs.resume_id
+            WHERE
+            r.visibility_status = 'PUBLIC'
+        </select>
+
 
 
 </mapper>
