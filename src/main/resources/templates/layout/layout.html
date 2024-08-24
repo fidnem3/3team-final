@@ -53,6 +53,7 @@
             <div class="navbar-nav ms-auto p-4 p-lg-0">
                 <a id="homeLink" th:href="@{/index}" class="nav-item nav-link">Home</a>
                 <a th:href="@{/about}" class="nav-item nav-link">About</a>
+                <a th:href="@{/jobPost/jobPostList}" class="nav-item nav-link">채용공고</a>
 
 
                 <div class="nav-item dropdown">
@@ -939,12 +940,10 @@ function toggleScrap(event) {
             button.addEventListener('click', function () {
                 const filter = this.getAttribute('data-filter').trim();
 
-                // 필터 버튼 스타일 변경
+  // 필터 버튼 스타일 변경
                 filterButtons.forEach(btn => {
                     btn.classList.remove('btn-primary');
-                    btn.classList.add('btn-secondary');
                 });
-                this.classList.remove('btn-secondary');
                 this.classList.add('btn-primary');
 
                 // 항목 필터링
