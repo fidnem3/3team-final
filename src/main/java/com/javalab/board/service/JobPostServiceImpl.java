@@ -70,11 +70,10 @@ public class JobPostServiceImpl implements JobPostService {
         JobPostVo jobPostVo = jobPostMapper.getJobPostById(jobPostId);
 
         if (jobPostVo != null) {
-            // 필요 기술 목록 조회
+//             필요 기술 목록 조회
             List<String> requiredSkills = requiredSkillMapper.getRequiredSkillsByJobPostId(jobPostId);
             jobPostVo.setSkills(requiredSkills);
         }
-
         return jobPostVo;
     }
 
@@ -198,8 +197,20 @@ public class JobPostServiceImpl implements JobPostService {
 
     @Override
     public List<JobPostVo> getAllJobPostsForAdmin() {
-        return jobPostMapper.selectAllJobPostsForAdmin();
+        List<JobPostVo> allJobPostsForAdmin = jobPostMapper.selectAllJobPostsForAdmin();
+        for (JobPostVo jobPost : allJobPostsForAdmin) {
+            CompanyVo companyVo = companyMapper.getCompanyById(jobPost.getCompId());
+            if (companyVo != null) {
+                jobPost.setLogoPath(companyVo.getLogoPath());
+                jobPost.setLogoName(companyVo.getLogoName());
+                jobPost.setCompanyName(companyVo.getCompanyName());
+            } else {
+                log.warn("Company information not found for JobPost with CompId: " + jobPost.getCompId());
+            }
+        }
+        return allJobPostsForAdmin; // 두 번째 호출 제거
     }
+
 
     @Override
     public List<JobPostVo> getJobPostsByFilters(String address, String education, String experience) {

@@ -115,6 +115,7 @@ public class JobSeekerScrapController {
                 if (companyVo != null) {
                     scrapVo.setLogoName(companyVo.getLogoName());
                     scrapVo.setLogoPath(companyVo.getLogoPath());
+                    scrapVo.setCompanyName(companyVo.getCompanyName());
                 }
             }
         }

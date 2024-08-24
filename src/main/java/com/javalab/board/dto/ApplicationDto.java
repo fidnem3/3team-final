@@ -21,6 +21,7 @@ public class ApplicationDto {
     private Date appliedDate;    // 지원 일자
     private Date created;
     private JobPostVo jobPost;
+    private ResumeDto resume;
 
 
 }

@@ -21,8 +21,6 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
         }
 
-    </style>
-    <style>
         @import url(https://fonts.googleapis.com/css?family=Open+Sans);
 
 
@@ -35,26 +33,26 @@
 
         .searchTerm {
           width: 100%;
-          border: 3px solid #FFFFE0;
+          border: 5px solid #D3D3D3;
           border-right: none;
           padding: 10px;
           height: 50px;
           border-radius: 5px 0 0 5px;
           outline: none;
-          color: #9DBFAF;
+          color: #0000CD;
         }
 
         .searchTerm:focus{
-          color: #228B22;
+          color: #0000CD;
         }
 
         .searchButton {
           width: 40px;
           height: 50px;
-          border: 1px solid #FFFFE0;
-          background: #98FB98;
+          border: 5px solid #D3D3D3;
+          background: #FFFFFF;
           text-align: center;
-          color: #228B22;
+          color: #0000CD;
           border-radius: 0 5px 5px 0;
           cursor: pointer;
           font-size: 20px;
@@ -157,6 +155,7 @@
                     <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
                         <div class="d-flex mb-3">
                             <a class="btn btn-light btn-square me-3 scrap-button"
+                               style="background-color: #F0F8FF;"
                                sec:authorize="!hasRole('ROLE_COMPANY') and !hasRole('ROLE_ADMIN')"
                                th:classappend="${scrapStatusMap[jobPost.jobPostId] != null and scrapStatusMap[jobPost.jobPostId] ? 'scrap-active' : ''}"
                                th:href="@{#}"

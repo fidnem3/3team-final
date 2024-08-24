@@ -15,141 +15,98 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
     <style>
-        .container-xxl{
+        .container-xxl {
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
         }
-        .scrap-button i.far {
-            color: green;
+        .card-body hr {
+            border: 0;
+            height: 1px;
+            background-color: #696969; /* 옅은 회색 */
+            margin-top: 10px;
+            margin-bottom: 10px;
         }
-        .scrap-active i.fas {
-            color: red;
-        }
-        .hidden { display: none; }
-.card-body hr {
-        border: 0;
-        height: 1px;
-        background-color: #696969; /* 옅은 회색 */
-        margin-top: 10px;
-        margin-bottom: 10px;
+        .card-img-top {
+        width: 100%;
+        aspect-ratio: 1 / 1; /* 정사각형 비율 설정 */
+        object-fit: cover; /* 이미지가 컨테이너를 채우도록 설정 */
+        border-top-left-radius: 11px; /* 카드의 둥근 모서리와 일치하도록 설정 */
+        border-top-right-radius: 11px; /* 카드의 둥근 모서리와 일치하도록 설정 */
     }
         .card {
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
-     border-radius: 11px;
-     color: black;
-}
- .card-link {
-        text-decoration: none; /* 링크 장식 제거 */
-        color: inherit; /* 상속된 텍스트 색상 사용 */
-    }
- .card-img-top {
-        position: relative;
-        width: 100%;
-        height: 300px; /* 이미지의 높이를 설정 */
-    }
-
-    .card-body {
-    position: relative;
-    border-radius: 8px;
-    padding-bottom: 10px; /* Bottom padding inside card body */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+            border-radius: 11px;
+            color: black;
         }
-.card:hover {
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    border: 3px solid #00BFFF;
-}
-
- .d-flex {
-        display: flex;
-        justify-content: space-between; /* 양쪽 끝 정렬 */
-        align-items: center; /* 수직 중앙 정렬 */
-    }
-
- .container-fluid select.form-select {
-    border-radius: 20px;
-    height: 40px !important;
-    max-height: 120px !important;
-    overflow-y: auto !important;
-}
-
-    select.form-select option {
-        padding: 8px;
-    }
+        .card-link {
+            text-decoration: none; /* 링크 장식 제거 */
+            color: inherit; /* 상속된 텍스트 색상 사용 */
+        }
+        .card-img-top {
+            position: relative;
+            width: 100%;
+            height: 300px; /* 이미지의 높이를 설정 */
+        }
+        .card-body {
+            position: relative;
+            border-radius: 8px;
+            padding-bottom: 10px; /* Bottom padding inside card body */
+        }
+        .card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            border: 3px solid #00BFFF;
+        }
+        .d-flex {
+            display: flex;
+            justify-content: space-between; /* 양쪽 끝 정렬 */
+            align-items: center; /* 수직 중앙 정렬 */
+        }
+        .container-fluid select.form-select {
+            border-radius: 20px;
+            height: 40px !important;
+            max-height: 120px !important;
+            overflow-y: auto !important;
+        }
+        select.form-select option {
+            padding: 8px;
+        }
+        /* Filter button styles */
+        .btn-group {
+            display: flex;
+        }
+        .filter-button {
+            border-radius: 0;
+            border: 2px solid #D3D3D3;
+            flex: 1;
+            border-radius: 0; /* 전체 버튼의 둥글지 않도록 */
+        }
+        .filter-button:first-of-type {
+            border-top-left-radius: 0.7rem; /* 좌측 상단 둥글게 */
+            border-bottom-left-radius: 0.7rem; /* 좌측 하단 둥글게 */
+        }
+        .filter-button:last-of-type {
+            border-top-right-radius: 0.7rem; /* 우측 상단 둥글게 */
+            border-bottom-right-radius: 0.7rem; /* 우측 하단 둥글게 */
+        }
 
     </style>
-
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 <body>
 <div layout:fragment="content" class="container-xxl bg-white p-0" style="padding: 30px !important;">
     <div class="container">
-        <!-- Filter Form -->
-        <div class="container-fluid bg-primary mb-5 wow fadeIn" data-wow-delay="0.1s" style="padding: 35px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
-            <div style="padding-left: 50px; padding-right:50px;">
-                <div class="row g-2 align-items-center">
-                    <!-- Drop-down boxes with 8 parts of the total width -->
-                    <div class="col-md-10">
-                        <div class="row g-2">
-                            <div class="col-md-4">
-                                <select id="filterAddress" class="form-select border-0">
-                                    <option value="">지역</option>
-                                    <option value="서울">서울</option>
-                                    <option value="경기">경기</option>
-                                    <option value="강원">강원</option>
-                                    <option value="대전">대전</option>
-                                    <option value="충북">충북</option>
-                                    <option value="충남">충남</option>
-                                    <option value="전북">전북</option>
-                                    <option value="전남">전남</option>
-                                    <option value="경북">경북</option>
-                                    <option value="경남">경남</option>
-                                    <option value="부산">부산</option>
-                                    <option value="제주">제주</option>
-                                    <!-- 다른 주소 추가 -->
-                                </select>
-                            </div>
-                            <div class="col-md-4">
-                                <select id="filterEducation" class="form-select border-0">
-                                    <option value="">학력</option>
-                                    <option value="학력무관">학력무관</option>
-                                    <option value="고졸 이상">고졸 이상</option>
-                                    <option value="초대졸 이상">초대졸 이상</option>
-                                    <option value="대졸 이상">대졸 이상</option>
-                                    <option value="석사 이상">석사 이상</option>
-                                    <!-- 다른 교육 수준 추가 -->
-                                </select>
-                            </div>
-                            <div class="col-md-4">
-                                <select id="filterExperience" class="form-select border-0">
-                                    <option value="">경력</option>
-                                    <option value="경력무관">경력무관</option>
-                                    <option value="신입">신입</option>
-                                    <option value="경력 1년 이상">경력 1년 이상</option>
-                                    <option value="경력 2년 이상">경력 2년 이상</option>
-                                    <option value="경력 3년 이상">경력 3년 이상</option>
-                                    <option value="경력 5년 이상">경력 5년 이상</option>
-                                    <!-- 다른 경험 추가 -->
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Apply button with 2 parts of the total width -->
-                    <div class="col-md-2">
-                        <button id="applyFilters" class="btn btn-dark border-0 w-100">적용하기</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-
         <!-- Job Posts -->
-        <div class="album py-5 bg-body-tertiary">
+        <!-- Filter Buttons -->
+            <div class="btn-group" style="margin-left: 30px; width: 20%;" role="group" aria-label="Job Post Filters">
+                <button type="button" class="btn filter-button" data-filter="all">전체</button>
+                <button type="button" class="btn filter-button" data-filter="Before Payment">결제 전</button>
+                <button type="button" class="btn filter-button" data-filter="After Payment">결제 후</button>
+            </div>
+        <div class="album py-5 bg-body-tertiary" style="border: 2px solid #F5F5F5; border-radius: 2px; margin: 30px; padding: 20px;">
             <div class="container">
-                <div id="jobList" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                     <div th:each="jobPost : ${jobPosts}" class="col job-item" th:if="${not #lists.isEmpty(jobPosts)}"
-                         th:data-address="${jobPost.address}"
-                         th:data-education="${jobPost.education}"
-                         th:data-experience="${jobPost.experience}">
+                         th:data-payment-status="${jobPost.paymentStatus}">
                         <a class="card-link" th:href="@{/jobPost/detail/{jobPostId}(jobPostId=${jobPost.jobPostId})}">
                             <div class="card shadow-sm">
                                 <img class="bd-placeholder-img card-img-top" th:src="@{/jobPost/logo/{logoName}(logoName=${jobPost.logoName})}" alt="Company Logo"/>
@@ -159,49 +116,35 @@
                                     <div class="d-flex justify-content-end">
                                         <small class="text-truncate" style="right: 0;">
                                             <i class="far fa-calendar-alt text-primary me-2"></i>
-                                            <span
-                                                    th:text="${jobPost.paymentStatus}">Status</span>
+                                            <span th:text="${jobPost.paymentStatus}">Status</span>
                                         </small>
                                     </div>
-                                    <hr class="my-2"> <!-- 여기에 선 추가 -->
+                                    <hr class="my-2">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="btn-group" style="margin-right: auto;" role="group" aria-label="Job Post Actions">
-                                            <a class="btn btn-light btn-square" th:href="@{/jobPost/detail/{jobPostId}(jobPostId=${jobPost.jobPostId})}">보기</a>
-                                            <a class="btn btn-light btn-square" th:href="@{/jobPost/edit/{jobPostId}(jobPostId=${jobPost.jobPostId})}">수정</a>
+                                            <a class="btn btn-light btn-square" style="background-color: #ADD8E6; border: 2px solid #ADD8E6; width: 50px;" th:href="@{/jobPost/edit/{jobPostId}(jobPostId=${jobPost.jobPostId})}">edit</a>
                                             <form th:action="@{/jobPost/delete/{jobPostId}(jobPostId=${jobPost.jobPostId})}" method="post" style="display:inline;">
-                                                <button type="submit" class="btn btn-light btn-square" onclick="return confirm('정말로 삭제하시겠습니까?');">삭제</button>
+                                                <button type="submit" class="btn btn-light btn-square" style="background-color: #ffffff; border: 2px solid #ffffff; margin-right: 0px;" onclick="return confirm('정말로 삭제하시겠습니까?');"><i class="far fa-trash-alt"></i></button>
                                             </form>
                                         </div>
                                         <a class="btn btn-primary btn-square"
                                            th:href="@{/jobPost/payment/{jobPostId}(jobPostId=${jobPost.jobPostId})}"
-                                           th:if="${jobPost.paymentStatus == 'Before Payment'}">결제</a>
-
+                                           th:if="${jobPost.paymentStatus == 'Before Payment'}">Pay</a>
                                     </div>
                                 </div>
                             </div>
                         </a>
                     </div>
                 </div>
-                <div th:if="${#lists.isEmpty(jobPosts)}" class="col">
-                    <div class="card shadow-sm">
-                        <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
-                            <title>Placeholder</title>
-                            <rect width="100%" height="100%" fill="#55595c"/>
-                            <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
-                        </svg>
-                        <div class="card-body">
-                            <p class="card-text">No job posts available.</p>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
+
         <div class="form-group text-center">
             <a class="btn btn-primary py-3 px-5" th:href="@{/jobPost/jobPostCreate}"
                sec:authorize="hasRole('ROLE_COMPANY')" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">Post a Job</a>
         </div>
     </div>
 </div>
-</div>
+
 </body>
 </html>

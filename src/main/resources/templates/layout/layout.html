@@ -38,6 +38,14 @@
     <link th:href="@{/css/style.css}" rel="stylesheet">
 
     <script src="https://cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
+    <style>
+        .navbar {
+    position: sticky; /* 또는 fixed */
+    top: 0; /* 네비게이션 바가 화면 상단에 위치하도록 설정 */
+    z-index: 1000; /* 다른 요소들 위에 위치하도록 설정 */
+}
+
+    </style>
 </head>
 <body>
 <header>
@@ -138,7 +146,7 @@
                 </a>
                 <div class="dropdown-menu rounded-0 m-0">
                     <a th:href="@{/company/detail}" class="dropdown-item">My page</a>
-<!--                    <a th:href="@{/company/applications}" class="dropdown-item">Company Application</a>-->
+                    <!--                    <a th:href="@{/company/applications}" class="dropdown-item">Company Application</a>-->
                     <a th:href="@{/company/settings}" class="dropdown-item">Settings</a>
                     <a th:href="@{/logout}" class="dropdown-item">Logout</a>
                 </div>
@@ -616,12 +624,62 @@ function toggleScrap(event) {
 
 <!-- 블랙리스트 -->
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
+        var activeTypeFilter = 'all';
+        var activeStatusFilter = 'all';
+
+        // 필터 버튼 클릭 이벤트
+        $('.type-filter, .status-filter').click(function() {
+            var filterType = $(this).hasClass('type-filter') ? 'type' : 'status';
+            var filterValue = $(this).data('filter');
+
+            if (filterType === 'type') {
+                activeTypeFilter = filterValue;
+                $('.type-filter').removeClass('active');
+            } else {
+                activeStatusFilter = filterValue;
+                $('.status-filter').removeClass('active');
+            }
+
+            $(this).addClass('active');
+            filterTable();
+        });
+
+        // 테이블 필터링 함수
+        function filterTable() {
+            $('#blacklistTable tbody tr').each(function() {
+                var row = $(this);
+                var type = row.data('type');
+                var status = row.data('status');
+
+                var typeMatch = (activeTypeFilter === 'all' || type === activeTypeFilter);
+                var statusMatch = (activeStatusFilter === 'all' || status === activeStatusFilter);
+
+                if (typeMatch && statusMatch) {
+                    row.show();
+                } else {
+                    row.hide();
+                }
+            });
+        }
+
+        // 초기 필터링 적용
+        filterTable();
+
+        // 필터 초기화
+        $('#resetCondition').click(function () {
+            activeTypeFilter = 'all';
+            activeStatusFilter = 'all';
+            $('.type-filter, .status-filter').removeClass('active');
+            $('.type-filter[data-filter="all"], .status-filter[data-filter="all"]').addClass('active');
+            filterTable();
+        });
+
         // 블랙리스트 토글 기능
         $('.toggle-blacklist').click(function() {
             var id = $(this).data('id');
             var type = $(this).data('type');
-            var isCurrentlyBlacklisted = $(this).text().includes('해제');
+            var isCurrentlyBlacklisted = $(this).text().trim().includes('해제');
 
             if (isCurrentlyBlacklisted) {
                 // 블랙리스트 해제
@@ -649,11 +707,7 @@ function toggleScrap(event) {
                 url: '/admin/blacklist/toggle',
                 type: 'POST',
                 contentType: 'application/json',
-                data: JSON.stringify({
-                    id: id,
-                    type: type,
-                    reason: reason
-                }),
+                data: JSON.stringify({ id: id, type: type, reason: reason }),
                 beforeSend: function(xhr) {
                     xhr.setRequestHeader(header, token);
                 },
@@ -664,20 +718,24 @@ function toggleScrap(event) {
                     if (response.isBlacklisted) {
                         button.html('<i class="fas fa-sync-alt"></i> 블랙리스트 해제');
                         statusCell.html('블랙리스트');
-                        Swal.fire({
-                            icon: 'success',
-                            title: '성공',
-                            text: '블랙리스트에 추가되었습니다.'
-                        });
+                        button.data('status', 'BLACKLIST'); // 상태 업데이트
                     } else {
                         button.html('<i class="fas fa-sync-alt"></i> 블랙리스트 등록');
                         statusCell.html('정상');
-                        Swal.fire({
-                            icon: 'success',
-                            title: '성공',
-                            text: '블랙리스트에서 제거되었습니다.'
-                        });
+                        button.data('status', 'NORMAL'); // 상태 업데이트
                     }
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: '성공',
+                        text: response.isBlacklisted ? '블랙리스트에 추가되었습니다.' : '블랙리스트에서 제거되었습니다.'
+                    });
+
+                    // 상태 변경 후 필터링 적용
+                    filterTable();
+
+                    // 컴퍼니 리스트 상태 업데이트
+                    updateCompanyList();
                 },
                 error: function(xhr, status, error) {
                     console.error('Error:', error);
@@ -740,65 +798,32 @@ function toggleScrap(event) {
         var activeTypeFilter = 'all';
         var activeStatusFilter = 'all';
 
-        $('.type-filter').click(function() {
-            activeTypeFilter = $(this).data('filter');
-            $('.type-filter').removeClass('active');
-            $(this).addClass('active');
-            filterTable();
-        });
-
-        $('.status-filter').click(function() {
-            activeStatusFilter = $(this).data('filter');
-            $('.status-filter').removeClass('active');
-            $(this).addClass('active');
-            filterTable();
-        });
-
-        function filterTable() {
-            $('#blacklistTable tbody tr').each(function() {
-                var row = $(this);
-                var type = row.data('type');
-                var status = row.data('status');
-
-                var typeMatch = activeTypeFilter === 'all' || type === activeTypeFilter;
-                var statusMatch = activeStatusFilter === 'all' || status === activeStatusFilter;
-
-                if (typeMatch && statusMatch) {
-                    row.show();
-                } else {
-                    row.hide();
+        // 컴퍼니 리스트 상태 업데이트 함수
+        function updateCompanyList() {
+            $.ajax({
+                url: '/admin/company/list',
+                type: 'GET',
+                success: function(data) {
+                    $('#companyTable').html(data);
+                    updateBlacklistIcons();
+                },
+                error: function(xhr, status, error) {
+                    console.error('Failed to update company list:', error);
                 }
             });
         }
 
-        // 초기 필터링 적용
-        filterTable();
+        // 블랙리스트 아이콘 업데이트 함수
+        function updateBlacklistIcons() {
+            $('.company-status').each(function() {
+                var status = $(this).data('status');
+                var icon = status === 'BLACKLIST' ? '<i class="fas fa-ban"></i>' : '<i class="fas fa-check"></i>';
+                $(this).html(icon);
+            });
+        }
 
-        // 기존 코드
-        $('.dev-toggle-filter').click(function () {
-            $(this).toggleClass('open');
-            $(this).next('.filter-box').toggle();
-        });
-
-        $('.dev-button-item').click(function () {
-            $(this).toggleClass('active').siblings().removeClass('active');
-        });
-
-        $('.search-reset').click(function () {
-            $(this).closest('.filter-box').find('.dev-button-item').removeClass('active');
-            $(this).closest('.filter-box').find('.dev-button-all').addClass('active');
-        });
-
-        $('#resetCondition').click(function () {
-            $('.filter-box').find('.dev-button-item').removeClass('active');
-            $('.filter-box').find('.dev-button-all').addClass('active');
-            $('#searchForm')[0].reset();
-            activeTypeFilter = 'all';
-            activeStatusFilter = 'all';
-            $('.type-filter, .status-filter').removeClass('active');
-            $('.type-filter[data-filter="all"], .status-filter[data-filter="all"]').addClass('active');
-            filterTable();
-        });
+        // 페이지 로드 시 아이콘 초기화
+        updateBlacklistIcons();
     });
 </script>
 

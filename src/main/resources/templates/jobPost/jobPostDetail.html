@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
 
       layout:decorate="~{layout/layout}">
@@ -20,8 +21,65 @@
 
         .container-xxl{
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+        width: 80%;
         background-color: #ffffff;
         }
+
+        .row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.col-lg-8 {
+    flex: 0 0 70%;
+    max-width: 70%;
+}
+
+.col-lg-4 {
+    flex: 0 0 30%;
+    max-width: 30%;
+}
+
+.d-flex.align-items-center.mb-5 .text-start {
+    padding-left: 16px;
+    width: calc(100% - 100px); /* 100% minus image width and padding */
+    max-width: none; /* Remove max-width limit */
+}
+
+.mb-5 {
+    border-bottom: 1px solid #d3d3d3;
+    width: 100%;
+    max-width: none; /* Remove max-width limit */
+}
+
+#modalBtn {
+    margin-left: 0;
+    width: 100%; /* Full width */
+    max-width: none; /* Remove max-width limit */
+}
+
+.bg-light.rounded.p-5.mb-4,
+.bg-light.rounded.p-5 {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+    .col-lg-8,
+    .col-lg-4 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+설명:
+
+
+.d-flex.align-items-center.mb-5 {
+    border-bottom: 1px solid #d3d3d3;
+    padding-bottom: 20px;
+    margin-bottom: 15px;
+    width: 100%; /* Full width */
+    max-width: none; /* Remove max-width limit */
+}
            .popup-content {
         background-color: #fefefe;
         margin: 15% auto;
@@ -40,18 +98,33 @@
         <div class="row gy-5 gx-4">
             <div class="col-lg-8">
 
-                <div class="d-flex align-items-center mb-5" style="border-bottom: 1px solid #d3d3d3; width: 650px; padding-bottom: 20px; margin-bottom: 15px;">
+                <div class="d-flex align-items-center mb-5" style="border-bottom: 1px solid #d3d3d3; width: 80%; max-width: 650px; padding-bottom: 20px; margin-bottom: 15px;">
                     <img class="flex-shrink-0 img-fluid border rounded"
                          th:src="@{/jobPost/logo/{logoName}(logoName=${jobPost.logoName})}"
                          alt="Company Logo" style="width: 80px; height: 80px;">
-                    <div class="text-start ps-4">
-                            <h3 class="mb-3"><span th:text="${jobPost.title}"></span></h3>
-                        <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i><span
-                                th:text="${jobPost.address}"></span></span>
-                        <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>Full Time</span>
-                        <span class="text-truncate me-0"><i
-                                class="far fa-money-bill-alt text-primary me-2"></i><span
-                                th:text="${jobPost.salary}"></span></span>
+                    <div class="text-start ps-4" style="width: 80%; max-width: 650px;">
+                        <div class="d-flex justify-content-between" style="margin-bottom: 1px;">
+                            <div>
+                                <h3 class="mb-3"><span th:text="${jobPost.title}"></span></h3>
+                                <span class="text-truncate me-3"><span
+                                th:text="${jobPost.companyName}"></span></span>
+                                <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i><span
+                                        th:text="${jobPost.address}"></span></span>
+                                <span class="text-truncate me-0"><i
+                                        class="far fa-money-bill-alt text-primary me-2"></i><span
+                                        th:text="${jobPost.salary}"></span></span>
+                            </div>
+                            <a class="btn btn-light btn-square me-3 scrap-button"
+                               sec:authorize="!hasRole('ROLE_COMPANY') and !hasRole('ROLE_ADMIN')"
+                               th:classappend="${scrapStatusMap[jobPost.jobPostId] != null and scrapStatusMap[jobPost.jobPostId] ? 'scrap-active' : ''}"
+                               th:href="@{#}"
+                               th:data-jobpostid="${jobPost.jobPostId}"
+                               style="margin-right: 0; background-color:#E0FFFF; border: 5px solid #D3D3D3;"
+                               onclick="toggleScrap(event)">
+                                <i th:classappend="${scrapStatusMap[jobPost.jobPostId] != null and scrapStatusMap[jobPost.jobPostId] ? 'fas fa-heart' : 'far fa-heart'}"></i>
+                            </a>
+
+                        </div>
 
                     </div>
 
@@ -60,7 +133,7 @@
 
 
 
-                <div class="mb-5" style="border-bottom: 1px solid #d3d3d3; width: 650px;">
+                <div class="mb-5" style="border-bottom: 1px solid #d3d3d3; width: 80%; max-width: 650px;">
                     <h4 class="mb-3">조건</h4>
                     <ul class="list-unstyled">
                         <li><i class="fa fa-angle-right text-primary me-2"></i><span
@@ -73,19 +146,9 @@
                     <span th:utext="${jobPost.content}"></span><br><br>
                 </div>
                 <div>
-                    <div class="d-flex justify-content-start align-items-center">
                     <!-- 지원하기 버튼 -->
-                        <a class="btn btn-light btn-square me-3 scrap-button"
-                           sec:authorize="!hasRole('ROLE_COMPANY') and !hasRole('ROLE_ADMIN')"
-                           th:classappend="${scrapStatusMap[jobPost.jobPostId] != null and scrapStatusMap[jobPost.jobPostId] ? 'scrap-active' : ''}"
-                           th:href="@{#}"
-                           th:data-jobpostid="${jobPost.jobPostId}"
-                           onclick="toggleScrap(event)">
-                            <i th:classappend="${scrapStatusMap[jobPost.jobPostId] != null and scrapStatusMap[jobPost.jobPostId] ? 'fas fa-heart' : 'far fa-heart'}"></i>
-                        </a>
-                    <button id="modalBtn" class="btn btn-primary" sec:authorize="!hasRole('ROLE_COMPANY') and !hasRole('ROLE_ADMIN')">지원하기</button>
 
-                    </div>
+                    <button id="modalBtn" class="btn btn-primary" style="margin-left: 0; width: 80%; max-width: 650px;" sec:authorize="!hasRole('ROLE_COMPANY') and !hasRole('ROLE_ADMIN')">지원하기</button>
 
                     <!--모달 창-->
                     <div class="modal" id="resumePopup" tabindex="-1" aria-labelledby="resumePopupLabel"

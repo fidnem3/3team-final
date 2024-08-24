@@ -121,13 +121,13 @@
 <!--	</select>-->
 
 	<select id="getBlacklistInfo" resultType="com.javalab.board.dto.BlacklistDto">
-		SELECT *,
+		SELECT b.*,
 		CASE
-		WHEN #{userType} = 'jobSeeker' THEN jobSeeker_id
-		WHEN #{userType} = 'company' THEN comp_id
+		WHEN #{userType} = 'jobSeeker' THEN b.jobSeeker_id
+		WHEN #{userType} = 'company' THEN b.comp_id
 		END AS userId
-		FROM blacklist
-		WHERE (#{userType} = 'jobSeeker' AND jobSeeker_id = #{userId})
-		OR (#{userType} = 'company' AND comp_id = #{userId})
+		FROM blacklist b
+		WHERE (#{userType} = 'jobSeeker' AND b.jobSeeker_id = #{userId})
+		OR (#{userType} = 'company' AND b.comp_id = #{userId})
 	</select>
 </mapper>

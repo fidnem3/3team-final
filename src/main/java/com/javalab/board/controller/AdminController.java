@@ -56,7 +56,7 @@ public class AdminController {
     public String viewAllJobPosts(Model model) {
         List<JobPostVo> allJobPostsForAdmin = jobPostService.getAllJobPostsForAdmin();
         model.addAttribute("jobPosts", allJobPostsForAdmin);
-        return "admin/alljobPosts"; // 뷰 이름 (admin/jobPosts.html)
+        return "admin/allJobPosts"; // 뷰 이름 (admin/jobPosts.html)
     }
 
 

@@ -71,8 +71,22 @@ public class JobPostController {
     @GetMapping("/jobPostCreate")
     public String createJobPost(Model model) {
         model.addAttribute("createJobPostRequestDto", new CreateJobPostRequestDto());
+
+        // 사용자 인증 정보 얻기
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String compId = ((UserDetails) authentication.getPrincipal()).getUsername();
+
+        CompanyVo companyVo = companyService.getCompanyById(compId);
+        String logoName = companyVo != null ? companyVo.getLogoName() : null;
+        String companyName = companyVo != null ? companyVo.getCompanyName() : null;
+
+        // 모델에 로고 이름 추가
+        model.addAttribute("logoName", logoName);
+        model.addAttribute("companyName", companyName);
+
         return "jobPost/jobPostCreate";
     }
+
 
     @PostMapping("/jobPostCreate")
     public String create(
@@ -250,7 +264,7 @@ public class JobPostController {
 
     @GetMapping("/detail/{jobPostId}")
     public String detail(@PathVariable("jobPostId") Long jobPostId, Model model) {
-        JobPostVo jobPostVo = jobPostService.findJobPostById(jobPostId);
+        JobPostVo jobPostVo = jobPostService.getJobPostById(jobPostId);
         // 조회수 증가
         jobPostService.incrementHitCount(jobPostId);
         // 로깅
