@@ -25,6 +25,13 @@
             margin-top: 10px;
             margin-bottom: 10px;
         }
+        .card-img-top {
+        width: 100%;
+        aspect-ratio: 1 / 1; /* 정사각형 비율 설정 */
+        object-fit: cover; /* 이미지가 컨테이너를 채우도록 설정 */
+        border-top-left-radius: 11px; /* 카드의 둥근 모서리와 일치하도록 설정 */
+        border-top-right-radius: 11px; /* 카드의 둥근 모서리와 일치하도록 설정 */
+    }
         .card {
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
             border-radius: 11px;
