@@ -6,21 +6,82 @@
 <head>
     <meta charset="UTF-8">
     <title>회원 탈퇴 확인</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
         .container-xxl{
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+        }
+
+        .withdraw-container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .withdraw-title {
+            color: #dc3545;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .withdraw-icon {
+            font-size: 48px;
+            color: #dc3545;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .withdraw-message {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #6c757d;
+        }
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+        .btn-danger:hover {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-secondary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-secondary:hover {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn i {
+            margin-right: 5px;
         }
     </style>
 </head>
 
 <body>
 <div layout:fragment="content" class="container-xxl bg-white p-0">
-    <h2>회원 탈퇴 확인</h2>
-    <p>정말로 탈퇴하시겠습니까? 이 작업은 되돌릴 수 없습니다.</p>
-    <form th:action="@{/jobSeeker/withdraw}" method="post">
-        <button type="submit" class="btn btn-danger">탈퇴하기</button>
-        <a th:href="@{/jobSeeker/detail}" class="btn btn-secondary">취소</a>
-    </form>
+    <div class="withdraw-container">
+        <div class="withdraw-icon">
+            <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <h2 class="withdraw-title">회원 탈퇴 확인</h2>
+        <p class="withdraw-message">정말로 회원을 탈퇴하시겠습니까?<br> 이 작업은 되돌릴 수 없습니다.</p>
+        <form th:action="@{/jobSeeker/withdraw}" method="post">
+            <div class="btn-container">
+                <button type="submit" class="btn btn-danger">
+                    <i class="fas fa-user-times"></i> 탈퇴하기
+                </button>
+                <a th:href="@{/jobSeeker/detail}" class="btn btn-secondary">
+                    <i class="fas fa-undo"></i> 취소
+                </a>
+            </div>
+        </form>
+    </div>
 </div>
 </body>
 </html>

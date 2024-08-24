@@ -83,16 +83,16 @@
                         <!--                        <a th:href="@{/jobSeeker/jobSeekerManagement}" class="dropdown-item">ManageBlackJob</a>-->
                     </div>
                 </div>
-                <!--                <div class="nav-item dropdown" sec:authorize="!hasRole('ROLE_ADMIN')">-->
-                <!--                    <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown" sec:authorize="hasRole('ROLE_COMPANY')">Resume</a>-->
-                <!--                    <div class="dropdown-menu rounded-0 m-0">-->
-                <!--                        <a th:href="@{/resume/save}" class="dropdown-item">New Resume</a>-->
-                <!--                        <a th:href="@{/resume/list}" class="dropdown-item">Resume List</a>-->
-                <!--                        <a th:href="@{/application/list}" class="dropdown-item" sec:authorize="hasRole('ROLE_USER')">My-->
-                <!--                            Job Applications-->
-                <!--                        </a>-->
-                <!--                    </div>-->
-                <!--                </div>-->
+<!--                <div class="nav-item dropdown" sec:authorize="!hasRole('ROLE_ADMIN')">-->
+<!--                    <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown" sec:authorize="hasRole('ROLE_COMPANY')">Resume</a>-->
+<!--                    <div class="dropdown-menu rounded-0 m-0">-->
+<!--                        <a th:href="@{/resume/save}" class="dropdown-item">New Resume</a>-->
+<!--                        <a th:href="@{/resume/list}" class="dropdown-item">Resume List</a>-->
+<!--                        <a th:href="@{/application/list}" class="dropdown-item" sec:authorize="hasRole('ROLE_USER')">My-->
+<!--                            Job Applications-->
+<!--                        </a>-->
+<!--                    </div>-->
+<!--                </div>-->
 
                 <a th:href="@{/contact}" class="nav-item nav-link">Contact</a>
             </div>
@@ -126,6 +126,7 @@
         </div>
 
         <div sec:authorize="hasRole('COMPANY')" class="d-flex align-items-center">
+
             <!-- 종 아이콘 추가 -->
             <div class="nav-item ms-0"> <!-- ms-0 클래스 추가 -->
                 <a th:href="@{/company/applications}" class="nav-link position-relative">
@@ -136,8 +137,9 @@
                     </span>
                 </a>
             </div>
-            <!-- 기업 회원 메뉴 -->
+        </div>
 
+            <!-- 기업 회원 메뉴 -->
             <div class="nav-item dropdown me-2"> <!-- me-3에서 me-2로 변경 -->
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                     <i class="fa fa-building"></i> Company Menu
@@ -151,7 +153,6 @@
             </div>
 
 
-        </div>
 
 
         <div sec:authorize="hasRole('USER')">
@@ -621,6 +622,7 @@ function toggleScrap(event) {
 </script>
 
 
+<!-- 블랙리스트 -->
 <script>
     $(document).ready(function() {
         var activeTypeFilter = 'all';
@@ -680,8 +682,10 @@ function toggleScrap(event) {
             var isCurrentlyBlacklisted = $(this).text().trim().includes('해제');
 
             if (isCurrentlyBlacklisted) {
+                // 블랙리스트 해제
                 toggleBlacklist(id, type, '');
             } else {
+                // 블랙리스트 등록
                 $('#blacklistReasonModal').modal('show');
                 $('#confirmBlacklist').data('id', id).data('type', type);
             }
@@ -695,7 +699,6 @@ function toggleScrap(event) {
             $('#blacklistReasonModal').modal('hide');
         });
 
-        // 블랙리스트 토글 함수
         function toggleBlacklist(id, type, reason) {
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
@@ -744,6 +747,56 @@ function toggleScrap(event) {
                 }
             });
         }
+    });
+</script>
+
+
+<!--<script>-->
+<!--    function toggleBlacklist(jobSeekerId, compId, button) {-->
+<!--    var token = $("meta[name='_csrf']").attr("content");-->
+<!--    var header = $("meta[name='_csrf_header']").attr("content");-->
+
+<!--    $.ajax({-->
+<!--        url: '/admin/blacklist/toggle',-->
+<!--        type: 'POST',-->
+<!--        contentType: 'application/json',-->
+<!--        data: JSON.stringify({-->
+<!--            id: jobSeekerId || compId,-->
+<!--            type: jobSeekerId ? 'jobSeeker' : 'company'-->
+<!--        }),-->
+<!--        beforeSend: function(xhr) {-->
+<!--            xhr.setRequestHeader(header, token);-->
+<!--        },-->
+<!--        success: function(response) {-->
+<!--            if (response.isBlacklisted !== undefined) {-->
+<!--                var row = $(button).closest('tr');-->
+<!--                var statusCell = row.find('td:nth-child(5)');-->
+
+<!--                if (response.isBlacklisted) {-->
+<!--                    statusCell.html('<span class="badge bg-danger">블랙리스트</span>');-->
+<!--                    $(button).text('블랙리스트 해제');-->
+<!--                } else {-->
+<!--                    statusCell.html('<span class="badge bg-success">정상</span>');-->
+<!--                    $(button).text('블랙리스트 등록');-->
+<!--                }-->
+<!--                alert('상태가 변경되었습니다.');-->
+<!--            } else {-->
+<!--                alert('상태 변경에 실패했습니다.');-->
+<!--            }-->
+<!--        },-->
+<!--        error: function(xhr, status, error) {-->
+<!--            console.error("Error:", error);-->
+<!--            alert('서버와의 통신 중 오류가 발생했습니다.');-->
+<!--        }-->
+<!--    });-->
+<!--}-->
+<!--</script>-->
+
+<!-- 블랙리스트 필터 -->
+<script>
+    $(document).ready(function() {
+        var activeTypeFilter = 'all';
+        var activeStatusFilter = 'all';
 
         // 컴퍼니 리스트 상태 업데이트 함수
         function updateCompanyList() {
@@ -773,10 +826,6 @@ function toggleScrap(event) {
         updateBlacklistIcons();
     });
 </script>
-
-
-
-
 
 <!--    jobpost 모달 스크립트-->
 <script>
