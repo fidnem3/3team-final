@@ -118,6 +118,19 @@
         </div>
 
         <div sec:authorize="hasRole('COMPANY')" class="d-flex align-items-center">
+
+            <!-- 종 아이콘 추가 -->
+            <div class="nav-item ms-0"> <!-- ms-0 클래스 추가 -->
+                <a th:href="@{/company/applications}" class="nav-link position-relative">
+                    <i class="fa fa-bell"></i>
+                    <span th:if="${unreadApplicationCount > 0}"
+                          th:text="${unreadApplicationCount}"
+                          class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    </span>
+                </a>
+            </div>
+        </div>
+
             <!-- 기업 회원 메뉴 -->
             <div class="nav-item dropdown me-2"> <!-- me-3에서 me-2로 변경 -->
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
@@ -131,17 +144,7 @@
                 </div>
             </div>
 
-            <!-- 종 아이콘 추가 -->
-            <div class="nav-item ms-0"> <!-- ms-0 클래스 추가 -->
-                <a th:href="@{/company/applications}" class="nav-link position-relative">
-                    <i class="fa fa-bell"></i>
-                    <span th:if="${unreadApplicationCount > 0}"
-                          th:text="${unreadApplicationCount}"
-                          class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                    </span>
-                </a>
-            </div>
-        </div>
+
 
 
         <div sec:authorize="hasRole('USER')">

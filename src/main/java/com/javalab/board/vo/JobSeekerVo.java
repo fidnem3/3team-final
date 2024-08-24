@@ -49,6 +49,7 @@ public class JobSeekerVo {
     private String fileName;
     private String filePath;
 
+
     @NotBlank(message = "주소는 필수 입력 값입니다.")
     private String address;
 

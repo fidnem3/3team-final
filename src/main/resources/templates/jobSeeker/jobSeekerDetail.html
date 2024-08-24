@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
         .container-xxl {
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
         .profile-pic {
@@ -106,16 +106,15 @@
         <div class="row justify-content-center">
             <div class="col-md-4">
                 <div class="user-info">
-<!--                    <img th:if="${jobSeeker.profilePic}" class="profile-pic"-->
-<!--                         th:src="@{/jobSeeker/profile/{profilePic}(profilePic=${jobSeeker.profilePic})}"-->
-<!--                         th:alt="${jobSeeker.name + ' 프로필 사진'}">-->
+                    <img th:src="@{/jobSeeker/profile/{profileName}(profileName=${jobSeeker.fileName})}"
+                         alt="Profile Picture" class="profile-pic"/>
                     <h2 th:text="${jobSeeker.name}">이름</h2>
                     <p th:text="${jobSeeker.jobSeekerId}">아이디</p>
                 </div>
             </div>
             <div class="col-md-8">
                 <div class="info-section">
-                    <h3>Basic Information</h3>
+                    <h3>My Profile</h3>
                     <div class="info-content">
                         <div class="row">
                             <div class="col-md-6">
@@ -135,7 +134,6 @@
                     </div>
                 </div>
 
-                <!-- 마이페이지 메뉴 -->
                 <div class="card-menu" sec:authorize="hasRole('ROLE_USER')">
                     <div class="card">
                         <i class="fas fa-file-alt"></i>
