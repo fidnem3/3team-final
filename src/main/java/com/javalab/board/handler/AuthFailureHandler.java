@@ -93,10 +93,10 @@ public class AuthFailureHandler extends SimpleUrlAuthenticationFailureHandler {
             if (company != null) {
                 switch (company.getStatus().toUpperCase()) {
                     case "PENDING":
-                        setErrorInfo("계정이 승인 대기 중입니다. 승인을 기다려주세요.", "pending");
+                        setErrorInfo("계정이 승인 대기 중입니다. 승인을 기다려주세요.", "Pending");
                         break;
                     case "REJECTED":
-                        setErrorInfo("계정이 거절되었습니다. 관리자에게 문의하세요.", "rejected");
+                        setErrorInfo("계정이 거절되었습니다. 관리자에게 문의하세요.", "Rejected");
                         break;
                     default:
                         setErrorInfo("아이디 또는 비밀번호가 올바르지 않습니다.", "invalid_credentials");
