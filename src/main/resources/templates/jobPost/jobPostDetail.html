@@ -40,13 +40,12 @@
         <div class="row gy-5 gx-4">
             <div class="col-lg-8">
 
-                <div class="d-flex align-items-center mb-5"
-                     style="border-bottom: 1px solid #d3d3d3; width: 650px; padding-bottom: 20px; margin-bottom: 15px;">
+                <div class="d-flex align-items-center mb-5" style="border-bottom: 1px solid #d3d3d3; width: 650px; padding-bottom: 20px; margin-bottom: 15px;">
                     <img class="flex-shrink-0 img-fluid border rounded"
                          th:src="@{/jobPost/logo/{logoName}(logoName=${jobPost.logoName})}"
                          alt="Company Logo" style="width: 80px; height: 80px;">
                     <div class="text-start ps-4">
-                        <h3 class="mb-3"><span th:text="${jobPost.title}"></span></h3>
+                            <h3 class="mb-3"><span th:text="${jobPost.title}"></span></h3>
                         <span class="text-truncate me-3"><span
                                 th:text="${jobPost.companyName}"></span></span>
                         <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i><span
@@ -74,30 +73,10 @@
                     <h4 class="mb-3">내용</h4>
                     <span th:utext="${jobPost.content}"></span><br><br>
                 </div>
-
                 <div>
-                    <div class="d-flex justify-content-start align-items-center">
                     <!-- 지원하기 버튼 -->
-                        <div class="btn-group" style="margin-right: auto;">
-                            <!-- 스크랩 버튼 -->
-                            <a class="btn btn-light btn-square me-3 scrap-button"
-                               sec:authorize="hasRole('ROLE_USER')"
-                               th:classappend="${scrapStatusMap[jobPost.jobPostId] != null and scrapStatusMap[jobPost.jobPostId] ? 'scrap-active' : ''}"
-                               th:href="@{#}"
-                               th:data-jobpostid="${jobPost.jobPostId}"
-                               onclick="toggleScrap(event)">
-                                <i th:classappend="${scrapStatusMap[jobPost.jobPostId] != null and scrapStatusMap[jobPost.jobPostId] ? 'fas fa-heart' : 'far fa-heart'}"></i>
-                            </a>
 
-                            <!-- 로그인된 사용자를 위한 "지원하기" 버튼 -->
-                            <button id="modalBtn" class="btn btn-primary"
-                                    sec:authorize="hasRole('ROLE_USER')">지원하기
-                            </button>
-                            <!-- 비로그인 사용자를 위한 "지원하기" 버튼 -->
-                            <a class="btn btn-primary"
-                               sec:authorize="isAnonymous()" th:href="@{/login}">지원하기</a>
-                        </div>
-                        <div>
+                    <button id="modalBtn" class="btn btn-primary" style="margin-left: 0; width: 80%; max-width: 650px;" sec:authorize="!hasRole('ROLE_COMPANY') and !hasRole('ROLE_ADMIN')">지원하기</button>
 
                     <!--모달 창-->
                     <div class="modal" id="resumePopup" tabindex="-1" aria-labelledby="resumePopupLabel"
@@ -135,52 +114,48 @@
                     </div>
                 </div>
             </div>
+
+            <div class="col-lg-4">
+                <div class="bg-light rounded p-5 mb-4 wow slideInUp" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);" data-wow-delay="0.1s">
+                    <h4 class="mb-4">Job Summary</h4>
+                    <p><i class="fa fa-angle-right text-primary me-2"></i><b>작성일 :</b> <span
+                            th:text="${formattedCreated}"></span></p>
+                    <p><i class="fa fa-angle-right text-primary me-2"></i><b>직급 :</b> <span
+                            th:text="${jobPost.position}"></span></p>
+                    <p><i class="fa fa-angle-right text-primary me-2"></i><b>고용형태 :</b> Full Time</p>
+                    <p><i class="fa fa-angle-right text-primary me-2"></i><b>급여 :</b> <span
+                            th:text="${jobPost.salary}"></span></p>
+                    <p><i class="fa fa-angle-right text-primary me-2"></i><b>지역 :</b> <span
+                            th:text="${jobPost.address}"></span></p>
+                    <p class="m-0"><i class="fa fa-angle-right text-primary me-2"></i><b>마감일자 :</b> <span
+                            th:text="${formattedEndDate}"></span></p>
+                </div>
+                <div class="bg-light rounded p-5 wow slideInUp" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);" data-wow-delay="0.1s">
+                    <h4 class="mb-3">필요 기술</h4>
+                    <ul class="list-unstyled">
+                        <li th:each="skill : ${requiredSkills}">
+                            <i class="fa fa-angle-right text-primary me-2"></i>
+                            <span th:text="${skill}"></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
         </div>
     </div>
 
-    <div class="col-lg-4">
-        <div class="bg-light rounded p-5 mb-4 wow slideInUp" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);"
-             data-wow-delay="0.1s">
-            <h4 class="mb-4">Job Summary</h4>
-            <p><i class="fa fa-angle-right text-primary me-2"></i><b>작성일 :</b> <span
-                    th:text="${formattedCreated}"></span></p>
-            <p><i class="fa fa-angle-right text-primary me-2"></i><b>직급 :</b> <span
-                    th:text="${jobPost.position}"></span></p>
-            <p><i class="fa fa-angle-right text-primary me-2"></i><b>고용형태 :</b> Full Time</p>
-            <p><i class="fa fa-angle-right text-primary me-2"></i><b>급여 :</b> <span
-                    th:text="${jobPost.salary}"></span></p>
-            <p><i class="fa fa-angle-right text-primary me-2"></i><b>지역 :</b> <span
-                    th:text="${jobPost.address}"></span></p>
-            <p class="m-0"><i class="fa fa-angle-right text-primary me-2"></i><b>마감일자 :</b> <span
-                    th:text="${formattedEndDate}"></span></p>
-        </div>
-        <div class="bg-light rounded p-5 wow slideInUp" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);"
-             data-wow-delay="0.1s">
-            <h4 class="mb-3">필요 기술</h4>
-            <ul class="list-unstyled">
-                <li th:each="skill : ${requiredSkills}">
-                    <i class="fa fa-angle-right text-primary me-2"></i>
-                    <span th:text="${skill}"></span>
-                </li>
-            </ul>
-        </div>
-    </div>
+    <!--이력서 지원 알림 서비스 -->
+    <script>
+        const eventSource = new EventSource("/notifications");
 
-</div>
-</div>
+        eventSource.addEventListener("newResume", function(event) {
+            alert(event.data);  //
+        });
 
-<!--이력서 지원 알림 서비스 -->
-<script>
-    const eventSource = new EventSource("/notifications");
-
-    eventSource.addEventListener("newResume", function(event) {
-        alert(event.data);  //
-    });
-
-    eventSource.onerror = function(event) {
-        console.error("SSE error", event);
-    };
-</script>
+        eventSource.onerror = function(event) {
+            console.error("SSE error", event);
+        };
+    </script>
 
 
 </div>
