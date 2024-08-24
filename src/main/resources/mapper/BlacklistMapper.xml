@@ -39,6 +39,21 @@
         SELECT * FROM blacklist WHERE is_blacklisted = 1 ORDER BY blacklist_date DESC
     </select>
 
+<!--    black list 아이콘 오류 해결중-->
+    <select id="getIsBlacklisted" resultType="java.lang.Integer">
+        SELECT is_blacklisted
+        FROM blacklist
+        WHERE comp_id = #{compId}
+    </select>
+
+    <update id="updateBlacklistStatus">
+        UPDATE blacklist
+        SET is_blacklisted = #{newStatus},
+        reason = #{reason}  <!-- 블랙리스트 사유를 업데이트 (필요에 따라) -->
+        WHERE comp_id = #{compId}
+    </update>
+
+
     <delete id="deleteBlacklist">
         DELETE FROM blacklist
         WHERE (jobSeeker_id = #{jobSeekerId} AND comp_id IS NULL)

@@ -2,6 +2,7 @@ package com.javalab.board.service;
 
 import com.javalab.board.dto.ApplicationDto;
 import com.javalab.board.repository.ApplicationMapper;
+import com.javalab.board.repository.BlacklistMapper;
 import com.javalab.board.repository.CompanyMapper;
 import com.javalab.board.repository.UserRolesMapper;
 import com.javalab.board.vo.CompanyVo;
@@ -36,6 +37,9 @@ public class CompanyServiceImpl implements CompanyService {
 
     // 승인된 기업 목록을 저장할 리스트
     private List<CompanyVo> companyList = new ArrayList<>();
+
+    private BlacklistMapper blacklistMapper;  // 블랙리스트 상태를 가져오기 위한 Mapper
+
 
 
 
@@ -122,8 +126,19 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public CompanyVo getCompanyById(String compId) {
-        return companyMapper.getCompanyById(compId);
+        // company 테이블에서 회사 정보 가져오기
+        CompanyVo company = companyMapper.getCompanyById(compId);
+
+        if (company != null) {
+            // blacklist 테이블에서 블랙리스트 상태 가져오기
+            Integer isBlacklistedValue = blacklistMapper.getIsBlacklisted(compId);
+            boolean isBlacklisted = (isBlacklistedValue != null && isBlacklistedValue == 1);
+            company.setBlacklisted(isBlacklisted);
+        }
+
+        return company;
     }
+
 
     @Override
     public List<CompanyVo> getPendingCompanies() {

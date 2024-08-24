@@ -136,6 +136,7 @@
                                 <td th:text="${company.companyName}">회사명</td>
                                 <td th:text="${company.email}">이메일</td>
                                 <td th:text="${company.businessNumber}">사업자 등록번호</td>
+
 <!--                                <td>-->
 <!--                                    <a th:href="${company.homepage}" th:text="${company.homepage}" target="_blank">홈페이지</a>-->
 <!--                                </td>-->
@@ -173,6 +174,7 @@
                             </tr>
                             </tbody>
                         </table>
+
                     </div>
                 </div>
             </div>
@@ -206,6 +208,7 @@
                                 <td th:text="${company.compId}">회사 ID</td>
                                 <td th:text="${company.companyName}">회사명</td>
                                 <td th:text="${company.email}">이메일</td>
+                                <td th:text="${company.isBlacklisted}">이메일</td>
                                 <td th:text="${company.businessNumber}">사업자 등록번호</td>
                                 <td>
                                     <a th:href="${company.homepage}" th:text="${company.homepage}"
@@ -315,6 +318,85 @@
             });
         });
     </script>
+
+    <!-- 블랙리스트 -->
+    <script>
+        $(document).ready(function () {
+            // 블랙리스트 토글 기능
+            $('.toggle-blacklist').click(function() {
+                var id = $(this).data('id');
+                var type = $(this).data('type');
+                var isCurrentlyBlacklisted = $(this).text().includes('해제');
+
+                if (isCurrentlyBlacklisted) {
+                    // 블랙리스트 해제
+                    toggleBlacklist(id, type, '');
+                } else {
+                    // 블랙리스트 등록
+                    $('#blacklistReasonModal').modal('show');
+                    $('#confirmBlacklist').data('id', id).data('type', type);
+                }
+            });
+
+            $('#confirmBlacklist').click(function() {
+                var id = $(this).data('id');
+                var type = $(this).data('type');
+                var reason = $('#blacklistReason').val();
+                toggleBlacklist(id, type, reason);
+                $('#blacklistReasonModal').modal('hide');
+            });
+
+            function toggleBlacklist(id, type, reason) {
+                var token = $("meta[name='_csrf']").attr("content");
+                var header = $("meta[name='_csrf_header']").attr("content");
+
+                $.ajax({
+                    url: '/admin/blacklist/toggle',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        id: id,
+                        type: type,
+                        reason: reason
+                    }),
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader(header, token);
+                    },
+                    success: function(response) {
+                        var button = $(`button[data-id="${id}"]`);
+                        var statusCell = button.closest('tr').find('td:nth-child(7)');
+
+                        if (response.isBlacklisted) {
+                            button.html('<i class="fas fa-sync-alt"></i> 블랙리스트 해제');
+                            statusCell.html('블랙리스트');
+                            Swal.fire({
+                                icon: 'success',
+                                title: '성공',
+                                text: '블랙리스트에 추가되었습니다.'
+                            });
+                        } else {
+                            button.html('<i class="fas fa-sync-alt"></i> 블랙리스트 등록');
+                            statusCell.html('정상');
+                            Swal.fire({
+                                icon: 'success',
+                                title: '성공',
+                                text: '블랙리스트에서 제거되었습니다.'
+                            });
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error:', error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: '오류',
+                            text: '오류가 발생했습니다: ' + error
+                        });
+                    }
+                });
+            }
+        });
+    </script>
+
 </div>
 
 </body>

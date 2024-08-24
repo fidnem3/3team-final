@@ -1,5 +1,6 @@
 package com.javalab.board.controller;
 
+import com.javalab.board.repository.BlacklistMapper;
 import com.javalab.board.repository.JobSeekerMapper;
 import com.javalab.board.service.*;
 import com.javalab.board.vo.CompanyVo;
@@ -36,6 +37,9 @@ public class AdminController {
     private BlacklistService blacklistService;
     @Autowired
     private SuggestionService suggestionService;
+
+    @Autowired
+    private BlacklistMapper blacklistMapper;
 
 
     @GetMapping("/adminPage")
@@ -165,7 +169,20 @@ public class AdminController {
         // 거절된 기업 목록을 조회합니다.
         List<CompanyVo> rejectedCompanies = companyService.getRejectedCompanies();
 
-        // 각 기업의 로고 정보를 포함하여 모델에 추가합니다.
+        // 각 기업의 블랙리스트 상태를 설정합니다.
+        approvedCompanies.forEach(company -> {
+            Integer isBlacklistedValue = blacklistMapper.getIsBlacklisted(company.getCompId());
+            boolean isBlacklisted = (isBlacklistedValue != null && isBlacklistedValue == 1);
+            company.setBlacklisted(isBlacklisted);
+        });
+
+        rejectedCompanies.forEach(company -> {
+            Integer isBlacklistedValue = blacklistMapper.getIsBlacklisted(company.getCompId());
+            boolean isBlacklisted = (isBlacklistedValue != null && isBlacklistedValue == 1);
+            company.setBlacklisted(isBlacklisted);
+        });
+
+        // 모델에 데이터를 추가합니다.
         model.addAttribute("approvedCompanies", approvedCompanies);
         model.addAttribute("rejectedCompanies", rejectedCompanies);
 
