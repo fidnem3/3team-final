@@ -25,57 +25,91 @@
             color: red;
         }
         .hidden { display: none; }
-.card-body hr {
-        border: 0;
-        height: 1px;
-        background-color: #696969; /* 옅은 회색 */
-        margin-top: 10px;
-        margin-bottom: 10px;
-    }
-        .card {
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
-     border-radius: 11px;
-     color: black;
-}
- .card-link {
-        text-decoration: none; /* 링크 장식 제거 */
-        color: inherit; /* 상속된 텍스트 색상 사용 */
-    }
- .card-img-top {
-        position: relative;
-        width: 100%;
-        height: 300px; /* 이미지의 높이를 설정 */
-    }
-
-    .card-body {
-    position: relative;
-    border-radius: 8px;
-    padding-bottom: 10px; /* Bottom padding inside card body */
+        .card-body hr {
+            border: 0;
+            height: 1px;
+            background-color: #696969; /* 옅은 회색 */
+            margin-top: 10px;
+            margin-bottom: 10px;
         }
-.card:hover {
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    border: 4px solid #87CEEB;
-}
+        .card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+            border-radius: 11px;
+            color: black;
+        }
+        .card-link {
+            text-decoration: none; /* 링크 장식 제거 */
+            color: inherit; /* 상속된 텍스트 색상 사용 */
+        }
+        .card-img-top {
+            position: relative;
+            width: 100%;
+            height: 200px; /* 이미지의 높이를 설정 */
+        }
 
- .d-flex {
-        display: flex;
-        justify-content: space-between; /* 양쪽 끝 정렬 */
-        align-items: center; /* 수직 중앙 정렬 */
-    }
-
- .select.form-select {
-    border-radius: 20px;
-    height: 40px !important;
-    max-height: 120px !important;
-    overflow-y: auto !important;
-}
-
-    select.form-select option {
-        padding: 8px;
-    }
-
+        .card-body {
+            position: relative;
+            width: 80%
+            height: 300px;
+            border-radius: 8px;
+            padding-bottom: 10px; /* Bottom padding inside card body */
+        }
+        .card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            border: 4px solid #87CEEB;
+        }
+        .d-flex {
+            display: flex;
+            justify-content: space-between; /* 양쪽 끝 정렬 */
+            align-items: center; /* 수직 중앙 정렬 */
+        }
+        .select.form-select {
+            border-radius: 20px;
+            height: 40px !important;
+            max-height: 120px !important;
+            overflow-y: auto !important;
+        }
+        select.form-select option {
+            padding: 8px;
+        }
         .filter-button {
             border-radius: 8px; /* 모서리 둥글게 */
+        }
+        .search {
+            width: 500px;
+            display: flex;
+            justify-content: center;
+        }
+        .searchTerm {
+            width: 100%;
+            border: 5px solid #D3D3D3;
+            border-right: none;
+            padding: 10px;
+            height: 40px;
+            border-radius: 5px 0 0 5px;
+            outline: none;
+            color: #9DBFAF;
+        }
+        .searchTerm:focus {
+            color: #228B22;
+        }
+        .searchButton {
+            width: 40px;
+            height: 40px;
+            border: 5px solid #D3D3D3;
+            background: transparent;
+            text-align: center;
+            color: #0000CD;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            font-size: 20px;
+        }
+        /*Resize the wrap to see the search bar change!*/
+        .wrap {
+            width: 50%;
+            position: relative;
+            padding: 0;
+            margin: 0 auto;
         }
     </style>
 
@@ -84,124 +118,125 @@
 </head>
 <body>
 <div layout:fragment="content" class="container-xxl bg-white p-0">
-    <div class="container-fluid bg-primary mb-5" style="padding: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+    <div class="container-fluid bg-light mb-5" style="padding: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
     </div>
 
-
     <div class="container">
-        <div style="width: 60%; margin-left: 20px;">
-        <div class="row g-2 align-items-center">
-            <!-- Drop-down boxes with 8 parts of the total width -->
-            <div class="col-md-8">
-                <div class="row g-2">
-                    <div class="col-md-4">
-                        <select id="filterAddress" class="form-select border-2" style="border-radius: 12px;">
-                            <option value="">지역</option>
-                            <option value="서울">서울</option>
-                            <option value="경기">경기</option>
-                            <option value="강원">강원</option>
-                            <option value="대전">대전</option>
-                            <option value="충북">충북</option>
-                            <option value="충남">충남</option>
-                            <option value="전북">전북</option>
-                            <option value="전남">전남</option>
-                            <option value="경북">경북</option>
-                            <option value="경남">경남</option>
-                            <option value="부산">부산</option>
-                            <option value="제주">제주</option>
-                            <!-- 다른 주소 추가 -->
-                        </select>
+        <div class="d-flex justify-content-between" style="margin-bottom: 10px;">
+            <div style="width: 60%; margin-left: 20px;">
+                <div class="row g-2 align-items-center">
+                    <!-- Drop-down boxes with 8 parts of the total width -->
+                    <div class="col-md-8">
+                        <div class="row g-2">
+                            <div class="col-md-4">
+                                <select id="filterAddress" class="form-select border-2" style="border-radius: 12px;">
+                                    <option value="">지역</option>
+                                    <option value="서울">서울</option>
+                                    <option value="경기">경기</option>
+                                    <option value="강원">강원</option>
+                                    <option value="대전">대전</option>
+                                    <option value="충북">충북</option>
+                                    <option value="충남">충남</option>
+                                    <option value="전북">전북</option>
+                                    <option value="전남">전남</option>
+                                    <option value="경북">경북</option>
+                                    <option value="경남">경남</option>
+                                    <option value="부산">부산</option>
+                                    <option value="제주">제주</option>
+                                    <!-- 다른 주소 추가 -->
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <select id="filterEducation" class="form-select border-2" style="border-radius: 12px;">
+                                    <option value="">학력</option>
+                                    <option value="학력무관">학력무관</option>
+                                    <option value="고졸 이상">고졸 이상</option>
+                                    <option value="초대졸 이상">초대졸 이상</option>
+                                    <option value="대졸 이상">대졸 이상</option>
+                                    <option value="석사 이상">석사 이상</option>
+                                    <!-- 다른 교육 수준 추가 -->
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <select id="filterExperience" class="form-select border-2" style="border-radius: 12px;">
+                                    <option value="">경력</option>
+                                    <option value="경력무관">경력무관</option>
+                                    <option value="신입">신입</option>
+                                    <option value="경력 1년 이상">경력 1년 이상</option>
+                                    <option value="경력 2년 이상">경력 2년 이상</option>
+                                    <option value="경력 3년 이상">경력 3년 이상</option>
+                                    <option value="경력 5년 이상">경력 5년 이상</option>
+                                    <!-- 다른 경험 추가 -->
+                                </select>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-4">
-                        <select id="filterEducation" class="form-select border-2" style="border-radius: 12px;">
-                            <option value="">학력</option>
-                            <option value="학력무관">학력무관</option>
-                            <option value="고졸 이상">고졸 이상</option>
-                            <option value="초대졸 이상">초대졸 이상</option>
-                            <option value="대졸 이상">대졸 이상</option>
-                            <option value="석사 이상">석사 이상</option>
-                            <!-- 다른 교육 수준 추가 -->
-                        </select>
-                    </div>
-                    <div class="col-md-4">
-                        <select id="filterExperience" class="form-select border-2" style="border-radius: 12px;">
-                            <option value="">경력</option>
-                            <option value="경력무관">경력무관</option>
-                            <option value="신입">신입</option>
-                            <option value="경력 1년 이상">경력 1년 이상</option>
-                            <option value="경력 2년 이상">경력 2년 이상</option>
-                            <option value="경력 3년 이상">경력 3년 이상</option>
-                            <option value="경력 5년 이상">경력 5년 이상</option>
-                            <!-- 다른 경험 추가 -->
-                        </select>
+                    <!-- Apply button with 2 parts of the total width -->
+                    <div class="col-md-2">
+                        <button id="applyFilters" class="btn btn-light" style="border-radius: 12px;">적용</button>
                     </div>
                 </div>
             </div>
-            <!-- Apply button with 2 parts of the total width -->
-            <div class="col-md-2">
-                <button id="applyFilters" class="btn btn-light" style="border-radius: 12px;">적용</button>
+            <div class="row g-2 align-items-center">
+                <form id="searchForm" action="/jobPost/jobPostList" method="get" onsubmit="return validateForm()">
+                    <div class="search">
+                        <input type="text" name="keyword" class="searchTerm" placeholder="공고를 검색하세요" th:value="${keyword}">
+                        <button type="submit" class="searchButton">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
-        </div>
+
         <!-- Filter Form -->
         <!-- Job Posts -->
         <div class="album py-5 bg-body-tertiary">
             <div class="container" style="width: 100%;">
-                <div id="jobList" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                <div id="jobList" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
                     <div th:each="jobPost : ${jobPosts}" class="col job-item" th:if="${not #lists.isEmpty(jobPosts)}"
-                        th:data-address="${jobPost.address}"
-                        th:data-education="${jobPost.education}"
-                        th:data-experience="${jobPost.experience}">
+                         th:data-address="${jobPost.address}"
+                         th:data-education="${jobPost.education}"
+                         th:data-experience="${jobPost.experience}">
                         <a class="card-link" th:href="@{/jobPost/detail/{jobPostId}(jobPostId=${jobPost.jobPostId})}">
-                        <div class="card shadow-sm">
-                            <img class="bd-placeholder-img card-img-top" th:src="@{/jobPost/logo/{logoName}(logoName=${jobPost.logoName})}" alt="Company Logo"/>
-                            <div class="card-body">
-                                <h5 class="card-title" th:text="${jobPost.title}">Job Title</h5>
-                                <p class="card-text"><span th:text="${jobPost.companyName}">company Name</span></p>
-                                <div class="d-flex justify-content-end">
-                                <small class="text-truncate" style="right: 0;">
-                                    <i class="far fa-calendar-alt text-primary me-2"></i>
-                                    <span th:text="${#dates.format(jobPost.endDate, 'yyyy-MM-dd')}"></span> 마감
-                                </small>
-                                </div>
-                                <hr class="my-2"> <!-- 여기에 선 추가 -->
-                                <div class="d-flex justify-content-start align-items-center"><a class="btn btn-light btn-square me-3 scrap-button" style="right: 0; background-color:transparent;"
-                                       sec:authorize="!hasRole('ROLE_COMPANY') and !hasRole('ROLE_ADMIN')"
-                                       th:classappend="${scrapStatusMap[jobPost.jobPostId] != null and scrapStatusMap[jobPost.jobPostId] ? 'scrap-active' : ''}"
-                                       th:href="@{#}"
-                                       th:data-jobpostid="${jobPost.jobPostId}"
-                                       onclick="toggleScrap(event)">
+                            <div class="card shadow-sm">
+                                <img class="bd-placeholder-img card-img-top" th:src="@{/jobPost/logo/{logoName}(logoName=${jobPost.logoName})}" alt="Company Logo"/>
+                                <div class="card-body">
+                                    <h5 class="card-title" th:text="${jobPost.title}">Job Title</h5>
+                                    <p class="card-text"><span th:text="${jobPost.companyName}">company Name</span></p>
+                                    <div class="d-flex justify-content-end">
+                                        <small class="text-truncate" style="right: 0;">
+                                            <i class="far fa-calendar-alt text-primary me-2"></i>
+                                            <span th:text="${#dates.format(jobPost.endDate, 'yyyy-MM-dd')}"></span> 마감
+                                        </small>
+                                    </div>
+                                    <hr class="my-2"> <!-- 여기에 선 추가 -->
+                                    <div class="d-flex justify-content-start align-items-center"><a class="btn btn-light btn-square me-3 scrap-button" style="right: 0; background-color:transparent;"
+                                                                                                    sec:authorize="!hasRole('ROLE_COMPANY') and !hasRole('ROLE_ADMIN')"
+                                                                                                    th:classappend="${scrapStatusMap[jobPost.jobPostId] != null and scrapStatusMap[jobPost.jobPostId] ? 'scrap-active' : ''}"
+                                                                                                    th:href="@{#}"
+                                                                                                    th:data-jobpostid="${jobPost.jobPostId}"
+                                                                                                    onclick="toggleScrap(event)">
                                         <i th:classappend="${scrapStatusMap[jobPost.jobPostId] != null and scrapStatusMap[jobPost.jobPostId] ? 'fas fa-heart' : 'far fa-heart'}"></i>
                                     </a>
                                         <a class="btn btn-primary" style="margin-left: auto;" th:href="@{/jobPost/detail/{jobPostId}(jobPostId=${jobPost.jobPostId})}">보기</a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         </a>
                     </div>
                 </div>
-                    <div th:if="${#lists.isEmpty(jobPosts)}" class="col">
-                        <div class="card shadow-sm">
-                            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
-                                <title>Placeholder</title>
-                                <rect width="100%" height="100%" fill="#55595c"/>
-                                <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
-                            </svg>
-                            <div class="card-body">
-                                <p class="card-text">No job posts available.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
             </div>
+        </div>
         <div class="form-group text-center">
             <a class="btn btn-light py-3 px-5" th:href="@{/jobPost/jobPostCreate}"
                sec:authorize="hasRole('ROLE_COMPANY')" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); margin-bottom: 50px;">Post a Job</a>
         </div>
-        </div>
-    <div class="container-fluid bg-primary mb-5" style="padding: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
     </div>
+    <div class="container-fluid bg-light mb-5" style="padding: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
     </div>
+</div>
 
 </body>
 </html>
