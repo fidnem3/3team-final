@@ -63,6 +63,17 @@ public class AdminController {
         return "admin/allJobPosts"; // 뷰 이름 (admin/jobPosts.html)
     }
 
+    @PostMapping("/delete/{jobPostId}")
+    public String deleteJobPost(@PathVariable("jobPostId") Long jobPostId, RedirectAttributes redirectAttributes) {
+        try {
+            jobPostService.deleteJobPost(jobPostId);
+            redirectAttributes.addFlashAttribute("message", "해당 공고가 성공적으로 삭제되었습니다.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "공고 삭제 중 오류가 발생했습니다: " + e.getMessage());
+        }
+        return "redirect:/admin/jobPostsList";
+    }
+
 
 
     /**
