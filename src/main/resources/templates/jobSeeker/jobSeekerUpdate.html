@@ -8,21 +8,30 @@
     <title>회원 정보 수정</title>
     <script>
         function previewProfileImage(input) {
+            var previewDiv = document.getElementById('imagePreview');
+            previewDiv.innerHTML = ''; // Clear previous previews
+
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
                 reader.onload = function (e) {
                     var img = document.createElement('img');
                     img.src = e.target.result;
                     img.style.maxWidth = '200px';
-                    var previewDiv = document.getElementById('imagePreview');
-                    previewDiv.innerHTML = ''; // Clear previous previews
+                    img.className = 'img-thumbnail';
                     previewDiv.appendChild(img);
                 };
                 reader.readAsDataURL(input.files[0]);
             }
+
+            // 기존 프로필 사진을 숨김
+            var currentProfilePic = document.getElementById('currentProfilePic');
+            if (currentProfilePic) {
+                currentProfilePic.style.display = 'none';
+            }
         }
     </script>
-
+    <!-- Font Awesome 추가 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 
 <body>
@@ -65,19 +74,28 @@
                 </div>
                 <small class="form-text text-muted">새 프로필 사진을 업로드하려면 파일을 선택하세요.</small>
             </div>
+
+            <!-- 새로운 프로필 사진 미리보기 -->
             <div id="imagePreview" class="form-group mt-3"></div> <!-- 미리보기 이미지가 여기에 표시됩니다 -->
+
+            <!-- 현재 프로필 사진 -->
             <div class="form-group mt-3">
                 <label>현재 프로필 사진:</label>
-                <img th:if="${jobSeeker.fileName}"
+                <img id="currentProfilePic" th:if="${jobSeeker.fileName}"
                      th:src="@{'/upload/' + ${jobSeeker.fileName}}"
                      alt="Profile Picture"
                      class="img-thumbnail"
                      style="max-width: 200px;">
                 <p th:unless="${jobSeeker.fileName}" class="text-muted">프로필 사진 없음</p>
             </div>
+
             <div class="form-group mt-4">
-                <button type="submit" class="btn btn-primary">수정 완료</button>
-                <a th:href="@{/jobSeeker/detail}" class="btn btn-secondary">취소</a>
+                <button type="submit" class="btn btn-primary" style="background-color: #007bff; border-color: #007bff;">
+                    <i class="fas fa-save"></i> 수정 완료
+                </button>
+                <a th:href="@{/jobSeeker/detail}" class="btn btn-danger">
+                    <i class="fas fa-times"></i> 취소
+                </a>
             </div>
         </form>
     </div>
