@@ -107,7 +107,7 @@
                             <div>
                                 <h3 class="mb-3"><span th:text="${jobPost.title}"></span></h3>
                                 <span class="text-truncate me-3"><span
-                                th:text="${jobPost.companyName}"></span></span>
+                                        th:text="${jobPost.companyName}"></span></span>
                                 <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i><span
                                         th:text="${jobPost.address}"></span></span>
                                 <span class="text-truncate me-0"><i
@@ -147,10 +147,21 @@
                 </div>
                 <div>
                     <!-- 지원하기 버튼 -->
+                    <button id="modalBtn1" class="btn btn-primary"
+                            style="margin-left: 0; width: 80%; max-width: 650px;"
+                            sec:authorize="!isAuthenticated()"
+                            th:onclick="window.location.href='/login'">
+                        지원하기
+                    </button>
 
-                    <button id="modalBtn" class="btn btn-primary" style="margin-left: 0; width: 80%; max-width: 650px;" sec:authorize="!hasRole('ROLE_COMPANY') and !hasRole('ROLE_ADMIN')">지원하기</button>
+                    <button id="modalBtn" class="btn btn-primary"
+                            style="margin-left: 0; width: 80%; max-width: 650px;"
+                            sec:authorize="isAuthenticated()"
+                            data-bs-toggle="modal" data-bs-target="#resumePopup">
+                        지원하기
+                    </button>
 
-                    <!--모달 창-->
+                    <!-- 모달 창 -->
                     <div class="modal" id="resumePopup" tabindex="-1" aria-labelledby="resumePopupLabel"
                          aria-hidden="true">
                         <div class="modal-dialog">
@@ -161,7 +172,6 @@
                                             aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-
 
                                     <form id="applyForm" method="post" th:action="@{/jobPost/apply}">
                                         <input type="hidden" name="jobPostId" th:value="${jobPost.jobPostId}"/>
@@ -175,7 +185,6 @@
                                         </div>
                                         <button type="submit" class="btn btn-success w-100">제출하기</button>
                                     </form>
-
 
                                 </div>
                                 <div class="modal-footer">
