@@ -86,16 +86,24 @@ public class ResumeService {
 
     public void updateResume(ResumeDto resumeDto, MultipartFile file) throws IOException {
 
-        String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/files";
-        UUID uuid = UUID.randomUUID();
-        String fileName = uuid + "_" + file.getOriginalFilename();
-        File saveFile = new File(projectPath, fileName);
-        file.transferTo((saveFile));
-        resumeDto.setFileName(fileName);
-        resumeDto.setFilePath("/files/" + fileName);
+        if (file != null && !file.isEmpty()) {
+            // 파일이 업로드된 경우
+            String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/files";
+            UUID uuid = UUID.randomUUID();
+            String fileName = uuid + "_" + file.getOriginalFilename();
+            File saveFile = new File(projectPath, fileName);
+            file.transferTo((saveFile));
+            resumeDto.setFileName(fileName);
+            resumeDto.setFilePath("/files/" + fileName);
+        } else {
+            // 파일이 업로드되지 않은 경우, 기본 이미지 설정
+            resumeDto.setFileName("resume_default.jpg"); // 기본 이미지 파일 이름
+            resumeDto.setFilePath("/static/images/resume_default.jpg"); // 기본 이미지 파일 경로
+        }
 
         resumeMapper.updateResume(resumeDto);
     }
+
 
     public void deleteResume(int resumeId) {
 

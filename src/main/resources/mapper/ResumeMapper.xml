@@ -40,6 +40,8 @@
         resumeskill rs ON r.resume_id = rs.resume_id
         WHERE
         j.jobseeker_id = #{jobSeekerId}
+        ORDER BY
+        r.resume_id ASC
     </select>
 
     <resultMap id="ResumeWithJobSeekerMap" type="com.javalab.board.dto.ResumeDto">
@@ -66,12 +68,6 @@
             <result column="skill"/>
         </collection>
     </resultMap>
-
-<!--    <update id="updateHits" parameterType="com.javalab.board.dto.ResumeDto">-->
-<!--        update resume-->
-<!--        SET hit_no = hit_no + 1-->
-<!--        where resume_id= #{resumeId}-->
-<!--    </update>-->
 
 
     <resultMap id="ResumeDtoMap" type="com.javalab.board.dto.ResumeDto">
@@ -158,6 +154,8 @@
             resumeskill rs ON r.resume_id = rs.resume_id
             WHERE
             r.visibility_status = 'PUBLIC'
+            ORDER BY
+            r.resume_id ASC
         </select>
 
 
