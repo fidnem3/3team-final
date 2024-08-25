@@ -25,6 +25,17 @@
         .user-info {
             text-align: center;
             margin-bottom: 30px;
+            position: relative; /* Added to position the button */
+        }
+
+        .new-resume-button {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
         }
 
         .info-section {
@@ -110,10 +121,15 @@
                          alt="Profile Picture" class="profile-pic"/>
                     <h2 th:text="${jobSeeker.name}">이름</h2>
                     <p th:text="${jobSeeker.jobSeekerId}">아이디</p>
+
+                    <!-- New Resume Button -->
+                    <a th:href="@{/resume/save}" class="new-resume-button">
+                        <i class="fas fa-plus"></i> 새 이력서 작성
+                    </a>
                 </div>
             </div>
             <div class="col-md-8">
-                <div class="info-section">
+                <div class="info-section" style="width: 90%;">
                     <h3>My Profile</h3>
                     <div class="info-content">
                         <div class="row">
