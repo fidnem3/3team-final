@@ -3,8 +3,10 @@ package com.javalab.board.controller;
 
 import com.javalab.board.dto.MonthlyOverviewDto;
 import com.javalab.board.service.ApplicationService;
+import com.javalab.board.service.CompanyService;
 import com.javalab.board.service.JobPostService;
 import com.javalab.board.service.PaymentService;
+import com.javalab.board.vo.CompanyVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +28,9 @@ public class ApiController {
 
     @Autowired
     private ApplicationService applicationService;
+
+    @Autowired
+    private CompanyService companyService;
 
     @GetMapping("/all-job-posts")
     public ResponseEntity<?> getTotalPaymentsForAllJobPosts() {
@@ -77,4 +82,6 @@ public class ApiController {
 
         return ratioMap;
     }
+
+
 }

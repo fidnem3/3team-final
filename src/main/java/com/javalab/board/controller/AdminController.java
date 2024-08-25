@@ -184,7 +184,6 @@ public class AdminController {
     }
 
 
-
     @PostMapping("/approveCompany")
     @ResponseBody
     public ResponseEntity<String> approveCompany(@RequestParam("compId") String compId) {
