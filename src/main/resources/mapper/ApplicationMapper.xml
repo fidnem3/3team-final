@@ -47,6 +47,7 @@
         WHERE JOBSEEKER_ID = #{jobSeekerId}
     </select>
 
+
     <!-- 특정 jobPostId에 대한 지원서 조회 (SELECT) -->
     <select id="selectApplicationsByJobPostId" parameterType="Long" resultMap="ApplicationMap">
         SELECT APPLICATION_ID, RESUME_ID, JOBPOST_ID, JOBSEEKER_ID, is_read, APPLIED_DATE
