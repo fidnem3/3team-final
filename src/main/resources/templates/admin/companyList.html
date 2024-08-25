@@ -17,6 +17,7 @@
         }
 
         .hidden { display: none; }
+
         .container {
             margin-top: 20px;
         }
@@ -119,7 +120,7 @@
                                 <th>NAME</th>
                                 <th>EMAIL</th>
                                 <th>BusinessNum</th>
-<!--                                <th>Homepage</th>-->
+                                <th>Homepage</th>
                                 <th>ADDRESS</th>
 <!--                                <th>Status</th>-->
                                 <th>Black</th>
@@ -137,9 +138,9 @@
                                 <td th:text="${company.companyName}">회사명</td>
                                 <td th:text="${company.email}">이메일</td>
                                 <td th:text="${company.businessNumber}">사업자 등록번호</td>
-<!--                                <td>-->
-<!--                                    <a th:href="${company.homepage}" th:text="${company.homepage}" target="_blank">홈페이지</a>-->
-<!--                                </td>-->
+                                <td>
+                                    <a th:href="${company.homepage}" th:text="${company.homepage}" target="_blank">홈페이지</a>
+                                </td>
                                 <td th:text="${company.address}">주소</td>
 <!--                                <td th:text="${company.status}">상태</td>-->
                                 <td>

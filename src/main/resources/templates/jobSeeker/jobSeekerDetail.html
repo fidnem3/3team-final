@@ -106,10 +106,8 @@
         <div class="row justify-content-center">
             <div class="col-md-4">
                 <div class="user-info">
-                    <img th:if="${jobSeeker.fileName}"
-                         th:src="@{/profile/{profileName}(profileName=${jobSeeker.fileName})}"
-                         th:alt="${jobSeeker.fileName + ' 로고'}"
-                         class="profile-pic"/>
+                    <img th:src="@{/jobSeeker/profile/{profileName}(profileName=${jobSeeker.fileName})}"
+                         alt="Profile Picture" class="profile-pic"/>
                     <h2 th:text="${jobSeeker.name}">이름</h2>
                     <p th:text="${jobSeeker.jobSeekerId}">아이디</p>
                 </div>

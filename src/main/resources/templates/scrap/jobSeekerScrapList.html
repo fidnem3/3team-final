@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/layout}">
+      layout:decorate="~{layout/layout2}">
 
 
 <head>
@@ -36,8 +36,15 @@
     <link th:href="@{/css/style.css}" rel="stylesheet">
     <style>
         .container-xxl{
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+        width: 100%
+
         }
+
+        .navbar {
+    position: sticky; /* 또는 fixed */
+    top: 0; /* 네비게이션 바가 화면 상단에 위치하도록 설정 */
+    z-index: 1000; /* 다른 요소들 위에 위치하도록 설정 */
+}
     </style>
 </head>
 
@@ -47,14 +54,12 @@
     </div>
 
     <!-- Jobs Start -->
-    <div class="container-xxl py-5">
         <div class="container">
 
             <div class="tab-class text-center">
-                <h4>스크랩 공고</h4>
-                <div class="tab-content" style="border: 2px solid #ffffff; padding: 30px; margin: auto 0; border-radius: 3px;">
+                <div class="tab-content">
                     <div id="tab-1" class="tab-pane fade show p-0 active">
-                        <div th:each="scrap : ${scrapList}" class="job-item p-4 mb-4" style="border: 1px solid #D3D3D3; width: 100%;">
+                        <div th:each="scrap : ${scrapList}" class="job-item p-4 mb-4" style="border: 2px solid #D3D3D3; width: 100%;">
                             <div class="row g-4">
                                 <div class="col-sm-12 col-md-8 d-flex align-items-center">
                                     <img class="flex-shrink-0 img-fluid border rounded"
@@ -88,7 +93,6 @@
             </div>
         </div>
 
-    </div>
 
     <!-- Job End -->
 

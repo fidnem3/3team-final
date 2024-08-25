@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
-    
+
     //파일 업로드시 바로 보이게
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -22,7 +22,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .addResourceLocations("file:/C:/filetest/upload/");
 
         registry.addResourceHandler("/upload/**")
-                        .addResourceLocations("file:/C:/filetest/upload/");
+                .addResourceLocations("file:/C:/filetest/upload/");
         // 이미지 업로드 경로 설정
         registry.addResourceHandler("/jobPost/uploaded/**")
                 .addResourceLocations("file:C:/filetest/upload/");

@@ -14,6 +14,10 @@
             margin-bottom: 60px;
         }
 
+.table img.profile-pic {
+            max-width: 100px;
+            max-height: 50px;
+        }
                 /* 검색창 스타일 */
 .form-group {
     position: relative;
@@ -78,6 +82,7 @@
                 <table class="table table-striped">
                     <thead>
                     <tr>
+                        <th>LOGO</th>
                         <th>ID</th>
                         <th>NAME</th>
                         <th>EMAIL</th>
@@ -90,6 +95,10 @@
                     </thead>
                     <tbody>
                     <tr th:each="jobSeeker : ${jobSeekers}">
+                        <td>
+                        <img th:src="@{/jobSeeker/profile/{profileName}(profileName=${jobSeeker.fileName})}"
+                             alt="Profile Picture" class="profile-pic"/>
+                        </td>
                         <td th:text="${jobSeeker.jobSeekerId}">구직자 ID</td>
                         <td th:text="${jobSeeker.name}">이름</td>
                         <td th:text="${jobSeeker.email}">이메일</td>
