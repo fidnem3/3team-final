@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/layout2}">
+      layout:decorate="~{layout/layout}">
 
 <head>
     <meta charset="UTF-8">
@@ -25,6 +25,16 @@
         .company-info {
             text-align: center;
             margin-bottom: 30px;
+            position: relative; /* Added to position the button */
+        }
+        .new-job-button {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
         }
         .info-section {
             background-color: #f8f9fa;
@@ -92,16 +102,21 @@
 <div layout:fragment="content" class="container-xxl bg-white p-0">
     <div class="container">
         <div class="row justify-content-center">
-<!--            <div class="col-md-4">-->
-<!--                <div class="company-info">-->
-<!--                    <img th:if="${company.logoName}" class="company-logo"-->
-<!--                         th:src="@{/company/logo/{logoName}(logoName=${company.logoName})}"-->
-<!--                         th:alt="${company.companyName + ' 로고'}">-->
-<!--                    <h2 th:text="${company.companyName}">회사명</h2>-->
-<!--                    <p th:text="${company.compId}">회사 ID</p>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="col-md-8">-->
+            <div class="col-md-4">
+                <div class="company-info">
+                    <img th:if="${company.logoName}" class="company-logo"
+                         th:src="@{/company/logo/{logoName}(logoName=${company.logoName})}"
+                         th:alt="${company.companyName + ' 로고'}">
+                    <h2 th:text="${company.companyName}">회사명</h2>
+                    <p th:text="${company.compId}">회사 ID</p>
+
+                    <!-- New Job Posting Button -->
+                    <a th:href="@{/jobPost/jobPostCreate}" class="new-job-button">
+                        <i class="fas fa-plus"></i> 새 공고 작성
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-8">
                 <div class="info-section" style="width: 90%;">
                     <h3>Basic Information</h3>
                     <div class="info-content">

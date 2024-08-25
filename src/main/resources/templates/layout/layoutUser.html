@@ -178,9 +178,8 @@
                 <ul class="nav flex-column">
                     <div class="sidebar-logo">
                         <li class="nav-item">
-<!--                            <img th:if="${fileName}"-->
-<!--                                 th:src="@{/jobSeeker/profile/{profileName}(profileName=${jobSeeker.fileName})}"-->
-<!--                                 alt="Company Logo"/>-->
+                            <img th:src="@{/jobSeeker/profile/{profileName}(profileName=${jobSeeker.fileName})}"
+                                                     alt="Profile Picture" class="profile-pic"/>
                         </li>
                     </div>
                     <div style="margin-top: 15px; text-align: center; font-weight: bold;">
