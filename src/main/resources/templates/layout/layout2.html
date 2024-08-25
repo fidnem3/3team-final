@@ -11,7 +11,7 @@
     <meta content="" name="description">
 
     <!-- Favicon -->
-<!--    <link th:href="@{/img/favicon.ico}" rel="icon">-->
+    <!--    <link th:href="@{/img/favicon.ico}" rel="icon">-->
 
     <script src="//cdn.ckeditor.com/4.22.1/full-all/ckeditor.js"></script>
     <!-- Google Web Fonts -->
@@ -100,9 +100,10 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
-<!--                <a id="homeLink" th:href="@{/index}" class="nav-item nav-link">Home</a>-->
+                <!--                <a id="homeLink" th:href="@{/index}" class="nav-item nav-link">Home</a>-->
                 <a th:href="@{/about}" class="nav-item nav-link" style="font-weight: bold; font-size: 20px;">소개</a>
-                <a th:href="@{/jobPost/jobPostList}" class="nav-item nav-link" style="font-weight: bold; font-size: 20px;">채용공고</a>
+                <a th:href="@{/jobPost/jobPostList}" class="nav-item nav-link"
+                   style="font-weight: bold; font-size: 20px;">채용공고</a>
 
 
                 <a th:href="@{/contact}" class="nav-item nav-link" style="font-weight: bold; font-size: 20px;">문의</a>
@@ -127,7 +128,7 @@
                 </a>
                 <div class="dropdown-menu rounded-0 m-0">
                     <a th:href="@{/company/detail}" class="dropdown-item">My page</a>
-<!--                    <a th:href="@{/company/applications}" class="dropdown-item">Company Application</a>-->
+                    <!--                    <a th:href="@{/company/applications}" class="dropdown-item">Company Application</a>-->
                     <a th:href="@{/company/settings}" class="dropdown-item">Settings</a>
                     <a th:href="@{/logout}" class="dropdown-item">Logout</a>
                 </div>
@@ -168,7 +169,9 @@
                         <ol class="breadcrumb text-uppercase">
                             <li class="breadcrumb-item"><a th:href="@{/index}">Home</a></li>
                             <li class="breadcrumb-item"><a href="#">Pages</a></li>
-                            <li id="pageName" class="breadcrumb-item text-white active" aria-current="page">Default Page</li>
+                            <li id="pageName" class="breadcrumb-item text-white active" aria-current="page">Default
+                                Page
+                            </li>
                         </ol>
                     </nav>
                 </div>
@@ -188,15 +191,15 @@
                     </div>
                     <div style="border-top: 1px solid #000080; border-bottom: 1px solid #000080; margin: 30px auto; padding-top: 30px; padding-bottom: 30px;">
                         <ul>
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/admin/companyList}">나의 정보</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/jobPost/jobPostCreate}">공고 작성하기</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/jobPost/myJobPostList}">나의 공고 리스트</a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{/admin/companyList}">나의 정보</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{/jobPost/jobPostCreate}">공고 작성하기</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{/jobPost/myJobPostList}">나의 공고 리스트</a>
+                            </li>
                         </ul>
                     </div>
                     <div style="margin-top: 8px; text-align: center; color: #b8b8b8; font-weight: bold;">
@@ -248,9 +251,11 @@
                             <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@example.com</p>
                             <div class="d-flex pt-2">
                                 <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
+                                <a class="btn btn-outline-light btn-social" href=""><i
+                                        class="fab fa-facebook-f"></i></a>
                                 <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
-                                <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
+                                <a class="btn btn-outline-light btn-social" href=""><i
+                                        class="fab fa-linkedin-in"></i></a>
                             </div>
                         </div>
                         <div class="col-lg-3 col-md-6">
@@ -259,7 +264,8 @@
                             <div class="position-relative mx-auto" style="max-width: 400px;">
                                 <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text"
                                        placeholder="Your email">
-                                <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">
+                                <button type="button"
+                                        class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">
                                     작성하기
                                 </button>
                             </div>
@@ -293,9 +299,8 @@
 </header>
 
 
-
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+<!-- Back to Top -->
+<a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
 
 
 <!-- JavaScript Libraries -->
@@ -677,11 +682,6 @@ function toggleScrap(event) {
         myModal.show();
     });
 </script>
-
-
-
-
-
 
 
 <script>
