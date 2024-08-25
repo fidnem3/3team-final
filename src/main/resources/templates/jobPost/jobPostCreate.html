@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/layout}">
+      layout:decorate="~{layout/layout2}">
 
 <head>
     <meta charset="utf-8">
     <title>JobEntry - Job Portal Website Template</title>
     <style>
         .container-xxl{
-                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
         }
 
         #jobPostForm {
@@ -75,90 +75,18 @@
             margin-top: 20px; /* Adds margin to the top if needed */
         }
 
-         .sidebar {
-         margin: 0 auto;
-         margin-top: 100px;
-            width: 20%;
-            height: 80vh; /* 화면의 50% 높이 */
-            padding: 5px;
-            border: 2px solid rgba(184, 184, 184, 0.4);
-            border-radius: 8px;
-            background-color: rgba(184, 184, 184, 0.1);
-            top: 0;
-            overflow-y: auto; /* 내용이 넘칠 경우 스크롤 가능 */
-        }
- .content {
- margin-left: 20%
-            padding: 50px;
-        }
-  .sidebar-logo {
-            width: 70%;
-            padding-top: 70%; /* 비율 유지 */
-            position: relative;
-            overflow: hidden;
-            border-radius: 50%;
-            margin: 0 auto; /* 중앙 정렬 */
-            margin-top: 30px;
-        }
-        .sidebar-logo img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* 비율 유지 */
-        }
-        .sidebar .nav-link {
-    color: #696969; /* 글씨 색상 */
-    font-weight: bold; /* 글씨 굵기 */
-}
+
 
     </style>
 </head>
 
 <body>
 <div layout:fragment="content" class="container-xxl bg-white p-0">
-    <div class="container-fluid bg-light mb-5" style="padding: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+    <div class="container-fluid bg-primary mb-5" style="padding: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
     </div>
 
-    <div class="container-fluid justify-content-between" style="padding: 50px;">
-        <div class="row">
-            <!-- 사이드바 시작 -->
-            <div class="col-md-3 sidebar">
-                <ul class="nav flex-column">
-                    <div class="sidebar-logo">
-                        <li class="nav-item">
-                            <img th:if="${logoName}"
-                                 th:src="@{/jobPost/logo/{logoName}(logoName=${logoName})}"
-                                 alt="Company Logo"/>
-                        </li>
-                    </div>
-                    <div style="margin-top: 15px; text-align: center; font-weight: bold;">
-                        <span th:text="${companyName}">company Name</span>
-                    </div>
-                    <div style="border-top: 1px solid #d3d3d3; border-bottom: 1px solid #d3d3d3; margin: 30px auto; padding-top: 30px; padding-bottom: 30px;">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">나의 정보</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">공고 작성하기</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">나의 공고 리스트</a>
-                        </li>
-                    </div>
-                    <div style="margin-top: 8px; text-align: center; color: #b8b8b8; font-weight: bold;">
-                        <p>로그아웃</p>
-                    </div>
-                </ul>
-
-            </div>
-
-
-            <!-- 사이드바 끝 -->
 
             <!-- 메인 컨텐츠 시작 -->
-            <div class="col-md-9">
                 <div style="padding: 50px;">
                     <h4>Post Create</h4>
                     <form id="jobPostForm" th:action="@{/jobPost/jobPostCreate}" th:object="${createJobPostRequestDto}"
@@ -263,6 +191,10 @@
                                     <input type="checkbox" id="skills" th:value="'Java'" th:field="*{skills}" /> Java
                                     <input type="checkbox" th:value="'Spring'" th:field="*{skills}" /> Spring
                                     <input type="checkbox" th:value="'MySQL'" th:field="*{skills}" /> MySQL
+                                    <input type="checkbox" th:value="'JavaScript'" th:field="*{skills}" /> JavaScript
+                                    <input type="checkbox" th:value="'jQuery'" th:field="*{skills}" /> jQuery
+                                    <input type="checkbox" th:value="'HTML'" th:field="*{skills}" /> HTML
+                                    <input type="checkbox" th:value="'React'" th:field="*{skills}" /> React
                                     <!-- 필요한 만큼 추가 -->
                                 </div>
                             </div>
@@ -273,13 +205,11 @@
                         </div>
                     </form>
                 </div>
-            </div>
             <!-- 메인 컨텐츠 끝 -->
 
-        </div>
+    <div class="container-fluid bg-primary mb-5" style="padding: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
     </div>
-    <div class="container-fluid bg-light mb-5" style="padding: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
-    </div>
+</div>
 </div>
 
 </body>
