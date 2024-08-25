@@ -178,25 +178,31 @@
                 <ul class="nav flex-column">
                     <div class="sidebar-logo">
                         <li class="nav-item">
-                            <img th:if="${logoName}"
-                                 th:src="@{/jobPost/logo/{logoName}(logoName=${logoName})}"
-                                 alt="Company Logo"/>
+<!--                            <img th:if="${fileName}"-->
+<!--                                 th:src="@{/jobSeeker/profile/{profileName}(profileName=${jobSeeker.fileName})}"-->
+<!--                                 alt="Company Logo"/>-->
                         </li>
                     </div>
                     <div style="margin-top: 15px; text-align: center; font-weight: bold;">
-                        <span th:text="${companyName}">company Name</span>
+                        <span th:text="${jobSeeker.name}">User Name</span>
                     </div>
                     <div style="border-top: 1px solid #000080; border-bottom: 1px solid #000080; margin: 30px auto; padding-top: 30px; padding-bottom: 30px;">
                         <ul>
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/company/detail}">나의 정보</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/jobPost/jobPostCreate}">공고 작성하기</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/jobPost/myJobPostList}">나의 공고 리스트</a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{/jobSeeker/detail}">나의 정보</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{/resume/save}">이력서 작성하기</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{/resume/list}">나의 이력서</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{/application/list}">나의 지원 공고</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{/jobSeeker/scrap/list}">나의 스크랩</a>
+                            </li>
                         </ul>
                     </div>
                     <div style="margin-top: 8px; text-align: center; color: #b8b8b8; font-weight: bold;">
