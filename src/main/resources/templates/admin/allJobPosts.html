@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/layout}">
+      layout:decorate="~{layout/layout3}">
 
 <head>
     <meta charset="utf-8">
@@ -11,7 +11,13 @@
     <style>
         .container-xxl{
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+            margin-bottom: 30px;
         }
+        .container {
+        max-width: 3000px; /* 필요에 따라 부모 컨테이너의 최대 너비를 조정 */
+        margin: 0 auto;
+        }
+
         table {
             width: 80%;
             border-collapse: collapse;
@@ -121,5 +127,4 @@
     </div>
 </div>
 </body>
-
 </html>

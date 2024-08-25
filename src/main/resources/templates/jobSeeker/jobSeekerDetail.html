@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/layout}">
+      layout:decorate="~{layout/layoutUser}">
 
 <head>
     <meta charset="UTF-8">
@@ -104,16 +104,16 @@
 <div layout:fragment="content" class="container-xxl bg-white p-0">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-4">
-                <div class="user-info">
-                    <img th:src="@{/jobSeeker/profile/{profileName}(profileName=${jobSeeker.fileName})}"
-                         alt="Profile Picture" class="profile-pic"/>
-                    <h2 th:text="${jobSeeker.name}">이름</h2>
-                    <p th:text="${jobSeeker.jobSeekerId}">아이디</p>
-                </div>
-            </div>
-            <div class="col-md-8">
-                <div class="info-section">
+<!--            <div class="col-md-4">-->
+<!--                <div class="user-info">-->
+<!--                    <img th:src="@{/jobSeeker/profile/{profileName}(profileName=${jobSeeker.fileName})}"-->
+<!--                         alt="Profile Picture" class="profile-pic"/>-->
+<!--                    <h2 th:text="${jobSeeker.name}">이름</h2>-->
+<!--                    <p th:text="${jobSeeker.jobSeekerId}">아이디</p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="col-md-8">-->
+                <div class="info-section" style="width: 90%;">
                     <h3>My Profile</h3>
                     <div class="info-content">
                         <div class="row">
@@ -134,7 +134,7 @@
                     </div>
                 </div>
 
-                <div class="card-menu" sec:authorize="hasRole('ROLE_USER')">
+                <div class="card-menu" sec:authorize="hasRole('ROLE_USER')" style="width: 90%;">
                     <div class="card">
                         <i class="fas fa-file-alt"></i>
                         <h4>나의 이력서</h4>

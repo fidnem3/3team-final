@@ -11,7 +11,7 @@
     <meta content="" name="description">
 
     <!-- Favicon -->
-    <link th:href="@{/img/favicon.ico}" rel="icon">
+<!--    <link th:href="@{/img/favicon.ico}" rel="icon">-->
 
     <script src="//cdn.ckeditor.com/4.22.1/full-all/ckeditor.js"></script>
     <!-- Google Web Fonts -->
@@ -47,6 +47,45 @@
         .nav-item nav-link{
          font-weight: bold;
         }
+         .sidebar {
+        width: 20%; /* 화면의 20% 차지 */
+        height: 60%; /* 전체 화면 높이 */
+        padding: 5px;
+        border: 3px solid rgba(184, 184, 184, 0.4);
+          background-color: rgba(173, 216, 230, 0.4);
+        left: 0; /* 왼쪽에 고정 */
+        overflow-y: auto; /* 내용이 넘칠 경우 스크롤 가능 */
+    }
+  .sidebar-logo {
+            width: 70%;
+            padding-top: 70%; /* 비율 유지 */
+            position: relative;
+            overflow: hidden;
+            border-radius: 50%;
+            margin: 0 auto; /* 중앙 정렬 */
+            margin-top: 25%;
+        }
+        .sidebar-logo img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* 비율 유지 */
+        }
+        .sidebar .nav-link {
+    color: #778899; /* 글씨 색상 */
+    font-weight: bold; /* 글씨 굵기 */
+}
+         .content-wrapper {
+        margin-left: 20%; /* 사이드바의 폭만큼 마진을 줌 */
+        width: 80%; /* 나머지 부분이 화면의 80% 차지 */
+        padding: 0; /* 패딩 없앰 */
+    }
+         .content {
+        width: 100%; /* 콘텐츠가 100% 폭을 차지 */
+    }
+
     </style>
 </head>
 <body>
@@ -59,81 +98,19 @@
         <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse" style="margin-left: 20%;">
+        <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
-                <a id="homeLink" th:href="@{/index}" class="nav-item nav-link">Home</a>
-                <a th:href="@{/about}" class="nav-item nav-link">About</a>
-                <a th:href="@{/jobPost/jobPostList}" class="nav-item nav-link">채용공고</a>
 <!--                <a id="homeLink" th:href="@{/index}" class="nav-item nav-link">Home</a>-->
                 <a th:href="@{/about}" class="nav-item nav-link" style="font-weight: bold; font-size: 20px;">소개</a>
                 <a th:href="@{/jobPost/jobPostList}" class="nav-item nav-link" style="font-weight: bold; font-size: 20px;">채용공고</a>
 
 
-                <div class="nav-item dropdown" sec:authorize="!hasRole('ROLE_USER')">
-                    <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown" sec:authorize="!hasRole('ROLE_COMPANY')">Jobs</a>
-                    <div class="dropdown-menu rounded-0 m-0">
-                        <a th:href="@{/admin/companyList}" class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')">Company
-                            List</a>
-                        <a th:href="@{/jobPost/jobPostList}" class="dropdown-item">Job List</a>
-                        <a th:href="@{/jobPost/myJobPostList}" class="dropdown-item"
-                           sec:authorize="hasRole('ROLE_COMPANY')">My Post</a>
-                        <a th:href="@{/jobSeeker/scrap/list}" class="dropdown-item"
-                           sec:authorize="hasRole('ROLE_USER')">My Scrap</a>
-                        <!--                        <a th:href="@{/admin/jobPostsList}" class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')">ManageBlackCom</a>-->
-                    </div>
-                </div>
-                <div class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
-                    <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">JobSeekers</a>
-                    <div class="dropdown-menu rounded-0 m-0">
-                        <a th:href="@{/admin/jobSeekerList}" class="dropdown-item">JobSeeker List</a>
-                        <!--                        <a th:href="@{/jobSeeker/jobSeekerManagement}" class="dropdown-item">ManageBlackJob</a>-->
-                    </div>
-                </div>
-<!--                <div class="nav-item dropdown" sec:authorize="!hasRole('ROLE_ADMIN')">-->
-<!--                    <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown" sec:authorize="hasRole('ROLE_COMPANY')">Resume</a>-->
-<!--                    <div class="dropdown-menu rounded-0 m-0">-->
-<!--                        <a th:href="@{/resume/save}" class="dropdown-item">New Resume</a>-->
-<!--                        <a th:href="@{/resume/list}" class="dropdown-item">Resume List</a>-->
-<!--                        <a th:href="@{/application/list}" class="dropdown-item" sec:authorize="hasRole('ROLE_USER')">My-->
-<!--                            Job Applications-->
-<!--                        </a>-->
-<!--                    </div>-->
-<!--                </div>-->
-
                 <a th:href="@{/contact}" class="nav-item nav-link" style="font-weight: bold; font-size: 20px;">문의</a>
             </div>
 
-            <!--            <div sec:authorize="hasRole('COMPANY')">-->
-            <!--                &lt;!&ndash; 기업 회원 메뉴 &ndash;&gt;-->
-            <!--                <div class="nav-item dropdown">-->
-            <!--                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">-->
-            <!--                        <i class="fa fa-building"></i> Company Menu-->
-            <!--                    </a>-->
-            <!--                    <div class="dropdown-menu rounded-0 m-0">-->
-            <!--                        <a th:href="@{/company/detail}" class="dropdown-item">My page</a>-->
-            <!--                        <a th:href="@{/company/applications}" class="dropdown-item">Company Application</a>-->
-            <!--                        <a th:href="@{/company/settings}" class="dropdown-item">Settings</a>-->
-            <!--                        <a th:href="@{/logout}" class="dropdown-item">Logout</a>-->
-            <!--                    </div>-->
-
-            <!--                    &lt;!&ndash; 종 아이콘 추가 &ndash;&gt;-->
-            <!--                    <div class="nav-item">-->
-            <!--                        <a th:href="@{/company/applications}" class="nav-link position-relative">-->
-            <!--                            <i class="fa fa-bell"></i>-->
-            <!--                            <div th:text="${unreadApplicationCount}"></div>-->
-            <!--                            <span th:if="${unreadApplicationCount > 0}"-->
-            <!--                                  th:text="${unreadApplicationCount}"-->
-            <!--                                  class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">-->
-            <!--                            0-->
-            <!--                        </span>-->
-            <!--                        </a>-->
-            <!--                    </div>-->
-            <!--                </div>-->
         </div>
 
         <div sec:authorize="hasRole('COMPANY')" class="d-flex align-items-center">
-
-            <!-- 종 아이콘 추가 -->
             <div class="nav-item ms-0"> <!-- ms-0 클래스 추가 -->
                 <a th:href="@{/company/applications}" class="nav-link position-relative">
                     <i class="fa fa-bell"></i>
@@ -143,8 +120,6 @@
                     </span>
                 </a>
             </div>
-        </div>
-
             <!-- 기업 회원 메뉴 -->
             <div class="nav-item dropdown me-2"> <!-- me-3에서 me-2로 변경 -->
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
@@ -158,6 +133,7 @@
                 </div>
             </div>
 
+            <!-- 종 아이콘 추가 -->
 
         </div>
 
@@ -176,19 +152,6 @@
                 </div>
             </div>
         </div>
-        <!-- 관리자 메뉴: ADMIN 역할을 가진 사용자에게만 보임 -->
-        <div sec:authorize="hasRole('ADMIN')">
-            <div class="nav-item dropdown">
-                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                    <i class="fa fa-user-shield"></i> Admin Menu
-                </a>
-                <div class="dropdown-menu rounded-0 m-0">
-                    <a th:href="@{/admin/admin}" class="dropdown-item">Admin Dashboard</a>
-                    <a th:href="@{/admin/blacklist}" class="dropdown-item">ManageBlack</a>
-                    <a th:href="@{/logout}" class="dropdown-item">Logout</a>
-                </div>
-            </div>
-        </div>
         <a sec:authorize="!isAuthenticated()"
            th:href="@{/member/login}" class="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block">
             Sign In<i class="fa fa-arrow-right ms-3"></i>
@@ -196,109 +159,147 @@
         </div>
     </nav>
     <!-- 상단 끝 -->
-
-    <!-- 헤더 -->
-    <div id="pageHeader" class="container-xxl py-5 bg-dark page-header mb-5">
-        <div class="container my-5 pt-5 pb-4">
-            <h1 id="pageTitle" class="display-3 text-white mb-3 animated slideInDown">Default Title</h1>
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb text-uppercase">
-                    <li class="breadcrumb-item"><a th:href="@{/index}">Home</a></li>
-                    <li class="breadcrumb-item"><a href="#">Pages</a></li>
-                    <li id="pageName" class="breadcrumb-item text-white active" aria-current="page">Default Page</li>
-                </ol>
-            </nav>
-        </div>
-    </div>
-
-
-    <div class="container-xxl bg-white p-0">
-        <!-- Spinner Start -->
-        <div id="spinner"
-             class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-                <span class="sr-only" th:text="#{loading}">Loading...</span>
-            </div>
-        </div>
-    </div>
-    <!-- Spinner End -->
-</header>
-<!-- 콘텐츠가 삽입될 위치 -->
-<main layout:fragment="content">
-    <!-- 기본 콘텐츠 -->
-</main>
-
-<footer>
-    <!-- Footer Start -->
-    <div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
-        <div class="container py-5">
-            <div class="row g-5">
-                <div class="col-lg-3 col-md-6">
-                    <h5 class="text-white mb-4">Company</h5>
-                    <a class="btn btn-link text-white-50" href="">About Us</a>
-                    <a class="btn btn-link text-white-50" href="">Contact Us</a>
-                    <a class="btn btn-link text-white-50" href="">Our Services</a>
-                    <a class="btn btn-link text-white-50" href="">Privacy Policy</a>
-                    <a class="btn btn-link text-white-50" href="">Terms & Condition</a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h5 class="text-white mb-4">Quick Links</h5>
-                    <a class="btn btn-link text-white-50" href="">About Us</a>
-                    <a class="btn btn-link text-white-50" href="">Contact Us</a>
-                    <a class="btn btn-link text-white-50" href="">Our Services</a>
-                    <a class="btn btn-link text-white-50" href="">Privacy Policy</a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h5 class="text-white mb-4">Contact</h5>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>123로, 도봉구, 서울시, 대한민국</p>
-                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>02 1111 1111 </p>
-                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@example.com</p>
-                    <div class="d-flex pt-2">
-                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
-                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h5 class="text-white mb-4">문의사항</h5>
-                    <p>관리자에게 이메일을 보냅니다.</p>
-                    <div class="position-relative mx-auto" style="max-width: 400px;">
-                        <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text"
-                               placeholder="Your email">
-                        <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">
-                            작성하기
-                        </button>
-                    </div>
+    <div class="container justify-content-between">
+        <div class="row">
+            <div id="pageHeader" class="container-xxl py-5 bg-dark page-header mb-5">
+                <div class="container my-5 pt-5 pb-4">
+                    <h1 id="pageTitle" class="display-3 text-white mb-3 animated slideInDown">Default Title</h1>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb text-uppercase">
+                            <li class="breadcrumb-item"><a th:href="@{/index}">Home</a></li>
+                            <li class="breadcrumb-item"><a href="#">Pages</a></li>
+                            <li id="pageName" class="breadcrumb-item text-white active" aria-current="page">Default Page</li>
+                        </ol>
+                    </nav>
                 </div>
             </div>
-        </div>
-        <div class="container">
-            <div class="copyright">
-                <div class="row">
-                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                        &copy; <a class="border-bottom" href="#">Deltopia</a>, All Right Reserved.
-
-                        <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-                        Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a>
+            <!-- 사이드바 시작 -->
+            <div class="col-md-2 sidebar" style="left:0;">
+                <ul class="nav flex-column">
+                    <div class="sidebar-logo">
+                        <li class="nav-item">
+<!--                            <img th:if="${fileName}"-->
+<!--                                 th:src="@{/jobSeeker/profile/{profileName}(profileName=${jobSeeker.fileName})}"-->
+<!--                                 alt="Company Logo"/>-->
+                        </li>
                     </div>
-                    <div class="col-md-6 text-center text-md-end">
-                        <div class="footer-menu">
-                            <a href="">Home</a>
-                            <a href="">Cookies</a>
-                            <a href="">Help</a>
-                            <a href="">FQAs</a>
+                    <div style="margin-top: 15px; text-align: center; font-weight: bold;">
+                        <span th:text="${jobSeeker.name}">User Name</span>
+                    </div>
+                    <div style="border-top: 1px solid #000080; border-bottom: 1px solid #000080; margin: 30px auto; padding-top: 30px; padding-bottom: 30px;">
+                        <ul>
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{/jobSeeker/detail}">나의 정보</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{/resume/save}">이력서 작성하기</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{/resume/list}">나의 이력서</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{/application/list}">나의 지원 공고</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{/jobSeeker/scrap/list}">나의 스크랩</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div style="margin-top: 8px; text-align: center; color: #b8b8b8; font-weight: bold;">
+                        <p>로그아웃</p>
+                    </div>
+                </ul>
+            </div>
+            <!-- 사이드바 끝 -->
+
+            <!-- 나머지 부분 시작 -->
+            <div class="col-md-10" style="width: 80%;">
+                <!-- 헤더 -->
+
+
+                <!-- 콘텐츠가 삽입될 위치 -->
+                <main layout:fragment="content">
+                    <!-- 기본 콘텐츠 -->
+                </main>
+
+
+            </div>
+            <!-- 나머지 부분 끝 -->
+
+        </div>
+        <footer>
+            <!-- Footer Start -->
+            <div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
+                <div class="container py-5">
+                    <div class="row g-5">
+                        <div class="col-lg-3 col-md-6">
+                            <h5 class="text-white mb-4">Company</h5>
+                            <a class="btn btn-link text-white-50" href="">About Us</a>
+                            <a class="btn btn-link text-white-50" href="">Contact Us</a>
+                            <a class="btn btn-link text-white-50" href="">Our Services</a>
+                            <a class="btn btn-link text-white-50" href="">Privacy Policy</a>
+                            <a class="btn btn-link text-white-50" href="">Terms & Condition</a>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <h5 class="text-white mb-4">Quick Links</h5>
+                            <a class="btn btn-link text-white-50" href="">About Us</a>
+                            <a class="btn btn-link text-white-50" href="">Contact Us</a>
+                            <a class="btn btn-link text-white-50" href="">Our Services</a>
+                            <a class="btn btn-link text-white-50" href="">Privacy Policy</a>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <h5 class="text-white mb-4">Contact</h5>
+                            <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>123로, 도봉구, 서울시, 대한민국</p>
+                            <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>02 1111 1111 </p>
+                            <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@example.com</p>
+                            <div class="d-flex pt-2">
+                                <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
+                                <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
+                                <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
+                                <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <h5 class="text-white mb-4">문의사항</h5>
+                            <p>관리자에게 이메일을 보냅니다.</p>
+                            <div class="position-relative mx-auto" style="max-width: 400px;">
+                                <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text"
+                                       placeholder="Your email">
+                                <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">
+                                    작성하기
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="copyright">
+                        <div class="row">
+                            <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                                &copy; <a class="border-bottom" href="#">Deltopia</a>, All Right Reserved.
+
+                                <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                                Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a>
+                            </div>
+                            <div class="col-md-6 text-center text-md-end">
+                                <div class="footer-menu">
+                                    <a href="">Home</a>
+                                    <a href="">Cookies</a>
+                                    <a href="">Help</a>
+                                    <a href="">FQAs</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+            <!-- Footer End -->
+        </footer>
     </div>
-    <!-- Footer End -->
+
 
     <!-- Back to Top -->
     <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-</footer>
 
 
 <!-- JavaScript Libraries -->
@@ -365,21 +366,9 @@
         } else if (path === '/anotherPage') {
             pageTitle.textContent = 'Another Page';
             pageName.textContent = 'Another Page';
-        } else if (path === '/jobSeeker/scrap/list') {
-            pageTitle.textContent = '스크랩 공고';
-            pageName.textContent = 'ScrapList';
-        }  else if (path === '/resume/save') {
-            pageTitle.textContent = '이력서 작성';
-            pageName.textContent = 'New Resume';
-        } else if (path === '/resume/list') {
-            pageTitle.textContent = '이력서 목록';
-            pageName.textContent = 'Resume List';
-        } else if (path === '/application/list') {
-            pageTitle.textContent = '내가 지원한 공고';
-            pageName.textContent = 'Application List';
-        } else if (path === '/company/applications') {
-            pageTitle.textContent = '지원자 현항';
-            pageName.textContent = 'Company Applications';
+        } else if (path === '/anotherPage') {
+            pageTitle.textContent = 'Another Page';
+            pageName.textContent = 'Another Page';
         }
     });
 
@@ -485,21 +474,6 @@ function toggleScrap(event) {
         } else if (path === '/anotherPage') {
             pageTitle.textContent = 'Another Page';
             pageName.textContent = 'Another Page';
-        }  else if (path === '/jobSeeker/scrap/list') {
-            pageTitle.textContent = '스크랩 공고';
-            pageName.textContent = 'ScrapList';
-        }  else if (path === '/resume/save') {
-            pageTitle.textContent = '이력서 작성';
-            pageName.textContent = 'New Resume';
-        } else if (path === '/resume/list') {
-            pageTitle.textContent = '이력서 목록';
-            pageName.textContent = 'Resume List';
-        } else if (path === '/application/list') {
-            pageTitle.textContent = '내가 지원한 공고';
-            pageName.textContent = 'Application List';
-        } else if (path === '/company/applications') {
-            pageTitle.textContent = '지원자 현항';
-            pageName.textContent = 'Company Applications';
         }
     });
 
@@ -685,7 +659,6 @@ function toggleScrap(event) {
             $('#blacklistReasonModal').modal('hide');
         });
 
-        // 블랙리스트 토글 함수
         function toggleBlacklist(id, type, reason) {
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
@@ -737,84 +710,6 @@ function toggleScrap(event) {
     });
 </script>
 
-
-<!--&lt;!&ndash; 블랙리스트 &ndash;&gt;-->
-<!--<script>-->
-<!--    $(document).ready(function () {-->
-<!--        // 블랙리스트 토글 기능-->
-<!--        $('.toggle-blacklist').click(function() {-->
-<!--            var id = $(this).data('id');-->
-<!--            var type = $(this).data('type');-->
-<!--            var isCurrentlyBlacklisted = $(this).text().includes('해제');-->
-
-<!--            if (isCurrentlyBlacklisted) {-->
-<!--                // 블랙리스트 해제-->
-<!--                toggleBlacklist(id, type, '');-->
-<!--            } else {-->
-<!--                // 블랙리스트 등록-->
-<!--                $('#blacklistReasonModal').modal('show');-->
-<!--                $('#confirmBlacklist').data('id', id).data('type', type);-->
-<!--            }-->
-<!--        });-->
-
-<!--        $('#confirmBlacklist').click(function() {-->
-<!--            var id = $(this).data('id');-->
-<!--            var type = $(this).data('type');-->
-<!--            var reason = $('#blacklistReason').val();-->
-<!--            toggleBlacklist(id, type, reason);-->
-<!--            $('#blacklistReasonModal').modal('hide');-->
-<!--        });-->
-
-<!--        function toggleBlacklist(id, type, reason) {-->
-<!--            var token = $("meta[name='_csrf']").attr("content");-->
-<!--            var header = $("meta[name='_csrf_header']").attr("content");-->
-
-<!--            $.ajax({-->
-<!--                url: '/admin/blacklist/toggle',-->
-<!--                type: 'POST',-->
-<!--                contentType: 'application/json',-->
-<!--                data: JSON.stringify({-->
-<!--                    id: id,-->
-<!--                    type: type,-->
-<!--                    reason: reason-->
-<!--                }),-->
-<!--                beforeSend: function(xhr) {-->
-<!--                    xhr.setRequestHeader(header, token);-->
-<!--                },-->
-<!--                success: function(response) {-->
-<!--                    var button = $(`button[data-id="${id}"]`);-->
-<!--                    var statusCell = button.closest('tr').find('td:nth-child(7)');-->
-
-<!--                    if (response.isBlacklisted) {-->
-<!--                        button.html('<i class="fas fa-sync-alt"></i> 블랙리스트 해제');-->
-<!--                        statusCell.html('블랙리스트');-->
-<!--                        Swal.fire({-->
-<!--                            icon: 'success',-->
-<!--                            title: '성공',-->
-<!--                            text: '블랙리스트에 추가되었습니다.'-->
-<!--                        });-->
-<!--                    } else {-->
-<!--                        button.html('<i class="fas fa-sync-alt"></i> 블랙리스트 등록');-->
-<!--                        statusCell.html('정상');-->
-<!--                        Swal.fire({-->
-<!--                            icon: 'success',-->
-<!--                            title: '성공',-->
-<!--                            text: '블랙리스트에서 제거되었습니다.'-->
-<!--                        });-->
-<!--                    }-->
-<!--                },-->
-<!--                error: function(xhr, status, error) {-->
-<!--                    console.error('Error:', error);-->
-<!--                    Swal.fire({-->
-<!--                        icon: 'error',-->
-<!--                        title: '오류',-->
-<!--                        text: '오류가 발생했습니다: ' + error-->
-<!--                    });-->
-<!--                }-->
-<!--            });-->
-<!--        }-->
-<!--    });-->
-<!--</script>-->
 
 <!--<script>-->
 <!--    function toggleBlacklist(jobSeekerId, compId, button) {-->
@@ -1084,7 +979,10 @@ function toggleScrap(event) {
         });
     });
 });
+
+
 </script>
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const filterButtons = document.querySelectorAll('.filter-button');
@@ -1113,6 +1011,5 @@ function toggleScrap(event) {
         });
     });
 </script>
-
 </body>
 </html>
