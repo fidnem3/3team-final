@@ -182,8 +182,16 @@ public class JobPostController {
     @GetMapping("/myJobPostList")
     public String getMyJobPosts(Model model) {
         List<JobPostVo> jobPosts = jobPostService.getJobPostsByCompany();
+        // 사용자 인증 정보 얻기
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String compId = ((UserDetails) authentication.getPrincipal()).getUsername();
+
+        CompanyVo companyVo = companyService.getCompanyById(compId);
+        String logoPath = companyVo != null ? companyVo.getLogoPath() : null;
+        String logoName = companyVo != null ? companyVo.getLogoName() : null;
 
         model.addAttribute("jobPosts", jobPosts);
+        model.addAttribute("logoName", logoName);
 
         return "jobPost/myJobPostList"; // Thymeleaf 템플릿 이름
 
