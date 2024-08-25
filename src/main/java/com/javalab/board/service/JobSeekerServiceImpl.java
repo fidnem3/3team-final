@@ -69,6 +69,7 @@ public class JobSeekerServiceImpl implements JobSeekerService {
         return jobSeekerMapper.selectJobSeekerById(jobSeekerVo.getJobSeekerId());
     }
 
+
     @Override
     @Transactional
     public void deleteJobSeeker(String jobSeekerId) {

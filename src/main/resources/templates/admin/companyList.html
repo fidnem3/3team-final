@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/layout}">
+      layout:decorate="~{layout/layout3}">
 
 <head>
     <meta charset="UTF-8">
@@ -13,12 +13,16 @@
     <style>
         .container-xxl{
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+            margin-bottom: 60px;
         }
 
         .hidden { display: none; }
-        .container {
-            margin-top: 20px;
+
+       .container {
+        max-width: 2000px; /* 필요에 따라 부모 컨테이너의 최대 너비를 조정 */
+        margin: 0 auto;
         }
+
         .table img.company-logo {
             max-width: 100px;
             max-height: 50px;
@@ -29,55 +33,67 @@
         }
 
         /* 검색창 스타일 */
-.form-group {
-    position: relative;
-    margin-bottom: 20px; /* 검색창과 탭 사이의 간격을 늘림 */
-}
+        .form-group {
+            position: relative;
+            margin-bottom: 20px; /* 검색창과 탭 사이의 간격을 늘림 */
+        }
 
-#searchInput {
-    padding-right: 40px; /* 검색 아이콘을 위한 여백 */
-    border-radius: 0.25rem;
-    border: 1px solid #ced4da;
-    box-shadow: inset 0 1px 2px rgba(0,0,0,0.075);
-    background-color: #f8f9fa; /* 검색창 배경 색상 */
-    color: #495057; /* 입력 텍스트 색상 */
-}
+        #searchInput {
+            padding-right: 40px; /* 검색 아이콘을 위한 여백 */
+            border-radius: 0.25rem;
+            border: 1px solid #ced4da;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.075);
+            background-color: #f8f9fa; /* 검색창 배경 색상 */
+            color: #495057; /* 입력 텍스트 색상 */
+        }
 
-#searchInput::placeholder {
-    color: #6c757d; /* 플레이스홀더 텍스트 색상 */
-    opacity: 1; /* Edge cases for placeholder opacity */
-}
+        #searchInput::placeholder {
+            color: #6c757d; /* 플레이스홀더 텍스트 색상 */
+            opacity: 1; /* Edge cases for placeholder opacity */
+        }
 
-#searchInput:focus {
-    border-color: #80bdff;
-    outline: 0;
-    box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25);
-    background-color: #ffffff; /* 포커스 시 배경 색상 */
-}
+        #searchInput:focus {
+            border-color: #80bdff;
+            outline: 0;
+            box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25);
+            background-color: #ffffff; /* 포커스 시 배경 색상 */
+        }
 
-/* 검색 아이콘 */
-.search-icon {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #6c757d;
-    font-size: 16px;
-    pointer-events: none;
-}
+        /* 검색 아이콘 */
+        .search-icon {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
+            font-size: 16px;
+            pointer-events: none;
+        }
 
-/* 탭 버튼 스타일 */
-.nav-tabs {
-    margin-bottom: 20px; /* 탭과 다른 요소 간격 */
-}
+        /* 탭 버튼 스타일 */
+        .nav-tabs {
+            margin-bottom: 20px; /* 탭과 다른 요소 간격 */
+        }
+        .title {
+            margin-bottom: 20px; /* 제목과 검색창 사이 간격 */
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
 
+        .tab-content {
+    width: 100% !important; /* 가로 크기 100% */
+    padding: 20px; /* 패딩을 추가하여 내부 요소와의 간격을 조정 */
+    margin: 0 auto; /* 수평 중앙 정렬 */
+    box-sizing: border-box; /* 패딩 포함하여 크기 계산 */
+}
     </style>
 </head>
 
 <body>
 <div layout:fragment="content" class="container-xxl bg-white p-0">
     <div class="container">
-        <!--        <h1>기업회원 목록</h1>-->
+        <!-- 기업 목록 제목 추가 -->
+        <div class="title" >기업 목록</div>
 
         <div th:if="${message}" class="alert alert-success" role="alert">
             <span th:text="${message}"></span>
@@ -105,7 +121,7 @@
             </li>
         </ul>
 
-        <div class="tab-content mt-3" id="myTabContent">
+        <div class="tab-content mt-3    " id="myTabContent">
             <!-- 승인된 기업 목록 테이블 -->
             <div class="tab-pane fade show active" id="approved" role="tabpanel" aria-labelledby="approved-tab">
                 <div class="row">
@@ -113,14 +129,14 @@
                         <table class="table table-striped">
                             <thead>
                             <tr>
-                                <th>LOGO</th>
+                                <th >LOGO</th>
                                 <th>ID</th>
                                 <th>NAME</th>
                                 <th>EMAIL</th>
                                 <th>BusinessNum</th>
-                                <!--                                <th>Homepage</th>-->
+                                <th>Homepage</th>
                                 <th>ADDRESS</th>
-                                <!--                                <th>Status</th>-->
+<!--                                <th>Status</th>-->
                                 <th>Black</th>
                                 <th>OPTION</th>
                             </tr>
@@ -135,14 +151,12 @@
                                 <td th:text="${company.compId}">회사 ID</td>
                                 <td th:text="${company.companyName}">회사명</td>
                                 <td th:text="${company.email}">이메일</td>
-                                <td th:text="${company.isBlacklisted}">이메일</td>
                                 <td th:text="${company.businessNumber}">사업자 등록번호</td>
-
-                                <!--                                <td>-->
-                                <!--                                    <a th:href="${company.homepage}" th:text="${company.homepage}" target="_blank">홈페이지</a>-->
-                                <!--                                </td>-->
+                                <td>
+                                    <a th:href="${company.homepage}" th:text="${company.homepage}" target="_blank">홈페이지</a>
+                                </td>
                                 <td th:text="${company.address}">주소</td>
-                                <!--                                <td th:text="${company.status}">상태</td>-->
+<!--                                <td th:text="${company.status}">상태</td>-->
                                 <td>
                                     <!-- 블랙리스트 상태를 아이콘으로 표시 -->
                                     <i th:class="${company.isBlacklisted ? 'fas fa-ban text-danger' : 'fas fa-check-circle text-success'}"></i>
@@ -161,10 +175,10 @@
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
                                     </form>
-                                    <!--                                    <button class="btn btn-warning btn-sm toggle-blacklist"-->
-                                    <!--                                            th:attr="data-id=${company.compId}, data-type='company'"-->
-                                    <!--                                            th:text="${company.isBlacklisted ? '블랙리스트 해제' : '블랙리스트 등록'}">-->
-                                    <!--                                    </button>-->
+<!--                                    <button class="btn btn-warning btn-sm toggle-blacklist"-->
+<!--                                            th:attr="data-id=${company.compId}, data-type='company'"-->
+<!--                                            th:text="${company.isBlacklisted ? '블랙리스트 해제' : '블랙리스트 등록'}">-->
+<!--                                    </button>-->
                                     <!-- 블랙리스트 상태 변경 버튼(아이콘) -->
                                     <button class="btn btn-sm btn-warning btn-icon toggle-blacklist"
                                             th:attr="data-id=${company.compId}, data-type='company'">
@@ -193,8 +207,8 @@
                                 <th>BusinessNum</th>
                                 <th>HOMEPAGE</th>
                                 <th>ADDRESS</th>
-                                <!--                                <th>Status</th>-->
-                                <!--                                <th>Black</th>-->
+<!--                                <th>Status</th>-->
+<!--                                <th>Black</th>-->
                                 <th>OPTION</th>
                             </tr>
                             </thead>
@@ -208,20 +222,19 @@
                                 <td th:text="${company.compId}">회사 ID</td>
                                 <td th:text="${company.companyName}">회사명</td>
                                 <td th:text="${company.email}">이메일</td>
-                                <td th:text="${company.isBlacklisted}">이메일</td>
                                 <td th:text="${company.businessNumber}">사업자 등록번호</td>
                                 <td>
                                     <a th:href="${company.homepage}" th:text="${company.homepage}"
                                        target="_blank">홈페이지</a>
                                 </td>
                                 <td th:text="${company.address}">주소</td>
-                                <!--                                <td th:text="${company.status}">상태</td>-->
-                                <!--                                <td th:text="${company.isBlacklisted ? '블랙리스트' : '정상'}">블랙리스트 상태</td>-->
+<!--                                <td th:text="${company.status}">상태</td>-->
+<!--                                <td th:text="${company.isBlacklisted ? '블랙리스트' : '정상'}">블랙리스트 상태</td>-->
                                 <td>
-                                    <!--                                    <a th:href="@{/admin/company/detail/{id}(id=${company.compId})}"-->
-                                    <!--                                       class="btn btn-info btn-custom">-->
-                                    <!--                                        <i class="fas fa-info-circle"></i> 상세보기-->
-                                    <!--                                    </a>-->
+<!--                                    <a th:href="@{/admin/company/detail/{id}(id=${company.compId})}"-->
+<!--                                       class="btn btn-info btn-custom">-->
+<!--                                        <i class="fas fa-info-circle"></i> 상세보기-->
+<!--                                    </a>-->
                                     <!-- 상세보기 버튼(아이콘) -->
                                     <a th:href="@{/admin/company/detail/{id}(id=${company.compId})}"
                                        class="btn btn-sm btn-light btn-custom">
@@ -288,11 +301,11 @@
             </div>
         </div>
     </div>
+</div>
     <!-- jQuery 및 Bootstrap JS 추가 -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
     <script>
         $(document).ready(function() {
             var compId;
@@ -319,86 +332,6 @@
             });
         });
     </script>
-
-    <!-- 블랙리스트 -->
-    <script>
-        $(document).ready(function () {
-            // 블랙리스트 토글 기능
-            $('.toggle-blacklist').click(function() {
-                var id = $(this).data('id');
-                var type = $(this).data('type');
-                var isCurrentlyBlacklisted = $(this).text().includes('해제');
-
-                if (isCurrentlyBlacklisted) {
-                    // 블랙리스트 해제
-                    toggleBlacklist(id, type, '');
-                } else {
-                    // 블랙리스트 등록
-                    $('#blacklistReasonModal').modal('show');
-                    $('#confirmBlacklist').data('id', id).data('type', type);
-                }
-            });
-
-            $('#confirmBlacklist').click(function() {
-                var id = $(this).data('id');
-                var type = $(this).data('type');
-                var reason = $('#blacklistReason').val();
-                toggleBlacklist(id, type, reason);
-                $('#blacklistReasonModal').modal('hide');
-            });
-
-            function toggleBlacklist(id, type, reason) {
-                var token = $("meta[name='_csrf']").attr("content");
-                var header = $("meta[name='_csrf_header']").attr("content");
-
-                $.ajax({
-                    url: '/admin/blacklist/toggle',
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify({
-                        id: id,
-                        type: type,
-                        reason: reason
-                    }),
-                    beforeSend: function(xhr) {
-                        xhr.setRequestHeader(header, token);
-                    },
-                    success: function(response) {
-                        var button = $(`button[data-id="${id}"]`);
-                        var statusCell = button.closest('tr').find('td:nth-child(7)');
-
-                        if (response.isBlacklisted) {
-                            button.html('<i class="fas fa-sync-alt"></i> 블랙리스트 해제');
-                            statusCell.html('블랙리스트');
-                            Swal.fire({
-                                icon: 'success',
-                                title: '성공',
-                                text: '블랙리스트에 추가되었습니다.'
-                            });
-                        } else {
-                            button.html('<i class="fas fa-sync-alt"></i> 블랙리스트 등록');
-                            statusCell.html('정상');
-                            Swal.fire({
-                                icon: 'success',
-                                title: '성공',
-                                text: '블랙리스트에서 제거되었습니다.'
-                            });
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Error:', error);
-                        Swal.fire({
-                            icon: 'error',
-                            title: '오류',
-                            text: '오류가 발생했습니다: ' + error
-                        });
-                    }
-                });
-            }
-        });
-    </script>
-
-
 </div>
 
 </body>

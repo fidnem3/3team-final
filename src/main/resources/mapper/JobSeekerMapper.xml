@@ -56,7 +56,9 @@
         birth,
         tel,
         email,
-        address
+        address,
+        file_name,
+        file_path
         FROM jobSeeker
         WHERE jobSeeker_id = #{jobSeekerId}
     </select>
@@ -79,7 +81,9 @@
         name = #{name},
         birth = #{birth, jdbcType=DATE},
         tel = #{tel},
-        address = #{address}
+        address = #{address},
+        file_name = #{fileName},
+        file_path = #{filePath}
         WHERE jobSeeker_id = #{jobSeekerId}
     </update>
 
