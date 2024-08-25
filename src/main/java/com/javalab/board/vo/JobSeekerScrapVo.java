@@ -26,6 +26,6 @@ public class JobSeekerScrapVo {
     private String logoName;
     private String logoPath;
     private String companyName;
-
+    private String profileImageUrl;
 
 }

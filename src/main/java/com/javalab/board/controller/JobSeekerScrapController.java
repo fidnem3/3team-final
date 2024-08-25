@@ -110,7 +110,10 @@ public class JobSeekerScrapController {
         // Fetch job seeker details using jobSeekerId
         Optional<JobSeekerVo> jobSeekerOptional = jobSeekerService.getJobSeekerDetails(jobSeekerId);
         if (jobSeekerOptional.isPresent()) {
-            jobSeekerName = jobSeekerOptional.get().getName();
+            JobSeekerVo jobSeekerVo = jobSeekerOptional.get();
+            jobSeekerName = jobSeekerVo.getName();
+            String fileName = jobSeekerVo.getFileName(); // 프로필 이미지 URL 가져오기
+            model.addAttribute("fileName", fileName);
         }
 
         // Get the list of scrapped job posts
@@ -131,6 +134,8 @@ public class JobSeekerScrapController {
                     scrapVo.setLogoName(companyVo.getLogoName());
                     scrapVo.setLogoPath(companyVo.getLogoPath());
                     scrapVo.setCompanyName(companyVo.getCompanyName());
+
+
                 }
             }
         }
