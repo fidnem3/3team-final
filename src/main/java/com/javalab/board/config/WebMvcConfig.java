@@ -20,10 +20,14 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
         registry.addResourceHandler("/jobPost/logo/**")
                 .addResourceLocations("file:/C:/filetest/upload/");
+
         registry.addResourceHandler("/upload/**")
                         .addResourceLocations("file:/C:/filetest/upload/");
         // 이미지 업로드 경로 설정
         registry.addResourceHandler("/jobPost/uploaded/**")
+                .addResourceLocations("file:C:/filetest/upload/");
+
+        registry.addResourceHandler("/profile/**")
                 .addResourceLocations("file:C:/filetest/upload/");
 
     }
