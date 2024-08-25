@@ -11,7 +11,7 @@
     <meta content="" name="description">
 
     <!-- Favicon -->
-    <link th:href="@{/img/favicon.ico}" rel="icon">
+    <!--    <link th:href="@{/img/favicon.ico}" rel="icon">-->
 
     <script src="//cdn.ckeditor.com/4.22.1/full-all/ckeditor.js"></script>
     <!-- Google Web Fonts -->
@@ -44,7 +44,6 @@
     top: 0; /* 네비게이션 바가 화면 상단에 위치하도록 설정 */
     z-index: 1000; /* 다른 요소들 위에 위치하도록 설정 */
 }
-
     </style>
 </head>
 <body>
@@ -61,14 +60,15 @@
             <div class="navbar-nav ms-auto p-4 p-lg-0">
                 <a id="homeLink" th:href="@{/index}" class="nav-item nav-link">Home</a>
                 <a th:href="@{/about}" class="nav-item nav-link">About</a>
+                <a th:href="@{/jobPost/jobPostList}" class="nav-item nav-link">채용공고</a>
 
 
-                <div class="nav-item dropdown" sec:authorize="!hasRole('ROLE_USER')">
+                <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown" sec:authorize="!hasRole('ROLE_COMPANY')">Jobs</a>
                     <div class="dropdown-menu rounded-0 m-0">
                         <a th:href="@{/admin/companyList}" class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')">Company
                             List</a>
-                        <a th:href="@{/jobPost/jobPostList}" class="dropdown-item">Job List</a>
+                        <a th:href="@{/jobPost/jobPostList}" class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')">Job List</a>
                         <a th:href="@{/jobPost/myJobPostList}" class="dropdown-item"
                            sec:authorize="hasRole('ROLE_COMPANY')">My Post</a>
                         <a th:href="@{/jobSeeker/scrap/list}" class="dropdown-item"
@@ -83,16 +83,16 @@
                         <!--                        <a th:href="@{/jobSeeker/jobSeekerManagement}" class="dropdown-item">ManageBlackJob</a>-->
                     </div>
                 </div>
-<!--                <div class="nav-item dropdown" sec:authorize="!hasRole('ROLE_ADMIN')">-->
-<!--                    <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown" sec:authorize="hasRole('ROLE_COMPANY')">Resume</a>-->
-<!--                    <div class="dropdown-menu rounded-0 m-0">-->
-<!--                        <a th:href="@{/resume/save}" class="dropdown-item">New Resume</a>-->
-<!--                        <a th:href="@{/resume/list}" class="dropdown-item">Resume List</a>-->
-<!--                        <a th:href="@{/application/list}" class="dropdown-item" sec:authorize="hasRole('ROLE_USER')">My-->
-<!--                            Job Applications-->
-<!--                        </a>-->
-<!--                    </div>-->
-<!--                </div>-->
+                <div class="nav-item dropdown" sec:authorize="!hasRole('ROLE_ADMIN')">
+                    <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown" sec:authorize="!hasRole('ROLE_COMPANY')">Resume</a>
+                    <div class="dropdown-menu rounded-0 m-0">
+                        <a th:href="@{/resume/save}" class="dropdown-item">New Resume</a>
+                        <a th:href="@{/resume/list}" class="dropdown-item">Resume List</a>
+                        <a th:href="@{/application/list}" class="dropdown-item" sec:authorize="hasRole('ROLE_USER')">My
+                            Job Applications
+                        </a>
+                    </div>
+                </div>
 
                 <a th:href="@{/contact}" class="nav-item nav-link">Contact</a>
             </div>
@@ -126,8 +126,6 @@
         </div>
 
         <div sec:authorize="hasRole('COMPANY')" class="d-flex align-items-center">
-
-            <!-- 종 아이콘 추가 -->
             <div class="nav-item ms-0"> <!-- ms-0 클래스 추가 -->
                 <a th:href="@{/company/applications}" class="nav-link position-relative">
                     <i class="fa fa-bell"></i>
@@ -137,8 +135,6 @@
                     </span>
                 </a>
             </div>
-        </div>
-
             <!-- 기업 회원 메뉴 -->
             <div class="nav-item dropdown me-2"> <!-- me-3에서 me-2로 변경 -->
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
@@ -152,7 +148,9 @@
                 </div>
             </div>
 
+            <!-- 종 아이콘 추가 -->
 
+        </div>
 
 
         <div sec:authorize="hasRole('USER')">
@@ -176,9 +174,8 @@
                     <i class="fa fa-user-shield"></i> Admin Menu
                 </a>
                 <div class="dropdown-menu rounded-0 m-0">
-                    <a th:href="@{/admin/adminPage}" class="dropdown-item">Admin Dashboard</a>
+                    <a th:href="@{/admin/admin}" class="dropdown-item">Admin Dashboard</a>
                     <a th:href="@{/admin/blacklist}" class="dropdown-item">ManageBlack</a>
-                    <a th:href="@{/admin/admin}">admin</a>
                     <a th:href="@{/logout}" class="dropdown-item">Logout</a>
                 </div>
             </div>
@@ -624,62 +621,12 @@ function toggleScrap(event) {
 
 <!-- 블랙리스트 -->
 <script>
-    $(document).ready(function() {
-        var activeTypeFilter = 'all';
-        var activeStatusFilter = 'all';
-
-        // 필터 버튼 클릭 이벤트
-        $('.type-filter, .status-filter').click(function() {
-            var filterType = $(this).hasClass('type-filter') ? 'type' : 'status';
-            var filterValue = $(this).data('filter');
-
-            if (filterType === 'type') {
-                activeTypeFilter = filterValue;
-                $('.type-filter').removeClass('active');
-            } else {
-                activeStatusFilter = filterValue;
-                $('.status-filter').removeClass('active');
-            }
-
-            $(this).addClass('active');
-            filterTable();
-        });
-
-        // 테이블 필터링 함수
-        function filterTable() {
-            $('#blacklistTable tbody tr').each(function() {
-                var row = $(this);
-                var type = row.data('type');
-                var status = row.data('status');
-
-                var typeMatch = (activeTypeFilter === 'all' || type === activeTypeFilter);
-                var statusMatch = (activeStatusFilter === 'all' || status === activeStatusFilter);
-
-                if (typeMatch && statusMatch) {
-                    row.show();
-                } else {
-                    row.hide();
-                }
-            });
-        }
-
-        // 초기 필터링 적용
-        filterTable();
-
-        // 필터 초기화
-        $('#resetCondition').click(function () {
-            activeTypeFilter = 'all';
-            activeStatusFilter = 'all';
-            $('.type-filter, .status-filter').removeClass('active');
-            $('.type-filter[data-filter="all"], .status-filter[data-filter="all"]').addClass('active');
-            filterTable();
-        });
-
+    $(document).ready(function () {
         // 블랙리스트 토글 기능
         $('.toggle-blacklist').click(function() {
             var id = $(this).data('id');
             var type = $(this).data('type');
-            var isCurrentlyBlacklisted = $(this).text().trim().includes('해제');
+            var isCurrentlyBlacklisted = $(this).text().includes('해제');
 
             if (isCurrentlyBlacklisted) {
                 // 블랙리스트 해제
@@ -707,7 +654,11 @@ function toggleScrap(event) {
                 url: '/admin/blacklist/toggle',
                 type: 'POST',
                 contentType: 'application/json',
-                data: JSON.stringify({ id: id, type: type, reason: reason }),
+                data: JSON.stringify({
+                    id: id,
+                    type: type,
+                    reason: reason
+                }),
                 beforeSend: function(xhr) {
                     xhr.setRequestHeader(header, token);
                 },
@@ -718,24 +669,20 @@ function toggleScrap(event) {
                     if (response.isBlacklisted) {
                         button.html('<i class="fas fa-sync-alt"></i> 블랙리스트 해제');
                         statusCell.html('블랙리스트');
-                        button.data('status', 'BLACKLIST'); // 상태 업데이트
+                        Swal.fire({
+                            icon: 'success',
+                            title: '성공',
+                            text: '블랙리스트에 추가되었습니다.'
+                        });
                     } else {
                         button.html('<i class="fas fa-sync-alt"></i> 블랙리스트 등록');
                         statusCell.html('정상');
-                        button.data('status', 'NORMAL'); // 상태 업데이트
+                        Swal.fire({
+                            icon: 'success',
+                            title: '성공',
+                            text: '블랙리스트에서 제거되었습니다.'
+                        });
                     }
-
-                    Swal.fire({
-                        icon: 'success',
-                        title: '성공',
-                        text: response.isBlacklisted ? '블랙리스트에 추가되었습니다.' : '블랙리스트에서 제거되었습니다.'
-                    });
-
-                    // 상태 변경 후 필터링 적용
-                    filterTable();
-
-                    // 컴퍼니 리스트 상태 업데이트
-                    updateCompanyList();
                 },
                 error: function(xhr, status, error) {
                     console.error('Error:', error);
@@ -798,32 +745,65 @@ function toggleScrap(event) {
         var activeTypeFilter = 'all';
         var activeStatusFilter = 'all';
 
-        // 컴퍼니 리스트 상태 업데이트 함수
-        function updateCompanyList() {
-            $.ajax({
-                url: '/admin/company/list',
-                type: 'GET',
-                success: function(data) {
-                    $('#companyTable').html(data);
-                    updateBlacklistIcons();
-                },
-                error: function(xhr, status, error) {
-                    console.error('Failed to update company list:', error);
+        $('.type-filter').click(function() {
+            activeTypeFilter = $(this).data('filter');
+            $('.type-filter').removeClass('active');
+            $(this).addClass('active');
+            filterTable();
+        });
+
+        $('.status-filter').click(function() {
+            activeStatusFilter = $(this).data('filter');
+            $('.status-filter').removeClass('active');
+            $(this).addClass('active');
+            filterTable();
+        });
+
+        function filterTable() {
+            $('#blacklistTable tbody tr').each(function() {
+                var row = $(this);
+                var type = row.data('type');
+                var status = row.data('status');
+
+                var typeMatch = activeTypeFilter === 'all' || type === activeTypeFilter;
+                var statusMatch = activeStatusFilter === 'all' || status === activeStatusFilter;
+
+                if (typeMatch && statusMatch) {
+                    row.show();
+                } else {
+                    row.hide();
                 }
             });
         }
 
-        // 블랙리스트 아이콘 업데이트 함수
-        function updateBlacklistIcons() {
-            $('.company-status').each(function() {
-                var status = $(this).data('status');
-                var icon = status === 'BLACKLIST' ? '<i class="fas fa-ban"></i>' : '<i class="fas fa-check"></i>';
-                $(this).html(icon);
-            });
-        }
+        // 초기 필터링 적용
+        filterTable();
 
-        // 페이지 로드 시 아이콘 초기화
-        updateBlacklistIcons();
+        // 기존 코드
+        $('.dev-toggle-filter').click(function () {
+            $(this).toggleClass('open');
+            $(this).next('.filter-box').toggle();
+        });
+
+        $('.dev-button-item').click(function () {
+            $(this).toggleClass('active').siblings().removeClass('active');
+        });
+
+        $('.search-reset').click(function () {
+            $(this).closest('.filter-box').find('.dev-button-item').removeClass('active');
+            $(this).closest('.filter-box').find('.dev-button-all').addClass('active');
+        });
+
+        $('#resetCondition').click(function () {
+            $('.filter-box').find('.dev-button-item').removeClass('active');
+            $('.filter-box').find('.dev-button-all').addClass('active');
+            $('#searchForm')[0].reset();
+            activeTypeFilter = 'all';
+            activeStatusFilter = 'all';
+            $('.type-filter, .status-filter').removeClass('active');
+            $('.type-filter[data-filter="all"], .status-filter[data-filter="all"]').addClass('active');
+            filterTable();
+        });
     });
 </script>
 
@@ -987,7 +967,36 @@ function toggleScrap(event) {
     });
 });
 
+
 </script>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const filterButtons = document.querySelectorAll('.filter-button');
+        const jobItems = document.querySelectorAll('.job-item');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const filter = this.getAttribute('data-filter').trim();
+
+  // 필터 버튼 스타일 변경
+                filterButtons.forEach(btn => {
+                    btn.classList.remove('btn-primary');
+                });
+                this.classList.add('btn-primary');
+
+                // 항목 필터링
+                jobItems.forEach(item => {
+                    const paymentStatus = item.getAttribute('data-payment-status').trim();
+                    if (filter === 'all' || paymentStatus === filter) {
+                        item.style.display = '';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+    });
+</script>
 </body>
 </html>
