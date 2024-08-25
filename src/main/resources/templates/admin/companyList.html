@@ -18,9 +18,11 @@
 
         .hidden { display: none; }
 
-        .container {
-            margin-top: 20px;
+       .container {
+        max-width: 2000px; /* 필요에 따라 부모 컨테이너의 최대 너비를 조정 */
+        margin: 0 auto;
         }
+
         .table img.company-logo {
             max-width: 100px;
             max-height: 50px;
@@ -31,55 +33,67 @@
         }
 
         /* 검색창 스타일 */
-.form-group {
-    position: relative;
-    margin-bottom: 20px; /* 검색창과 탭 사이의 간격을 늘림 */
-}
+        .form-group {
+            position: relative;
+            margin-bottom: 20px; /* 검색창과 탭 사이의 간격을 늘림 */
+        }
 
-#searchInput {
-    padding-right: 40px; /* 검색 아이콘을 위한 여백 */
-    border-radius: 0.25rem;
-    border: 1px solid #ced4da;
-    box-shadow: inset 0 1px 2px rgba(0,0,0,0.075);
-    background-color: #f8f9fa; /* 검색창 배경 색상 */
-    color: #495057; /* 입력 텍스트 색상 */
-}
+        #searchInput {
+            padding-right: 40px; /* 검색 아이콘을 위한 여백 */
+            border-radius: 0.25rem;
+            border: 1px solid #ced4da;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.075);
+            background-color: #f8f9fa; /* 검색창 배경 색상 */
+            color: #495057; /* 입력 텍스트 색상 */
+        }
 
-#searchInput::placeholder {
-    color: #6c757d; /* 플레이스홀더 텍스트 색상 */
-    opacity: 1; /* Edge cases for placeholder opacity */
-}
+        #searchInput::placeholder {
+            color: #6c757d; /* 플레이스홀더 텍스트 색상 */
+            opacity: 1; /* Edge cases for placeholder opacity */
+        }
 
-#searchInput:focus {
-    border-color: #80bdff;
-    outline: 0;
-    box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25);
-    background-color: #ffffff; /* 포커스 시 배경 색상 */
-}
+        #searchInput:focus {
+            border-color: #80bdff;
+            outline: 0;
+            box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25);
+            background-color: #ffffff; /* 포커스 시 배경 색상 */
+        }
 
-/* 검색 아이콘 */
-.search-icon {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #6c757d;
-    font-size: 16px;
-    pointer-events: none;
-}
+        /* 검색 아이콘 */
+        .search-icon {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
+            font-size: 16px;
+            pointer-events: none;
+        }
 
-/* 탭 버튼 스타일 */
-.nav-tabs {
-    margin-bottom: 20px; /* 탭과 다른 요소 간격 */
-}
+        /* 탭 버튼 스타일 */
+        .nav-tabs {
+            margin-bottom: 20px; /* 탭과 다른 요소 간격 */
+        }
+        .title {
+            margin-bottom: 20px; /* 제목과 검색창 사이 간격 */
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
 
+        .tab-content {
+    width: 100% !important; /* 가로 크기 100% */
+    padding: 20px; /* 패딩을 추가하여 내부 요소와의 간격을 조정 */
+    margin: 0 auto; /* 수평 중앙 정렬 */
+    box-sizing: border-box; /* 패딩 포함하여 크기 계산 */
+}
     </style>
 </head>
 
 <body>
 <div layout:fragment="content" class="container-xxl bg-white p-0">
     <div class="container">
-<!--        <h1>기업회원 목록</h1>-->
+        <!-- 기업 목록 제목 추가 -->
+        <div class="title" >기업 목록</div>
 
         <div th:if="${message}" class="alert alert-success" role="alert">
             <span th:text="${message}"></span>
@@ -107,7 +121,7 @@
             </li>
         </ul>
 
-        <div class="tab-content mt-3" id="myTabContent">
+        <div class="tab-content mt-3    " id="myTabContent">
             <!-- 승인된 기업 목록 테이블 -->
             <div class="tab-pane fade show active" id="approved" role="tabpanel" aria-labelledby="approved-tab">
                 <div class="row">
@@ -115,7 +129,7 @@
                         <table class="table table-striped">
                             <thead>
                             <tr>
-                                <th>LOGO</th>
+                                <th >LOGO</th>
                                 <th>ID</th>
                                 <th>NAME</th>
                                 <th>EMAIL</th>
