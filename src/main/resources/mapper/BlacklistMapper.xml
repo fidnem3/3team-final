@@ -60,4 +60,13 @@
         OR (comp_id = #{compId} AND jobSeeker_id IS NULL)
     </delete>
 
+    <insert id="insertIntoBlacklist">
+        INSERT INTO blacklist (comp_id, type, reason, is_blacklisted, blacklist_date)
+        VALUES (#{compId}, #{type}, #{reason}, #{isBlacklisted}, SYSDATE)
+    </insert>
+
+    <delete id="removeFromBlacklist">
+        DELETE FROM blacklist
+        WHERE comp_id = #{compId}
+    </delete>
 </mapper>

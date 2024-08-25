@@ -135,6 +135,7 @@
                                 <td th:text="${company.compId}">회사 ID</td>
                                 <td th:text="${company.companyName}">회사명</td>
                                 <td th:text="${company.email}">이메일</td>
+                                <td th:text="${company.isBlacklisted}">이메일</td>
                                 <td th:text="${company.businessNumber}">사업자 등록번호</td>
 
 <!--                                <td>-->
@@ -174,7 +175,6 @@
                             </tr>
                             </tbody>
                         </table>
-
                     </div>
                 </div>
             </div>
@@ -292,6 +292,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
     <script>
         $(document).ready(function() {
             var compId;
@@ -396,6 +397,7 @@
             }
         });
     </script>
+
 
 </div>
 

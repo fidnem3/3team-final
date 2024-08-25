@@ -25,4 +25,9 @@ public interface BlacklistMapper {
 
     void updateBlacklistStatus(@Param("compId") String compId,
                                @Param("newStatus") int newStatus,
-                               @Param("reason") String reason);}
+                               @Param("reason") String reason);
+
+    void removeFromBlacklist(String compId);
+
+    void insertIntoBlacklist(BlacklistDto blacklist);
+}
