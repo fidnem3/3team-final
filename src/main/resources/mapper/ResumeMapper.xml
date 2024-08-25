@@ -40,6 +40,8 @@
         resumeskill rs ON r.resume_id = rs.resume_id
         WHERE
         j.jobseeker_id = #{jobSeekerId}
+        ORDER BY
+        r.resume_id ASC
     </select>
 
     <resultMap id="ResumeWithJobSeekerMap" type="com.javalab.board.dto.ResumeDto">
@@ -66,12 +68,6 @@
             <result column="skill"/>
         </collection>
     </resultMap>
-
-<!--    <update id="updateHits" parameterType="com.javalab.board.dto.ResumeDto">-->
-<!--        update resume-->
-<!--        SET hit_no = hit_no + 1-->
-<!--        where resume_id= #{resumeId}-->
-<!--    </update>-->
 
 
     <resultMap id="ResumeDtoMap" type="com.javalab.board.dto.ResumeDto">
@@ -130,6 +126,37 @@
         WHERE resume_id = #{resumeId}
     </update>
 
+
+<!--    PUBLIC 유저만 보이게-->
+        <select id="findPublicResumes" resultMap="ResumeWithJobSeekerMap">
+            SELECT
+            r.resume_id,
+            r.title,
+            r.content,
+            r.education,
+            r.experience,
+            r.link,
+            r.file_name,
+            r.file_path,
+            r.visibility_status,
+            j.jobseeker_id,
+            j.name,
+            j.email,
+            j.tel,
+            j.birth,
+            j.address,
+            rs.skill
+            FROM
+            resume r
+            JOIN
+            jobseeker j ON r.jobseeker_id = j.jobseeker_id
+            LEFT JOIN
+            resumeskill rs ON r.resume_id = rs.resume_id
+            WHERE
+            r.visibility_status = 'PUBLIC'
+            ORDER BY
+            r.resume_id ASC
+        </select>
 
 
 

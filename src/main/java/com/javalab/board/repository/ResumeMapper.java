@@ -22,6 +22,8 @@ public interface ResumeMapper {
     public void deleteResume(int resumeId);
 
     void updateResumeVisibility(Long resumeId, String visibilityStatus);
+
+    List<ResumeDto> findPublicResumes();
 }
 
 

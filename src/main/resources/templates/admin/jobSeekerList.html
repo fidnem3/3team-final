@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/layout}">
+      layout:decorate="~{layout/layout3}">
 
 <head>
     <meta charset="UTF-8">
@@ -11,41 +11,46 @@
     <style>
         .container-xxl{
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+            margin-bottom: 60px;
+        }
+        .container {
+        max-width: 2000px; /* 필요에 따라 부모 컨테이너의 최대 너비를 조정 */
+        margin: 0 auto;
         }
 
-.table img.profile-pic {
+    .table img.profile-pic {
             max-width: 100px;
             max-height: 50px;
         }
                 /* 검색창 스타일 */
-.form-group {
+    .form-group {
     position: relative;
     margin-bottom: 20px; /* 검색창과 탭 사이의 간격을 늘림 */
-}
+    }
 
-#searchInput {
+    #searchInput {
     padding-right: 40px; /* 검색 아이콘을 위한 여백 */
     border-radius: 0.25rem;
     border: 1px solid #ced4da;
     box-shadow: inset 0 1px 2px rgba(0,0,0,0.075);
     background-color: #f8f9fa; /* 검색창 배경 색상 */
     color: #495057; /* 입력 텍스트 색상 */
-}
+    }
 
-#searchInput::placeholder {
+    #searchInput::placeholder {
     color: #6c757d; /* 플레이스홀더 텍스트 색상 */
     opacity: 1; /* Edge cases for placeholder opacity */
-}
+    }
 
-#searchInput:focus {
+    #searchInput:focus {
     border-color: #80bdff;
     outline: 0;
     box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25);
     background-color: #ffffff; /* 포커스 시 배경 색상 */
-}
+    }
 
-/* 검색 아이콘 */
-.search-icon {
+    /* 검색 아이콘 */
+    .search-icon {
     position: absolute;
     right: 10px;
     top: 50%;
@@ -53,14 +58,14 @@
     color: #6c757d;
     font-size: 16px;
     pointer-events: none;
-}
+    }
     </style>
 </head>
 
 <body>
 <div layout:fragment="content" class="container-xxl bg-white p-0">
     <div class="container">
-<!--        <h1>개인회원 목록</h1>-->
+        <div class="title" >개인회원 목록</div>
 
         <div th:if="${message}" class="alert alert-success" role="alert">
             <span th:text="${message}"></span>
@@ -164,5 +169,6 @@
         </div>
     </div>
 </div>
+
 </body>
 </html>

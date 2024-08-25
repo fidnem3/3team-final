@@ -1,5 +1,5 @@
-(function($) {
-    "use strict";
+//(function($) {
+//    "use strict";
 
 
 
@@ -75,71 +75,71 @@
         }
     });
 
-    $('#vmap13').vectorMap({
-        map: 'usa_en',
-        backgroundColor: 'transparent',
-        borderColor: 'rgb(88, 115, 254)',
-        borderOpacity: 0.25,
-        borderWidth: 1,
-        color: 'rgb(88, 115, 254)',
-        enableZoom: true,
-        hoverColor: 'rgba(88, 115, 254)',
-        hoverOpacity: null,
-        normalizeFunction: 'linear',
-        scaleColors: ['#b6d6ff', '#005ace'],
-        selectedColor: 'rgba(88, 115, 254, 0.9)',
-        selectedRegions: null,
-        showTooltip: true,
-        // onRegionClick: function(element, code, region) {
-        //     var message = 'You clicked "' +
-        //         region +
-        //         '" which has the code: ' +
-        //         code.toUpperCase();
-
-        //     alert(message);
-        // }
-    });
-
-//    var nk = document.getElementById("sold-product");
-//    // nk.height = 50
-//    new Chart(nk, {
-//        type: 'pie',
-//        data: {
-//            defaultFontFamily: 'Poppins',
-//            datasets: [{
-//                data: [45, 25, 20, 10],
-//                borderWidth: 0,
-//                backgroundColor: [
-//                    "rgba(89, 59, 219, .9)",
-//                    "rgba(89, 59, 219, .7)",
-//                    "rgba(89, 59, 219, .5)",
-//                    "rgba(89, 59, 219, .07)"
-//                ],
-//                hoverBackgroundColor: [
-//                    "rgba(89, 59, 219, .9)",
-//                    "rgba(89, 59, 219, .7)",
-//                    "rgba(89, 59, 219, .5)",
-//                    "rgba(89, 59, 219, .07)"
-//                ]
+//    $('#vmap13').vectorMap({
+//        map: 'usa_en',
+//        backgroundColor: 'transparent',
+//        borderColor: 'rgb(88, 115, 254)',
+//        borderOpacity: 0.25,
+//        borderWidth: 1,
+//        color: 'rgb(88, 115, 254)',
+//        enableZoom: true,
+//        hoverColor: 'rgba(88, 115, 254)',
+//        hoverOpacity: null,
+//        normalizeFunction: 'linear',
+//        scaleColors: ['#b6d6ff', '#005ace'],
+//        selectedColor: 'rgba(88, 115, 254, 0.9)',
+//        selectedRegions: null,
+//        showTooltip: true,
+//        // onRegionClick: function(element, code, region) {
+//        //     var message = 'You clicked "' +
+//        //         region +
+//        //         '" which has the code: ' +
+//        //         code.toUpperCase();
 //
-//            }],
-//            labels: [
-//                "one",
-//                "two",
-//                "three",
-//                "four"
-//            ]
-//        },
-//        options: {
-//            responsive: true,
-//            legend: false,
-//            maintainAspectRatio: false
-//        }
+//        //     alert(message);
+//        // }
 //    });
-
-
-
-})(jQuery);
+//
+////    var nk = document.getElementById("sold-product");
+////    // nk.height = 50
+////    new Chart(nk, {
+////        type: 'pie',
+////        data: {
+////            defaultFontFamily: 'Poppins',
+////            datasets: [{
+////                data: [45, 25, 20, 10],
+////                borderWidth: 0,
+////                backgroundColor: [
+////                    "rgba(89, 59, 219, .9)",
+////                    "rgba(89, 59, 219, .7)",
+////                    "rgba(89, 59, 219, .5)",
+////                    "rgba(89, 59, 219, .07)"
+////                ],
+////                hoverBackgroundColor: [
+////                    "rgba(89, 59, 219, .9)",
+////                    "rgba(89, 59, 219, .7)",
+////                    "rgba(89, 59, 219, .5)",
+////                    "rgba(89, 59, 219, .07)"
+////                ]
+////
+////            }],
+////            labels: [
+////                "one",
+////                "two",
+////                "three",
+////                "four"
+////            ]
+////        },
+////        options: {
+////            responsive: true,
+////            legend: false,
+////            maintainAspectRatio: false
+////        }
+////    });
+//
+//
+//
+////})(jQuery);
 
 (function($) {
     "use strict";
