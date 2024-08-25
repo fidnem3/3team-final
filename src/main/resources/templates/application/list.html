@@ -342,7 +342,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/layoutUser}">
+      layout:decorate="~{layout/layout}">
 
 <head>
     <meta charset="utf-8">
@@ -418,47 +418,47 @@
         <div class="tab-class text-center wow fadeInUp" data-wow-delay="0.3s">
         <div id="tab-1" class="tab-pane fade show p-0 active">
             <div id="jobList">
-<!--                <div th:each="jobApplication : ${applications}" class="job-item p-4 mb-4"-->
-<!--                     th:data-address="${jobApplication.jobPost.address}"-->
-<!--                     th:data-education="${jobApplication.jobPost.education}"-->
-<!--                     th:data-experience="${jobApplication.jobPost.experience}">-->
-<!--                    <div class="row g-4">-->
-<!--                        <div class="col-sm-12 col-md-8 d-flex align-items-center">-->
-<!--                            <img class="flex-shrink-0 img-fluid border rounded"-->
-<!--                                 th:src="@{'/jobPost/logo/' + ${jobApplication.jobPost.logoName}}"-->
-<!--                                 alt="Company Logo" style="width: 80px; height: 80px;">-->
+                <div th:each="jobApplication : ${applications}" class="job-item p-4 mb-4"
+                     th:data-address="${jobApplication.jobPost.address}"
+                     th:data-education="${jobApplication.jobPost.education}"
+                     th:data-experience="${jobApplication.jobPost.experience}">
+                    <div class="row g-4">
+                        <div class="col-sm-12 col-md-8 d-flex align-items-center">
+                            <img class="flex-shrink-0 img-fluid border rounded"
+                                 th:src="@{'/jobPost/logo/' + ${jobApplication.jobPost.logoName}}"
+                                 alt="Company Logo" style="width: 80px; height: 80px;">
 
-<!--                            <div class="text-start ps-4">-->
-<!--                                <h5 class="mb-3" th:text="${jobApplication.jobPost.title}">Job Title</h5>-->
-<!--                                <span class="text-truncate me-3">-->
-<!--                                    <i class="fa fa-map-marker-alt text-primary me-2"></i>-->
-<!--                                    <span th:text="${jobApplication.jobPost.address}">Location</span></span>-->
-
-
-<!--                                <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>Full Time</span>-->
+                            <div class="text-start ps-4">
+                                <h5 class="mb-3" th:text="${jobApplication.jobPost.title}">Job Title</h5>
+                                <span class="text-truncate me-3">
+                                    <i class="fa fa-map-marker-alt text-primary me-2"></i>
+                                    <span th:text="${jobApplication.jobPost.address}">Location</span></span>
 
 
-<!--                                <span class="text-truncate me-3">-->
-<!--                                    <i class="far fas fa-search text-primary me-2"></i>Read-->
-<!--                                    <span th:text="${jobApplication.isRead}"></span></span>-->
+                                <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>Full Time</span>
 
-<!--                                    <span class="text-truncate me-0">-->
-<!--                                        <i class="far fa-money-bill-alt text-primary me-2"></i>-->
-<!--                                    <span th:text="${jobApplication.jobPost.salary}">Salary</span></span>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">-->
-<!--                            <div class="d-flex mb-3">-->
-<!--                                <a class="btn btn-primary"-->
-<!--                                   th:href="@{/jobPost/detail/{jobPostId}(jobPostId=${jobApplication.jobPost.jobPostId})}">View</a>-->
-<!--                            </div>-->
-<!--                            <small class="text-truncate">-->
-<!--                                <i class="far fa-calendar-alt text-primary me-2"></i>-->
-<!--                                <span th:text="${#dates.format(jobApplication.jobPost.endDate, 'yyyy-MM-dd')}"></span> Deadline-->
-<!--                            </small>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
+
+                                <span class="text-truncate me-3">
+                                    <i class="far fas fa-search text-primary me-2"></i>Read
+                                    <span th:text="${jobApplication.isRead}"></span></span>
+
+                                    <span class="text-truncate me-0">
+                                        <i class="far fa-money-bill-alt text-primary me-2"></i>
+                                    <span th:text="${jobApplication.jobPost.salary}">Salary</span></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
+                            <div class="d-flex mb-3">
+                                <a class="btn btn-primary"
+                                   th:href="@{/jobPost/detail/{jobPostId}(jobPostId=${jobApplication.jobPost.jobPostId})}">View</a>
+                            </div>
+                            <small class="text-truncate">
+                                <i class="far fa-calendar-alt text-primary me-2"></i>
+                                <span th:text="${#dates.format(jobApplication.jobPost.endDate, 'yyyy-MM-dd')}"></span> Deadline
+                            </small>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
