@@ -8,6 +8,7 @@ import com.javalab.board.vo.CompanyVo;
 import com.javalab.board.vo.JobSeekerVo;
 import com.javalab.board.vo.UserRolesVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -29,10 +30,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         this.adminService = adminService;
     }
 
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // 데이터베이스에서 사용자 정보를 조회하여 사용자 유형을 결정
         // 관리자 계정 조회
         Optional<AdminVo> adminOpt = adminService.getAdminDetails(username);
         if (adminOpt.isPresent()) {
@@ -40,11 +39,13 @@ public class CustomUserDetailsService implements UserDetailsService {
             return createUserDetails(admin);
         }
 
+        // 회사 계정 조회
         CompanyVo company = companyMapper.selectCompanyById(username);
         if (company != null) {
             return createUserDetails(company);
         }
 
+        // 구직자 계정 조회
         JobSeekerVo jobSeeker = jobSeekerMapper.selectJobSeekerById(username);
         if (jobSeeker != null) {
             return createUserDetails(jobSeeker);
@@ -53,11 +54,16 @@ public class CustomUserDetailsService implements UserDetailsService {
         throw new UsernameNotFoundException("User not found: " + username);
     }
 
-    private String determineUserType(String username) {
-        return username.startsWith("comp") ? "company" : "jobSeeker";
-    }
-
     private UserDetails createUserDetails(CompanyVo company) {
+        // 회사 상태 확인
+        if ("PENDING".equalsIgnoreCase(company.getStatus())) {
+            throw new DisabledException("계정이 승인 대기 중입니다. 승인을 기다려주세요.");
+        }
+
+        if ("REJECTED".equalsIgnoreCase(company.getStatus())) {
+            throw new DisabledException("계정이 거절되었습니다. 관리자에게 문의하세요.");
+        }
+
         UserRolesVo userRoles = new UserRolesVo();
         userRoles.setUserId(company.getCompId());
         userRoles.setUserType("company");

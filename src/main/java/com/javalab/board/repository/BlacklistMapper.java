@@ -20,4 +20,14 @@ public interface BlacklistMapper {
     List<BlacklistDto> getActiveBlacklist();
 
     void deleteBlacklist(@Param("jobSeekerId") String jobSeekerId, @Param("compId") String compId);
+
+    Integer getIsBlacklisted(@Param("compId") String compId);
+
+    void updateBlacklistStatus(@Param("compId") String compId,
+                               @Param("newStatus") int newStatus,
+                               @Param("reason") String reason);
+
+    void removeFromBlacklist(String compId);
+
+    void insertIntoBlacklist(BlacklistDto blacklist);
 }

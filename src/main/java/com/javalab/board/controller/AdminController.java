@@ -1,5 +1,6 @@
 package com.javalab.board.controller;
 
+import com.javalab.board.repository.BlacklistMapper;
 import com.javalab.board.repository.JobSeekerMapper;
 import com.javalab.board.service.*;
 import com.javalab.board.vo.CompanyVo;
@@ -37,6 +38,9 @@ public class AdminController {
     @Autowired
     private SuggestionService suggestionService;
 
+    @Autowired
+    private BlacklistMapper blacklistMapper;
+
 
     @GetMapping("/adminPage")
     public String getAdminPage(Model model) {
@@ -66,9 +70,19 @@ public class AdminController {
      */
     @GetMapping("/jobSeekerList")
     public String listJobSeekers(Model model) {
-        List<JobSeekerVo> jobSeekers = adminService.getAllJobSeekers();
-        model.addAttribute("jobSeekers", jobSeekers);
-        return "admin/jobSeekerList";
+        try {
+            // 구직자 목록을 가져옵니다.
+            List<JobSeekerVo> jobSeekers = adminService.getAllJobSeekers();
+
+            // 구직자 목록을 모델에 추가합니다.
+            model.addAttribute("jobSeekers", jobSeekers);
+
+            return "admin/jobSeekerList"; // Thymeleaf 템플릿 경로
+        } catch (Exception e) {
+            // 오류가 발생하면 사용자에게 오류 메시지를 전달합니다.
+            model.addAttribute("error", "구직자 목록을 가져오는 중 오류가 발생했습니다: " + e.getMessage());
+            return "admin/jobSeekerList"; // 오류 발생 시에도 같은 뷰로 리턴
+        }
     }
 
     @PostMapping("/deleteJobSeeker/{id}")
@@ -165,14 +179,26 @@ public class AdminController {
         // 거절된 기업 목록을 조회합니다.
         List<CompanyVo> rejectedCompanies = companyService.getRejectedCompanies();
 
-        // 각 기업의 로고 정보를 포함하여 모델에 추가합니다.
+        // 각 기업의 블랙리스트 상태를 설정합니다.
+        approvedCompanies.forEach(company -> {
+            Integer isBlacklistedValue = blacklistMapper.getIsBlacklisted(company.getCompId());
+            boolean isBlacklisted = (isBlacklistedValue != null && isBlacklistedValue == 1);
+            company.setBlacklisted(isBlacklisted);
+        });
+
+        rejectedCompanies.forEach(company -> {
+            Integer isBlacklistedValue = blacklistMapper.getIsBlacklisted(company.getCompId());
+            boolean isBlacklisted = (isBlacklistedValue != null && isBlacklistedValue == 1);
+            company.setBlacklisted(isBlacklisted);
+        });
+
+        // 모델에 데이터를 추가합니다.
         model.addAttribute("approvedCompanies", approvedCompanies);
         model.addAttribute("rejectedCompanies", rejectedCompanies);
 
         // Thymeleaf 템플릿 파일 이름을 반환합니다.
         return "admin/companyList";
     }
-
 
 
     @PostMapping("/approveCompany")

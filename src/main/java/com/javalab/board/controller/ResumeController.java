@@ -78,9 +78,16 @@ public class ResumeController {
         String loggedInUsername = getLoggedInUsername(authentication);
 
         if (loggedInUsername != null) {
-            List<ResumeDto> resumeDtoList = resumeService.findAll(loggedInUsername);
-            model.addAttribute("resumeList", resumeDtoList);
+            List<ResumeDto> resumeDtoList;
 
+            // 사용자 역할에 따라 보여줄 이력서 리스트 결정
+            if (isCompanyUser(authentication)) {
+                resumeDtoList = resumeService.findPublicResumesForCompany();
+            } else {
+                resumeDtoList = resumeService.findAll(loggedInUsername);
+            }
+
+            model.addAttribute("resumeList", resumeDtoList);
 
             // 이력서 리스트를 3개씩 묶어 partitionedResumes 리스트로 변환
             List<List<ResumeDto>> partitionedResumes = new ArrayList<>();
@@ -89,17 +96,24 @@ public class ResumeController {
             }
             model.addAttribute("partitionedResumes", partitionedResumes);
 
-
             Map<String, Long> educationCount = resumeDtoList.stream()
                     .collect(Collectors.groupingBy(ResumeDto::getEducation, Collectors.counting()));
             model.addAttribute("educationCount", educationCount);
-
 
             return "/resume/list";
         }
 
         return "redirect:/login";
     }
+
+    // 기업 사용자 확인 메서드 추가
+    private boolean isCompanyUser(Authentication authentication) {
+        return authentication.getAuthorities().stream()
+                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_COMPANY"));
+    }
+
+
+
 
     @GetMapping("/detail/{resumeId}")
     public String getResumeDetail(@PathVariable("resumeId") int resumeId, Model model, Authentication authentication) {

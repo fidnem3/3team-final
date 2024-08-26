@@ -21,11 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
 
@@ -49,9 +45,15 @@ public class CompanyController {
      */
     @GetMapping("/detail")
     public String getCompanyDetail(Model model, Authentication authentication) {
-        String companyId = authentication.getName();
-        CompanyVo company = companyService.getCompanyDetails(companyId)
+        String compId = authentication.getName();
+        CompanyVo company = companyService.getCompanyDetails(compId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 기업을 찾을 수 없습니다."));
+
+        CompanyVo companyVo = companyService.getCompanyById(compId);
+        String logoPath = companyVo != null ? companyVo.getLogoPath() : null;
+        String logoName = companyVo != null ? companyVo.getLogoName() : null;
+
+        model.addAttribute("logoName", logoName);
 
         model.addAttribute("company", company);
         return "company/companyDetail";

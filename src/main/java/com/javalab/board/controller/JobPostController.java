@@ -71,8 +71,22 @@ public class JobPostController {
     @GetMapping("/jobPostCreate")
     public String createJobPost(Model model) {
         model.addAttribute("createJobPostRequestDto", new CreateJobPostRequestDto());
+
+        // 사용자 인증 정보 얻기
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String compId = ((UserDetails) authentication.getPrincipal()).getUsername();
+
+        CompanyVo companyVo = companyService.getCompanyById(compId);
+        String logoName = companyVo != null ? companyVo.getLogoName() : null;
+        String companyName = companyVo != null ? companyVo.getCompanyName() : null;
+
+        // 모델에 로고 이름 추가
+        model.addAttribute("logoName", logoName);
+        model.addAttribute("companyName", companyName);
+
         return "jobPost/jobPostCreate";
     }
+
 
     @PostMapping("/jobPostCreate")
     public String create(
@@ -168,8 +182,16 @@ public class JobPostController {
     @GetMapping("/myJobPostList")
     public String getMyJobPosts(Model model) {
         List<JobPostVo> jobPosts = jobPostService.getJobPostsByCompany();
+        // 사용자 인증 정보 얻기
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String compId = ((UserDetails) authentication.getPrincipal()).getUsername();
+
+        CompanyVo companyVo = companyService.getCompanyById(compId);
+        String logoPath = companyVo != null ? companyVo.getLogoPath() : null;
+        String logoName = companyVo != null ? companyVo.getLogoName() : null;
 
         model.addAttribute("jobPosts", jobPosts);
+        model.addAttribute("logoName", logoName);
 
         return "jobPost/myJobPostList"; // Thymeleaf 템플릿 이름
 
