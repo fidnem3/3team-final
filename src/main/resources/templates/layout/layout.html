@@ -14,11 +14,11 @@
     <!--    <link th:href="@{/img/favicon.ico}" rel="icon">-->
 
     <script src="//cdn.ckeditor.com/4.22.1/full-all/ckeditor.js"></script>
-    <!--    &lt;!&ndash; Google Web Fonts &ndash;&gt;-->
-    <!--    <link rel="preconnect" href="https://fonts.googleapis.com">-->
-    <!--    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>-->
-    <!--    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Inter:wght@700;800&display=swap"-->
-    <!--          rel="stylesheet">-->
+<!--    &lt;!&ndash; Google Web Fonts &ndash;&gt;-->
+<!--    <link rel="preconnect" href="https://fonts.googleapis.com">-->
+<!--    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>-->
+<!--    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Inter:wght@700;800&display=swap"-->
+<!--          rel="stylesheet">-->
 
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
@@ -47,7 +47,7 @@
             font-style: normal;
         }
 
-         header, footer, body, h1, h2, h3, h4, h5 {
+         header, footer, body, h1, h2, h3, h4, h5, .btn, .button {
             font-family: 'Paperlogy-8ExtraBold', sans-serif;
             font-weight: 800;
         }
@@ -510,7 +510,7 @@ function toggleScrap(event) {
             pageName.textContent = 'Company Applications';
         } else if (path === '/company/detail') {
             pageTitle.textContent = '기업 마이페이지';
-            pageName.textContent = 'Company MyPage';
+            pageName.textContent = 'Company Page';
         } else if (path === '/company/edit') {
             pageTitle.textContent = '기업 정보 수정';
             pageName.textContent = 'Company Update';
