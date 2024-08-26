@@ -153,7 +153,8 @@
                                 <div class="d-flex mb-3">
                                     <a class="btn btn-primary"
                                        href="javascript:void(0);"
-                                       th:onclick="'openResumePopup(' + ${jobApplication.applicationId} + ',' + ${jobApplication.resumeId} + ')'">
+                                       th:onclick="'openResumePopup(' + ${jobApplication.applicationId} + ',' + ${jobApplication.resumeId} + ')'"
+                                       th:text="${jobApplication.isRead == 'Y'} ? 'View' : 'Mark & View'">
                                         Mark & View
                                     </a>
                                 </div>
@@ -172,19 +173,20 @@
         </div>
 
 
-    <script>
-        function openResumePopup(a  하는 URL을 호출
-            var markAsReadUrl = '/company/applications/markAsReadAndView/' + resumeId + '?applicationId=' + applicationId;
+        <script>
+            function openResumePopup(applicationId, resumeId) {
+                // 이력서 상세 페이지를 여는 URL을 호출
+                var markAsReadUrl = '/company/applications/markAsReadAndView/' + resumeId + '?applicationId=' + applicationId;
 
-            // 팝업창으로 이력서 상세 페이지 열기
-            var popup = window.open(markAsReadUrl, '_blank', 'width=1000,height=1000');
+                // 팝업창으로 이력서 상세 페이지 열기
+                var popup = window.open(markAsReadUrl, '_blank', 'width=1000,height=1000');
 
-            // 팝업창이 성공적으로 열리면 부모 창에서 목록을 새로고침
-            popup.onload = function() {
-                window.location.reload();
-            };
-        }
-    </script>
+                // 팝업창이 성공적으로 열리면 부모 창에서 목록을 새로고침
+                popup.onload = function() {
+                    window.location.reload();
+                };
+            }
+        </script>
 
 </div>
 

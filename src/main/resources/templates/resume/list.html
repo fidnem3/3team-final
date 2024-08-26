@@ -139,12 +139,13 @@
         }
 
         .btn.bg-blue-ui.white.read {
-            padding: 3px 20px;
+            padding: 3px 10px;
             margin-right: 20px;
         }
 
         .btn.bg-blue-ui.white.visibility {
-            padding: 3px 20px;
+            padding: 3px 10px;
+            margin-right: 20px;
 
 
     </style>
@@ -226,6 +227,23 @@
                                                             onclick="toggleVisibilityStatus(this)">
                                                     </button>
                                                 </div>
+
+                                                <!-- 수정 버튼 -->
+                                                <div class="mt">
+                                                    <a th:href="@{/resume/update/{resumeId}(resumeId=${resume.resumeId})}" class="btn bg-blue-ui white read">Edit</a>
+                                                </div>
+
+                                                <!-- 삭제 버튼 -->
+                                                <div class="mt">
+                                                    <!-- 삭제 요청을 위한 폼 -->
+                                                    <form th:action="@{/resume/delete/{resumeId}(resumeId=${resume.resumeId})}" method="post"
+                                                          onsubmit="return confirm('정말 지우시겠습니까?');">
+                                                        <!-- CSRF 토큰을 포함시킴 -->
+                                                        <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+                                                        <button type="submit" class="btn bg-blue-ui white read">Delete</button>
+                                                    </form>
+                                                </div>
+                                            </div>
                                             </div>
                                         </div>
                                     </div>
@@ -236,7 +254,6 @@
                 </div>
             </div>
         </div>
-    </div>
 
     <script>
         function toggleVisibilityStatus(button) {

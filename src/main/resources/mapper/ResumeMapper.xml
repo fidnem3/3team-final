@@ -109,6 +109,8 @@
         title = #{title},
         content = #{content},
         link = #{link},
+        education = #{education},
+        experience = #{experience},
         file_name = #{fileName , jdbcType=VARCHAR},
         file_path = #{filePath , jdbcType=VARCHAR}
         WHERE resume_id = #{resumeId}
@@ -157,6 +159,8 @@
             ORDER BY
             r.resume_id ASC
         </select>
+
+
 
 
 

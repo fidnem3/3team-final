@@ -93,22 +93,40 @@ public class ResumeService {
 
     public void updateResume(ResumeDto resumeDto, MultipartFile file) throws IOException {
 
+        String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/files";
+        File directory = new File(projectPath);
+        //이력서 파일 첨부
         if (file != null && !file.isEmpty()) {
-            // 파일이 업로드된 경우
-            String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/files";
+            // 이력서 파일 첨부
             UUID uuid = UUID.randomUUID();
             String fileName = uuid + "_" + file.getOriginalFilename();
             File saveFile = new File(projectPath, fileName);
-            file.transferTo((saveFile));
+            file.transferTo(saveFile);
             resumeDto.setFileName(fileName);
             resumeDto.setFilePath("/files/" + fileName);
         } else {
-            // 파일이 업로드되지 않은 경우, 기본 이미지 설정
-            resumeDto.setFileName("resume_default.jpg"); // 기본 이미지 파일 이름
-            resumeDto.setFilePath("/static/images/resume_default.jpg"); // 기본 이미지 파일 경로
+            // 파일이 없으면 fileName과 filePath를 null로 설정
+            resumeDto.setFileName(null);
+            resumeDto.setFilePath(null);
         }
 
+
+        // 1. 이력서를 저장합니다.
         resumeMapper.updateResume(resumeDto);
+
+        // 2. 기존의 기술 데이터를 삭제합니다.
+        resumeSkillMapper.deleteResumeSkillsByResumeId(resumeDto.getResumeId());
+
+
+        // 2. 기술 리스트를 문자열로 변환하여 저장합니다.
+        String skillsAsString = resumeDto.getSkillsAsString();
+        if (!skillsAsString.isEmpty()) {
+            ResumeSkillDto resumeSkillDto = new ResumeSkillDto();
+            resumeSkillDto.setResumeId(resumeDto.getResumeId());
+            resumeSkillDto.setSkill(skillsAsString); // 변환된 문자열을 저장
+            resumeSkillMapper.resumeSkillCreate(resumeSkillDto);
+        }
+
     }
 
 

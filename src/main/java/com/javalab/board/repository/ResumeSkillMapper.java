@@ -10,6 +10,8 @@ public interface ResumeSkillMapper {
 
      public int resumeSkillCreate(ResumeSkillDto resumeSkillDto);
 
+    void deleteResumeSkillsByResumeId(int resumeId);
+
 
 //        private final SqlSessionTemplate sql;
 //
