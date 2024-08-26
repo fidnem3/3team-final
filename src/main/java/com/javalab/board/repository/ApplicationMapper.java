@@ -22,14 +22,11 @@ public interface ApplicationMapper {
 
     //알림 기능 시작
 
-    String getCompanyIdByJobPostId(Long jobPostId);
-
     int countUnreadApplications(String compId);
 
     void markApplicationAsRead(Long applicationId);
 
     List<ApplicationDto> selectApplicationsByCompanyId(String compId);
-
 
     int countApplications();
 

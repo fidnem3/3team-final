@@ -19,7 +19,6 @@ public class ApplicationDto {
     private String jobSeekerId;  // 지원자 ID
     private String isRead;       // 지원 상태
     private Date appliedDate;    // 지원 일자
-    private Date created;
     private JobPostVo jobPost;
     private ResumeDto resume;
 

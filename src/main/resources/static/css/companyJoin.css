@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 :root {
-    --primary: #4CAF50; /* 진한 초록색 */
-    --secondary: #81C784; /* 연한 초록색 */
+    --primary: #0000cd; /* 진한 하늘색 */
+    --secondary: #4169e1; /* 더 밝은 하늘색 */
     --background: #f5f5f5;
     --surface: #ffffff;
     --text: #333333;
@@ -34,7 +34,7 @@ body {
     height: 100vh;
     top: 0;
     left: 0;
-    background: linear-gradient(135deg, #e8f5e9, #a5d6a7); /* 연한 초록색 그라데이션 */
+    background: linear-gradient(135deg, #e0eaff, #a0baff); /* 연한 하늘색 그라데이션 */
     z-index: -1;
 }
 
@@ -102,13 +102,32 @@ body {
 .form-group input:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+    box-shadow: 0 0 0 2px rgba(0, 0, 205, 0.2);
+}
+
+.form-group select {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: var(--transition);
+    background-color: var(--surface);
+    color: var(--text);
+}
+
+.form-group select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(0, 0, 205, 0.2);
 }
 
 .fieldError {
-    color: #bd2130;
-    display: block;
+    color: #d32f2f; /* 강한 빨간색 오류 메시지 */
+    background-color: #fdecea; /* 연한 빨간색 배경으로 오류 강조 */
+    padding: 8px; /* 가독성을 위한 패딩 */
+    border-radius: 4px; /* 부드러운 모서리 */
     margin-top: 5px;
+    font-size: 0.85rem; /* 약간 작은 글자 크기 */
 }
 
 .signup-button {
@@ -131,6 +150,21 @@ body {
     transform: translateY(-2px);
 }
 
+.reset-button {
+    background-color: var(--text-secondary);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.reset-button:hover {
+    background-color: var(--text);
+}
+
 footer {
     margin-top: 30px;
     text-align: center;
@@ -142,10 +176,60 @@ footer {
     text-decoration: none;
     font-weight: 500;
     transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
 }
 
 .login-link:hover {
     color: var(--secondary);
+}
+
+.login-link i {
+    font-size: 1.2em;
+}
+
+.file-upload {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.file-upload input[type="file"] {
+    position: absolute;
+    right: 0;
+    top: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.file-upload label {
+    display: block;
+    padding: 10px 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    text-align: center;
+    background-color: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.file-upload label:hover {
+    background-color: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+#imagePreview {
+    margin-top: 10px;
+}
+
+#imagePreview img {
+    max-width: 200px;
+    max-height: 200px;
+    object-fit: contain; /* 유지되는 비율로 이미지 크기 조정 */
 }
 
 @media (max-width: 600px) {
@@ -157,37 +241,13 @@ footer {
         font-size: 2rem;
     }
 }
-.form-group select {
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 1rem;
-    transition: var(--transition);
-    background-color: var(--surface);
-    color: var(--text);
-}
-
-.form-group select:focus {
-    outline: none;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
-}
-
-.fieldError {
-    color: #d32f2f; /* Use a stronger red color for errors */
-    background-color: #fdecea; /* Light red background to highlight the error message */
-    padding: 8px; /* Add padding for better readability */
-    border-radius: 4px; /* Rounded corners for a softer look */
-    margin-top: 5px;
-    font-size: 0.85rem; /* Slightly smaller font size */
-}
 
 .has-error input {
-    border-color: #d32f2f; /* Red border color for error fields */
-    background-color: #fdecea; /* Light red background to indicate an error */
+    border-color: #d32f2f; /* 빨간색 테두리 오류 필드 */
+    background-color: #fdecea; /* 연한 빨간색 배경으로 오류 표시 */
 }
 
 .has-error input:focus {
-    border-color: #d32f2f; /* Keep the border color red on focus */
-    box-shadow: 0 0 0 2px rgba(211, 47, 47, 0.2); /* Red shadow to indicate the error field */
+    border-color: #d32f2f; /* 포커스 시 빨간색 테두리 유지 */
+    box-shadow: 0 0 0 2px rgba(211, 47, 47, 0.2); /* 오류 필드를 위한 빨간색 그림자 */
 }

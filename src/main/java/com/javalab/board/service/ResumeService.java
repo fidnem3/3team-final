@@ -40,12 +40,19 @@ public class ResumeService {
         }
 
         //이력서 파일 첨부
-        UUID uuid = UUID.randomUUID();
-        String fileName = uuid + "_" + file.getOriginalFilename();
-        File saveFile = new File(projectPath, fileName);
-        file.transferTo((saveFile));
-        resumeDto.setFileName(fileName);
-        resumeDto.setFilePath("/files/" + fileName);
+        if (file != null && !file.isEmpty()) {
+            // 이력서 파일 첨부
+            UUID uuid = UUID.randomUUID();
+            String fileName = uuid + "_" + file.getOriginalFilename();
+            File saveFile = new File(projectPath, fileName);
+            file.transferTo(saveFile);
+            resumeDto.setFileName(fileName);
+            resumeDto.setFilePath("/files/" + fileName);
+        } else {
+            // 파일이 없으면 fileName과 filePath를 null로 설정
+            resumeDto.setFileName(null);
+            resumeDto.setFilePath(null);
+        }
 
 
         // 1. 이력서를 저장합니다.
