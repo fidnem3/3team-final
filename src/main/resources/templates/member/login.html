@@ -12,7 +12,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
-<button class="adminJoin" onclick="location.href='/member/adminJoin'">
 </button>
 <div class="container" id="container">
     <header class="header">
@@ -25,7 +24,7 @@
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
             <h1>Enterprise</h1>
             <input type="hidden" name="userType" value="company">
-            <div th:replace="~{common/fragments :: social-links}"></div>
+            <div style="height: 100px;"></div>
             <span>or use your email for login</span>
             <input type="text" name="username" placeholder="Company ID" id="enterpriseId"/>
             <input type="password" name="password" placeholder="Password"/>
@@ -41,27 +40,13 @@
             <div th:replace="~{common/fragments :: social-links}"></div>
             <span>or use your account</span>
             <input type="text" name="username" placeholder="Job Seeker ID" id="individualId"/>
-<!--            <input type="text" name="username" placeholder="Job Seeker ID" id="individualId" value="koko3"/>-->
             <input type="password" name="password" placeholder="Password"/>
-<!--            <input type="password" name="password" placeholder="Password" value="1q2w3e4r!"/>-->
 
             <div th:replace="~{common/fragments :: links-container}"></div>
             <div th:replace="~{common/fragments :: primary-button('Sign In')}"></div>
         </form>
     </div>
 
-    <!-- 관리자 로그인 폼 추가 -->
-    <div class="form-container admin-container">
-        <form th:action="@{/member/login}" method="post" onsubmit="return validateAdminLogin()">
-            <h1>Admin</h1>
-            <div th:replace="~{common/fragments :: social-links}"></div>
-            <span>or use your admin account</span>
-            <input type="text" name="adminId" placeholder="Admin ID"/> <!-- 관리자 ID -->
-            <input type="password" name="password" placeholder="Password"/> <!-- 비밀번호 -->
-            <div th:replace="~{common/fragments :: links-container}"></div>
-            <div th:replace="~{common/fragments :: primary-button('Sign In')}"></div>
-        </form>
-    </div>
 
     <div class="overlay-container">
         <div class="overlay">
