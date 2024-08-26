@@ -9,4 +9,9 @@
         VALUES (RESUMESKILL_SEQ.NEXTVAL, #{resumeId}, #{skill})
     </insert>
 
+    <delete id="deleteResumeSkillsByResumeId" parameterType="int">
+        DELETE FROM resumeSkill
+        WHERE resume_id = #{resumeId}
+    </delete>
+
 </mapper>

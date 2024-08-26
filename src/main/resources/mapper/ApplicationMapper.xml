@@ -68,7 +68,7 @@
         RESUME r ON a.RESUME_ID = r.RESUME_ID
         WHERE
         j.COMP_ID = #{compId}
-        ORDER BY a.application_id ASC
+        ORDER BY a.application_id desc
     </select>
 
 

@@ -41,7 +41,7 @@
         WHERE
         j.jobseeker_id = #{jobSeekerId}
         ORDER BY
-        r.resume_id ASC
+        r.resume_id desc
     </select>
 
     <resultMap id="ResumeWithJobSeekerMap" type="com.javalab.board.dto.ResumeDto">
@@ -109,6 +109,8 @@
         title = #{title},
         content = #{content},
         link = #{link},
+        education = #{education},
+        experience = #{experience},
         file_name = #{fileName , jdbcType=VARCHAR},
         file_path = #{filePath , jdbcType=VARCHAR}
         WHERE resume_id = #{resumeId}
@@ -155,9 +157,8 @@
             WHERE
             r.visibility_status = 'PUBLIC'
             ORDER BY
-            r.resume_id ASC
+            r.resume_id desc
         </select>
-
 
 
 </mapper>

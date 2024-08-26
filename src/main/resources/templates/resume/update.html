@@ -192,66 +192,87 @@
             <div class="card-body">
                 <div class="row my-3">
                     <div class="skills-wrapper">
+                        현재 보유 기술<p th:text="${resume.skills}"></p>
                         <label>
-                            <input class="form-check-input" type="checkbox" th:field="*{resume.skills}" value="Java"> Java
+                            <input class="form-check-input" type="checkbox" name="skills" value="Java"
+                                   th:checked="${#strings.contains(resume.skills, 'Java')}"> Java
                             <div class="line-box">
                                 <div class="line"></div>
                             </div>
                         </label>
                         <label>
-                            <input class="form-check-input" type="checkbox" th:field="*{resume.skills}" value="JavaScript"> JavaScript
+                            <input class="form-check-input" type="checkbox" name="skills" value="JavaScript"
+                                   th:checked="${#strings.contains(resume.skills, 'JavaScript')}"> JavaScript
                             <div class="line-box">
                                 <div class="line"></div>
                             </div>
                         </label>
+
                         <label>
-                            <input class="form-check-input" type="checkbox" th:field="*{resume.skills}" value="Spring"> Spring
+                            <input class="form-check-input" type="checkbox" name="skills" value="Spring"
+                                   th:checked="${#strings.contains(resume.skills, 'Spring')}"> Spring
                             <div class="line-box">
                                 <div class="line"></div>
                             </div>
                         </label>
+
                         <label>
-                            <input class="form-check-input" type="checkbox" th:field="*{resume.skills}" value="HTML"> HTML
+                            <input class="form-check-input" type="checkbox" name="skills" value="HTML"
+                                   th:checked="${#strings.contains(resume.skills, 'HTML')}"> HTML
                             <div class="line-box">
                                 <div class="line"></div>
                             </div>
                         </label>
+
                         <label>
-                            <input class="form-check-input" type="checkbox" th:field="*{resume.skills}" value="jQuery"> jQuery
+                            <input class="form-check-input" type="checkbox" name="skills" value="jQuery"
+                                   th:checked="${#strings.contains(resume.skills, 'jQuery')}"> jQuery
                             <div class="line-box">
                                 <div class="line"></div>
                             </div>
                         </label>
+
                         <label>
-                            <input class="form-check-input" type="checkbox" th:field="*{resume.skills}" value="JSP"> JSP
+                            <input class="form-check-input" type="checkbox" name="skills" value="JSP"
+                                   th:checked="${#strings.contains(resume.skills, 'JSP')}"> JSP
                             <div class="line-box">
                                 <div class="line"></div>
                             </div>
                         </label>
+
+
                         <label>
-                            <input class="form-check-input" type="checkbox" th:field="*{resume.skills}" value="Vue.js"> Vue.js
+                            <input class="form-check-input" type="checkbox" name="skills" value="Vue.js"
+                                   th:checked="${#strings.contains(resume.skills, 'Vue.js')}"> Vue.js
                             <div class="line-box">
                                 <div class="line"></div>
                             </div>
                         </label>
+
                         <label>
-                            <input class="form-check-input" type="checkbox" th:field="*{resume.skills}" value="Oracle"> Oracle
+                            <input class="form-check-input" type="checkbox" name="skills" value="Oracle"
+                                   th:checked="${#strings.contains(resume.skills, 'Oracle')}"> Oracle
                             <div class="line-box">
                                 <div class="line"></div>
                             </div>
                         </label>
+
                         <label>
-                            <input class="form-check-input" type="checkbox" th:field="*{resume.skills}" value="MySQL"> MySQL
+                            <input class="form-check-input" type="checkbox" name="skills" value="MySQL"
+                                   th:checked="${#strings.contains(resume.skills, 'MySQL')}"> MySQL
                             <div class="line-box">
                                 <div class="line"></div>
                             </div>
                         </label>
+
                         <label>
-                            <input class="form-check-input" type="checkbox" th:field="*{resume.skills}" value="React"> React
+                            <input class="form-check-input" type="checkbox" name="skills" value="React"
+                                   th:checked="${#strings.contains(resume.skills, 'React')}"> React
                             <div class="line-box">
                                 <div class="line"></div>
                             </div>
                         </label>
+
                     </div>
                 </div>
             </div>
