@@ -199,10 +199,10 @@ public class JobPostController {
 
     @PostMapping("/completePayment")
     public String completePayment(
-            @RequestParam Long jobPostId,
-            @RequestParam String paymentStatus,
-            @RequestParam String imp_uid,
-            @RequestParam String merchant_uid
+            @RequestParam("jobPostId") Long jobPostId,
+            @RequestParam("paymentStatus") String paymentStatus,
+            @RequestParam("imp_uid") String imp_uid,
+            @RequestParam("merchant_uid") String merchant_uid
     ) {
         // 로그에 결제 정보를 출력
         log.info("Received payment notification: jobPostId={}, paymentStatus={}, imp_uid={}, merchant_uid={}", jobPostId, paymentStatus, imp_uid, merchant_uid);

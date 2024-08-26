@@ -89,7 +89,7 @@
     <!-- 메인 컨텐츠 시작 -->
     <div style="padding: 50px;">
         <h4>Post Create</h4>
-        <form id="jobPostForm" th:action="@{/jobPost/jobPostCreate}" th:object="${createJobPostRequestDto}"
+        <form id="jobPostForm" th:action="@{/jobPost/edit}" th:object="${createJobPostRequestDto}"
               method="post" enctype="multipart/form-data">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <span class="required-note">* 필수값입니다</span>
