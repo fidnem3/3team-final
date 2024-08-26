@@ -487,7 +487,10 @@ function toggleScrap(event) {
         } else if (path === '/anotherPage') {
             pageTitle.textContent = 'Another Page';
             pageName.textContent = 'Another Page';
-        }
+        } else if (path === '/jobPost/edit') {
+             pageTitle.textContent = '공고 수정';
+             pageName.textContent = 'Edit JobPost';
+         }
     });
 
     function getCSRFToken() {

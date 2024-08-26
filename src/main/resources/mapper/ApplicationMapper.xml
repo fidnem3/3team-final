@@ -36,8 +36,8 @@
 
         <!- 지원서 제출 (INSERT) -->
     <insert id="insertApplication" parameterType="com.javalab.board.dto.ApplicationDto">
-        INSERT INTO APPLICATION (APPLICATION_ID, RESUME_ID, JOBPOST_ID, JOBSEEKER_ID,  APPLIED_DATE ,Created)
-        VALUES (APPLICATION_SEQ.NEXTVAL, #{resumeId}, #{jobPostId}, #{jobSeekerId},  SYSDATE , SYSDATE )
+        INSERT INTO APPLICATION (APPLICATION_ID, RESUME_ID, JOBPOST_ID, JOBSEEKER_ID,  APPLIED_DATE)
+        VALUES (APPLICATION_SEQ.NEXTVAL, #{resumeId}, #{jobPostId}, #{jobSeekerId},  SYSDATE)
     </insert>
 
     <!-- 특정 jobSeekerId에 해당하는 지원서 조회 (SELECT) -->
@@ -68,6 +68,7 @@
         RESUME r ON a.RESUME_ID = r.RESUME_ID
         WHERE
         j.COMP_ID = #{compId}
+        ORDER BY a.application_id ASC
     </select>
 
 
@@ -90,7 +91,7 @@
     <select id="selectJobPostByApplicationId" parameterType="long" resultType="com.javalab.board.vo.JobPostVo">
         SELECT jp.*
         FROM JobPost jp
-        JOIN Application a ON jp.job_post_id = a.job_post_id
+        JOIN Application a ON jp.jobpost_id = a.jobpost_id
         WHERE a.application_id = #{applicationId}
     </select>
 
@@ -100,7 +101,6 @@
         FROM Application
         WHERE application_id = #{applicationId}
     </select>
-
 
     <!-- 알림 기능 시작-->
 
