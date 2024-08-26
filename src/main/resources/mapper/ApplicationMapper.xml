@@ -68,8 +68,6 @@
         RESUME r ON a.RESUME_ID = r.RESUME_ID
         WHERE
         j.COMP_ID = #{compId}
-        ORDER BY
-        a.application_id ASC
     </select>
 
 
@@ -94,8 +92,6 @@
         FROM JobPost jp
         JOIN Application a ON jp.job_post_id = a.job_post_id
         WHERE a.application_id = #{applicationId}
-        ORDER BY
-        a.application_id ASC
     </select>
 
     <!-- applicationId로 특정 지원서를 가져오는 쿼리 -->
@@ -103,8 +99,6 @@
         SELECT application_id, resume_id, jobpost_id, jobseeker_id, is_read, applied_date
         FROM Application
         WHERE application_id = #{applicationId}
-        ORDER BY
-        a.application_id ASC
     </select>
 
 

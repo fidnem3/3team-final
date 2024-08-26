@@ -28,13 +28,13 @@ public class ApplicationController {
     }
 
     // 지원 내역(list) 조회
-    @GetMapping("/list")
-    public String getApplicationsByJobSeekerId(Model model) {
+            @GetMapping("/list")
+            public String getApplicationsByJobSeekerId(Model model) {
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getPrincipal() instanceof CustomUserDetails) {
-            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-            String jobSeekerId = userDetails.getUsername();
+                Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+                if (authentication != null && authentication.getPrincipal() instanceof CustomUserDetails) {
+                    CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+                    String jobSeekerId = userDetails.getUsername();
 
             List<ApplicationDto> applications = applicationService.getApplicationsByJobSeekerId(jobSeekerId);
 

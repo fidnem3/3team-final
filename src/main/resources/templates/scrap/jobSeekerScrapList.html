@@ -15,11 +15,11 @@
     <!-- Favicon -->
 <!--    <link th:href="@{/img/favicon.ico}" rel="icon">-->
 
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Inter:wght@700;800&display=swap"
-          rel="stylesheet">
+<!--    &lt;!&ndash; Google Web Fonts &ndash;&gt;-->
+<!--    <link rel="preconnect" href="https://fonts.googleapis.com">-->
+<!--    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>-->
+<!--    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Inter:wght@700;800&display=swap"-->
+<!--          rel="stylesheet">-->
 
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
@@ -45,6 +45,19 @@
     top: 0; /* 네비게이션 바가 화면 상단에 위치하도록 설정 */
     z-index: 1000; /* 다른 요소들 위에 위치하도록 설정 */
 }
+
+         @font-face {
+              font-family: 'Paperlogy-8ExtraBold';
+              src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-8ExtraBold.woff2') format('woff2');
+              font-weight: 800;
+              font-style: normal;
+          }
+
+           header, footer, body, h1, h2, h3, h4, h5, .btn, .button {
+              font-family: 'Paperlogy-8ExtraBold', sans-serif;
+              font-weight: 800;
+          }
+
     </style>
 </head>
 
@@ -53,53 +66,52 @@
     <div class="container-fluid bg-light mb-5" style="padding: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
     </div>
 
-    <!-- Jobs Start -->
-        <div class="container">
+    <div class="tab-class text-center wow fadeInUp" data-wow-delay="0.3s">
+            <!-- Jobs Start -->
 
-            <div class="tab-class text-center">
-                <div class="tab-content">
-                    <div id="tab-1" class="tab-pane fade show p-0 active">
-                        <div th:each="scrap : ${scrapList}" class="job-item p-4 mb-4" style="border: 2px solid #D3D3D3; width: 100%;">
-                            <div class="row g-4">
-                                <div class="col-sm-12 col-md-8 d-flex align-items-center">
-                                    <img class="flex-shrink-0 img-fluid border rounded"
-                                         th:src="@{/jobPost/logo/{logoName}(logoName=${scrap.logoName})}"
-                                         alt="Company Logo" style="width: 80px; height: 80px;">
+        <div id="tab-1" class="tab-pane fade show p-0 active">
+        <div class="tab-content" style="width: 90%; margin: 0 auto;">
+                            <div th:each="scrap : ${scrapList}" class="job-item p-4 mb-4" style="border: 2px solid #D3D3D3; width: 100%;">
+                                <div class="row g-4">
+                                    <div class="col-sm-12 col-md-8 d-flex align-items-center">
+                                        <img class="flex-shrink-0 img-fluid border rounded"
+                                             th:src="@{/jobPost/logo/{logoName}(logoName=${scrap.logoName})}"
+                                             alt="Company Logo" style="width: 80px; height: 80px;">
 
-                                    <div class="text-start ps-4">
-                                        <h5 class="mb-3" th:text="${scrap.title}">Job Title</h5>
-                                        <span class="text-truncate me-0"><i class="fas fa-school text-primary me-2"></i><span
-                                                th:text="${scrap.companyName}">company Name</span></span>
-                                        <span class="text-truncate me-3"><i
-                                                class="far fa-clock text-primary me-2"></i><span
-                                                th:text="${#dates.format(scrap.endDate, 'yyyy-MM-dd')}"></span></span>마감
+                                        <div class="text-start ps-4">
+                                            <h5 class="mb-3" th:text="${scrap.title}">Job Title</h5>
+                                            <span class="text-truncate me-0"><i class="fas fa-school text-primary me-2"></i><span
+                                                    th:text="${scrap.companyName}">company Name</span></span>
+                                            <span class="text-truncate me-3"><i
+                                                    class="far fa-clock text-primary me-2"></i><span
+                                                    th:text="${#dates.format(scrap.endDate, 'yyyy-MM-dd')}"></span></span>마감
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
-                                    <div class="d-flex mb-3">
-                                        <a class="btn btn-primary btn-square me-3"
-                                           th:href="@{/jobPost/detail/{jobPostId}(jobPostId=${scrap.jobPostId})}">보기</a>
+                                    <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
+                                        <div class="d-flex mb-3">
+                                            <a class="btn btn-primary btn-square me-3"
+                                               th:href="@{/jobPost/detail/{jobPostId}(jobPostId=${scrap.jobPostId})}">보기</a>
+                                        </div>
+                                        <small class="text-truncate"><i
+                                                class="far fa-calendar-alt text-primary me-2"></i><span
+                                                th:text="${#dates.format(scrap.created, 'yyyy-MM-dd')}"></span></small>
                                     </div>
-                                    <small class="text-truncate"><i
-                                            class="far fa-calendar-alt text-primary me-2"></i><span
-                                            th:text="${#dates.format(scrap.created, 'yyyy-MM-dd')}"></span></small>
                                 </div>
                             </div>
                         </div>
-                        <a class="btn btn-primary py-3 px-5" href="#" style="border-radius: 8px;">더 보기</a>
-                    </div>
+
                 </div>
-
             </div>
-        </div>
 
 
-    <!-- Job End -->
+            <!-- Job End -->
+    </div>
 
     <div class="container-fluid bg-light mb-5" style="padding: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
     </div>
 
 </div>
+
 
 <!--    <script>-->
 <!--        document.addEventListener('DOMContentLoaded', function() {-->

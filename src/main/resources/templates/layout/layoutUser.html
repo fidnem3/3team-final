@@ -11,14 +11,11 @@
     <meta content="" name="description">
 
     <!-- Favicon -->
-<!--    <link th:href="@{/img/favicon.ico}" rel="icon">-->
+    <!--    <link th:href="@{/img/favicon.ico}" rel="icon">-->
 
     <script src="//cdn.ckeditor.com/4.22.1/full-all/ckeditor.js"></script>
     <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Inter:wght@700;800&display=swap"
-          rel="stylesheet">
+
 
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
@@ -39,11 +36,24 @@
 
     <script src="https://cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
     <style>
+
+        @font-face {
+              font-family: 'Paperlogy-8ExtraBold';
+              src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-8ExtraBold.woff2') format('woff2');
+              font-weight: 800;
+              font-style: normal;
+          }
+
+           header, footer, body, h1, h2, h3, h4, h5, .btn, .button {
+              font-family: 'Paperlogy-8ExtraBold', sans-serif;
+              font-weight: 800;
+          }
+
         .navbar {
     position: sticky; /* 또는 fixed */
     top: 0; /* 네비게이션 바가 화면 상단에 위치하도록 설정 */
     z-index: 1000; /* 다른 요소들 위에 위치하도록 설정 */
-}
+  }
         .nav-item nav-link{
          font-weight: bold;
         }
@@ -76,7 +86,7 @@
         .sidebar .nav-link {
     color: #778899; /* 글씨 색상 */
     font-weight: bold; /* 글씨 굵기 */
-}
+  }
          .content-wrapper {
         margin-left: 20%; /* 사이드바의 폭만큼 마진을 줌 */
         width: 80%; /* 나머지 부분이 화면의 80% 차지 */
@@ -100,7 +110,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
-<!--                <a id="homeLink" th:href="@{/index}" class="nav-item nav-link">Home</a>-->
+                <!--                <a id="homeLink" th:href="@{/index}" class="nav-item nav-link">Home</a>-->
                 <a th:href="@{/about}" class="nav-item nav-link" style="font-weight: bold; font-size: 20px;">소개</a>
                 <a th:href="@{/jobPost/jobPostList}" class="nav-item nav-link" style="font-weight: bold; font-size: 20px;">채용공고</a>
 
@@ -127,7 +137,7 @@
                 </a>
                 <div class="dropdown-menu rounded-0 m-0">
                     <a th:href="@{/company/detail}" class="dropdown-item">My page</a>
-<!--                    <a th:href="@{/company/applications}" class="dropdown-item">Company Application</a>-->
+                    <!--                    <a th:href="@{/company/applications}" class="dropdown-item">Company Application</a>-->
                     <a th:href="@{/company/settings}" class="dropdown-item">Settings</a>
                     <a th:href="@{/logout}" class="dropdown-item">Logout</a>
                 </div>
@@ -178,28 +188,27 @@
                 <ul class="nav flex-column">
                     <div class="sidebar-logo">
                         <li class="nav-item">
-<!--                            <img th:if="${fileName}"-->
-<!--                                 th:src="@{/jobSeeker/profile/{profileName}(profileName=${jobSeeker.fileName})}"-->
-<!--                                 alt="Company Logo"/>-->
+                            <img th:src="@{/jobSeeker/profile/{fileName}(fileName=${fileName})}"
+                                 alt="Profile Picture" class="profile-pic"/>
                         </li>
                     </div>
                     <div style="margin-top: 15px; text-align: center; font-weight: bold;">
-                        <span th:text="${jobSeeker.name}">User Name</span>
+                        <span th:text="${jobSeekerName}">User Name</span>
                     </div>
                     <div style="border-top: 1px solid #000080; border-bottom: 1px solid #000080; margin: 30px auto; padding-top: 30px; padding-bottom: 30px;">
                         <ul>
                             <li class="nav-item">
                                 <a class="nav-link" th:href="@{/jobSeeker/detail}">나의 정보</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" th:href="@{/resume/save}">이력서 작성하기</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" th:href="@{/resume/list}">나의 이력서</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" th:href="@{/application/list}">나의 지원 공고</a>
-                            </li>
+                            <!--                            <li class="nav-item">-->
+                            <!--                                <a class="nav-link" th:href="@{/resume/save}">이력서 작성하기</a>-->
+                            <!--                            </li>-->
+                            <!--                            <li class="nav-item">-->
+                            <!--                                <a class="nav-link" th:href="@{/resume/list}">나의 이력서</a>-->
+                            <!--                            </li>-->
+                            <!--                            <li class="nav-item">-->
+                            <!--                                <a class="nav-link" th:href="@{/application/list}">나의 지원 공고</a>-->
+                            <!--                            </li>-->
                             <li class="nav-item">
                                 <a class="nav-link" th:href="@{/jobSeeker/scrap/list}">나의 스크랩</a>
                             </li>
@@ -216,7 +225,6 @@
             <div class="col-md-10" style="width: 80%;">
                 <!-- 헤더 -->
 
-
                 <!-- 콘텐츠가 삽입될 위치 -->
                 <main layout:fragment="content">
                     <!-- 기본 콘텐츠 -->
@@ -227,79 +235,81 @@
             <!-- 나머지 부분 끝 -->
 
         </div>
-        <footer>
-            <!-- Footer Start -->
-            <div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
-                <div class="container py-5">
-                    <div class="row g-5">
-                        <div class="col-lg-3 col-md-6">
-                            <h5 class="text-white mb-4">Company</h5>
-                            <a class="btn btn-link text-white-50" href="">About Us</a>
-                            <a class="btn btn-link text-white-50" href="">Contact Us</a>
-                            <a class="btn btn-link text-white-50" href="">Our Services</a>
-                            <a class="btn btn-link text-white-50" href="">Privacy Policy</a>
-                            <a class="btn btn-link text-white-50" href="">Terms & Condition</a>
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-                            <h5 class="text-white mb-4">Quick Links</h5>
-                            <a class="btn btn-link text-white-50" href="">About Us</a>
-                            <a class="btn btn-link text-white-50" href="">Contact Us</a>
-                            <a class="btn btn-link text-white-50" href="">Our Services</a>
-                            <a class="btn btn-link text-white-50" href="">Privacy Policy</a>
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-                            <h5 class="text-white mb-4">Contact</h5>
-                            <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>123로, 도봉구, 서울시, 대한민국</p>
-                            <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>02 1111 1111 </p>
-                            <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@example.com</p>
-                            <div class="d-flex pt-2">
-                                <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
-                                <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-                            <h5 class="text-white mb-4">문의사항</h5>
-                            <p>관리자에게 이메일을 보냅니다.</p>
-                            <div class="position-relative mx-auto" style="max-width: 400px;">
-                                <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text"
-                                       placeholder="Your email">
-                                <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">
-                                    작성하기
-                                </button>
-                            </div>
-                        </div>
+    </div>
+</header>
+<footer>
+    <!-- Footer Start -->
+    <div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container py-5">
+            <div class="row g-5">
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-white mb-4">Company</h5>
+                    <a class="btn btn-link text-white-50" href="">About Us</a>
+                    <a class="btn btn-link text-white-50" href="">Contact Us</a>
+                    <a class="btn btn-link text-white-50" href="">Our Services</a>
+                    <a class="btn btn-link text-white-50" href="">Privacy Policy</a>
+                    <a class="btn btn-link text-white-50" href="">Terms & Condition</a>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-white mb-4">Quick Links</h5>
+                    <a class="btn btn-link text-white-50" href="">About Us</a>
+                    <a class="btn btn-link text-white-50" href="">Contact Us</a>
+                    <a class="btn btn-link text-white-50" href="">Our Services</a>
+                    <a class="btn btn-link text-white-50" href="">Privacy Policy</a>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-white mb-4">Contact</h5>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>123로, 도봉구, 서울시, 대한민국</p>
+                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>02 1111 1111 </p>
+                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@example.com</p>
+                    <div class="d-flex pt-2">
+                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
+                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
+                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
-                <div class="container">
-                    <div class="copyright">
-                        <div class="row">
-                            <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                                &copy; <a class="border-bottom" href="#">Deltopia</a>, All Right Reserved.
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-white mb-4">문의사항</h5>
+                    <p>관리자에게 이메일을 보냅니다.</p>
+                    <div class="position-relative mx-auto" style="max-width: 400px;">
+                        <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text"
+                               placeholder="Your email">
+                        <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">
+                            작성하기
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="copyright">
+                <div class="row">
+                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                        &copy; <a class="border-bottom" href="#">Deltopia</a>, All Right Reserved.
 
-                                <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-                                Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a>
-                            </div>
-                            <div class="col-md-6 text-center text-md-end">
-                                <div class="footer-menu">
-                                    <a href="">Home</a>
-                                    <a href="">Cookies</a>
-                                    <a href="">Help</a>
-                                    <a href="">FQAs</a>
-                                </div>
-                            </div>
+                        <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                        Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a>
+                    </div>
+                    <div class="col-md-6 text-center text-md-end">
+                        <div class="footer-menu">
+                            <a href="">Home</a>
+                            <a href="">Cookies</a>
+                            <a href="">Help</a>
+                            <a href="">FQAs</a>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Footer End -->
-        </footer>
+        </div>
     </div>
+    <!-- Footer End -->
+</footer>
+</div>
 
 
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+<!-- Back to Top -->
+<a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
 
 
 <!-- JavaScript Libraries -->
@@ -369,6 +379,9 @@
         } else if (path === '/anotherPage') {
             pageTitle.textContent = 'Another Page';
             pageName.textContent = 'Another Page';
+        } else if (path === '/jobSeeker/scrap/list') {
+            pageTitle.textContent = '나의 스크랩 공고';
+            pageName.textContent = 'My Scrap';
         }
     });
 

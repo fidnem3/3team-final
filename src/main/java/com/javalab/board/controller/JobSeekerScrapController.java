@@ -3,9 +3,11 @@ package com.javalab.board.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import com.javalab.board.service.JobPostService;
 import com.javalab.board.service.CompanyService; // 추가된 임포트
+import com.javalab.board.service.JobSeekerService;
 import com.javalab.board.vo.CompanyVo;
 import com.javalab.board.vo.JobPostVo;
 import com.javalab.board.vo.JobSeekerVo;
@@ -34,6 +36,8 @@ public class JobSeekerScrapController {
 
     @Autowired
     private JobSeekerScrapService jobSeekerScrapService;
+    @Autowired
+    private JobSeekerService jobSeekerService;
 
     @Autowired
     private JobPostService jobPostService; // 추가된 임포트
@@ -85,6 +89,8 @@ public class JobSeekerScrapController {
     public String listJobSeekerScrap(Authentication authentication, Model model) {
         // Check authentication and determine user ID
         String jobSeekerId = null;
+        String jobSeekerName = null;
+
         if (authentication == null) {
             // 로그인하지 않은 경우, 로그인 페이지로 리다이렉트
             return "redirect:/login";
@@ -101,9 +107,21 @@ public class JobSeekerScrapController {
             return "redirect:/login";
         }
 
+        // Fetch job seeker details using jobSeekerId
+        Optional<JobSeekerVo> jobSeekerOptional = jobSeekerService.getJobSeekerDetails(jobSeekerId);
+        if (jobSeekerOptional.isPresent()) {
+            JobSeekerVo jobSeekerVo = jobSeekerOptional.get();
+            jobSeekerName = jobSeekerVo.getName();
+            String fileName = jobSeekerVo.getFileName(); // 프로필 이미지 URL 가져오기
+            model.addAttribute("fileName", fileName);
+        }
+
         // Get the list of scrapped job posts
         List<JobSeekerScrapVo> jobSeekerScrapList = jobSeekerScrapService.getScrapList(jobSeekerId);
         model.addAttribute("scrapList", jobSeekerScrapList);
+
+        // Add jobSeekerName to the model
+        model.addAttribute("jobSeekerName", jobSeekerName);
 
         // Optional: Fetch additional details like company info if needed
         for (JobSeekerScrapVo scrapVo : jobSeekerScrapList) {
@@ -116,6 +134,8 @@ public class JobSeekerScrapController {
                     scrapVo.setLogoName(companyVo.getLogoName());
                     scrapVo.setLogoPath(companyVo.getLogoPath());
                     scrapVo.setCompanyName(companyVo.getCompanyName());
+
+
                 }
             }
         }

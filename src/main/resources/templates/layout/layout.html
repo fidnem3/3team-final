@@ -11,14 +11,14 @@
     <meta content="" name="description">
 
     <!-- Favicon -->
-<!--    <link th:href="@{/img/favicon.ico}" rel="icon">-->
+    <!--    <link th:href="@{/img/favicon.ico}" rel="icon">-->
 
     <script src="//cdn.ckeditor.com/4.22.1/full-all/ckeditor.js"></script>
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Inter:wght@700;800&display=swap"
-          rel="stylesheet">
+<!--    &lt;!&ndash; Google Web Fonts &ndash;&gt;-->
+<!--    <link rel="preconnect" href="https://fonts.googleapis.com">-->
+<!--    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>-->
+<!--    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Inter:wght@700;800&display=swap"-->
+<!--          rel="stylesheet">-->
 
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
@@ -39,6 +39,19 @@
 
     <script src="https://cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
     <style>
+
+        @font-face {
+            font-family: 'Paperlogy-8ExtraBold';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-8ExtraBold.woff2') format('woff2');
+            font-weight: 800;
+            font-style: normal;
+        }
+
+         header, footer, body, h1, h2, h3, h4, h5, .btn, .button {
+            font-family: 'Paperlogy-8ExtraBold', sans-serif;
+            font-weight: 800;
+        }
+
         .navbar {
     position: sticky; /* 또는 fixed */
     top: 0; /* 네비게이션 바가 화면 상단에 위치하도록 설정 */
@@ -61,41 +74,41 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse" style="margin-left: 20%;">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
-<!--                <a id="homeLink" th:href="@{/index}" class="nav-item nav-link">Home</a>-->
+                <!--                <a id="homeLink" th:href="@{/index}" class="nav-item nav-link">Home</a>-->
                 <a th:href="@{/about}" class="nav-item nav-link" style="font-weight: bold; font-size: 20px;">소개</a>
                 <a th:href="@{/jobPost/jobPostList}" class="nav-item nav-link" style="font-weight: bold; font-size: 20px;">채용공고</a>
 
 
-<!--                <div class="nav-item dropdown">-->
-<!--                    <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown" sec:authorize="!hasRole('ROLE_COMPANY')">Jobs</a>-->
-<!--                    <div class="dropdown-menu rounded-0 m-0">-->
-<!--                        <a th:href="@{/admin/companyList}" class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')">Company-->
-<!--                            List</a>-->
-<!--                        <a th:href="@{/jobPost/jobPostList}" class="dropdown-item">Job List</a>-->
-<!--                        <a th:href="@{/jobPost/myJobPostList}" class="dropdown-item"-->
-<!--                           sec:authorize="hasRole('ROLE_COMPANY')">My Post</a>-->
-<!--                        <a th:href="@{/jobSeeker/scrap/list}" class="dropdown-item"-->
-<!--                           sec:authorize="hasRole('ROLE_USER')">My Scrap</a>-->
-<!--                        &lt;!&ndash;                        <a th:href="@{/admin/jobPostsList}" class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')">ManageBlackCom</a>&ndash;&gt;-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <div class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">-->
-<!--                    <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">JobSeekers</a>-->
-<!--                    <div class="dropdown-menu rounded-0 m-0">-->
-<!--                        <a th:href="@{/admin/jobSeekerList}" class="dropdown-item">JobSeeker List</a>-->
-<!--                        &lt;!&ndash;                        <a th:href="@{/jobSeeker/jobSeekerManagement}" class="dropdown-item">ManageBlackJob</a>&ndash;&gt;-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <div class="nav-item dropdown" sec:authorize="!hasRole('ROLE_ADMIN')">-->
-<!--                    <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown" sec:authorize="!hasRole('ROLE_COMPANY')">Resume</a>-->
-<!--                    <div class="dropdown-menu rounded-0 m-0">-->
-<!--                        <a th:href="@{/resume/save}" class="dropdown-item">New Resume</a>-->
-<!--                        <a th:href="@{/resume/list}" class="dropdown-item">Resume List</a>-->
-<!--                        <a th:href="@{/application/list}" class="dropdown-item" sec:authorize="hasRole('ROLE_USER')">My-->
-<!--                            Job Applications-->
-<!--                        </a>-->
-<!--                    </div>-->
-<!--                </div>-->
+                <!--                <div class="nav-item dropdown">-->
+                <!--                    <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown" sec:authorize="!hasRole('ROLE_COMPANY')">Jobs</a>-->
+                <!--                    <div class="dropdown-menu rounded-0 m-0">-->
+                <!--                        <a th:href="@{/admin/companyList}" class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')">Company-->
+                <!--                            List</a>-->
+                <!--                        <a th:href="@{/jobPost/jobPostList}" class="dropdown-item">Job List</a>-->
+                <!--                        <a th:href="@{/jobPost/myJobPostList}" class="dropdown-item"-->
+                <!--                           sec:authorize="hasRole('ROLE_COMPANY')">My Post</a>-->
+                <!--                        <a th:href="@{/jobSeeker/scrap/list}" class="dropdown-item"-->
+                <!--                           sec:authorize="hasRole('ROLE_USER')">My Scrap</a>-->
+                <!--                        &lt;!&ndash;                        <a th:href="@{/admin/jobPostsList}" class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')">ManageBlackCom</a>&ndash;&gt;-->
+                <!--                    </div>-->
+                <!--                </div>-->
+                <!--                <div class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">-->
+                <!--                    <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">JobSeekers</a>-->
+                <!--                    <div class="dropdown-menu rounded-0 m-0">-->
+                <!--                        <a th:href="@{/admin/jobSeekerList}" class="dropdown-item">JobSeeker List</a>-->
+                <!--                        &lt;!&ndash;                        <a th:href="@{/jobSeeker/jobSeekerManagement}" class="dropdown-item">ManageBlackJob</a>&ndash;&gt;-->
+                <!--                    </div>-->
+                <!--                </div>-->
+                <!--                <div class="nav-item dropdown" sec:authorize="!hasRole('ROLE_ADMIN')">-->
+                <!--                    <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown" sec:authorize="!hasRole('ROLE_COMPANY')">Resume</a>-->
+                <!--                    <div class="dropdown-menu rounded-0 m-0">-->
+                <!--                        <a th:href="@{/resume/save}" class="dropdown-item">New Resume</a>-->
+                <!--                        <a th:href="@{/resume/list}" class="dropdown-item">Resume List</a>-->
+                <!--                        <a th:href="@{/application/list}" class="dropdown-item" sec:authorize="hasRole('ROLE_USER')">My-->
+                <!--                            Job Applications-->
+                <!--                        </a>-->
+                <!--                    </div>-->
+                <!--                </div>-->
 
                 <a th:href="@{/contact}" class="nav-item nav-link" style="font-weight: bold; font-size: 20px;">문의</a>
             </div>
@@ -145,7 +158,7 @@
                 </a>
                 <div class="dropdown-menu rounded-0 m-0">
                     <a th:href="@{/company/detail}" class="dropdown-item">My page</a>
-<!--                    <a th:href="@{/company/applications}" class="dropdown-item">Company Application</a>-->
+                    <!--                    <a th:href="@{/company/applications}" class="dropdown-item">Company Application</a>-->
                     <a th:href="@{/company/settings}" class="dropdown-item">Settings</a>
                     <a th:href="@{/logout}" class="dropdown-item">Logout</a>
                 </div>
@@ -319,6 +332,16 @@
             if (pageHeader) {
                 pageHeader.style.display = 'none';
             }
+        }
+    });
+</script>
+<!-- index.html 에서 home 안보이게 하기 -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // 현재 페이지의 경로를 확인
+        if (window.location.pathname === '/index' || window.location.pathname === '/') {
+            // 'homeLink' ID를 가진 요소를 찾고 숨기기
+            var homeLink = document.getElementById("homeLink");
             if (homeLink) {
                 homeLink.style.display = 'none';
             }
