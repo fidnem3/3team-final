@@ -1,166 +1,161 @@
-       :root {
-            --primary: #4CAF50;
-            --secondary: #81C784;
-            --background: #f5f5f5;
-            --surface: #ffffff;
-            --text: #333333;
-            --text-secondary: rgba(0, 0, 0, 0.6);
-            --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-        }
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
-        *, *::before, *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+:root {
+    --primary: #0000cd; /* 진한 하늘색 */
+    --secondary: #4169e1; /* 더 밝은 하늘색 */
+    --background: #f5f5f5;
+    --surface: #ffffff;
+    --text: #333333;
+    --text-secondary: rgba(0, 0, 0, 0.6);
+    --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--background);
-            color: var(--text);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
-        .background {
-            position: fixed;
-            width: 100vw;
-            height: 100vh;
-            top: 0;
-            left: 0;
-            background: linear-gradient(135deg, #e8f5e9, #a5d6a7);
-            z-index: -1;
-        }
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--background);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
 
-        .container {
-            max-width: 800px;
-            width: 100%;
-            background: var(--surface);
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: var(--box-shadow);
-            animation: fadeIn 1s ease-in-out;
-        }
+.background {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    background: linear-gradient(135deg, #e0eaff, #a0baff); /* 연한 하늘색 그라데이션 */
+    z-index: -1;
+}
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+.container {
+    max-width: 800px;
+    width: 100%;
+    background: var(--surface);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: var(--box-shadow);
+    animation: fadeIn 1s ease-in-out;
+}
 
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
-        .header h1 {
-            font-size: 2.5rem;
-            color: var(--primary);
-            margin-bottom: 10px;
-        }
+.header {
+    text-align: center;
+    margin-bottom: 40px;
+}
 
-        .header .subtitle {
-            font-size: 1rem;
-            color: var(--text-secondary);
-        }
+.header h1 {
+    font-size: 2.5rem;
+    color: var(--primary);
+    margin-bottom: 10px;
+}
 
-        .signup-form {
-            display: grid;
-            gap: 20px;
-        }
+.header .subtitle {
+    font-size: 1rem;
+    color: var(--text-secondary);
+}
 
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
+.signup-form {
+    display: grid;
+    gap: 20px;
+}
 
-        .form-group label {
-            font-size: 0.9rem;
-            margin-bottom: 5px;
-            color: var(--text-secondary);
-        }
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
 
-        .form-group input {
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1rem;
-            transition: var(--transition);
-        }
+.form-group label {
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+    color: var(--text-secondary);
+}
 
-        .form-group input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
-        }
+.form-group input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: var(--transition);
+}
 
-        .fieldError {
-            color: #bd2130;
-            display: block;
-            margin-top: 5px;
-        }
+.form-group input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(0, 0, 205, 0.2);
+}
 
-        .signup-button {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 5px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
+.fieldError {
+    color: #d32f2f; /* 강한 빨간색 오류 메시지 */
+    background-color: #fdecea; /* 연한 빨간색 배경으로 오류 강조 */
+    padding: 8px; /* 가독성을 위한 패딩 */
+    border-radius: 4px; /* 부드러운 모서리 */
+    margin-top: 5px;
+    font-size: 0.85rem; /* 약간 작은 글자 크기 */
+}
 
-        .signup-button:hover {
-            background-color: var(--secondary);
-            transform: translateY(-2px);
-        }
+.signup-button {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
 
-        .reset-button {
-            background-color: var(--text-secondary);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 5px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: var(--transition);
-        }
+.signup-button:hover {
+    background-color: var(--secondary);
+    transform: translateY(-2px);
+}
 
-        .reset-button:hover {
-            background-color: var(--text);
-        }
+.reset-button {
+    background-color: var(--text-secondary);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: var(--transition);
+}
 
-        @media (max-width: 600px) {
-            .container {
-                padding: 20px;
-            }
+.reset-button:hover {
+    background-color: var(--text);
+}
 
-            .header h1 {
-                font-size: 2rem;
-            }
-        }
-        footer {
+footer {
     margin-top: 30px;
     text-align: center;
     font-size: 0.9rem;
 }
 
-
-        .login-link {
+.login-link {
     color: var(--primary);
     text-decoration: none;
     font-weight: 500;
@@ -176,4 +171,83 @@
 
 .login-link i {
     font-size: 1.2em;
+}
+
+.file-upload {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.file-upload input[type="file"] {
+    position: absolute;
+    right: 0;
+    top: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.file-upload label {
+    display: block;
+    padding: 10px 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    text-align: center;
+    background-color: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.file-upload label:hover {
+    background-color: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+#imagePreview {
+    margin-top: 10px;
+}
+
+#imagePreview img {
+    max-width: 200px;
+    max-height: 200px;
+    object-fit: contain; /* 유지되는 비율로 이미지 크기 조정 */
+}
+
+@media (max-width: 600px) {
+    .container {
+        padding: 20px;
+    }
+
+    .header h1 {
+        font-size: 2rem;
+    }
+}
+
+.form-group select {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: var(--transition);
+    background-color: var(--surface);
+    color: var(--text);
+}
+
+.form-group select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(0, 0, 205, 0.2);
+}
+
+.has-error input {
+    border-color: #d32f2f; /* 빨간색 테두리 오류 필드 */
+    background-color: #fdecea; /* 연한 빨간색 배경으로 오류 표시 */
+}
+
+.has-error input:focus {
+    border-color: #d32f2f; /* 포커스 시 빨간색 테두리 유지 */
+    box-shadow: 0 0 0 2px rgba(211, 47, 47, 0.2); /* 오류 필드를 위한 빨간색 그림자 */
 }

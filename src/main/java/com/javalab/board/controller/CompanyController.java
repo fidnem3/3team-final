@@ -245,7 +245,4 @@ public class CompanyController {
         return "redirect:/resume/detail/" + resumeId;
     }
 
-
-
-
 }
