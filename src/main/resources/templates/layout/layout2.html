@@ -106,7 +106,7 @@
     <!-- 상단바 -->
     <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
         <a th:href="@{/index}" class="navbar-brand d-flex align-items-center text-center py-0 px-4 px-lg-5">
-            <h1 class="m-0 text-primary">Deltopia</h1>
+            <h1 class="m-0 text-primary">DelTopia</h1>
         </a>
         <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
@@ -352,84 +352,114 @@
 <!-- 페이지 마다 text 다르게 하는 script-->
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        var path = window.location.pathname;
-        console.log("Current path:", path); // 현재 경로 출력
-        var pageTitle = document.getElementById("pageTitle");
-        var pageName = document.getElementById("pageName");
+         var path = window.location.pathname;
+         console.log("Current path:", path); // 현재 경로 출력
+         var pageTitle = document.getElementById("pageTitle");
+         var pageName = document.getElementById("pageName");
 
-        if (path === '/jobPost/jobPostList') {
-            pageTitle.textContent = '현재 채용중';
-            pageName.textContent = 'Job List';
-        } else if (path == '/about') {
-            pageTitle.textContent = '';
-             pageName.textContent = '소개';
-        } else if (path == '/contact') {
-            pageTitle.textContent = '';
-            pageName.textContent = 'Contact';
-        } else if (path == '/jobPost/jobPostCreate') {
-            pageTitle.textContent = '공고 작성 하기';
-            pageName.textContent = 'CreateJobPost';
-        } else if (path == '/jobPost/myJobPostList') {
-            pageTitle.textContent = '나의 채용공고';
-            pageName.textContent = 'MY POST';
-        } else if (path === '/anotherPage') {
-            pageTitle.textContent = 'Another Page';
-            pageName.textContent = 'Another Page';
-        } else if (path === '/anotherPage') {
-            pageTitle.textContent = 'Another Page';
-            pageName.textContent = 'Another Page';
-        }
-    });
+         if (path === '/jobPost/jobPostList') {
+             pageTitle.textContent = 'Job List';
+             pageName.textContent = 'Job List';
+         } else if (path == '/about') {
+             pageTitle.textContent = 'About';
+              pageName.textContent = 'About';
+         } else if (path == '/contact') {
+             pageTitle.textContent = 'Contact';
+             pageName.textContent = 'Contact';
+         } else if (path == '/jobPost/jobPostCreate') {
+             pageTitle.textContent = '공고 등록하기';
+             pageName.textContent = 'CreateJobPost';
+         } else if (path == '/jobPost/myJobPostList') {
+             pageTitle.textContent = '나의 채용공고';
+             pageName.textContent = 'MY POST';
+         } else if (path === '/anotherPage') {
+             pageTitle.textContent = 'Another Page';
+             pageName.textContent = 'Another Page';
+         }  else if (path === '/jobSeeker/scrap/list') {
+             pageTitle.textContent = '스크랩 공고';
+             pageName.textContent = 'ScrapList';
+         }  else if (path === '/resume/save') {
+             pageTitle.textContent = '이력서 작성';
+             pageName.textContent = 'New Resume';
+         } else if (path === '/resume/list') {
+             pageTitle.textContent = '이력서 목록';
+             pageName.textContent = 'Resume List';
+         } else if (path === '/application/list') {
+             pageTitle.textContent = '내가 지원한 공고';
+             pageName.textContent = 'Application List';
+         } else if (path === '/company/applications') {
+             pageTitle.textContent = '지원자 현항';
+             pageName.textContent = 'Company Applications';
+         } else if (path === '/company/detail') {
+             pageTitle.textContent = '기업 마이페이지';
+             pageName.textContent = 'Company MyPage';
+         } else if (path === '/company/edit') {
+             pageTitle.textContent = '기업 정보 수정';
+             pageName.textContent = 'Company Update';
+         } else if (path === '/company/withdraw') {
+             pageTitle.textContent = '회원 탈퇴';
+             pageName.textContent = 'Company Withdraw';
+         } else if (path === '/jobSeeker/withdraw') {
+             pageTitle.textContent = '회원 탈퇴';
+             pageName.textContent = 'Individual Withdraw';
+         } else if (path === '/jobSeeker/scrap/list') {
+             pageTitle.textContent = '나의 스크랩 공고';
+             pageName.textContent = 'My Scrap';
+         } else if (path === '/jobPost/edit') {
+             pageTitle.textContent = '공고 수정';
+             pageName.textContent = 'Edit JobPost';
+         }
+     });
 
-    function getCSRFToken() {
-    return document.querySelector('meta[name="_csrf"]').getAttribute('content');
-}
+     function getCSRFToken() {
+     return document.querySelector('meta[name="_csrf"]').getAttribute('content');
+ }
 
-function getCSRFHeader() {
-    return document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
-}
+ function getCSRFHeader() {
+     return document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+ }
 
-function toggleScrap(event) {
-    event.preventDefault();
+ function toggleScrap(event) {
+     event.preventDefault();
 
-    const button = event.currentTarget;
-    const jobPostId = button.getAttribute('data-jobpostid');
-    const isScrapped = button.classList.contains('scrap-active');
+     const button = event.currentTarget;
+     const jobPostId = button.getAttribute('data-jobpostid');
+     const isScrapped = button.classList.contains('scrap-active');
 
-    fetch('/jobSeeker/scrap/toggle', {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-            'Content-Type': 'application/json',
-            [getCSRFHeader()]: getCSRFToken()
-        },
-        body: JSON.stringify({ jobPostId: jobPostId, isScrapped: isScrapped }) // isScrapped 추가
-    })
-    .then(response => {
-        if (response.redirected) {
-            window.location.href = response.url;
-            return;
-        }
-        return response.json();
-    })
-    .then(data => {
-        if (data) {
-            const icon = button.querySelector('i');
-            if (data.isScrapped) {
-                button.classList.add('scrap-active');
-                icon.classList.remove('far');
-                icon.classList.add('fas');
-                alert('스크랩 완료');
-            } else {
-                button.classList.remove('scrap-active');
-                icon.classList.remove('fas');
-                icon.classList.add('far');
-                alert('스크랩 취소');
-            }
-        }
-    })
-    .catch(error => console.error('Error:', error));
-}
+     fetch('/jobSeeker/scrap/toggle', {
+         method: 'POST',
+         credentials: 'include',
+         headers: {
+             'Content-Type': 'application/json',
+             [getCSRFHeader()]: getCSRFToken()
+         },
+         body: JSON.stringify({ jobPostId: jobPostId, isScrapped: isScrapped }) // isScrapped 추가
+     })
+     .then(response => {
+         if (response.redirected) {
+             window.location.href = response.url;
+             return;
+         }
+         return response.json();
+     })
+     .then(data => {
+         if (data) {
+             const icon = button.querySelector('i');
+             if (data.isScrapped) {
+                 button.classList.add('scrap-active');
+                 icon.classList.remove('far');
+                 icon.classList.add('fas');
+                 alert('스크랩 완료');
+             } else {
+                 button.classList.remove('scrap-active');
+                 icon.classList.remove('fas');
+                 icon.classList.add('far');
+                 alert('스크랩 취소');
+             }
+         }
+     })
+     .catch(error => console.error('Error:', error));
+ }
 
 </script>
 <script>

@@ -30,7 +30,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/profile/**")
                 .addResourceLocations("file:C:/filetest/upload/");
 
-
     }
 
     @Override

@@ -43,9 +43,6 @@ public class CompanyServiceImpl implements CompanyService {
 
 
 
-
-
-
     @Override
     @Transactional
     public void registerCompany(CompanyVo companyVo, UserRolesVo userRolesVo) {
@@ -106,24 +103,24 @@ public class CompanyServiceImpl implements CompanyService {
         companyMapper.deleteCompany(companyId);
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        CompanyVo company = companyMapper.selectCompanyById(username);
-        if (company == null) {
-            throw new UsernameNotFoundException("User not found");
-        }
-
-        List<GrantedAuthority> authorities = userRolesMapper.selectUserRole(username, "company")
-                .stream()
-                .map(role -> new SimpleGrantedAuthority(role.getRoleId()))
-                .collect(Collectors.toList());
-
-        return new User(
-                company.getCompId(),
-                company.getPassword(),
-                authorities
-        );
-    }
+//    @Override
+//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//        CompanyVo company = companyMapper.selectCompanyById(username);
+//        if (company == null) {
+//            throw new UsernameNotFoundException("User not found");
+//        }
+//
+//        List<GrantedAuthority> authorities = userRolesMapper.selectUserRole(username, "company")
+//                .stream()
+//                .map(role -> new SimpleGrantedAuthority(role.getRoleId()))
+//                .collect(Collectors.toList());
+//
+//        return new User(
+//                company.getCompId(),
+//                company.getPassword(),
+//                authorities
+//        );
+//    }
 
     @Override
     public CompanyVo getCompanyById(String compId) {
