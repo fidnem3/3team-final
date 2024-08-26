@@ -123,7 +123,7 @@
                     <p th:text="${jobSeeker.jobSeekerId}">아이디</p>
 
                     <!-- New Resume Button -->
-                    <a th:href="@{/resume/save}" class="new-resume-button">
+                    <a th:href="@{/resume/save}" class="new-resume-button" sec:authorize="hasRole('ROLE_USER')">
                         <i class="fas fa-plus"></i> 새 이력서 작성
                     </a>
                 </div>

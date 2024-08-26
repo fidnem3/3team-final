@@ -14,11 +14,11 @@
     <!--    <link th:href="@{/img/favicon.ico}" rel="icon">-->
 
     <script src="//cdn.ckeditor.com/4.22.1/full-all/ckeditor.js"></script>
-<!--    &lt;!&ndash; Google Web Fonts &ndash;&gt;-->
-<!--    <link rel="preconnect" href="https://fonts.googleapis.com">-->
-<!--    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>-->
-<!--    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Inter:wght@700;800&display=swap"-->
-<!--          rel="stylesheet">-->
+    <!--    &lt;!&ndash; Google Web Fonts &ndash;&gt;-->
+    <!--    <link rel="preconnect" href="https://fonts.googleapis.com">-->
+    <!--    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>-->
+    <!--    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Inter:wght@700;800&display=swap"-->
+    <!--          rel="stylesheet">-->
 
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
@@ -321,12 +321,11 @@
 <script th:src="@{/js/main.js}"></script>
 
 
-<!-- index.html 에서 id=pageHeader 해당부분 안보이게 하기(header) -->
+<!-- index.html 에서 id=pageHeader 해당부분 안보이게 하기(header)-->
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         var path = window.location.pathname;
         var pageHeader = document.getElementById("pageHeader");
-        var homeLink = document.getElementById("homeLink");
 
         if (path === '/' || path === '/index') {
             if (pageHeader) {
@@ -348,72 +347,69 @@
         }
     });
 </script>
-
-<!-- 페이지 마다 text 다르게 하는 script -->
+<!-- 페이지 마다 text 다르게 하는 script-->
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-
          var path = window.location.pathname;
          console.log("Current path:", path); // 현재 경로 출력
          var pageTitle = document.getElementById("pageTitle");
          var pageName = document.getElementById("pageName");
 
          if (path === '/jobPost/jobPostList') {
-    pageTitle.textContent = 'Job List';
-    pageName.textContent = 'Job List';
-} else if (path === '/about') {
-    pageTitle.textContent = 'About';
-    pageName.textContent = 'About';
-} else if (path === '/contact') {
-    pageTitle.textContent = 'Contact';
-    pageName.textContent = 'Contact';
-} else if (path === '/jobPost/jobPostCreate') {
-    pageTitle.textContent = '공고 등록하기';
-    pageName.textContent = 'CreateJobPost';
-} else if (path === '/jobPost/myJobPostList') {
-    pageTitle.textContent = '나의 채용공고';
-    pageName.textContent = 'MY POST';
-} else if (path === '/anotherPage') {
-    pageTitle.textContent = 'Another Page';
-    pageName.textContent = 'Another Page';
-} else if (path === '/jobSeeker/scrap/list') {
-    pageTitle.textContent = '스크랩 공고';
-    pageName.textContent = 'ScrapList';
-} else if (path === '/resume/save') {
-    pageTitle.textContent = '이력서 작성';
-    pageName.textContent = 'New Resume';
-} else if (path === '/resume/list') {
-    pageTitle.textContent = '이력서 목록';
-    pageName.textContent = 'Resume List';
-} else if (path === '/application/list') {
-    pageTitle.textContent = '내가 지원한 공고';
-    pageName.textContent = 'Application List';
-} else if (path === '/company/applications') {
-    pageTitle.textContent = '지원자 현항';
-    pageName.textContent = 'Company Applications';
-} else if (path === '/company/detail') {
-    pageTitle.textContent = '기업 마이페이지';
-    pageName.textContent = 'Company MyPage';
-} else if (path === '/company/edit') {
-    pageTitle.textContent = '기업 정보 수정';
-    pageName.textContent = 'Company Update';
-} else if (path === '/company/withdraw') {
-    pageTitle.textContent = '회원 탈퇴';
-    pageName.textContent = 'Company Withdraw';
-} else if (path === '/jobSeeker/detail') {
-    pageTitle.textContent = '개인 마이페이지';
-    pageName.textContent = 'Individual MyPage';
-} else if (path === '/jobSeeker/edit') {
-    pageTitle.textContent = '개인 정보 수정';
-    pageName.textContent = 'Individual Update';
-} else if (path === '/jobSeeker/withdraw') {
-    pageTitle.textContent = '회원 탈퇴';
-    pageName.textContent = 'Individual Withdraw';
-} else if (path === '/jobPost/edit') {
-    pageTitle.textContent = '공고 수정';
-    pageName.textContent = 'Edit JobPost';
-}
-
+             pageTitle.textContent = 'Job List';
+             pageName.textContent = 'Job List';
+         } else if (path == '/about') {
+             pageTitle.textContent = 'About';
+              pageName.textContent = 'About';
+         } else if (path == '/contact') {
+             pageTitle.textContent = 'Contact';
+             pageName.textContent = 'Contact';
+         } else if (path == '/jobPost/jobPostCreate') {
+             pageTitle.textContent = '공고 등록하기';
+             pageName.textContent = 'CreateJobPost';
+         } else if (path == '/jobPost/myJobPostList') {
+             pageTitle.textContent = '나의 채용공고';
+             pageName.textContent = 'MY POST';
+         } else if (path === '/anotherPage') {
+             pageTitle.textContent = 'Another Page';
+             pageName.textContent = 'Another Page';
+         }  else if (path === '/jobSeeker/scrap/list') {
+             pageTitle.textContent = '스크랩 공고';
+             pageName.textContent = 'ScrapList';
+         }  else if (path === '/resume/save') {
+             pageTitle.textContent = '이력서 작성';
+             pageName.textContent = 'New Resume';
+         } else if (path === '/resume/list') {
+             pageTitle.textContent = '이력서 목록';
+             pageName.textContent = 'Resume List';
+         } else if (path === '/application/list') {
+             pageTitle.textContent = '내가 지원한 공고';
+             pageName.textContent = 'Application List';
+         } else if (path === '/company/applications') {
+             pageTitle.textContent = '지원자 현항';
+             pageName.textContent = 'Company Applications';
+         } else if (path === '/company/detail') {
+             pageTitle.textContent = '기업 마이페이지';
+             pageName.textContent = 'Company MyPage';
+         } else if (path === '/company/edit') {
+             pageTitle.textContent = '기업 정보 수정';
+             pageName.textContent = 'Company Update';
+         } else if (path === '/company/withdraw') {
+             pageTitle.textContent = '회원 탈퇴';
+             pageName.textContent = 'Company Withdraw';
+         } else if (path === '/jobSeeker/detail') {
+             pageTitle.textContent = '개인 마이페이지';
+             pageName.textContent = 'Individual MyPage';
+         } else if (path === '/jobSeeker/edit') {
+             pageTitle.textContent = '개인 정보 수정';
+             pageName.textContent = 'Individual Update';
+         } else if (path === '/jobSeeker/withdraw') {
+             pageTitle.textContent = '회원 탈퇴';
+             pageName.textContent = 'Individual Withdraw';
+         } else if (path === '/jobSeeker/scrap/list') {
+             pageTitle.textContent = '나의 스크랩 공고';
+             pageName.textContent = 'My Scrap';
+         }
      });
 
      function getCSRFToken() {
@@ -467,62 +463,151 @@
  }
 
 </script>
-
-<!-- CSRF Token 관련 함수 및 스크랩 토글 기능 -->
 <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var path = window.location.pathname;
+        var pageHeader = document.getElementById("pageHeader");
+
+        if (path === '/' || path === '/index') {
+            if (pageHeader) {
+                pageHeader.style.display = 'none';
+            }
+        }
+    });
+</script>
+<!-- index.html 에서 home 안보이게 하기 -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // 현재 페이지의 경로를 확인
+        if (window.location.pathname === '/index' || window.location.pathname === '/') {
+            // 'homeLink' ID를 가진 요소를 찾고 숨기기
+            var homeLink = document.getElementById("homeLink");
+            if (homeLink) {
+                homeLink.style.display = 'none';
+            }
+        }
+    });
+</script>
+<!-- 페이지 마다 text 다르게 하는 script-->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var path = window.location.pathname;
+        console.log("Current path:", path); // 현재 경로 출력
+        var pageTitle = document.getElementById("pageTitle");
+        var pageName = document.getElementById("pageName");
+
+        if (path === '/jobPost/jobPostList') {
+            pageTitle.textContent = 'Job List';
+            pageName.textContent = 'Job List';
+        } else if (path == '/about') {
+            pageTitle.textContent = 'About';
+             pageName.textContent = 'About';
+        } else if (path == '/contact') {
+            pageTitle.textContent = 'Contact';
+            pageName.textContent = 'Contact';
+        } else if (path == '/jobPost/jobPostCreate') {
+            pageTitle.textContent = '공고 등록하기';
+            pageName.textContent = 'CreateJobPost';
+        } else if (path == '/jobPost/myJobPostList') {
+            pageTitle.textContent = '나의 채용공고';
+            pageName.textContent = 'MY POST';
+        } else if (path === '/anotherPage') {
+            pageTitle.textContent = 'Another Page';
+            pageName.textContent = 'Another Page';
+        }  else if (path === '/jobSeeker/scrap/list') {
+            pageTitle.textContent = '스크랩 공고';
+            pageName.textContent = 'ScrapList';
+        }  else if (path === '/resume/save') {
+            pageTitle.textContent = '이력서 작성';
+            pageName.textContent = 'New Resume';
+        } else if (path === '/resume/list') {
+            pageTitle.textContent = '이력서 목록';
+            pageName.textContent = 'Resume List';
+        } else if (path === '/application/list') {
+            pageTitle.textContent = '내가 지원한 공고';
+            pageName.textContent = 'Application List';
+        } else if (path === '/company/applications') {
+            pageTitle.textContent = '지원자 현항';
+            pageName.textContent = 'Company Applications';
+        } else if (path === '/company/detail') {
+            pageTitle.textContent = '기업 마이페이지';
+            pageName.textContent = 'Company Page';
+        } else if (path === '/company/edit') {
+            pageTitle.textContent = '기업 정보 수정';
+            pageName.textContent = 'Company Update';
+        } else if (path === '/company/withdraw') {
+            pageTitle.textContent = '회원 탈퇴';
+            pageName.textContent = 'Company Withdraw';
+        } else if (path === '/jobSeeker/detail') {
+            pageTitle.textContent = '개인 마이페이지';
+            pageName.textContent = 'Individual MyPage';
+        } else if (path === '/jobSeeker/edit') {
+            pageTitle.textContent = '개인 정보 수정';
+            pageName.textContent = 'Individual Update';
+        } else if (path === '/jobSeeker/withdraw') {
+            pageTitle.textContent = '회원 탈퇴';
+            pageName.textContent = 'Individual Withdraw';
+        } else if (path === '/jobSeeker/scrap/list') {
+            pageTitle.textContent = '나의 스크랩 공고';
+            pageName.textContent = 'My Scrap';
+        } else if (path === '/jobPost/edit') {
+             pageTitle.textContent = '공고 수정';
+             pageName.textContent = 'Edit JobPost';
+         }
+    });
+
     function getCSRFToken() {
-        return document.querySelector('meta[name="_csrf"]').getAttribute('content');
-    }
+    return document.querySelector('meta[name="_csrf"]').getAttribute('content');
+}
 
-    function getCSRFHeader() {
-        return document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
-    }
+function getCSRFHeader() {
+    return document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+}
 
+function toggleScrap(event) {
+    event.preventDefault();
 
-    function toggleScrap(event) {
-        event.preventDefault();
-        const button = event.currentTarget;
-        const jobPostId = button.getAttribute('data-jobpostid');
-        const isScrapped = button.classList.contains('scrap-active');
+    const button = event.currentTarget;
+    const jobPostId = button.getAttribute('data-jobpostid');
+    const isScrapped = button.classList.contains('scrap-active');
 
-        fetch('/jobSeeker/scrap/toggle', {
-            method: 'POST',
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json',
-                [getCSRFHeader()]: getCSRFToken()
-            },
-            body: JSON.stringify({ jobPostId: jobPostId, isScrapped: isScrapped })
-        })
-        .then(response => {
-            if (response.redirected) {
-                window.location.href = response.url;
-                return;
+    fetch('/jobSeeker/scrap/toggle', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json',
+            [getCSRFHeader()]: getCSRFToken()
+        },
+        body: JSON.stringify({ jobPostId: jobPostId, isScrapped: isScrapped }) // isScrapped 추가
+    })
+    .then(response => {
+        if (response.redirected) {
+            window.location.href = response.url;
+            return;
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data) {
+            const icon = button.querySelector('i');
+            if (data.isScrapped) {
+                button.classList.add('scrap-active');
+                icon.classList.remove('far');
+                icon.classList.add('fas');
+                alert('스크랩 완료');
+            } else {
+                button.classList.remove('scrap-active');
+                icon.classList.remove('fas');
+                icon.classList.add('far');
+                alert('스크랩 취소');
             }
-            return response.json();
-        })
-        .then(data => {
-            if (data) {
-                const icon = button.querySelector('i');
-                if (data.isScrapped) {
-                    button.classList.add('scrap-active');
-                    icon.classList.remove('far');
-                    icon.classList.add('fas');
-                    alert('스크랩 완료');
-                } else {
-                    button.classList.remove('scrap-active');
-                    icon.classList.remove('fas');
-                    icon.classList.add('far');
-                    alert('스크랩 취소');
-                }
-            }
-        })
-        .catch(error => console.error('Error:', error));
-    }
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
 </script>
 
-
-<!-- 필터링 및 검색 기능 -->
 <script>
     $(document).ready(function () {
     // 필터 적용 버튼 클릭 시 필터 함수 호출
@@ -548,18 +633,21 @@
 });
 
 </script>
-<script>
 
+<!-- 검색 -->
+<script>
     $(document).ready(function() {
         // 검색 기능 구현
         $('#searchInput').on('input', function() {
             var searchTerm = $(this).val().toLowerCase();
 
+            // 기업 목록 페이지와 구직자 목록 페이지를 구분
             if ($('.tab-pane').length > 0) {
+                // 탭이 있는 경우 (기업 목록)
                 $('.tab-pane.active .table tbody tr').each(function() {
                     var row = $(this);
-                    var idCell = row.find('td').eq(1).text().toLowerCase();
-                    var nameCell = row.find('td').eq(2).text().toLowerCase();
+                    var idCell = row.find('td').eq(1).text().toLowerCase(); // ID 열
+                    var nameCell = row.find('td').eq(2).text().toLowerCase(); // NAME 열
                     var found = idCell.includes(searchTerm) || nameCell.includes(searchTerm);
 
                     if (found) {
@@ -569,10 +657,11 @@
                     }
                 });
             } else {
+                // 탭이 없는 경우 (구직자 목록)
                 $('.container .table tbody tr').each(function() {
                     var row = $(this);
-                    var idCell = row.find('td').eq(0).text().toLowerCase();
-                    var nameCell = row.find('td').eq(1).text().toLowerCase();
+                    var idCell = row.find('td').eq(0).text().toLowerCase(); // ID 열
+                    var nameCell = row.find('td').eq(1).text().toLowerCase(); // NAME 열
                     var found = idCell.includes(searchTerm) || nameCell.includes(searchTerm);
 
                     if (found) {
@@ -586,17 +675,21 @@
     });
 </script>
 
-<!-- 블랙리스트 관련 스크립트 -->
+
+<!-- 블랙리스트 -->
 <script>
     $(document).ready(function () {
+        // 블랙리스트 토글 기능
         $('.toggle-blacklist').click(function() {
             var id = $(this).data('id');
             var type = $(this).data('type');
             var isCurrentlyBlacklisted = $(this).text().includes('해제');
 
             if (isCurrentlyBlacklisted) {
+                // 블랙리스트 해제
                 toggleBlacklist(id, type, '');
             } else {
+                // 블랙리스트 등록
                 $('#blacklistReasonModal').modal('show');
                 $('#confirmBlacklist').data('id', id).data('type', type);
             }
@@ -610,6 +703,7 @@
             $('#blacklistReasonModal').modal('hide');
         });
 
+        // 블랙리스트 토글 함수
         function toggleBlacklist(id, type, reason) {
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
@@ -627,18 +721,227 @@
                     xhr.setRequestHeader(header, token);
                 },
                 success: function(response) {
-                    var button = $(`.toggle-blacklist[data-id="${id}"][data-type="${type}"]`);
-                    if (response.blacklisted) {
-                        button.text('블랙리스트 해제');
+                    var button = $(`button[data-id="${id}"]`);
+                    var statusCell = button.closest('tr').find('td:nth-child(7)');
+
+                    if (response.isBlacklisted) {
+                        button.html('<i class="fas fa-sync-alt"></i> 블랙리스트 해제');
+                        statusCell.html('블랙리스트');
+                        Swal.fire({
+                            icon: 'success',
+                            title: '성공',
+                            text: '블랙리스트에 추가되었습니다.'
+                        });
                     } else {
-                        button.text('블랙리스트 추가');
+                        button.html('<i class="fas fa-sync-alt"></i> 블랙리스트 등록');
+                        statusCell.html('정상');
+                        Swal.fire({
+                            icon: 'success',
+                            title: '성공',
+                            text: '블랙리스트에서 제거되었습니다.'
+                        });
                     }
                 },
-                error: function(error) {
+                error: function(xhr, status, error) {
                     console.error('Error:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: '오류',
+                        text: '오류가 발생했습니다: ' + error
+                    });
                 }
             });
         }
+    });
+</script>
+
+
+<!--&lt;!&ndash; 블랙리스트 &ndash;&gt;-->
+<!--<script>-->
+<!--    $(document).ready(function () {-->
+<!--        // 블랙리스트 토글 기능-->
+<!--        $('.toggle-blacklist').click(function() {-->
+<!--            var id = $(this).data('id');-->
+<!--            var type = $(this).data('type');-->
+<!--            var isCurrentlyBlacklisted = $(this).text().includes('해제');-->
+
+<!--            if (isCurrentlyBlacklisted) {-->
+<!--                // 블랙리스트 해제-->
+<!--                toggleBlacklist(id, type, '');-->
+<!--            } else {-->
+<!--                // 블랙리스트 등록-->
+<!--                $('#blacklistReasonModal').modal('show');-->
+<!--                $('#confirmBlacklist').data('id', id).data('type', type);-->
+<!--            }-->
+<!--        });-->
+
+<!--        $('#confirmBlacklist').click(function() {-->
+<!--            var id = $(this).data('id');-->
+<!--            var type = $(this).data('type');-->
+<!--            var reason = $('#blacklistReason').val();-->
+<!--            toggleBlacklist(id, type, reason);-->
+<!--            $('#blacklistReasonModal').modal('hide');-->
+<!--        });-->
+
+<!--        function toggleBlacklist(id, type, reason) {-->
+<!--            var token = $("meta[name='_csrf']").attr("content");-->
+<!--            var header = $("meta[name='_csrf_header']").attr("content");-->
+
+<!--            $.ajax({-->
+<!--                url: '/admin/blacklist/toggle',-->
+<!--                type: 'POST',-->
+<!--                contentType: 'application/json',-->
+<!--                data: JSON.stringify({-->
+<!--                    id: id,-->
+<!--                    type: type,-->
+<!--                    reason: reason-->
+<!--                }),-->
+<!--                beforeSend: function(xhr) {-->
+<!--                    xhr.setRequestHeader(header, token);-->
+<!--                },-->
+<!--                success: function(response) {-->
+<!--                    var button = $(`button[data-id="${id}"]`);-->
+<!--                    var statusCell = button.closest('tr').find('td:nth-child(7)');-->
+
+<!--                    if (response.isBlacklisted) {-->
+<!--                        button.html('<i class="fas fa-sync-alt"></i> 블랙리스트 해제');-->
+<!--                        statusCell.html('블랙리스트');-->
+<!--                        Swal.fire({-->
+<!--                            icon: 'success',-->
+<!--                            title: '성공',-->
+<!--                            text: '블랙리스트에 추가되었습니다.'-->
+<!--                        });-->
+<!--                    } else {-->
+<!--                        button.html('<i class="fas fa-sync-alt"></i> 블랙리스트 등록');-->
+<!--                        statusCell.html('정상');-->
+<!--                        Swal.fire({-->
+<!--                            icon: 'success',-->
+<!--                            title: '성공',-->
+<!--                            text: '블랙리스트에서 제거되었습니다.'-->
+<!--                        });-->
+<!--                    }-->
+<!--                },-->
+<!--                error: function(xhr, status, error) {-->
+<!--                    console.error('Error:', error);-->
+<!--                    Swal.fire({-->
+<!--                        icon: 'error',-->
+<!--                        title: '오류',-->
+<!--                        text: '오류가 발생했습니다: ' + error-->
+<!--                    });-->
+<!--                }-->
+<!--            });-->
+<!--        }-->
+<!--    });-->
+<!--</script>-->
+
+<!--<script>-->
+<!--    function toggleBlacklist(jobSeekerId, compId, button) {-->
+<!--    var token = $("meta[name='_csrf']").attr("content");-->
+<!--    var header = $("meta[name='_csrf_header']").attr("content");-->
+
+<!--    $.ajax({-->
+<!--        url: '/admin/blacklist/toggle',-->
+<!--        type: 'POST',-->
+<!--        contentType: 'application/json',-->
+<!--        data: JSON.stringify({-->
+<!--            id: jobSeekerId || compId,-->
+<!--            type: jobSeekerId ? 'jobSeeker' : 'company'-->
+<!--        }),-->
+<!--        beforeSend: function(xhr) {-->
+<!--            xhr.setRequestHeader(header, token);-->
+<!--        },-->
+<!--        success: function(response) {-->
+<!--            if (response.isBlacklisted !== undefined) {-->
+<!--                var row = $(button).closest('tr');-->
+<!--                var statusCell = row.find('td:nth-child(5)');-->
+
+<!--                if (response.isBlacklisted) {-->
+<!--                    statusCell.html('<span class="badge bg-danger">블랙리스트</span>');-->
+<!--                    $(button).text('블랙리스트 해제');-->
+<!--                } else {-->
+<!--                    statusCell.html('<span class="badge bg-success">정상</span>');-->
+<!--                    $(button).text('블랙리스트 등록');-->
+<!--                }-->
+<!--                alert('상태가 변경되었습니다.');-->
+<!--            } else {-->
+<!--                alert('상태 변경에 실패했습니다.');-->
+<!--            }-->
+<!--        },-->
+<!--        error: function(xhr, status, error) {-->
+<!--            console.error("Error:", error);-->
+<!--            alert('서버와의 통신 중 오류가 발생했습니다.');-->
+<!--        }-->
+<!--    });-->
+<!--}-->
+<!--</script>-->
+
+
+
+<!-- 블랙리스트 필터 -->
+<script>
+    $(document).ready(function() {
+        var activeTypeFilter = 'all';
+        var activeStatusFilter = 'all';
+
+        $('.type-filter').click(function() {
+            activeTypeFilter = $(this).data('filter');
+            $('.type-filter').removeClass('active');
+            $(this).addClass('active');
+            filterTable();
+        });
+
+        $('.status-filter').click(function() {
+            activeStatusFilter = $(this).data('filter');
+            $('.status-filter').removeClass('active');
+            $(this).addClass('active');
+            filterTable();
+        });
+
+        function filterTable() {
+            $('#blacklistTable tbody tr').each(function() {
+                var row = $(this);
+                var type = row.data('type');
+                var status = row.data('status');
+
+                var typeMatch = activeTypeFilter === 'all' || type === activeTypeFilter;
+                var statusMatch = activeStatusFilter === 'all' || status === activeStatusFilter;
+
+                if (typeMatch && statusMatch) {
+                    row.show();
+                } else {
+                    row.hide();
+                }
+            });
+        }
+
+        // 초기 필터링 적용
+        filterTable();
+
+        // 기존 코드
+        $('.dev-toggle-filter').click(function () {
+            $(this).toggleClass('open');
+            $(this).next('.filter-box').toggle();
+        });
+
+        $('.dev-button-item').click(function () {
+            $(this).toggleClass('active').siblings().removeClass('active');
+        });
+
+        $('.search-reset').click(function () {
+            $(this).closest('.filter-box').find('.dev-button-item').removeClass('active');
+            $(this).closest('.filter-box').find('.dev-button-all').addClass('active');
+        });
+
+        $('#resetCondition').click(function () {
+            $('.filter-box').find('.dev-button-item').removeClass('active');
+            $('.filter-box').find('.dev-button-all').addClass('active');
+            $('#searchForm')[0].reset();
+            activeTypeFilter = 'all';
+            activeStatusFilter = 'all';
+            $('.type-filter, .status-filter').removeClass('active');
+            $('.type-filter[data-filter="all"], .status-filter[data-filter="all"]').addClass('active');
+            filterTable();
+        });
     });
 </script>
 <!--    jobpost 모달 스크립트-->
@@ -650,5 +953,85 @@
         myModal.show();
     });
 </script>
+<script>
+    CKEDITOR.replace('editor1', {
+    filebrowserUploadUrl: '/jobPost/uploadImage',
+    filebrowserImageUploadUrl: '/jobPost/uploadImage', // 이미지 업로드 URL 추가
+    filebrowserUploadMethod: 'form',
+    clipboard_handleImages: false
+});
+</script>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('suggestionForm');
+    form.addEventListener('submit', function (e) {
+        e.preventDefault(); // Prevent default form submission
+        fetch(form.action, {
+            method: 'POST',
+            body: new FormData(form),
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => {
+            // Check if the response is JSON
+            const contentType = response.headers.get('content-type');
+            if (contentType && contentType.indexOf('application/json') !== -1) {
+                return response.json(); // Process as JSON
+            } else {
+                // If not JSON, assume it's a redirect to the login page
+                return response.text().then(text => {
+                    throw new Error('Not JSON: ' + text);
+                });
+            }
+        })
+        .then(data => {
+            if (data.redirect) { // Handle redirect
+                window.location.href = data.redirect;
+            } else if (data.success === "true") {
+                alert('작성 완료'); // Success message
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // Optionally, handle the error by redirecting to the login page
+            if (error.message.startsWith('Not JSON:')) {
+                window.location.href = '/member/login';
+            }
+        });
+    });
+});
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const filterButtons = document.querySelectorAll('.filter-button');
+        const jobItems = document.querySelectorAll('.job-item');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const filter = this.getAttribute('data-filter').trim();
+
+  // 필터 버튼 스타일 변경
+                filterButtons.forEach(btn => {
+                    btn.classList.remove('btn-primary');
+                });
+                this.classList.add('btn-primary');
+
+                // 항목 필터링
+                jobItems.forEach(item => {
+                    const paymentStatus = item.getAttribute('data-payment-status').trim();
+                    if (filter === 'all' || paymentStatus === filter) {
+                        item.style.display = '';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+    });
+</script>
+
 </body>
 </html>

@@ -177,8 +177,6 @@ public class JobPostController {
     }
 
 
-
-
     @GetMapping("/myJobPostList")
     public String getMyJobPosts(Model model) {
         List<JobPostVo> jobPosts = jobPostService.getJobPostsByCompany();
@@ -251,8 +249,6 @@ public class JobPostController {
             long durationDays = Duration.between(createdDate.atStartOfDay(), endDate.atStartOfDay()).toDays();
             // Calculate the total amount
             long amount = durationDays * 500;
-
-
 
 
             // Fetch company details
@@ -343,8 +339,8 @@ public class JobPostController {
     }
 
 
-    @PostMapping("/edit")
-    public String updateJobPost(@ModelAttribute("createJobPostRequestDto") @Valid CreateJobPostRequestDto createJobPostRequestDto,
+    @PostMapping("/edit/{jobPostId}")
+    public String updateJobPost(@PathVariable("jobPostId") Long jobPostId, @ModelAttribute("createJobPostRequestDto") @Valid CreateJobPostRequestDto createJobPostRequestDto,
                                 BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             log.error("BindingResult has errors: {}", bindingResult.getAllErrors());
@@ -392,7 +388,7 @@ public class JobPostController {
             CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
             String jobSeekerId = userDetails.getUsername();
 
-                // 서비스 메서드 호출
+            // 서비스 메서드 호출
             applicationService.applyForJob(resumeId, jobPostId, jobSeekerId);
 
             return "redirect:/application/list"; // 지원이 완료된 후 리다이렉트할 페이지
