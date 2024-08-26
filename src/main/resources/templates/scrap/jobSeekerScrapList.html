@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/layout}">
+      layout:decorate="~{layout/layoutUser}">
 
 
 <head>
@@ -54,11 +54,10 @@
     </div>
 
     <div class="tab-class text-center wow fadeInUp" data-wow-delay="0.3s">
-        <div id="tab-1" class="tab-pane fade show p-0 active">
             <!-- Jobs Start -->
 
-                    <div class="tab-content">
-                        <div id="tab-1" class="tab-pane fade show p-0 active">
+        <div id="tab-1" class="tab-pane fade show p-0 active">
+        <div class="tab-content" style="width: 90%; margin: 0 auto;">
                             <div th:each="scrap : ${scrapList}" class="job-item p-4 mb-4" style="border: 2px solid #D3D3D3; width: 100%;">
                                 <div class="row g-4">
                                     <div class="col-sm-12 col-md-8 d-flex align-items-center">
@@ -86,7 +85,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <a class="btn btn-primary py-3 px-5" href="#" style="border-radius: 8px;">더 보기</a>
                         </div>
 
                 </div>
@@ -100,6 +98,7 @@
     </div>
 
 </div>
+
 
 <!--    <script>-->
 <!--        document.addEventListener('DOMContentLoaded', function() {-->

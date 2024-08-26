@@ -5,7 +5,6 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>회사 정보 수정</title>
     <script>
         function previewImage(input) {
             if (input.files && input.files[0]) {
@@ -58,7 +57,6 @@
 <body>
 <div layout:fragment="content" class="container-xxl bg-white p-0">
     <div class="container">
-        <h1>회사 정보 수정</h1>
         <form th:action="@{/company/update}" th:object="${company}" method="post" enctype="multipart/form-data">
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
 
