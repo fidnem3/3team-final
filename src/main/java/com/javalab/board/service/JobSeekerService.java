@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import java.util.List;
 import java.util.Optional;
 
-public interface JobSeekerService extends UserDetailsService {
+public interface JobSeekerService{
     /**
      * 새로운 개인 회원을 등록합니다.
      * - @param jobSeekerVo 등록할 개인 회원 정보 객체
@@ -40,8 +40,8 @@ public interface JobSeekerService extends UserDetailsService {
      * - @param username 사용자 이름
      * - @return UserDetails 객체
      */
-    @Override
-    UserDetails loadUserByUsername(String username);
+//    @Override
+//    UserDetails loadUserByUsername(String username);
 
 
 }
