@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import java.util.List;
 import java.util.Optional;
 
-public interface CompanyService extends UserDetailsService {
+public interface CompanyService{
 
 
     /**
@@ -44,8 +44,8 @@ public interface CompanyService extends UserDetailsService {
      * - @param username 사용자 이름
      * - @return UserDetails 객체
      */
-    @Override
-    UserDetails loadUserByUsername(String username);
+//    @Override
+//    UserDetails loadUserByUsername(String username);
 
 
     /**

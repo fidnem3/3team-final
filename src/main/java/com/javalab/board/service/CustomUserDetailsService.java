@@ -1,14 +1,16 @@
 package com.javalab.board.service;
 
+import com.javalab.board.dto.BlacklistDto;
 import com.javalab.board.repository.CompanyMapper;
 import com.javalab.board.repository.JobSeekerMapper;
+import com.javalab.board.repository.LoginMapper;
 import com.javalab.board.security.dto.CustomUserDetails;
 import com.javalab.board.vo.AdminVo;
 import com.javalab.board.vo.CompanyVo;
 import com.javalab.board.vo.JobSeekerVo;
 import com.javalab.board.vo.UserRolesVo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,17 +19,20 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final CompanyMapper companyMapper;
     private final JobSeekerMapper jobSeekerMapper;
     private final AdminService adminService;
+    private final LoginMapper loginMapper;
 
     @Autowired
-    public CustomUserDetailsService(CompanyMapper companyMapper, JobSeekerMapper jobSeekerMapper, AdminService adminService) {
+    public CustomUserDetailsService(CompanyMapper companyMapper, JobSeekerMapper jobSeekerMapper, AdminService adminService, LoginMapper loginMapper) {
         this.companyMapper = companyMapper;
         this.jobSeekerMapper = jobSeekerMapper;
         this.adminService = adminService;
+        this.loginMapper = loginMapper;
     }
 
     @Override
@@ -36,32 +41,45 @@ public class CustomUserDetailsService implements UserDetailsService {
         Optional<AdminVo> adminOpt = adminService.getAdminDetails(username);
         if (adminOpt.isPresent()) {
             AdminVo admin = adminOpt.get();
+            log.info("관리자:" + admin);
             return createUserDetails(admin);
         }
 
         // 회사 계정 조회
         CompanyVo company = companyMapper.selectCompanyById(username);
         if (company != null) {
+            if (isBlacklisted(company.getCompId(), "company")) {
+                log.warn("Blacklisted company account: {}", username);
+                return null;
+            }
+            log.info("회사:" + company);
             return createUserDetails(company);
         }
 
         // 구직자 계정 조회
         JobSeekerVo jobSeeker = jobSeekerMapper.selectJobSeekerById(username);
         if (jobSeeker != null) {
+            if (isBlacklisted(jobSeeker.getJobSeekerId(), "jobSeeker")) {
+                log.warn("Blacklisted job seeker account: {}", username);
+                return null;
+            }
+            log.info("구직자:" + jobSeeker);
             return createUserDetails(jobSeeker);
         }
 
         throw new UsernameNotFoundException("User not found: " + username);
     }
 
+    private boolean isBlacklisted(String username, String userType) {
+        BlacklistDto blacklistDto = loginMapper.getBlacklistInfo(username, userType);
+        return blacklistDto != null && blacklistDto.isBlacklisted();
+    }
+
     private UserDetails createUserDetails(CompanyVo company) {
         // 회사 상태 확인
-        if ("PENDING".equalsIgnoreCase(company.getStatus())) {
-            throw new DisabledException("계정이 승인 대기 중입니다. 승인을 기다려주세요.");
-        }
-
-        if ("REJECTED".equalsIgnoreCase(company.getStatus())) {
-            throw new DisabledException("계정이 거절되었습니다. 관리자에게 문의하세요.");
+        if ("PENDING".equalsIgnoreCase(company.getStatus()) || "REJECTED".equalsIgnoreCase(company.getStatus())) {
+            log.warn("Company account status: {}", company.getStatus());
+            return null;
         }
 
         UserRolesVo userRoles = new UserRolesVo();

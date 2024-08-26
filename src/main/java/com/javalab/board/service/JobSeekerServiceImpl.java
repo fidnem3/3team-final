@@ -83,26 +83,26 @@ public class JobSeekerServiceImpl implements JobSeekerService {
         jobSeekerMapper.deleteJobSeeker(jobSeekerId);
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        JobSeekerVo jobSeeker = jobSeekerMapper.selectJobSeekerById(username);
-        if (jobSeeker == null) {
-            // 구직자가 아닌 경우 null을 반환하여 CompanyService에서 처리할 수 있도록 함
-            return null;
-        }
-
-
-        List<GrantedAuthority> authorities = userRolesMapper.selectUserRole(username, "jobSeeker")
-                .stream()
-                .map(role -> new SimpleGrantedAuthority(role.getRoleId()))
-                .collect(Collectors.toList());
-
-        return new User(
-                jobSeeker.getJobSeekerId(),
-                jobSeeker.getPassword(),
-                authorities
-        );
-    }
+//    @Override
+//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//        JobSeekerVo jobSeeker = jobSeekerMapper.selectJobSeekerById(username);
+//        if (jobSeeker == null) {
+//            // 구직자가 아닌 경우 null을 반환하여 CompanyService에서 처리할 수 있도록 함
+//            return null;
+//        }
+//
+//
+//        List<GrantedAuthority> authorities = userRolesMapper.selectUserRole(username, "jobSeeker")
+//                .stream()
+//                .map(role -> new SimpleGrantedAuthority(role.getRoleId()))
+//                .collect(Collectors.toList());
+//
+//        return new User(
+//                jobSeeker.getJobSeekerId(),
+//                jobSeeker.getPassword(),
+//                authorities
+//        );
+//    }
 
 
 }
