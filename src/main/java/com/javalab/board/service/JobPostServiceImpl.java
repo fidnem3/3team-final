@@ -188,6 +188,7 @@ public class JobPostServiceImpl implements JobPostService {
                 // 회사의 로고 이름과 경로를 공고에 설정한다
                 jobPost.setLogoName(companyVo.getLogoName());
                 jobPost.setLogoPath(companyVo.getLogoPath());
+                jobPost.setCompanyName(companyVo.getCompanyName());
             }
         }
 

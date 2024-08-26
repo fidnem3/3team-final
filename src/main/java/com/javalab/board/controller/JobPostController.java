@@ -322,6 +322,18 @@ public class JobPostController {
     @GetMapping("/edit/{jobPostId}")
     public String editJobPost(@PathVariable("jobPostId") Long jobPostId, Model model) {
         JobPostVo jobPostVo = jobPostService.getJobPostById(jobPostId);
+
+        // 사용자 인증 정보 얻기
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String compId = ((UserDetails) authentication.getPrincipal()).getUsername();
+        CompanyVo companyVo = companyService.getCompanyById(compId);
+        String logoName = companyVo != null ? companyVo.getLogoName() : null;
+        String companyName = companyVo != null ? companyVo.getCompanyName() : null;
+
+        // 모델에 로고 이름 추가
+        model.addAttribute("logoName", logoName);
+        model.addAttribute("companyName", companyName);
+
         if (jobPostVo != null) {
             model.addAttribute("createJobPostRequestDto", jobPostVo); // 모델에 추가
             return "jobPost/jobPostEdit";

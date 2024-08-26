@@ -1,65 +1,202 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/layout}">
+      layout:decorate="~{layout/layout2}">
 
 <head>
     <meta charset="utf-8">
     <title>JobEntry - Job Portal Website Template</title>
+    <style>
+        .container-xxl{
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+        }
+
+        #jobPostForm {
+            max-width: 800px;
+            margin: auto;
+            margin-top: 30px;
+        }
+
+        .form-group {
+            border-bottom: 1px solid #d3d3d3; /* Light gray border */
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-group:last-of-type {
+            border-bottom: none; /* Remove border from the last item */
+        }
+
+        .form-row {
+            display: flex;
+            align-items: center;
+        }
+
+        label {
+            flex: 0 0 150px; /* Fixed width for labels */
+            margin-right: 15px; /* Space between label and input */
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        input[type="url"],
+        textarea,
+        select {
+            flex: 1;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            height: 150px;
+            resize: vertical;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+        }
+
+        .required-note {
+            display: block;
+            font-size: 0.875rem; /* Smaller font size */
+            color: #6c757d; /* Gray color */
+            text-align: right; /* Right align */
+            margin-bottom: 5px;
+        }
+
+        .star {
+            color: red;
+        }
+
+        .form-group.text-center {
+            text-align: center; /* Center-aligns the content inside the div */
+            margin-top: 20px; /* Adds margin to the top if needed */
+        }
+
+
+
+    </style>
 </head>
 
 <body>
 <div layout:fragment="content" class="container-xxl bg-white p-0">
+    <div class="container-fluid bg-primary mb-5" style="padding: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+    </div>
 
-    <div class="container">
-        <h1>Create Job Post</h1>
-        <form id="jobPostForm" th:action="@{/jobPost/edit}" th:object="${createJobPostRequestDto}" method="post">
+
+    <!-- 메인 컨텐츠 시작 -->
+    <div style="padding: 50px;">
+        <h4>Post Create</h4>
+        <form id="jobPostForm" th:action="@{/jobPost/jobPostCreate}" th:object="${createJobPostRequestDto}"
+              method="post" enctype="multipart/form-data">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <span class="required-note">* 필수값입니다</span>
             <div class="form-group">
-                <input type="hidden" th:field="*{jobPostId}" />
-                <label for="title">Title:</label>
-                <input type="text" id="title" th:field="*{title}" required="required"/>
-            </div>
-            <div class="form-group">
-                <textarea id="editor1" th:field="*{content}" required="required"></textarea>
-            </div>
-            <div class="form-group">
-                <label for="position">Position:</label>
-                <input type="text" id="position" th:field="*{position}" required="required"/>
-            </div>
-            <div class="form-group">
-                <label for="salary">Salary:</label>
-                <input type="text" id="salary" th:field="*{salary}" required="required"/>
-            </div>
-            <div class="form-group">
-                <label for="address">Address:</label>
-                <input type="text" id="address" th:field="*{address}" required="required"/>
-            </div>
-            <div class="form-group">
-                <label for="experience">Experience:</label>
-                <input type="text" id="experience" th:field="*{experience}" required="required"/>
-            </div>
-            <div class="form-group">
-                <label for="education">Education:</label>
-                <input type="text" id="education" th:field="*{education}" required="required"/>
-            </div>
-            <div class="form-group">
-                <label for="endDate">End Date:</label>
-                <input type="date" id="endDate" th:field="*{endDate}" required="required"/>
-            </div>
-            <div class="form-group">
-                <label for="homepage">Homepage:</label>
-                <input type="url" id="homepage" th:field="*{homepage}"/>
+                <div class="form-row">
+                    <label for="title">제목<i class="star">*</i></label>
+                    <input type="text" id="title" th:field="*{title}" required="required"/>
+                </div>
             </div>
 
-            <button type="submit" class="btn btn-primary">Save</button>
+            <div class="form-group">
+                <div class="form-row">
+                    <label for="editor1">내용<i class="star">*</i></label>
+                    <textarea id="editor1" th:field="*{content}" required="required"></textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="form-row">
+                    <label for="position">직급<i class="star">*</i></label>
+                    <input type="text" id="position" th:field="*{position}" required="required"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="form-row">
+                    <label for="salary">급여<i class="star">*</i></label>
+                    <input type="text" id="salary" th:field="*{salary}" required="required"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="form-row">
+                    <label for="address">지역<i class="star">*</i></label>
+                    <select id="address" th:field="*{address}" required="required">
+                        <option value="" disabled selected>지역 선택</option>
+                        <option value="서울">서울</option>
+                        <option value="경기">경기</option>
+                        <option value="강원">강원</option>
+                        <option value="대전">대전</option>
+                        <option value="충북">충북</option>
+                        <option value="충남">충남</option>
+                        <option value="전북">전북</option>
+                        <option value="전남">전남</option>
+                        <option value="경북">경북</option>
+                        <option value="경남">경남</option>
+                        <option value="제주">제주</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="form-row">
+                    <label for="experience">경력<i class="star">*</i></label>
+                    <select id="experience" th:field="*{experience}" required="required">
+                        <option value="" disabled selected>경력 선택</option>
+                        <option value="경력무관">경력무관</option>
+                        <option value="신입">신입</option>
+                        <option value="경력 1년 이상">경력 1년 이상</option>
+                        <option value="경력 2년 이상">경력 2년 이상</option>
+                        <option value="경력 3년 이상">경력 3년 이상</option>
+                        <option value="경력 5년 이상">경력 5년 이상</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="form-row">
+                    <label for="education">학력<i class="star">*</i></label>
+                    <select id="education" th:field="*{education}" required="required">
+                        <option value="" disabled selected>학력 선택</option>
+                        <option value="학력무관">학력무관</option>
+                        <option value="고졸 이상">고졸 이상</option>
+                        <option value="초대졸 이상">초대졸 이상</option>
+                        <option value="대졸 이상">대졸 이상</option>
+                        <option value="석사 이상">석사 이상</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="form-row">
+                    <label for="endDate">마감일<i class="star">*</i></label>
+                    <input type="date" id="endDate" th:field="*{endDate}" required="required"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="form-row">
+                    <label for="homepage">홈페이지:</label>
+                    <input type="url" id="homepage" th:field="*{homepage}"/>
+                </div>
+            </div>
+
+
+
+            <div class="form-group text-center">
+                <button type="submit" class="btn btn-primary" style="width:130px; height:50px; font-size: 17px; padding: 5px 13px; margin-bottom: 100px; border-radius: 12px; margin-bottom: 100px;">작 성</button>
+            </div>
         </form>
+    </div>
+    <!-- 메인 컨텐츠 끝 -->
 
+    <div class="container-fluid bg-primary mb-5" style="padding: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
     </div>
 </div>
+</div>
 
-<script>
-    CKEDITOR.replace('editor1');
-
-</script>
 </body>
 </html>
