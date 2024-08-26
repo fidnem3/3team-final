@@ -178,7 +178,7 @@
                 <ul class="nav flex-column">
                     <div class="sidebar-logo">
                         <li class="nav-item">
-                            <img th:src="@{/jobSeeker/profile/{profileName}(profileName=${jobSeeker.fileName})}"
+                            <img th:src="@{/jobSeeker/profile/{fileName}(fileName=${fileName})}"
                                                      alt="Profile Picture" class="profile-pic"/>
                         </li>
                     </div>
@@ -190,15 +190,15 @@
                             <li class="nav-item">
                                 <a class="nav-link" th:href="@{/jobSeeker/detail}">나의 정보</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" th:href="@{/resume/save}">이력서 작성하기</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" th:href="@{/resume/list}">나의 이력서</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" th:href="@{/application/list}">나의 지원 공고</a>
-                            </li>
+<!--                            <li class="nav-item">-->
+<!--                                <a class="nav-link" th:href="@{/resume/save}">이력서 작성하기</a>-->
+<!--                            </li>-->
+<!--                            <li class="nav-item">-->
+<!--                                <a class="nav-link" th:href="@{/resume/list}">나의 이력서</a>-->
+<!--                            </li>-->
+<!--                            <li class="nav-item">-->
+<!--                                <a class="nav-link" th:href="@{/application/list}">나의 지원 공고</a>-->
+<!--                            </li>-->
                             <li class="nav-item">
                                 <a class="nav-link" th:href="@{/jobSeeker/scrap/list}">나의 스크랩</a>
                             </li>
