@@ -76,7 +76,6 @@
 </head>
 <body>
 <div layout:fragment="content" class="container-xxl py-5">
-    <h1 class="text-center mb-5">Applications for Your Job Posts</h1>
     <div class="container">
 <!--        <div class="container-fluid bg-primary mb-5">-->
 <!--            <div class="row g-2">-->
@@ -172,13 +171,9 @@
             </div>
         </div>
 
-        <a class="btn btn-primary py-3 px-5" th:href="@{/jobPost/jobPostCreate}"
-           sec:authorize="hasRole('ROLE_COMPANY')">Post a Job</a>
-    </div>
 
     <script>
-        function openResumePopup(applicationId, resumeId) {
-            // 이력서를 읽음으로 표시하는 URL을 호출
+        function openResumePopup(a  하는 URL을 호출
             var markAsReadUrl = '/company/applications/markAsReadAndView/' + resumeId + '?applicationId=' + applicationId;
 
             // 팝업창으로 이력서 상세 페이지 열기

@@ -186,7 +186,7 @@
                                             <figure>
                                                 <img th:if="${resume.filePath != null}" th:src="@{${resume.filePath}}" alt="Resume Image">
 
-                                                <img th:if="${resume.filePath == null}" src="/static/images/resume_default.jpg" alt="Default Image">
+                                                <img th:if="${resume.filePath == null}" th:src="@{/images/resume_default.jpg}" alt="default image" />
 
                                             </figure>
                                         </div>
