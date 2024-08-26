@@ -111,7 +111,7 @@
                     <p th:text="${company.compId}">회사 ID</p>
 
                     <!-- New Job Posting Button -->
-                    <a th:href="@{/jobPost/jobPostCreate}" class="new-job-button">
+                    <a th:href="@{/jobPost/jobPostCreate}" class="new-job-button" sec:authorize="hasRole('ROLE_COMPANY')">
                         <i class="fas fa-plus"></i> 새 공고 작성
                     </a>
                 </div>
