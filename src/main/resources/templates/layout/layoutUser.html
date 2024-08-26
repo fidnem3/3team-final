@@ -103,7 +103,7 @@
     <!-- 상단바 -->
     <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
         <a th:href="@{/index}" class="navbar-brand d-flex align-items-center text-center py-0 px-4 px-lg-5">
-            <h1 class="m-0 text-primary">Deltopia</h1>
+            <h1 class="m-0 text-primary">DelTopia</h1>
         </a>
         <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
@@ -225,7 +225,6 @@
             <div class="col-md-10" style="width: 80%;">
                 <!-- 헤더 -->
 
-
                 <!-- 콘텐츠가 삽입될 위치 -->
                 <main layout:fragment="content">
                     <!-- 기본 콘텐츠 -->
@@ -236,6 +235,8 @@
             <!-- 나머지 부분 끝 -->
 
         </div>
+    </div>
+</header>
         <footer>
             <!-- Footer Start -->
             <div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
@@ -378,6 +379,9 @@
         } else if (path === '/anotherPage') {
             pageTitle.textContent = 'Another Page';
             pageName.textContent = 'Another Page';
+        } else if (path === '/jobSeeker/scrap/list') {
+            pageTitle.textContent = '나의 스크랩 공고';
+            pageName.textContent = 'My Scrap';
         }
     });
 
