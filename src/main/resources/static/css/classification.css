@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
 
 :root {
-  --primary: #2ecc71; /* 더 진한 초록색 */
-  --secondary: #27ae60; /* 보조 진한 초록색 */
+  --primary: #0000cd; /* 진한 하늘색 */
+  --secondary: #6495ed; /* 연한 하늘색 */
   --background: #e8f6f3; /* 배경색 */
   --surface: #ffffff; /* 표면색 */
   --text: #2c3e50; /* 텍스트 색상 */
@@ -35,8 +35,8 @@ body {
   top: 0;
   left: 0;
   background:
-    radial-gradient(circle at 10% 20%, rgba(46, 204, 113, 0.1) 0%, transparent 40%),
-    radial-gradient(circle at 90% 80%, rgba(39, 174, 96, 0.1) 0%, transparent 40%),
+    radial-gradient(circle at 10% 20%, rgba(0, 0, 205, 0.1) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(100, 149, 237, 0.1) 0%, transparent 40%),
     linear-gradient(135deg, #e0f2f1, #a3e4d7);
   overflow: hidden;
 }
@@ -61,7 +61,7 @@ body {
   left: -50%;
   width: 200%;
   height: 200%;
-  background: radial-gradient(circle, rgba(46,204,113,0.05) 0%, rgba(255,255,255,0) 70%);
+  background: radial-gradient(circle, rgba(0,0,205,0.05) 0%, rgba(255,255,255,0) 70%);
   transform: rotate(30deg);
   z-index: -1;
 }
@@ -150,14 +150,14 @@ h1 {
   align-items: center;
   margin: 0 auto 30px;
   transition: var(--transition);
-  box-shadow: 0 10px 20px rgba(46, 204, 113, 0.3);
+  box-shadow: 0 10px 20px rgba(0, 0, 205, 0.3);
   position: relative;
   overflow: hidden;
 }
 
 .option-box:hover .icon-wrapper {
   transform: scale(1.15) rotate(8deg);
-  box-shadow: 0 15px 30px rgba(46, 204, 113, 0.4);
+  box-shadow: 0 15px 30px rgba(0, 0, 205, 0.4);
 }
 
 .icon-wrapper::after {
@@ -225,7 +225,7 @@ h2 {
   transition: var(--transition);
   font-weight: 600;
   font-size: 1.1rem;
-  box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
+  box-shadow: 0 5px 15px rgba(0, 0, 205, 0.3);
   position: relative;
   overflow: hidden;
   z-index: 1;
@@ -250,7 +250,7 @@ h2 {
 .signup-button:hover {
   background: linear-gradient(45deg, var(--secondary), var(--primary));
   transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(39, 174, 96, 0.4);
+  box-shadow: 0 10px 30px rgba(0, 0, 205, 0.4);
 }
 
 footer {
@@ -324,7 +324,7 @@ button.primary-button {
   letter-spacing: 1.2px; /* 글자 간격 */
   text-transform: uppercase; /* 대문자 변환 */
   transition: var(--transition); /* 부드러운 전환 효과 */
-  box-shadow: 0 6px 12px rgba(46, 204, 113, 0.2); /* 그림자 효과 */
+  box-shadow: 0 6px 12px rgba(0, 0, 205, 0.2); /* 그림자 효과 */
   cursor: pointer; /* 커서 포인터로 변경 */
   position: relative;
   overflow: hidden;
@@ -345,7 +345,7 @@ button.primary-button::after {
 button.primary-button:hover {
   background: linear-gradient(45deg, var(--secondary), var(--primary));
   transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 10px 20px rgba(39, 174, 96, 0.3);
+  box-shadow: 0 10px 20px rgba(0, 0, 205, 0.3);
 }
 
 button.primary-button:hover::after {
@@ -355,5 +355,5 @@ button.primary-button:hover::after {
 
 button.primary-button:active {
   transform: scale(0.98);
-  box-shadow: 0 2px 8px rgba(39, 174, 96, 0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 205, 0.3);
 }
