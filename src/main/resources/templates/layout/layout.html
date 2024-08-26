@@ -552,63 +552,27 @@ function toggleScrap(event) {
 
 <script>
     $(document).ready(function () {
-     // 필터 요소를 전역으로 선언
-     const addressFilter = document.getElementById('filterAddress');
-     const educationFilter = document.getElementById('filterEducation');
-     const experienceFilter = document.getElementById('filterExperience');
+    // 필터 적용 버튼 클릭 시 필터 함수 호출
+    $('#applyFilters').click(function () {
+        applyFilters();
+    });
 
-     // 필터 박스를 토글하는 코드 (문제 없음)
-     $('.dev-toggle-filter').click(function () {
-         $(this).toggleClass('open');
-         $(this).next('.filter-box').toggle();
-     });
+    // 필터 함수 정의
+    function applyFilters() {
+        const addressValue = $('#filterAddress').val();
+        const educationValue = $('#filterEducation').val();
+        const experienceValue = $('#filterExperience').val();
 
-     // 필터 적용 버튼 클릭 시 필터 함수 호출
-     $('#applyFilters').click(function () {
-         filterJobs();
-     });
+        // URL 쿼리 파라미터 생성
+        const queryParams = new URLSearchParams();
+        if (addressValue) queryParams.append("address", addressValue);
+        if (educationValue) queryParams.append("education", educationValue);
+        if (experienceValue) queryParams.append("experience", experienceValue);
 
-     // 필터 함수 정의
-     function filterJobs() {
-         const addressValue = addressFilter.value.toLowerCase();
-         const educationValue = educationFilter.value.toLowerCase();
-         const experienceValue = experienceFilter.value.toLowerCase();
-
-         const jobItems = document.querySelectorAll('.job-item');
-         jobItems.forEach(function (item) {
-             const address = item.getAttribute('data-address').toLowerCase();
-             const education = item.getAttribute('data-education').toLowerCase();
-             const experience = item.getAttribute('data-experience').toLowerCase();
-
-             const matchesAddress = !addressValue || address.includes(addressValue);
-             const matchesEducation = !educationValue || education.includes(educationValue);
-             const matchesExperience = !experienceValue || experience.includes(experienceValue);
-
-             if (matchesAddress && matchesEducation && matchesExperience) {
-                 item.classList.remove('hidden');
-             } else {
-                 item.classList.add('hidden');
-             }
-         });
-     }
-
-     // 나머지 코드 (문제 없음)
-     $('.dev-button-item').click(function () {
-         $(this).toggleClass('active').siblings().removeClass('active');
-     });
-
-     $('.search-reset').click(function () {
-         $(this).closest('.filter-box').find('.dev-button-item').removeClass('active');
-         $(this).closest('.filter-box').find('.dev-button-all').addClass('active');
-     });
-
-     $('#resetCondition').click(function () {
-         $('.filter-box').find('.dev-button-item').removeClass('active');
-         $('.filter-box').find('.dev-button-all').addClass('active');
-         $('#searchForm')[0].reset();
-     });
- });
-
+        // 백엔드로 필터 요청 보내기
+        window.location.href = "/jobPost/jobPostList?" + queryParams.toString();
+    }
+});
 
 </script>
 
