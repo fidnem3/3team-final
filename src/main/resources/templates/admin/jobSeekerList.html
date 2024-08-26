@@ -9,63 +9,77 @@
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <style>
-        .container-xxl{
+        .container-xxl {
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
             margin-bottom: 60px;
         }
+
         .container {
-        max-width: 2000px; /* 필요에 따라 부모 컨테이너의 최대 너비를 조정 */
-        margin: 0 auto;
+            max-width: 2000px; /* 필요에 따라 부모 컨테이너의 최대 너비를 조정 */
+            margin: 0 auto;
         }
 
-    .table img.profile-pic {
+        .table img.profile-pic {
             max-width: 100px;
             max-height: 50px;
         }
-                /* 검색창 스타일 */
-    .form-group {
-    position: relative;
-    margin-bottom: 20px; /* 검색창과 탭 사이의 간격을 늘림 */
-    }
 
-    #searchInput {
-    padding-right: 40px; /* 검색 아이콘을 위한 여백 */
-    border-radius: 0.25rem;
-    border: 1px solid #ced4da;
-    box-shadow: inset 0 1px 2px rgba(0,0,0,0.075);
-    background-color: #f8f9fa; /* 검색창 배경 색상 */
-    color: #495057; /* 입력 텍스트 색상 */
-    }
+        /* 검색창 스타일 */
+        .form-group {
+            position: relative;
+            margin-bottom: 20px; /* 검색창과 탭 사이의 간격을 늘림 */
+        }
 
-    #searchInput::placeholder {
-    color: #6c757d; /* 플레이스홀더 텍스트 색상 */
-    opacity: 1; /* Edge cases for placeholder opacity */
-    }
+        #searchInput {
+            padding-right: 40px; /* 검색 아이콘을 위한 여백 */
+            border-radius: 0.25rem;
+            border: 1px solid #ced4da;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.075);
+            background-color: #f8f9fa; /* 검색창 배경 색상 */
+            color: #495057; /* 입력 텍스트 색상 */
+        }
 
-    #searchInput:focus {
-    border-color: #80bdff;
-    outline: 0;
-    box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25);
-    background-color: #ffffff; /* 포커스 시 배경 색상 */
-    }
+        #searchInput::placeholder {
+            color: #6c757d; /* 플레이스홀더 텍스트 색상 */
+            opacity: 1; /* Edge cases for placeholder opacity */
+        }
 
-    /* 검색 아이콘 */
-    .search-icon {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #6c757d;
-    font-size: 16px;
-    pointer-events: none;
-    }
+        #searchInput:focus {
+            border-color: #80bdff;
+            outline: 0;
+            box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25);
+            background-color: #ffffff; /* 포커스 시 배경 색상 */
+        }
+
+        /* 검색 아이콘 */
+        .search-icon {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
+            font-size: 16px;
+            pointer-events: none;
+        }
+
+        /* 테이블 본문 텍스트 스타일 */
+        .table tbody td {
+            font-weight: 600; /* 폰트 굵기 조정 */
+            color: #343a40; /* 진한 회색 */
+        }
+
+        .title {
+            margin-bottom: 20px; /* 제목과 검색창 사이 간격 */
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
     </style>
 </head>
 
 <body>
 <div layout:fragment="content" class="container-xxl bg-white p-0">
     <div class="container">
-        <div class="title" >개인회원 목록</div>
+        <div class="title" style="font-weight: 600; color: #343a40;">개인회원 목록</div>
 
         <div th:if="${message}" class="alert alert-success" role="alert">
             <span th:text="${message}"></span>
@@ -86,7 +100,7 @@
                 <table class="table table-striped">
                     <thead>
                     <tr>
-                        <th>LOGO</th>
+                        <th>Profile</th>
                         <th>ID</th>
                         <th>NAME</th>
                         <th>EMAIL</th>
@@ -100,8 +114,8 @@
                     <tbody>
                     <tr th:each="jobSeeker : ${jobSeekers}">
                         <td>
-                        <img th:src="@{/jobSeeker/profile/{profileName}(profileName=${jobSeeker.fileName})}"
-                             alt="Profile Picture" class="profile-pic"/>
+                            <img th:src="@{/jobSeeker/profile/{profileName}(profileName=${jobSeeker.fileName})}"
+                                 alt="Profile Picture" class="profile-pic"/>
                         </td>
                         <td th:text="${jobSeeker.jobSeekerId}">구직자 ID</td>
                         <td th:text="${jobSeeker.name}">이름</td>
@@ -128,17 +142,11 @@
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
                             </form>
-<!--                            <button class="btn btn-warning btn-sm toggle-blacklist"-->
-<!--                                    th:attr="data-id=${jobSeeker.jobSeekerId}, data-type='jobSeeker'"-->
-<!--                                    th:text="${jobSeeker.isBlacklisted ? '블랙리스트 해제' : '블랙리스트 등록'}">-->
-<!--                            </button>-->
                             <!-- 블랙리스트 상태 변경 버튼(아이콘) -->
                             <button class="btn btn-sm btn-warning btn-icon toggle-blacklist"
                                     th:attr="data-id=${jobSeeker.jobSeekerId}, data-type='jobSeeker'">
                                 <i class="fas fa-sync-alt">블랙</i>
                             </button>
-
-
                         </td>
                     </tr>
                     </tbody>
