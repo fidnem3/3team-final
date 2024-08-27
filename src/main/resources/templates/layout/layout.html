@@ -409,6 +409,9 @@
          } else if (path === '/jobSeeker/scrap/list') {
              pageTitle.textContent = '나의 스크랩 공고';
              pageName.textContent = 'My Scrap';
+         } else if (path === '/jobPost/detail') {
+             pageTitle.textContent = '공고 수정';
+             pageName.textContent = 'Edit';
          }
      });
 
@@ -553,6 +556,9 @@
         } else if (path === '/jobPost/edit') {
              pageTitle.textContent = '공고 수정';
              pageName.textContent = 'Edit JobPost';
+         }else if (path === `/jobPost/detail`) {
+             pageTitle.textContent = '공고 디테일';
+             pageName.textContent = '공고 세부사항';
          }
     });
 

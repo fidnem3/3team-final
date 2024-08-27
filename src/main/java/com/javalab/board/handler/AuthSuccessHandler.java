@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +27,14 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
         // 모든 사용자에 대해 리다이렉트할 URL 설정
         String redirectUrl = "/index";
+
+        for (GrantedAuthority authority : authentication.getAuthorities()) {
+            if (authority.getAuthority().equals("ROLE_ADMIN")) {
+                // admin 권한이 있는 경우 다른 페이지로 리다이렉트
+                redirectUrl = "/admin/admin";
+                break;
+            }
+        }
 
         setDefaultTargetUrl(redirectUrl); // 설정한 URL로 리다이렉트
 
