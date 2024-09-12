@@ -14,4 +14,14 @@
 - 기업에서 적합한 인재를 찾기가 어렵나요?
 - 필요로 하는 인재를 찾기 위해 다양한 플랫폼을 사용해 보지만 만족스럽지 않다면, 전문 구인 구직 사이트에서 필요한 인재만을 선별해서 확인해보세요.
 
-- 
+### 프론트엔드
+![image](https://user-images.githubusercontent.com/61264510/222345725-e02aae82-f41d-43c7-bc7b-ca107dd116dd.png)
+
+### 백엔드
+![image](https://user-images.githubusercontent.com/61264510/225603279-aef3fd16-33e1-4cf6-980d-8cafbceaf8aa.png)
+
+### 인프라
+![image](https://user-images.githubusercontent.com/61264510/218927368-e69b7c32-7de6-41c3-829f-eedd75fb1eea.png)
+
+### 협업 Tools
+![image](https://user-images.githubusercontent.com/61264510/218927383-38d31766-4793-4360-b5ed-34d4f811725c.png) 
