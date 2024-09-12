@@ -27,8 +27,9 @@
 
 - ## 기술 스택
 ### 프론트엔드
-<img src="https://github.com/user-attachments/assets/821aa132-bbf7-4431-8cc1-ce1a76051359" alt="html-5-svgrepo-com" width="100"/>
-<img src="https://github.com/user-attachments/assets/10b38707-51df-49f8-a424-67a9dda5a3fc" alt="css-3-svgrepo-com" width="100"/>
+  <img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white"> 
+  <img src="https://img.shields.io/badge/css-1572B6?style=for-the-badge&logo=css3&logoColor=white"> 
+  <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"> 
 
 
 
