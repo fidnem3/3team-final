@@ -33,6 +33,8 @@
 ### 백엔드
 [![My Skills](https://skillicons.dev/icons?i=java,spring,gradle,jquery&theme=light)](https://skillicons.dev)
 <img src="https://github.com/user-attachments/assets/336c5a15-c957-4aa1-bfaa-34d7a8bc43a2" alt="gitkraken-svgrepo-com" width="50"/>
+<img src="https://github.com/user-attachments/assets/1f1a8e04-9ea9-45ab-83e6-e32f64ac18e0" alt="springboot" width="50"/>
+
 
 
 
