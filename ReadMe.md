@@ -34,8 +34,10 @@
 [![My Skills](https://skillicons.dev/icons?i=java,spring,gradle,jquery&theme=light)](https://skillicons.dev)
 
 
-### 인프라
-![image](https://user-images.githubusercontent.com/61264510/218927368-e69b7c32-7de6-41c3-829f-eedd75fb1eea.png)
+### DB
+[![My Skills](https://skillicons.dev/icons?i=java,spring,gradle,jquery&theme=light)](https://skillicons.dev)
+
 
 ### 협업 Tools
-![image](https://user-images.githubusercontent.com/61264510/218927383-38d31766-4793-4360-b5ed-34d4f811725c.png) 
+[![My Skills](https://skillicons.dev/icons?i=git,discord,notion&theme=light)](https://skillicons.dev)
+
