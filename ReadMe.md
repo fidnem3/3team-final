@@ -26,10 +26,10 @@
 </table>
 
 ### 프론트엔드
-![image](https://user-images.githubusercontent.com/61264510/222345725-e02aae82-f41d-43c7-bc7b-ca107dd116dd.png)
+<img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=black"><img src="https://img.shields.io/badge/Css-1572B6?style=for-the-badge&logo=Css&logoColor=white"><img src="https://img.shields.io/badge/Redux-764ABC?style=for-the-badge&logo=Redux&logoColor=purple"><img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=Next.js&logoColor=white">
 
 ### 백엔드
-![image](https://user-images.githubusercontent.com/61264510/225603279-aef3fd16-33e1-4cf6-980d-8cafbceaf8aa.png)
+<img src="https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=Spring&logoColor=green"><img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=yellow">
 
 ### 인프라
 ![image](https://user-images.githubusercontent.com/61264510/218927368-e69b7c32-7de6-41c3-829f-eedd75fb1eea.png)
