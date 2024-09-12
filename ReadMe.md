@@ -28,7 +28,7 @@
         <a href="https://github.com/ESKKorea">
           <img src="https://github.com/user-attachments/assets/664622b3-722c-423a-b4e4-5600e45e0d3e" alt="꼬북이" width="100px"/>
           <br />
-          <sub><b>FE 팀장 : 김은산 </b></sub>
+          <sub><b>팀장 : 김은산 </b></sub>
         </a>
         <br />
       </td>
@@ -36,7 +36,7 @@
         <a href="https://github.com/fidnem3">
           <img src="https://github.com/user-attachments/assets/472f56d0-be64-4f8b-b17d-da8fa7f0332d" alt="이재석" width="100px"/>
           <br />
-          <sub><b>FE 팀원 : 이재석 </b></sub>
+          <sub><b>팀원 : 이재석 </b></sub>
         </a>
         <br />
       </td>
@@ -44,7 +44,7 @@
         <a href="https://github.com/loismeow">
           <img src="https://github.com/user-attachments/assets/a823766e-74f6-4faf-9908-6c59f65a559f" alt="원혜민" width="100px"/>
           <br />
-          <sub><b>FE 팀원 : 원혜민 </b></sub>
+          <sub><b>팀원 : 원혜민 </b></sub>
         </a>
         <br />
       </td>
@@ -52,7 +52,7 @@
         <a href="https://github.com/Ye-ni">
           <img src="https://github.com/user-attachments/assets/b34262fb-3fe9-4821-84d3-233a76e12439" alt="김예니" width="100px"/>
           <br />
-          <sub><b>FE 팀원 : 김예니 </b></sub>
+          <sub><b>팀원 : 김예니 </b></sub>
         </a>
         <br />
       </td>
