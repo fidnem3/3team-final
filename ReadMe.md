@@ -13,18 +13,48 @@
 - 여러 사이트를 돌아다니며 일자리를 찾는 건 시간 소모가 크죠. 한곳에서 다양한 직업 정보를 확인할 수 있는 플랫폼이 있다면 어떨까요?
 - 기업에서 적합한 인재를 찾기가 어렵나요?
 - 필요로 하는 인재를 찾기 위해 다양한 플랫폼을 사용해 보지만 만족스럽지 않다면, 전문 구인 구직 사이트에서 필요한 인재만을 선별해서 확인해보세요.
-  
+
+
 - ## 팀원 소개 
- <table>
+<table>
   <tbody>
     <tr>
-      <td align="center"><a href="https://github.com/ESKKorea"><img src="width="![꼬북이](https://github.com/user-attachments/assets/b3ff52db-8c31-49e2-89c1-af0aa7fc7407)
-100px;" alt=""/><br /><sub><b>FE 팀장 : 김은산 </b></sub></a><br /></td>
-      <td align="center"><a href="https://github.com/fidnem3"><img src="" width="100px;" alt=""/><br /><sub><b>FE 팀원 : 이재석 </b></sub></a><br /></td>
-      <td align="center"><a href="https://github.com/loismeow"><img src="" width="100px;" alt=""/><br /><sub><b>FE 팀원 : 원혜민 </b></sub></a><br /></td>
-      <td align="center"><a href="https://github.com/Ye-ni"><img src="" width="100px;" alt=""/><br /><sub><b>FE 팀원 : 김예니 </b></sub></a><br /></td>
+      <td align="center">
+        <a href="https://github.com/ESKKorea">
+          <img src="https://github.com/user-attachments/assets/664622b3-722c-423a-b4e4-5600e45e0d3e" alt="꼬북이" width="100px"/>
+          <br />
+          <sub><b>FE 팀장 : 김은산 </b></sub>
+        </a>
+        <br />
+      </td>
+      <td align="center">
+        <a href="https://github.com/fidnem3">
+          <img src="https://github.com/user-attachments/assets/your-image-url-here" alt="이재석" width="100px"/>
+          <br />
+          <sub><b>FE 팀원 : 이재석 </b></sub>
+        </a>
+        <br />
+      </td>
+      <td align="center">
+        <a href="https://github.com/loismeow">
+          <img src="https://github.com/user-attachments/assets/your-image-url-here" alt="원혜민" width="100px"/>
+          <br />
+          <sub><b>FE 팀원 : 원혜민 </b></sub>
+        </a>
+        <br />
+      </td>
+      <td align="center">
+        <a href="https://github.com/Ye-ni">
+          <img src="https://github.com/user-attachments/assets/your-image-url-here" alt="김예니" width="100px"/>
+          <br />
+          <sub><b>FE 팀원 : 김예니 </b></sub>
+        </a>
+        <br />
+      </td>
+    </tr>
   </tbody>
 </table>
+
 
 - ## 기술 스택
 <div align=center><h1>📚 STACKS</h1></div>
