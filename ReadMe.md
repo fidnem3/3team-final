@@ -31,7 +31,7 @@
 
 
 ### 백엔드
-[![My Skills](https://skillicons.dev/icons?i=java,spring,gradle&theme=light)](https://skillicons.dev)
+[![My Skills](https://skillicons.dev/icons?i=java,spring,gradle,jquery&theme=light)](https://skillicons.dev)
 
 
 ### 인프라
