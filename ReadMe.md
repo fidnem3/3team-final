@@ -31,7 +31,8 @@
 
 
 ### 백엔드
-<img src="https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=Spring&logoColor=green"><img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=yellow">
+[![My Skills](https://skillicons.dev/icons?i=java,spring,security,mybatis,gradle&theme=light)](https://skillicons.dev)
+
 
 ### 인프라
 ![image](https://user-images.githubusercontent.com/61264510/218927368-e69b7c32-7de6-41c3-829f-eedd75fb1eea.png)
