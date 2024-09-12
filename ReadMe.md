@@ -57,9 +57,8 @@
   </tbody>
 </table>
 
-- ## 기술 스택
 <div align="center">
-  <h1>📚 STACKS</h1>
+  <h1>📚 SKILLS STACKS</h1>
 </div>
 
 <div align="left">
