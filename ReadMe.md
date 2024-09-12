@@ -95,3 +95,5 @@
 - ## 프로젝트 아키텍쳐
 - ERD
 - ![스크린샷 2024-08-27 113207](https://github.com/user-attachments/assets/5e07c004-1699-4d83-94ef-3033a6472c44)
+- 유스케이스 다이어그램
+- ![스크린샷 2024-08-26 131801](https://github.com/user-attachments/assets/de4629bd-ccf3-4636-87d9-fbaeabfc27d6)
