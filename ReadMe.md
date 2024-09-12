@@ -27,7 +27,7 @@
 
 - ## 기술 스택
 ### 프론트엔드
-[![My Skills](https://skillicons.dev/icons?i=java,kotlin,nodejs,figma&theme=light)](https://skillicons.dev)
+[![My Skills](https://skillicons.dev/icons?i=html,css,javascript&theme=light)](https://skillicons.dev)
 
 
 ### 백엔드
