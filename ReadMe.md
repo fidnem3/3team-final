@@ -44,6 +44,10 @@
 <img src="https://github.com/user-attachments/assets/47e2f651-6b18-4063-9225-16b48f051188" alt="jQuery" width="100"/>
 <img src="https://github.com/user-attachments/assets/19153a7e-25d3-4431-841a-cf3d5d835089" alt="springBoot1" width="100"/>
 <img src="https://github.com/user-attachments/assets/0fcabbca-6400-4332-94fa-2c185f5e6660" alt="images" width="200"/>
+<img src="https://github.com/user-attachments/assets/85f3a86b-dfbc-471d-b2f1-f579498f637d" alt="discord" width="150"/>
+<img src="https://github.com/user-attachments/assets/6edf7228-8428-41da-8a04-0a1e4b76126f" alt="123" width="150"/>
+
+
 
 
 
