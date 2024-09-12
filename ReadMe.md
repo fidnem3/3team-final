@@ -14,6 +14,21 @@
 - 기업에서 적합한 인재를 찾기가 어렵나요?
 - 필요로 하는 인재를 찾기 위해 다양한 플랫폼을 사용해 보지만 만족스럽지 않다면, 전문 구인 구직 사이트에서 필요한 인재만을 선별해서 확인해보세요.
 
+ <table>
+  <tbody>
+    <tr>
+      <td align="center"><a href=""><img src="width="100px;" alt=""/><br /><sub><b>FE 팀장 : </b></sub></a><br /></td>
+      <td align="center"><a href=""><img src="" width="100px;" alt=""/><br /><sub><b>FE 팀원 : </b></sub></a><br /></td>
+      <td align="center"><a href=""><img src="" width="100px;" alt=""/><br /><sub><b>FE 팀원 : </b></sub></a><br /></td>
+      <td align="center"><a href=""><img src="" width="100px;" alt=""/><br /><sub><b>FE 팀원 : </b></sub></a><br /></td>
+     <tr/>
+      <td align="center"><a href=""><img src="" width="100px;" alt=""/><br /><sub><b>BE 부팀장 : </b></sub></a><br /></td>
+      <td align="center"><a href=""><img src="" width="100px;" alt=""/><br /><sub><b>BE 팀원 : </b></sub></a><br /></td>
+      <td align="center"><a href=""><img src="" width="100px;" alt=""/><br /><sub><b>BE 팀원 : </b></sub></a><br /></td>
+    </tr>
+  </tbody>
+</table>
+
 ### 프론트엔드
 ![image](https://user-images.githubusercontent.com/61264510/222345725-e02aae82-f41d-43c7-bc7b-ca107dd116dd.png)
 
