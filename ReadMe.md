@@ -27,38 +27,26 @@
 
 - ## 기술 스택
 ### 프론트엔드
-[![My Skills](https://skillicons.dev/icons?i=html,css,javascript&theme=light)](https://skillicons.dev)
+<img src="https://github.com/user-attachments/assets/821aa132-bbf7-4431-8cc1-ce1a76051359" alt="html-5-svgrepo-com" width="100"/>
+<img src="https://github.com/user-attachments/assets/10b38707-51df-49f8-a424-67a9dda5a3fc" alt="css-3-svgrepo-com" width="100"/>
+<img src="https://github.com/user-attachments/assets/4b70eb69-de38-416e-a0f3-898523dfd145" alt="js-svgrepo-com" width="100"/>
 
 
 ### 백엔드
 <img src="https://github.com/user-attachments/assets/6afcb2b9-0152-4642-addb-5f1ec94d1d27" alt="java-svgrepo-com" width="100"/>
-<img src="https://github.com/user-attachments/assets/cded0d57-527b-40d0-b653-6e065a476c4f" alt="spring-svgrepo-com" width="100"/>
-<img src="https://github.com/user-attachments/assets/09285615-8350-429b-a2b9-666b85e606f4" alt="oracle-svgrepo-com" width="100"/>
-<img src="https://github.com/user-attachments/assets/821aa132-bbf7-4431-8cc1-ce1a76051359" alt="html-5-svgrepo-com" width="100"/>
-<img src="https://github.com/user-attachments/assets/10b38707-51df-49f8-a424-67a9dda5a3fc" alt="css-3-svgrepo-com" width="100"/>
-<img src="https://github.com/user-attachments/assets/4b70eb69-de38-416e-a0f3-898523dfd145" alt="js-svgrepo-com" width="100"/>
 <img src="https://github.com/user-attachments/assets/5b15d22c-d04c-41cb-90af-b06f12c2fc17" alt="gradle-svgrepo-com" width="100"/>
-<img src="https://github.com/user-attachments/assets/96abbfba-c29d-45ba-8ca7-2a233e0c6a90" alt="github-142-svgrepo-com" width="100"/>
-<img src="https://github.com/user-attachments/assets/1f0bc808-0ebd-49ca-8ed7-617fc963d7f7" alt="gitkraken-svgrepo-com" width="100"/>
 <img src="https://github.com/user-attachments/assets/b4a42ec6-4dd3-4dbf-8fad-fe2ac8e51ffa" alt="springboot" width="100"/>
 <img src="https://github.com/user-attachments/assets/47e2f651-6b18-4063-9225-16b48f051188" alt="jQuery" width="100"/>
 <img src="https://github.com/user-attachments/assets/19153a7e-25d3-4431-841a-cf3d5d835089" alt="springBoot1" width="100"/>
-<img src="https://github.com/user-attachments/assets/0fcabbca-6400-4332-94fa-2c185f5e6660" alt="images" width="200"/>
-<img src="https://github.com/user-attachments/assets/85f3a86b-dfbc-471d-b2f1-f579498f637d" alt="discord" width="150"/>
-<img src="https://github.com/user-attachments/assets/6edf7228-8428-41da-8a04-0a1e4b76126f" alt="123" width="150"/>
-
-
-
-
-
-
 
 
 ### DB
-![Oracle](https://your-image-url.com/oracle-icon.png)
-
-
+<img src="https://github.com/user-attachments/assets/09285615-8350-429b-a2b9-666b85e606f4" alt="oracle-svgrepo-com" width="100"/>
 
 ### 협업 Tools
-[![My Skills](https://skillicons.dev/icons?i=git,discord,notion&theme=light)](https://skillicons.dev)
+<img src="https://github.com/user-attachments/assets/0fcabbca-6400-4332-94fa-2c185f5e6660" alt="images" width="200"/>
+<img src="https://github.com/user-attachments/assets/85f3a86b-dfbc-471d-b2f1-f579498f637d" alt="discord" width="150"/>
+<img src="https://github.com/user-attachments/assets/6edf7228-8428-41da-8a04-0a1e4b76126f" alt="123" width="150"/>
+<img src="https://github.com/user-attachments/assets/96abbfba-c29d-45ba-8ca7-2a233e0c6a90" alt="github-142-svgrepo-com" width="100"/>
+<img src="https://github.com/user-attachments/assets/1f0bc808-0ebd-49ca-8ed7-617fc963d7f7" alt="gitkraken-svgrepo-com" width="100"/>
 
