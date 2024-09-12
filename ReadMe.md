@@ -18,7 +18,8 @@
  <table>
   <tbody>
     <tr>
-      <td align="center"><a href="https://github.com/ESKKorea"><img src="width="100px;" alt=""/><br /><sub><b>FE 팀장 : 김은산 </b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/ESKKorea"><img src="width="![꼬북이](https://github.com/user-attachments/assets/b3ff52db-8c31-49e2-89c1-af0aa7fc7407)
+100px;" alt=""/><br /><sub><b>FE 팀장 : 김은산 </b></sub></a><br /></td>
       <td align="center"><a href="https://github.com/fidnem3"><img src="" width="100px;" alt=""/><br /><sub><b>FE 팀원 : 이재석 </b></sub></a><br /></td>
       <td align="center"><a href="https://github.com/loismeow"><img src="" width="100px;" alt=""/><br /><sub><b>FE 팀원 : 원혜민 </b></sub></a><br /></td>
       <td align="center"><a href="https://github.com/Ye-ni"><img src="" width="100px;" alt=""/><br /><sub><b>FE 팀원 : 김예니 </b></sub></a><br /></td>
