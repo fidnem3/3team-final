@@ -32,7 +32,8 @@
 
 ### 백엔드
 [![My Skills](https://skillicons.dev/icons?i=java,spring,gradle,jquery&theme=light)](https://skillicons.dev)
-![gitkraken-svgrepo-com](https://github.com/user-attachments/assets/336c5a15-c957-4aa1-bfaa-34d7a8bc43a2)
+<img src="https://github.com/user-attachments/assets/336c5a15-c957-4aa1-bfaa-34d7a8bc43a2" alt="gitkraken-svgrepo-com" width="200"/>
+
 
 
 ### DB
