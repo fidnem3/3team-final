@@ -1,7 +1,8 @@
 ## 프로젝트
-<p align="middle" >
-  <img src="https://user-images.githubusercontent.com/61264510/218919921-ccae06ab-8407-4e9d-815c-981bb1dd3215.png?raw=true" width="400px;" height="100px;"/>
+<p align="middle">
+  <img src="https://github.com/user-attachments/assets/92389d75-4ee9-4719-a5a6-8cfb6946fee0" width="400px" height="100px"/>
 </p>
+
 
 ### <div align="center"> 구인 구직 사이트 </div>
 
