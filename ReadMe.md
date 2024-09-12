@@ -29,11 +29,11 @@
 ### 프론트엔드
 <img src="https://github.com/user-attachments/assets/821aa132-bbf7-4431-8cc1-ce1a76051359" alt="html-5-svgrepo-com" width="100"/>
 <img src="https://github.com/user-attachments/assets/10b38707-51df-49f8-a424-67a9dda5a3fc" alt="css-3-svgrepo-com" width="100"/>
-<img src="https://github.com/user-attachments/assets/4b70eb69-de38-416e-a0f3-898523dfd145" alt="js-svgrepo-com" width="100"/>
+
 
 
 ### 백엔드
-<img src="https://github.com/user-attachments/assets/6afcb2b9-0152-4642-addb-5f1ec94d1d27" alt="java-svgrepo-com" width="100"/>
+<img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white"> 
 <img src="https://github.com/user-attachments/assets/5b15d22c-d04c-41cb-90af-b06f12c2fc17" alt="gradle-svgrepo-com" width="100"/>
 <img src="https://github.com/user-attachments/assets/47e2f651-6b18-4063-9225-16b48f051188" alt="jQuery" width="200"/>
 <img src="https://github.com/user-attachments/assets/19153a7e-25d3-4431-841a-cf3d5d835089" alt="springBoot1" width="100"/>
