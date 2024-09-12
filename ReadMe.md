@@ -35,7 +35,7 @@
 
 
 ### DB
-[![My Skills](https://skillicons.dev/icons?i=java,spring,gradle,jquery&theme=light)](https://skillicons.dev)
+[![My Skills](https://skillicons.dev/icons?i=oracle&theme=light)](https://skillicons.dev)
 
 
 ### 협업 Tools
